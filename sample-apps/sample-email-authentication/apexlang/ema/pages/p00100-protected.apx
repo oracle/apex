@@ -7,11 +7,8 @@ page 100 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: All application help text can be accessed from this page. The links in the "Documentation" region give a much more in-depth explanation of the application's features and functionality.

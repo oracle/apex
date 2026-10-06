@@ -1,0 +1,12 @@
+lov sp-resource-types-resource-type (
+    name: SP_RESOURCE_TYPES.RESOURCE_TYPE
+    source {
+        tableName: SP_RESOURCE_TYPES
+    }
+    columnMapping {
+        return: ID
+        display: RESOURCE_TYPE
+        defaultSort: RESOURCE_TYPE
+    }
+)
+

@@ -14,13 +14,8 @@ page 20 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -36,6 +31,25 @@ page 20 (
         }
         settings {
             outputAs: text
+        }
+    )
+
+    region home-page-display (
+        name: Home Page Display
+        type: staticContent
+        layout {
+            sequence: 30
+            parentRegion: @user
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
         }
     )
 
@@ -165,7 +179,6 @@ page 20 (
             region: @user
             slot: regionBody
             alignment: left
-            startNewRow: false
         }
         appearance {
             template: @/optional-floating
@@ -232,6 +245,154 @@ page 20 (
             formRegion: @user
             column: FIRST_NAME
             dataType: varchar2
+        }
+    )
+
+    pageItem P20_HP_MY_ACTIVITES_YN (
+        type: switch
+        label {
+            label: Include My Activities
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @user
+            column: HP_MY_ACTIVITIES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Activities region will display on the home page (contains current and future activities).
+        }
+    )
+
+    pageItem P20_HP_MY_FAV_PROJECTS_YN (
+        type: switch
+        label {
+            label: Include My Favorite &NOMENCLATURE_PROJECTS.
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @user
+            column: HP_MY_FAV_PROJECTS_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Favorite &NOMENCLATURE_PROJECTS. region will display on the home page (all &NOMENCLATURE_PROJECTS. you have favorited).
+        }
+    )
+
+    pageItem P20_HP_MY_INITIATIVES_YN (
+        type: switch
+        label {
+            label: Include My Initiatives
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @user
+            column: HP_MY_INITIATIVES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My &NOMENCLATURE_INITIATIVES. region will display on the home page (you own the &NOMENCLATURE_INITIATIVE., own a &NOMENCLATURE_PROJECT. within, or are a &NOMENCLATURE_PROJECT. contributor within).
+        }
+    )
+
+    pageItem P20_HP_MY_OPEN_RELEASES_YN (
+        type: switch
+        label {
+            label: Include My Open Releases
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @user
+            column: HP_MY_OPEN_RELEASES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Open Releases region will display on the home page (you own the Release, own a &NOMENCLATURE_PROJECT. within, own a milestone/review/task within a &NOMENCLATURE_PROJECT. within, or own a &NOMENCLATURE_PROJECT. activity within).
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    pageItem P20_HP_MY_PROJECTS_YN (
+        type: switch
+        label {
+            label: Include My &NOMENCLATURE_PROJECTS.
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @user
+            column: HP_MY_PROJECTS_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My &NOMENCLATURE_PROJECTS. region will display on the home page (you own the &NOMENCLATURE_PROJECT. or have an active milestone, review or task on that &NOMENCLATURE_PROJECT.).
         }
     )
 
@@ -344,7 +505,7 @@ page 20 (
             alignment: left
         }
         layout {
-            sequence: 130
+            sequence: 160
             region: @user
             slot: regionBody
             alignment: left
@@ -424,7 +585,7 @@ page 20 (
             bobLastUpdatedColumn: PHOTO_LASTUPD
         }
         layout {
-            sequence: 150
+            sequence: 170
             region: @user
             slot: regionBody
             alignment: left
@@ -450,7 +611,7 @@ page 20 (
     pageItem P20_PHOTO_CHARSET (
         type: hidden
         layout {
-            sequence: 180
+            sequence: 200
             region: @user
             slot: regionBody
         }
@@ -468,7 +629,7 @@ page 20 (
     pageItem P20_PHOTO_FILENAME (
         type: hidden
         layout {
-            sequence: 160
+            sequence: 180
             region: @user
             slot: regionBody
         }
@@ -486,7 +647,7 @@ page 20 (
     pageItem P20_PHOTO_LASTUPD (
         type: hidden
         layout {
-            sequence: 190
+            sequence: 210
             region: @user
             slot: regionBody
         }
@@ -504,7 +665,7 @@ page 20 (
     pageItem P20_PHOTO_MIMETYPE (
         type: hidden
         layout {
-            sequence: 170
+            sequence: 190
             region: @user
             slot: regionBody
         }
@@ -596,6 +757,47 @@ page 20 (
             formRegion: @user
             column: TAGS
             dataType: varchar2
+        }
+    )
+
+    pageItem P20_TIMEZONE (
+        type: selectOne
+        label {
+            label: Timezone
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @unique-timezones
+        }
+        layout {
+            sequence: 150
+            region: @user
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @user
+            column: TIMEZONE
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        config {
+            buildOption: @team-calendar
         }
     )
 
@@ -715,6 +917,80 @@ page 20 (
 
     )
 
+    dynamicAction when-comment-pref-set-to-none (
+        name: when comment pref set to none
+        execution {
+            sequence: 30
+        }
+        when {
+            event: click
+            selectionType: items
+            items: P20_COMMENT_NOTIF_PREF
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                $v("P20_COMMENT_NOTIF_PREF") == 'APP:NONE' || 
+                $v("P20_COMMENT_NOTIF_PREF") == 'APP:EMAIL:NONE' ||
+                $v("P20_COMMENT_NOTIF_PREF") == 'EMAIL:NONE'
+                ```
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: NONE
+            }
+            affectedElements {
+                selectionType: items
+                items: P20_COMMENT_NOTIF_PREF
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-notification-pref-set-to-none (
+        name: when notification pref set to none
+        execution {
+            sequence: 20
+        }
+        when {
+            event: click
+            selectionType: items
+            items: P20_NOTIFICATION_PREF
+        }
+        clientSideCondition {
+            type: jsExpression
+            javaScriptExpression:
+                ```javascript-browser
+                $v("P20_NOTIFICATION_PREF") == 'APP:NONE' || 
+                $v("P20_NOTIFICATION_PREF") == 'APP:EMAIL:NONE' ||
+                $v("P20_NOTIFICATION_PREF") == 'EMAIL:NONE'
+                ```
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: NONE
+            }
+            affectedElements {
+                selectionType: items
+                items: P20_NOTIFICATION_PREF
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
     validation email-valid (
         name: email valid
         execution {
@@ -778,25 +1054,6 @@ page 20 (
         }
     )
 
-    computation p144-notification-pref (
-        itemName: P144_NOTIFICATION_PREF
-        execution {
-            sequence: 30
-            point: afterHeader
-        }
-        computation {
-            type: staticValue
-            staticValue: APP:EMAIL
-        }
-        serverSideCondition {
-            type: itemIsNull
-            item: P144_NOTIFICATION_PREF
-        }
-        config {
-            buildOption: @email-configured
-        }
-    )
-
     computation p20-comment-notif-pref (
         itemName: P20_COMMENT_NOTIF_PREF
         execution {
@@ -813,6 +1070,44 @@ page 20 (
         }
         config {
             buildOption: @email-configured
+        }
+    )
+
+    computation p20-notification-pref (
+        itemName: P20_NOTIFICATION_PREF
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: APP:EMAIL
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P20_NOTIFICATION_PREF
+        }
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    computation p20-timezone (
+        itemName: P20_TIMEZONE
+        execution {
+            sequence: 40
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: UTC
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P20_TIMEZONE
+        }
+        config {
+            buildOption: @team-calendar
         }
     )
 

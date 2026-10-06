@@ -8,12 +8,7 @@ page 31 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -103,7 +98,7 @@ page 31 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -120,7 +115,7 @@ page 31 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -149,7 +144,7 @@ page 31 (
                 linkAttributes: onclick="return confirm('Are you sure you want to delete this file?');" class="t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete File"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -177,7 +172,7 @@ page 31 (
                 sequence: 19
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -196,7 +191,7 @@ page 31 (
                 sequence: 13
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -215,7 +210,7 @@ page 31 (
                 sequence: 14
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -236,7 +231,7 @@ page 31 (
                 formatMask: FILESIZE
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -252,7 +247,7 @@ page 31 (
                 sequence: 11
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -271,7 +266,7 @@ page 31 (
                 sequence: 16
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -287,7 +282,7 @@ page 31 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -306,7 +301,7 @@ page 31 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -323,7 +318,7 @@ page 31 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G

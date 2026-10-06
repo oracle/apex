@@ -8,7 +8,7 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
     }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
@@ -35,11 +35,17 @@ page 3 (
             .t-ContextualInfo .t-Button--link:hover {
               text-decoration: none;
             }
+            
+            .t-Comments-comment img {
+              max-width: 1000px; 
+              height: auto;
+            }
+            
             ```
     }
     security {
         deepLinking: true
-        formAutoComplete: false
+        pageAccessProtection: unrestricted
     }
 
     region activity (
@@ -73,15 +79,16 @@ page 3 (
                 ```sql
                 select ap.id, 
                        at.activity_type,
-                       ap.comments,
+                       ap.activity comments,
                        ap.start_date,
                        ap.end_date,
-                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
-                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       to_char(ap.end_date,'fmDay DD-Mon-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'fmDay DD-Mon-YYYY')||' to '||to_char(ap.end_date,'fmDay DD-Mon-YYYY') TIMELINE,
                        ap.end_date - ap.start_date days,
                        round(ap.end_date - sysdate) days_remaining,
                        ap.url,
                        tm.first_name||' '||tm.last_name name,
+                       decode(ap.private_yn,'Y','Private',null) private_label,
                        --
                        p.project,
                        p.friendly_identifier,
@@ -112,7 +119,8 @@ page 3 (
                        --
                        -- pie chart icon in 10% chunks that show time percent complete
                        --
-                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon
+                       'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon,
+                       ap.updated
                 from sp_activities ap,
                      sp_projects p,
                      sp_activity_types at,
@@ -128,15 +136,18 @@ page 3 (
                          trunc(sysdate) between ap.start_date and ap.end_date or 
                          (nvl(:P3_INCLUDE_FUTURE,'N') = 'Y' and ap.start_date >= trunc(sysdate)) or
                          (nvl(:P3_INCLUDE_PAST,'N') = 'Y' and ap.end_date < trunc(sysdate))
-                      )
-                order by ap.updated desc
-                
+                      ) and  
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID)
                 ```
             pageItemsToSubmit: [
                 P3_PROJECT_ID
                 P3_INCLUDE_FUTURE
                 P3_INCLUDE_PAST
             ]
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated desc
         }
         layout {
             sequence: 121
@@ -167,9 +178,10 @@ page 3 (
                 <strong>Owner</strong>: &OWNER.<br>
                 <strong>&ACTIVITY_TYPE.</strong>: &TIMELINE.<br>
                 {if PROJECT/}<strong>&NOMENCLATURE_PROJECT.</strong>: &PROJECT.<br>{endif/}
-                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE.</strong>: &INITIATIVE.<br>{endif/}
+                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE.</strong>: &INITIATIVE.{endif/}
+                
                 ```
-            miscellaneous: Updated &LAST_UPDATED.
+            miscellaneous: "{if PRIVATE_LABEL/}<strong class=\"u-danger-text\">&PRIVATE_LABEL.</strong><br/>{endif/}Updated &LAST_UPDATED."
             displayAvatar: true
             displayBadge: true
         }
@@ -328,6 +340,16 @@ page 3 (
             }
         )
 
+        column PRIVATE_LABEL (
+            layout {
+                sequence: 380
+            }
+            source {
+                databaseColumn: PRIVATE_LABEL
+                dataType: varchar2
+            }
+        )
+
         column PROJECT (
             layout {
                 sequence: 260
@@ -378,6 +400,16 @@ page 3 (
             }
         )
 
+        column UPDATED (
+            layout {
+                sequence: 370
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
         column URL (
             layout {
                 sequence: 240
@@ -395,17 +427,17 @@ page 3 (
             }
             behavior {
                 target: {
-                    page: 140
+                    page: 129
                     items: {
-                        P140_ID: &ID.
+                        P129_ACTIVITY_ID: &ID.
                     }
-                    clearCache: 140
+                    clearCache: 129
                     action: resetPagination
                 }
             }
         )
 
-        action actions (
+        action actions-2 (
             position: primaryActions
             template: menu
             label: Actions
@@ -554,6 +586,9 @@ page 3 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -573,11 +608,12 @@ page 3 (
             }
             link {
                 target: {
-                    page: 66
+                    page: 21
                     items: {
-                        P66_AREA_ID: #AREA_ID#
+                        P21_FOCUS_AREA: I#AREA#
                     }
-                    clearCache: 66
+                    clearCache: 21
+                    action: resetPagination
                 }
                 linkText: #AREA#
             }
@@ -685,6 +721,9 @@ page 3 (
                 sequence: 120
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
         )
 
         column ID (
@@ -705,6 +744,9 @@ page 3 (
             }
             layout {
                 sequence: 90
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
             }
             link {
                 target: {
@@ -1270,6 +1312,9 @@ page 3 (
                 margin-bottom-md
             ]
         }
+        security {
+            authorizationScheme: @contribution-rights
+        }
     )
 
     region comments (
@@ -1303,6 +1348,7 @@ page 3 (
                        null comment_date,
                        tm.first_name || ' ' || tm.last_name user_name,
                        --
+                       pc.comment_nbr,
                        pc.body_html comment_text,
                        case when pc.author_id = :APP_USER_ID
                             then '<a href="'||apex_util.prepare_URL(
@@ -1358,15 +1404,12 @@ page 3 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 7
+            reportColumnQueryId: 8
             derivedColumn: N
             heading {
                 heading: Actions
@@ -1385,7 +1428,7 @@ page 3 (
         )
 
         column ATTRIBUTE_1 (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Attribute 1
@@ -1400,7 +1443,7 @@ page 3 (
         )
 
         column ATTRIBUTE_2 (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Attribute 2
@@ -1415,7 +1458,7 @@ page 3 (
         )
 
         column ATTRIBUTE_3 (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Attribute 3
@@ -1430,7 +1473,7 @@ page 3 (
         )
 
         column ATTRIBUTE_4 (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Attribute 4
@@ -1445,7 +1488,7 @@ page 3 (
         )
 
         column BODY (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Body
@@ -1460,7 +1503,7 @@ page 3 (
         )
 
         column BODY_HTML (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Body Html
@@ -1492,8 +1535,27 @@ page 3 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 300
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 7
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -1505,8 +1567,10 @@ page 3 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -1518,7 +1582,7 @@ page 3 (
         )
 
         column CREATED (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created
@@ -1536,7 +1600,7 @@ page 3 (
         )
 
         column CREATED_BY (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: Created By
@@ -1565,7 +1629,7 @@ page 3 (
         )
 
         column ICON_MODIFIER (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Icon Modifier
@@ -1595,7 +1659,7 @@ page 3 (
         )
 
         column PRIVATE_COMMENT_LABEL (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Private Comment Label
@@ -1609,7 +1673,7 @@ page 3 (
         )
 
         column PROJECT_ID (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Project Id
@@ -1624,7 +1688,7 @@ page 3 (
         )
 
         column TEAM_MEMBER_ID (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 22
             derivedColumn: N
             heading {
                 heading: User ID
@@ -1638,7 +1702,7 @@ page 3 (
         )
 
         column UPDATED (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 20
             derivedColumn: N
             type: hidden
             layout {
@@ -1647,7 +1711,7 @@ page 3 (
         )
 
         column UPDATED_BY (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: Updated By
@@ -1685,6 +1749,9 @@ page 3 (
             }
             layout {
                 sequence: 170
+            }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
             }
             sorting {
                 sortable: false
@@ -1815,7 +1882,7 @@ page 3 (
                 sequence: 170
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -1833,7 +1900,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -1852,7 +1919,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -1868,7 +1935,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1894,7 +1961,7 @@ page 3 (
                 linkText: #NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1910,7 +1977,7 @@ page 3 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -1926,7 +1993,7 @@ page 3 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -1942,7 +2009,7 @@ page 3 (
                 sequence: 190
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -1961,7 +2028,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: B
@@ -2152,6 +2219,7 @@ page 3 (
                 page: #EDIT_PAGE#
                 items: {
                     "P#EDIT_PAGE#_ID": #DOCUMENT_ID#
+                    "P#EDIT_PAGE#_ON_DELETE": CLOSE
                 }
                 clearCache: #EDIT_PAGE#
                 anchor: #DOCUMENT_ID#
@@ -2191,7 +2259,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -2207,7 +2275,7 @@ page 3 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -2223,7 +2291,7 @@ page 3 (
                 sequence: 80
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -2239,7 +2307,7 @@ page 3 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -2269,7 +2337,7 @@ page 3 (
                 charSetColumn: DOCUMENT_CHARSET
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -2296,7 +2364,7 @@ page 3 (
                 linkText: #DOCUMENT_FILENAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -2312,7 +2380,7 @@ page 3 (
                 sequence: 160
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -2328,7 +2396,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -2349,7 +2417,7 @@ page 3 (
                 formatMask: FILESIZE
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -2365,7 +2433,7 @@ page 3 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -2381,7 +2449,7 @@ page 3 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -2397,7 +2465,7 @@ page 3 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -2414,7 +2482,7 @@ page 3 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -2430,7 +2498,7 @@ page 3 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -2460,7 +2528,7 @@ page 3 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -2584,7 +2652,7 @@ page 3 (
                            l.link_url,
                            substr(l.link_url,1,39)||'...'||substr(l.link_url,length(l.link_url)-39)
                            ) link_url,
-                       l.link_url full_url,
+                       case when lower(link_url) not like 'http%' then 'http://' end || link_url full_url,
                        l.created, 
                        l.updated, 
                        lower(created_by) added_by,
@@ -2604,7 +2672,7 @@ page 3 (
                            l.link_url,
                            substr(l.link_url,1,39)||'...'||substr(l.link_url,length(l.link_url)-39)
                            ) link_url,
-                       l.link_url full_url,
+                       case when lower(link_url) not like 'http%' then 'http://' end || link_url full_url,
                        l.created, 
                        l.updated, 
                        lower(l.created_by) added_by,
@@ -2662,7 +2730,7 @@ page 3 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -2681,7 +2749,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -2697,7 +2765,7 @@ page 3 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -2713,7 +2781,7 @@ page 3 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -2729,7 +2797,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -2745,7 +2813,7 @@ page 3 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -2769,7 +2837,7 @@ page 3 (
                 linkAttributes: target="_blank"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -2785,7 +2853,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -2805,7 +2873,7 @@ page 3 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -2835,7 +2903,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -2896,329 +2964,6 @@ page 3 (
                 }
             )
 
-        )
-
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu add-links-from-comments (
-                label: Add Links from Comments
-                layout {
-                    sequence: 100
-                }
-                behavior {
-                    target: {
-                        page: 31
-                        items: {
-                            P31_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 31
-                    }
-                }
-                appearance {
-                    icon: fa-external-link
-                }
-                serverSideCondition {
-                    type: never
-                }
-            )
-
-            menu ai-summaries (
-                label: AI Summaries
-                layout {
-                    sequence: 140
-                }
-                behavior {
-                    target: {
-                        page: 26
-                        items: {
-                            P26_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: [
-                            26
-                            RP
-                        ]
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-ai-sparkle-generate-text
-                }
-                config {
-                    buildOption: @ai-project-summaries
-                }
-            )
-
-            menu archive (
-                label: Archive
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 47
-                        items: {
-                            P47_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 47
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-remove
-                }
-                serverSideCondition {
-                    type: rowsReturned
-                    sqlQuery:
-                        ```sql
-                        select ARCHIVED_YN 
-                          from sp_projects 
-                         where id = :P3_PROJECT_ID
-                           and ARCHIVED_YN = 'N'
-                        ```
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 90
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 170
-                }
-            )
-
-            menu comp_menu_entry-3 (
-                type: separator
-                layout {
-                    sequence: 150
-                }
-            )
-
-            menu copy (
-                label: Copy
-                layout {
-                    sequence: 60
-                }
-                behavior {
-                    target: {
-                        page: 116
-                        items: {
-                            P116_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 116
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-copy
-                }
-            )
-
-            menu find-screen-names (
-                label: Find Screen Names
-                layout {
-                    sequence: 160
-                }
-                behavior {
-                    target: {
-                        page: 123
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-at
-                }
-            )
-
-            menu mark-as-duplicate (
-                label: Mark as Duplicate
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 49
-                        items: {
-                            P49_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 49
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-file-text
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 180
-                }
-                behavior {
-                    target: {
-                        page: 3
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 190
-                }
-                behavior {
-                    target: {
-                        page: 3
-                        items: {
-                            PN: &PN.
-                            FI: &FI.
-                        }
-                        clearCache: 3
-                        action: resetRegions
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-            menu show-involved-people (
-                label: Show Involved People
-                layout {
-                    sequence: 110
-                }
-                behavior {
-                    target: {
-                        page: 96
-                        items: {
-                            P96_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 96
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users-alt
-                }
-            )
-
-            menu view-exceptions (
-                label: View Exceptions
-                layout {
-                    sequence: 130
-                }
-                behavior {
-                    target: {
-                        page: 93
-                        items: {
-                            P93_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 93
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-clipboard-x
-                }
-            )
-
-            menu view-history (
-                label: View History
-                layout {
-                    sequence: 120
-                }
-                behavior {
-                    target: {
-                        page: 64
-                        items: {
-                            P64_PROJECT_ID: &P3_PROJECT_ID.
-                        }
-                        clearCache: 64
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-clock-o
-                }
-            )
-
-        )
-
-        action edit (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 24
-                    items: {
-                        P24_ID: &P3_PROJECT_ID.
-                    }
-                    clearCache: 24
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
         )
 
     )
@@ -3350,7 +3095,7 @@ page 3 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -3366,7 +3111,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -3382,7 +3127,7 @@ page 3 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -3403,7 +3148,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -3424,7 +3169,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -3445,7 +3190,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -3463,7 +3208,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -3479,7 +3224,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -3495,7 +3240,7 @@ page 3 (
                 sequence: 140
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -3514,7 +3259,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -3530,7 +3275,7 @@ page 3 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -3549,7 +3294,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -3576,7 +3321,7 @@ page 3 (
                 linkText: #TYPE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -3595,7 +3340,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -3800,6 +3545,9 @@ page 3 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -4271,7 +4019,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -4287,7 +4035,7 @@ page 3 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -4303,7 +4051,7 @@ page 3 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -4324,7 +4072,7 @@ page 3 (
                 htmlExpression: #PCT_COMPLETE#%
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: X
@@ -4340,7 +4088,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -4356,7 +4104,7 @@ page 3 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -4384,7 +4132,7 @@ page 3 (
                 linkText: #RELATED_PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -4400,7 +4148,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Y
@@ -4416,7 +4164,7 @@ page 3 (
                 sequence: 100
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AA
@@ -4432,7 +4180,7 @@ page 3 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -4454,11 +4202,15 @@ page 3 (
             }
 
             displayColumn CREATED (
-                sequence: 3
+                sequence: 4
+            )
+
+            displayColumn PCT_COMPLETE (
+                sequence: 2
             )
 
             displayColumn PROJECT_RELATION (
-                sequence: 2
+                sequence: 3
             )
 
             displayColumn RELATED_PROJECT (
@@ -4605,7 +4357,7 @@ page 3 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -4621,7 +4373,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -4637,7 +4389,7 @@ page 3 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -4653,7 +4405,7 @@ page 3 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -4674,7 +4426,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -4695,7 +4447,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -4716,7 +4468,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -4734,7 +4486,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -4753,7 +4505,7 @@ page 3 (
                 valueIdentifiesRow: true
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -4769,7 +4521,7 @@ page 3 (
                 sequence: 150
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -4788,7 +4540,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -4804,7 +4556,7 @@ page 3 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -4823,7 +4575,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -4853,7 +4605,7 @@ page 3 (
                 linkText: #TYPE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -4872,7 +4624,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -5031,10 +4783,13 @@ page 3 (
                                     end
                                from sp_team_members t where t.id = r.owner_id) owner,
                        --
-                       (select task_type from sp_task_types rt where rt.id = r.task_type_id)||
-                           case when r.task_sub_type_id is not null then ': ' end ||
-                           (select task_type from sp_task_types rt where rt.id = r.task_sub_type_id) ||
-                           case when r.task is not null then ' - '||r.task end type,
+                       r.task || case when r.task is not null then ' (' end || 
+                                 (select task_type from sp_task_types rt where rt.id = r.task_type_id)||
+                                 case when r.task_sub_type_id is not null 
+                                      then ': '||(select task_type from sp_task_types rt where rt.id = r.task_sub_type_id) 
+                                      end || 
+                                 case when r.task is not null then ')' end type,
+                       r.display_sequence,
                        --
                        case when length(r.description) > 200
                             then substr(r.description,1,200)||'...'
@@ -5066,7 +4821,32 @@ page 3 (
                           from SP_TASK_COMMENTS c 
                          where c.task_id = r.id and 
                                c.private_yn = 'N' and 
-                               c.created = (select max(c2.created) from sp_task_comments c2 where c2.task_id = r.id and c2.private_yn = 'N')) last_comment
+                               c.created = (select max(c2.created) from sp_task_comments c2 where c2.task_id = r.id and c2.private_yn = 'N')) last_comment,
+                       (select listagg(d, ', ' on overflow truncate with count) within group (order by d)
+                          from (select rt2.relation_type||' '||
+                                       t2.task || case when t2.task is not null then ' (' end || tt2.task_type || 
+                                                  case when t2.task is not null then ')' end d
+                                  from sp_tasks t2,
+                                       sp_task_types tt2,
+                                       sp_task_related l2,
+                                       sp_relation_types rt2
+                                 where nvl(t2.task_sub_type_id,t2.task_type_id) = tt2.id
+                                   and t2.id = l2.related_task_id
+                                   and l2.relation_type_id = rt2.id
+                                   and l2.task_id = r.id
+                                 union all
+                                select nvl(rt2.relation_reverse,rt2.relation_type)||' '||
+                                       t2.task || case when t2.task is not null then ' (' end || tt2.task_type || 
+                                                  case when t2.task is not null then ')' end d
+                                  from sp_tasks t2,
+                                       sp_task_types tt2,
+                                       sp_task_related l2,
+                                       sp_relation_types rt2
+                                 where nvl(t2.task_sub_type_id,t2.task_type_id) = tt2.id
+                                   and t2.id = l2.task_id
+                                   and l2.relation_type_id = rt2.id
+                                   and l2.related_task_id = r.id
+                                )) related_tasks
                   from sp_tasks r,
                        sp_task_types t,
                        sp_task_statuses s,
@@ -5126,7 +4906,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -5144,10 +4924,28 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            type: plainText
+            heading {
+                heading: Display Sequence
+                alignment: end
+            }
+            layout {
+                sequence: 200
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: V
             }
         )
 
@@ -5160,7 +4958,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -5176,7 +4974,7 @@ page 3 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -5197,7 +4995,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -5218,7 +5016,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -5239,7 +5037,7 @@ page 3 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -5257,7 +5055,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -5273,7 +5071,7 @@ page 3 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -5289,10 +5087,26 @@ page 3 (
                 sequence: 170
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
+            }
+        )
+
+        column RELATED_TASKS (
+            type: plainText
+            heading {
+                heading: Related Tasks
+            }
+            layout {
+                sequence: 210
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: W
             }
         )
 
@@ -5308,7 +5122,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -5324,7 +5138,7 @@ page 3 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -5343,7 +5157,7 @@ page 3 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -5370,7 +5184,7 @@ page 3 (
                 linkText: #TYPE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -5389,7 +5203,7 @@ page 3 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: B
@@ -5407,7 +5221,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -5428,12 +5242,12 @@ page 3 (
                 rowsPerPage: 50
             }
 
-            displayColumn DESCRIPTION (
-                sequence: 7
-            )
-
             displayColumn OWNER (
                 sequence: 2
+            )
+
+            displayColumn RELATED_TASKS (
+                sequence: 7
             )
 
             displayColumn START_DATE (
@@ -5461,9 +5275,8 @@ page 3 (
             )
 
             sort (
-                column: UPDATED
+                column: DISPLAY_SEQUENCE
                 sort {
-                    direction: desc
                     sequence: 1
                 }
             )
@@ -5479,18 +5292,33 @@ page 3 (
             sort (
                 column: OB
                 sort {
+                    direction: desc
                     nulls: first
                     sequence: 3
                 }
             )
 
-            filter ir-condition-2 (
+            filter ir-condition (
                 column: STATUS
                 operator: !=
                 value: Completed
             )
 
-            highlight ir-condition (
+            highlight ir-condition-2 (
+                condition {
+                    column: RELATED_TASKS
+                    operator: contains
+                    value: block
+                }
+                colors {
+                    background: #fd6a5d
+                }
+                execution {
+                    sequence: 10
+                }
+            )
+
+            highlight ir-condition-3 (
                 name: Completed
                 condition {
                     column: STATUS
@@ -5598,13 +5426,18 @@ page 3 (
                             data: {
                                 imageRefId: apex.item('P3_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P3_PROJECT_ID.value
+                        },
+                        docs: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P3_PROJECT_ID.value
                         }
                     });
                 }
                 ```
-        }
-        security {
-            authorizationScheme: @contribution-rights
         }
         comments {
             comments:
@@ -5652,6 +5485,9 @@ page 3 (
             type: item
             item: APP_USER_ID
         }
+        security {
+            authorizationScheme: @contribution-rights
+        }
     )
 
     pageItem P3_CONTRIBUTOR_ROLE (
@@ -5688,6 +5524,9 @@ page 3 (
         default {
             type: sqlQuerySingleValue
             sqlQuerySingleValue: select max(id) from SP_RESOURCE_TYPES where IS_DEFAULT_YN = 'Y'
+        }
+        security {
+            authorizationScheme: @contribution-rights
         }
     )
 
@@ -6069,6 +5908,277 @@ page 3 (
         }
     )
 
+    button actions (
+        buttonName: Actions
+        label: Actions
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu ai-summaries (
+            label: AI Summaries
+            layout {
+                sequence: 100
+            }
+            behavior {
+                target: {
+                    page: 26
+                    items: {
+                        P26_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 26
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-ai-sparkle-generate-text
+            }
+            config {
+                buildOption: @ai-project-summaries-view
+            }
+        )
+
+        menu archive (
+            label: Archive
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 47
+                    items: {
+                        P47_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 47
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-remove
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 
+                      from sp_projects 
+                     where id = :P3_PROJECT_ID
+                       and ARCHIVED_YN = 'N'
+                    ```
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        menu copy (
+            label: Copy
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 116
+                    items: {
+                        P116_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 116
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-copy
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        menu mark-as-duplicate (
+            label: Mark as Duplicate
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 49
+                    items: {
+                        P49_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 49
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-file-text
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        menu markdown (
+            label: &NOMENCLATURE_PROJECT. Markdown
+            layout {
+                sequence: 90
+            }
+            behavior {
+                target: {
+                    page: 123
+                    items: {
+                        P123_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 123
+                }
+            }
+            appearance {
+                icon: fa-caret-square-o-down
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 130
+            }
+            behavior {
+                target: {
+                    page: 3
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 140
+            }
+            behavior {
+                target: {
+                    page: 3
+                    items: {
+                        PN: &PN.
+                        FI: &FI.
+                    }
+                    clearCache: 3
+                    action: resetRegions
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu search-comments (
+            label: Search Comments
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 176
+                    items: {
+                        P176_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 176
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-search
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 40
+            }
+        )
+
+        menu sep2 (
+            type: separator
+            layout {
+                sequence: 120
+            }
+        )
+
+        menu show-involved-people (
+            label: Show Involved People
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 96
+                    items: {
+                        P96_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 96
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users-alt
+            }
+        )
+
+        menu view-exceptions (
+            label: View Exceptions
+            layout {
+                sequence: 80
+            }
+            behavior {
+                target: {
+                    page: 93
+                    items: {
+                        P93_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 93
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clipboard-x
+            }
+        )
+
+        menu view-history (
+            label: View History
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 64
+                    items: {
+                        P64_PROJECT_ID: &P3_PROJECT_ID.
+                    }
+                    clearCache: 64
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clock-o
+            }
+        )
+
+    )
+
     button add-activity (
         buttonName: add_activity
         label: Add Activity
@@ -6307,6 +6417,61 @@ page 3 (
         }
     )
 
+    button chat (
+        buttonName: chat
+        label: Chat
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ai-sparkle-message
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        config {
+            buildOption: @ai-chat
+        }
+    )
+
+    button edit (
+        buttonName: Edit
+        label: Edit
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 24
+                items: {
+                    P24_ID: &P3_PROJECT_ID.
+                }
+                clearCache: 24
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
     button edit-description (
         buttonName: edit_description
         label: Edit
@@ -6390,9 +6555,6 @@ page 3 (
         }
         behavior {
             action: definedByDynamicAction
-        }
-        security {
-            authorizationScheme: @contribution-rights
         }
     )
 
@@ -6580,9 +6742,8 @@ page 3 (
         behavior {
             action: redirectThisApp
             target: {
-                page: &LAST_PROJECT_VIEW.
+                page: 23
             }
-            warnOnUnsavedChanges: doNotCheck
         }
     )
 
@@ -6610,7 +6771,7 @@ page 3 (
                 page: 64
                 items: {
                     P64_PROJECT_ID: &P3_PROJECT_ID.
-                    P64_ATTRIBUTE_COLUMN: Contributor
+                    P64_ATTRIBUTE_COLUMN: IContributor
                 }
                 clearCache: 64
                 action: resetPagination
@@ -6643,7 +6804,7 @@ page 3 (
                 page: 64
                 items: {
                     P64_PROJECT_ID: &P3_PROJECT_ID.
-                    P64_ATTRIBUTE_COLUMN: Description
+                    P64_ATTRIBUTE_COLUMN: IDescription
                 }
                 clearCache: 64
                 action: resetPagination
@@ -6764,7 +6925,7 @@ page 3 (
                 page: 64
                 items: {
                     P64_PROJECT_ID: &P3_PROJECT_ID.
-                    P64_PARENT_TYPE: Milestone
+                    P64_PARENT_TYPE: IMilestone
                 }
                 clearCache: 64
                 action: resetPagination
@@ -6797,7 +6958,7 @@ page 3 (
                 page: 64
                 items: {
                     P64_PROJECT_ID: &P3_PROJECT_ID.
-                    P64_PARENT_TYPE: Review
+                    P64_PARENT_TYPE: IReview
                 }
                 clearCache: 64
                 action: resetPagination
@@ -6868,7 +7029,7 @@ page 3 (
                 jsCode: apex.message.ariaAlertMessage("Comment Added Successfully");
             }
             execution {
-                sequence: 70
+                sequence: 60
                 fireOnInit: false
             }
         )
@@ -6892,7 +7053,7 @@ page 3 (
                 button: @post-comment
             }
             execution {
-                sequence: 80
+                sequence: 70
                 fireOnInit: false
             }
         )
@@ -6914,7 +7075,7 @@ page 3 (
     dynamicAction add-contributor (
         name: add contributor
         execution {
-            sequence: 260
+            sequence: 240
         }
         when {
             event: click
@@ -7075,7 +7236,7 @@ page 3 (
     dynamicAction add-related (
         name: add related
         execution {
-            sequence: 110
+            sequence: 120
         }
         when {
             event: click
@@ -7151,10 +7312,45 @@ page 3 (
 
     )
 
+    dynamicAction chat (
+        name: chat
+        execution {
+            sequence: 300
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @chat
+        }
+        config {
+            buildOption: @ai-chat
+        }
+
+        action native-open-ai-assistant (
+            action: showAiAssistant
+            genAI {
+                agent: @project-agent
+                itemsToSubmit: [
+                    P3_PROJECT_ID
+                    APP_ID
+                    APP_USER_FIRST_LAST_NAME
+                ]
+            }
+            appearance {
+                title: Project Details
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
     dynamicAction comment-links-in-new-tab (
         name: comment links in new tab
         execution {
-            sequence: 300
+            sequence: 290
         }
         when {
             event: ready
@@ -7175,7 +7371,7 @@ page 3 (
     dynamicAction comments-refresh-on-dialog-close (
         name: comments refresh on dialog close
         execution {
-            sequence: 100
+            sequence: 110
         }
         when {
             event: apexafterclosedialog
@@ -7198,7 +7394,7 @@ page 3 (
     )
 
     dynamicAction doc-refresh-dialog-close (
-        name: doc refresh dialog close
+        name: Docs dialog close
         execution {
             sequence: 50
         }
@@ -7222,33 +7418,8 @@ page 3 (
 
     )
 
-    dynamicAction doc-refresh-on-dialog-close (
-        name: doc refresh on dialog close
-        execution {
-            sequence: 90
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @documents
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @documents
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
     dynamicAction milestone-refresh-dialog-close (
-        name: milestone refresh dialog close
+        name: milestone dialog close
         execution {
             sequence: 60
         }
@@ -7273,7 +7444,7 @@ page 3 (
     )
 
     dynamicAction milestone-reviews-dialog-close (
-        name: milestone reviews dialog close
+        name: reviews dialog close
         execution {
             sequence: 70
         }
@@ -7297,22 +7468,21 @@ page 3 (
 
     )
 
-    dynamicAction on-edit-description-dialog-close (
-        name: on edit description dialog close
+    dynamicAction new-comment-links-in-new-tab-after-refresh (
+        name: new comment links in new tab (after refresh)
         execution {
-            sequence: 240
+            sequence: 320
         }
         when {
-            event: apexafterclosedialog
+            event: apexafterrefresh
             selectionType: region
-            region: @description-content
+            region: @comments-report
         }
 
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @description-content
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
             }
             execution {
                 sequence: 10
@@ -7347,10 +7517,35 @@ page 3 (
 
     )
 
+    dynamicAction refresh-after-details-for-fav (
+        name: refresh after details (for fav)
+        execution {
+            sequence: 310
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @project-details
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @project-details
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
     dynamicAction refresh-after-more-info (
         name: refresh after more info
         execution {
-            sequence: 290
+            sequence: 280
         }
         when {
             event: apexafterclosedialog
@@ -7426,7 +7621,7 @@ page 3 (
     dynamicAction refresh-after-review (
         name: refresh after review
         execution {
-            sequence: 280
+            sequence: 260
         }
         when {
             event: apexafterclosedialog
@@ -7496,10 +7691,35 @@ page 3 (
 
     )
 
-    dynamicAction refresh-cont-on-dc (
-        name: refresh cont on dc
+    dynamicAction refresh-after-view-details-could-withdraw (
+        name: refresh after view details (could withdraw)
         execution {
             sequence: 270
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @approvals
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @approvals
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-cont-on-dc (
+        name: Contributors on dc
+        execution {
+            sequence: 250
         }
         when {
             event: apexafterclosedialog
@@ -7536,32 +7756,7 @@ page 3 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @description-button-container
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction refresh-on-change-project (
-        name: refresh on change project
-        execution {
-            sequence: 220
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @menubar
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @project-details
+                region: @description-content
             }
             execution {
                 sequence: 10
@@ -7574,7 +7769,7 @@ page 3 (
     dynamicAction refresh-on-dialog-closed-bc (
         name: refresh on dialog closed bc
         execution {
-            sequence: 250
+            sequence: 230
         }
         when {
             event: apexafterclosedialog
@@ -7608,35 +7803,10 @@ page 3 (
 
     )
 
-    dynamicAction refresh-on-review-project (
-        name: refresh on review project
-        execution {
-            sequence: 230
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @approvals
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @approvals
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
     dynamicAction refresh-related (
-        name: refresh related
+        name: Related dialog close
         execution {
-            sequence: 120
+            sequence: 130
         }
         when {
             event: apexafterclosedialog
@@ -7661,7 +7831,7 @@ page 3 (
     dynamicAction refresh-tasks (
         name: refresh tasks
         execution {
-            sequence: 200
+            sequence: 190
         }
         when {
             event: apexafterclosedialog
@@ -7732,7 +7902,7 @@ page 3 (
     )
 
     dynamicAction rpt-dialog-close (
-        name: rpt dialog close
+        name: Links dialog close
         execution {
             sequence: 40
         }
@@ -7820,7 +7990,7 @@ page 3 (
     dynamicAction show-past-activity (
         name: show past activity
         execution {
-            sequence: 210
+            sequence: 200
         }
         when {
             selectionType: items
@@ -8000,7 +8170,7 @@ page 3 (
             type: functionBody
             plsqlFunctionBody:
                 ```plsql
-                return sp_approvals.approval_pending(
+                return sp_approvals.approval_pending (
                            p_project_id     => :P3_PROJECT_ID,
                            p_team_member_id => :APP_USER_ID );
                 ```

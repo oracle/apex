@@ -107,6 +107,7 @@ create table sp_tasks (
     status_last_changed_on         date,         
     description                    varchar2(4000 char),
     tags                           varchar2(4000 char),
+    display_sequence               number,
     -- impact currently just used for Reviews
     impact                         varchar2(30 char)  
                                    constraint sp_task_impact_cc
@@ -205,6 +206,7 @@ create table sp_task_comments (
                                    constraint sp_task_comments_task_fk
                                    references sp_tasks on delete cascade,
     --
+    comment_nbr                    number,
     body                           clob,
     body_html                      clob,
     body_no_images                 clob,

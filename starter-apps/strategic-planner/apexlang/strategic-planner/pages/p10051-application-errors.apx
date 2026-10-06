@@ -1,0 +1,327 @@
+page 10051 (
+    name: Application Errors
+    alias: APPLICATION-ERRORS
+    title: Application Errors
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+        cssClasses: rw-pillar--sienna
+    }
+    security {
+        authorizationScheme: @administration-rights
+    }
+
+    region application-errors (
+        name: Application Errors
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT id,
+                       lower(apex_user) apex_user, 
+                       page_id, page_name, 
+                       view_date, view_timestamp, request_value,
+                       error_message, error_on_component_type, error_on_component_name
+                  FROM apex_workspace_activity_log 
+                 WHERE error_message IS NOT NULL
+                   and application_id = :APP_ID
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        link {
+            linkColumn: singleRowView
+            uniquelyIdentifyRowsBy: uniqueColumn
+            uniqueColumn: ID
+            linkIcon: <img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="">
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 82915178601262949821
+        }
+
+        column APEX_USER (
+            type: plainText
+            heading {
+                heading: User
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column ERROR_MESSAGE (
+            type: plainText
+            heading {
+                heading: Error Message
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column ERROR_ON_COMPONENT_NAME (
+            type: plainText
+            heading {
+                heading: Component Name
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column ERROR_ON_COMPONENT_TYPE (
+            type: plainText
+            heading {
+                heading: Component Type
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: ID
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PAGE_ID (
+            type: plainText
+            heading {
+                heading: Page ID
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PAGE_NAME (
+            type: plainText
+            heading {
+                heading: Page Name
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column REQUEST_VALUE (
+            type: plainText
+            heading {
+                heading: Request Value
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column VIEW_DATE (
+            type: plainText
+            heading {
+                heading: View Date
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column VIEW_TIMESTAMP (
+            type: plainText
+            heading {
+                heading: Viewed
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 54659078 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn APEX_USER (
+                sequence: 3
+            )
+
+            displayColumn ERROR_MESSAGE (
+                sequence: 4
+            )
+
+            displayColumn ERROR_ON_COMPONENT_NAME (
+                sequence: 5
+            )
+
+            displayColumn ERROR_ON_COMPONENT_TYPE (
+                sequence: 6
+            )
+
+            displayColumn PAGE_ID (
+                sequence: 1
+            )
+
+            displayColumn PAGE_NAME (
+                sequence: 2
+            )
+
+            displayColumn VIEW_TIMESTAMP (
+                sequence: 7
+            )
+
+            sort (
+                column: VIEW_TIMESTAMP
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: ERROR_MESSAGE
+                operator: doesNotContain
+                value: Your session has ended.
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 5
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button up (
+        buttonName: Up
+        label: Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10000
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

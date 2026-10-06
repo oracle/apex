@@ -15,13 +15,8 @@ page 10710 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region activity-type (
@@ -135,6 +130,7 @@ page 10710 (
             formRegion: @activity-type
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -152,6 +148,7 @@ page 10710 (
             formRegion: @activity-type
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -257,29 +254,8 @@ page 10710 (
             type: static
             staticValue: N
         }
-    )
-
-    pageItem P10710_IS_PROJECT_YN (
-        type: switch
-        label {
-            label: Is Project Related
-            alignment: left
-        }
-        layout {
-            sequence: 80
-            region: @activity-type
-            slot: regionBody
-            alignment: left
-            startNewRow: false
-        }
-        appearance {
-            template: @/optional-floating
-            templateOptions: #DEFAULT#
-        }
-        source {
-            formRegion: @activity-type
-            column: IS_PROJECT_YN
-            dataType: varchar2
+        help {
+            helpText: If a default is set, it will be the default when a new Activity is created.
         }
     )
 
@@ -323,6 +299,7 @@ page 10710 (
             formRegion: @activity-type
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -340,6 +317,7 @@ page 10710 (
             formRegion: @activity-type
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -460,6 +438,36 @@ page 10710 (
             }
         )
 
+    )
+
+    validation should-only-have-one-active-default (
+        name: should only have one active default
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sp_activity_types
+                 where (id != :P10710_ID or :P10710_ID is null)
+                   and is_active_yn = 'Y'
+                   and is_default_yn = 'Y'
+                ```
+        }
+        error {
+            errorMessage: Can only have one active default Activity Type.
+            associatedItem: @P10710_IS_DEFAULT_YN
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P10710_IS_DEFAULT_YN = 'Y' and  
+                :P10710_IS_ACTIVE_YN = 'Y' and   
+                :REQUEST != 'DELETE'
+                ```
+        }
     )
 
     process close-dialog (

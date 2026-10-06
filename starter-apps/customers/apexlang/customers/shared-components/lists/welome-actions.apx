@@ -1,0 +1,49 @@
+list welome-actions (
+    name: Welome Actions
+
+    entry add-a-new-customer (
+        label: Add a New Customer
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: 2
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Start by adding your first customer.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry load-sample-data (
+        label: Load Sample Data
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+        userDefinedAttributes {
+            1: Easily load and manage sample data.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

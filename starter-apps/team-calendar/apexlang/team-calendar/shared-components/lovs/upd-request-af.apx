@@ -1,0 +1,20 @@
+lov upd-request-af (
+    name: UPD_REQUEST_AF
+    source {
+        location: staticValues
+    }
+
+    entry all-events (
+        sequence: 1
+        display: All Events
+        return: A
+    )
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+    )
+
+)
+

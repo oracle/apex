@@ -15,13 +15,8 @@ page 150 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @groups

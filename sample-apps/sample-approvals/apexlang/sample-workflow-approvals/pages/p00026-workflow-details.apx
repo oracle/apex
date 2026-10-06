@@ -13,13 +13,8 @@ page 26 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @operations-team
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -834,6 +829,7 @@ page 26 (
         }
         settings {
             workflowId: P26_WORKFLOW_ID
+            enableExport: false
         }
     )
 

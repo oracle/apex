@@ -1,0 +1,20 @@
+lov purchase-or-subscription (
+    name: PURCHASE OR SUBSCRIPTION
+    source {
+        location: staticValues
+    }
+
+    entry cloud-subscription (
+        sequence: 10
+        display: Cloud Subscription
+        return: SUBSCRIPTION
+    )
+
+    entry on-premise-purchase (
+        sequence: 20
+        display: On-Premise Purchase
+        return: PURCHASE
+    )
+
+)
+

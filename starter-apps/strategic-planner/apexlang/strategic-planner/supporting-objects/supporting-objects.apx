@@ -15,7 +15,6 @@ supportingObject (
             SP_SEQ
             SP_LOG
             SP_VALUE_COMPARE
-            SP_PROJ_STATUS_UI
             SP_CONTRIBUTOR_SUMMARY
             SP_FAVORITE_TOGGLE
             SP_DATE_RANGE_PCT_COMP
@@ -81,12 +80,22 @@ supportingObject (
             SP_COMMENT_IMAGES
             SP_UTIL
             SP_COMMENT_UTIL
-            SP_REPORT_QUESTIONS
             SP_AI_PROMPTS
             SP_PROJECT_AI_SUMMARIES
             SP_RELEASE_AI_SUMMARIES
             SP_DOCUMENTS_V
             SP_ERROR_LOG
+            SP_EVENT_TYPES
+            SP_EVENT_SERIES
+            SP_EVENTS
+            SP_RELATION_TYPES
+            SP_TASK_RELATED
+            SP_PERSON_DETAILS_V
+            SP_RELEASE_DETAILS_V
+            SP_PROJECT_CHANGE_HISTORY_V
+            SP_PROJECT_DETAILS_V
+            SP_INITIATIVE_DETAILS_V
+            SP_ACTIVITY_COMMENTS
         ]
     }
     installationMessages {
@@ -109,9 +118,6 @@ supportingObject (
         validations: The following validations will be performed to ensure your system is compatible with this application.
         appSubstitutions: You can configure the following attributes of your application.
         buildOptions: You can choose to include the following build options.
-    }
-    advanced {
-        includeInAppExport: true
     }
 )
 

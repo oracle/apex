@@ -6,12 +6,9 @@ page 3 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region apex-appl-push-subscriptions (
@@ -1177,7 +1174,8 @@ page 3 (
                    Apple, Microsoft, Mozilla, and Google sites hosting their respective
                    push notification delivery REST APIs. If you don't currently have
                    a wallet configured, many APEX community users have reported a successful
-                   experience using this <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
+                   experience using this <a target="_blank" rel="noopener noreferrer external" 
+                   href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
                    source certificate authority wallet generator script</a>,
                    whose README file explains how to use it and update APEX to 
                    point to the newly generated wallet. 
@@ -1207,7 +1205,8 @@ page 3 (
             htmlCode:
                 ```html
                 <p>
-                   Some APEX community user who have used the <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
+                   Some APEX community user who have used the <a target="_blank" rel="noopener noreferrer external"
+                   href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open
                    source certificate authority wallet generator script</a> from the machine where
                    their Oracle Database is installed have encountered this error when trying to
                    use the wallet that it creates using the <tt>orapki</tt> utility. The solution they've

@@ -10,9 +10,6 @@ page 205 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -31,10 +28,6 @@ page 205 (
             }
             
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region left (
@@ -79,9 +72,6 @@ page 205 (
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkLabel: Product details
         }
         edit {
             enabled: true

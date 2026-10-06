@@ -7,12 +7,11 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -50,7 +49,7 @@ page 1 (
         name: &APP_NAME.
         type: staticContent
         source {
-            htmlCode: <p>Demonstration of Master Detail in Oracle Application Express</p>
+            htmlCode: <p>Demonstration of Master Detail in Oracle APEX</p>
         }
         layout {
             sequence: 10

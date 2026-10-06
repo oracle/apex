@@ -11,13 +11,14 @@ page 120 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @support-amounts

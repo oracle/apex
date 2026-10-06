@@ -1,0 +1,62 @@
+list event-actions (
+    name: Event Actions
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:openModal('edit_link_modal');
+            }
+        }
+    )
+
+    entry add-update (
+        label: Add Update
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 33
+                items: {
+                    P33_EVENT_ID: &P3_EVENT_ID.
+                }
+                clearCache: 33
+            }
+        }
+        config {
+            buildOption: @show-updates
+        }
+    )
+
+    entry attach-file (
+        label: Attach File
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+                items: {
+                    P32_EVENT_ID: &P3_EVENT_ID.
+                }
+                clearCache: 32
+            }
+        }
+    )
+
+)
+

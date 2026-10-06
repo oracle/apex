@@ -7,12 +7,7 @@ page 18 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -175,7 +170,7 @@ page 18 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -196,7 +191,7 @@ page 18 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -217,7 +212,7 @@ page 18 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -238,7 +233,7 @@ page 18 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -254,7 +249,7 @@ page 18 (
                 sequence: 6
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -270,7 +265,7 @@ page 18 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -286,7 +281,7 @@ page 18 (
                 sequence: 5
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -302,7 +297,7 @@ page 18 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -318,7 +313,7 @@ page 18 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D

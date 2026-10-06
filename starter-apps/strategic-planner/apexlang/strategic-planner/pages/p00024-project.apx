@@ -14,13 +14,8 @@ page 24 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region advanced (
@@ -185,9 +180,6 @@ page 24 (
                 #DEFAULT#
                 t-Form-fieldContainer--radioButtonGroup
             ]
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @project
@@ -402,8 +394,17 @@ page 24 (
             infiniteScroll: false
         }
         lov {
-            type: sharedComponent
-            lov: @sp-team-members
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select last_name||', '||first_name||' ('||lower(email)||')'||
+                       case when ooo_summary is not null
+                            then ' - '||ooo_summary
+                            end d, 
+                     id r
+                from SP_TEAM_MEMBERS
+                order by 1
+                ```
         }
         layout {
             sequence: 50
@@ -1016,8 +1017,11 @@ page 24 (
             warnOnUnsavedChanges: doNotCheck
         }
         serverSideCondition {
-            type: itemIsNull
-            item: P24_ID
+            type: expression
+            plsqlExpression: :P24_ID is null and :P104_AREA is not null
+        }
+        comments {
+            comments: only display for new projects and if accessed via p104, selecting area and initiative
         }
     )
 
@@ -1082,11 +1086,12 @@ page 24 (
                 items: P24_STATUS_ID
             }
             execution {
-                sequence: 40
+                sequence: 50
             }
             clientSideCondition {
-                type: jsExpression
-                javaScriptExpression: Number(apex.item("P24_PCT_COMPLETE").getValue()) < Number(apex.item("P24_MIN_PC_FOR_STATUS").getValue())
+                type: item=value
+                item: P24_PCT_COMPLETE
+                value: 100
             }
         )
 
@@ -1097,12 +1102,11 @@ page 24 (
                 items: P24_STATUS_ID
             }
             execution {
-                sequence: 50
+                sequence: 40
             }
             clientSideCondition {
-                type: item=value
-                item: P24_PCT_COMPLETE
-                value: 100
+                type: jsExpression
+                javaScriptExpression: Number(apex.item("P24_PCT_COMPLETE").getValue()) < Number(apex.item("P24_MIN_PC_FOR_STATUS").getValue())
             }
         )
 
@@ -1161,6 +1165,31 @@ page 24 (
         serverSideCondition {
             type: expression
             plsqlExpression: :P24_PCT_COMPLETE >= 50
+        }
+    )
+
+    validation upper-project-name-unique (
+        name: upper project name unique
+        execution {
+            sequence: 70
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_projects
+                 where upper(:P24_PROJECT) = upper_project_name
+                   and id != nvl(:P24_ID,0)
+                ```
+        }
+        error {
+            errorMessage: &NOMENCLATURE_PROJECT. Name already used.
+            associatedItem: @P24_PROJECT
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE
         }
     )
 

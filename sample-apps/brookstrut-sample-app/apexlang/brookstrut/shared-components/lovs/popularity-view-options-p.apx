@@ -1,0 +1,26 @@
+lov popularity-view-options-p (
+    name: POPULARITY VIEW OPTIONS P2
+    source {
+        location: staticValues
+    }
+
+    entry bubbles (
+        sequence: 1
+        display: Bubbles
+        return: B
+    )
+
+    entry interactive-report (
+        sequence: 2
+        display: Interactive Report
+        return: IR
+    )
+
+    entry treemap (
+        sequence: 3
+        display: Treemap
+        return: T
+    )
+
+)
+

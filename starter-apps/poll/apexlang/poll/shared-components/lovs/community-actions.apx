@@ -1,0 +1,95 @@
+lov community-actions (
+    name: COMMUNITY ACTIONS
+    source {
+        location: staticValues
+    }
+
+    entry add-existing-member (
+        sequence: 4
+        display: Add existing member
+        return: -3
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_QPOLL_RESPONDENTS
+                  where id not in (select respondent_id from EBA_QPOLL_RESP_COMM_REF where community_id = nvl(:P70_COMMUNITY_ID_TO,0))
+                and (select count(*) from EBA_QPOLL_RESPONDENTS) > 1
+                ```
+        }
+    )
+
+    entry add-new-member-s-to-an-existing-community (
+        sequence: 3
+        display: Add new member(s) to an existing community
+        return: -4
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from EBA_QPOLL_RESP_COMMUNITIES
+                  where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null)
+                ```
+        }
+    )
+
+    entry copy-members-from-one-community-to-a-new-community (
+        sequence: 6
+        display: Copy members from one Community to a new Community
+        return: 0
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_c_cnt  number;
+                begin
+                    select count(*)
+                      into l_c_cnt
+                      from EBA_QPOLL_RESP_COMMUNITIES
+                      where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null);
+                    if l_c_cnt >= 2 then
+                        return true;
+                    else
+                        return false;
+                    end if;
+                end;
+                ```
+        }
+    )
+
+    entry copy-members-from-one-community-to-another (
+        sequence: 5
+        display: Copy members from one Community to another
+        return: -1
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_c_cnt  number;
+                begin
+                    select count(*)
+                      into l_c_cnt
+                      from EBA_QPOLL_RESP_COMMUNITIES
+                      where id in (select community_id from EBA_QPOLL_RESP_COMM_REF where respondent_id is not null);
+                    if l_c_cnt >= 2 then
+                        return true;
+                    else
+                        return false;
+                    end if;
+                end;
+                ```
+        }
+    )
+
+    entry create-new-community (
+        sequence: 1
+        display: Create New Community
+        return: -2
+    )
+
+)
+

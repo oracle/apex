@@ -10,13 +10,6 @@ page 203 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region buttons (
         name: Buttons

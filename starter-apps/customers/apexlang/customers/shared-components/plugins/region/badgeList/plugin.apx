@@ -231,7 +231,6 @@ plugin badgeList (
     }
     information {
         version: 5.0.2
-        aboutUrl: http://apex.oracle.com/plugins
         helpText:
             ```
             <p>Badge lists are useful for displaying a region with a small number of counts for important statistics. For example, in Bug Tracker, this plug-in is used to show the total bugs, open bugs, open high priority bugs, and open critical severity bugs.</p>

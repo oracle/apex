@@ -14,13 +14,8 @@ page 10760 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -188,9 +183,6 @@ page 10760 (
         appearance {
             template: @/required-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @external-system-link

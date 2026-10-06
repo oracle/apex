@@ -11,11 +11,8 @@ page 5 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always

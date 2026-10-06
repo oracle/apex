@@ -8,14 +8,11 @@ page 10051 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -90,7 +87,7 @@ page 10051 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -106,7 +103,7 @@ page 10051 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -122,7 +119,7 @@ page 10051 (
                 sequence: 50
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             columnFilter {
                 type: none
@@ -155,7 +152,7 @@ page 10051 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: Y
@@ -171,7 +168,7 @@ page 10051 (
                 sequence: 60
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AA
@@ -187,7 +184,7 @@ page 10051 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X

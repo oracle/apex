@@ -7,14 +7,11 @@ page 29 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .highlight {background-color: yellow;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".highlight {background-color: yellow;}"
     }
     advanced {
         reloadOnSubmit: always
@@ -124,9 +121,6 @@ page 29 (
                 t-Report--stretch
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: no data found

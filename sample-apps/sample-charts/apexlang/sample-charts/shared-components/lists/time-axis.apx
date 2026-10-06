@@ -1,0 +1,41 @@
+list time-axis (
+    name: Time Axis
+
+    entry combination-chart-regular-v-mixed-frequency-time-axis-page (
+        label: Combination Chart (Regular v Mixed Frequency Time Axis) - Page 25
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the use of the Time Axis Type attribute, to render DATETIME information on a multi-series Combination chart
+        }
+    )
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the use of the Time Axis Type attribute, to render DATETIME information on a Line chart
+        }
+    )
+
+)
+

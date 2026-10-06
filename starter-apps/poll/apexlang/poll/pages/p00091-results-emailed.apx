@@ -12,12 +12,11 @@ page 91 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -113,9 +112,6 @@ page 91 (
             ]
             showNullValuesAs: " - "
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: no data found
         }
@@ -176,9 +172,6 @@ page 91 (
                 t-Report--rowHighlightOff
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No emails sent.

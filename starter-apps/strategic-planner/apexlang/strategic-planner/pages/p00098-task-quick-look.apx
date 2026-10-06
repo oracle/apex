@@ -13,9 +13,6 @@ page 98 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -41,10 +38,6 @@ page 98 (
               overflow: auto;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -74,6 +67,7 @@ page 98 (
                        apex_util.get_since(ic.created) comment_date,
                        tm.first_name || ' ' || tm.last_name user_name,
                        --
+                       ic.comment_nbr,
                        ic.body_html comment_text,
                        null actions,
                        ' ' attribute_1,
@@ -97,7 +91,7 @@ page 98 (
                        ic.UPDATED,
                        ic.UPDATED_BY,
                        tm.id team_member_id
-                  from sp_task_comments ic, 
+                  from sp_task_comments_v ic, 
                        sp_team_members tm
                 where ic.author_id = tm.id and
                       ic.task_id = :P98_TASK_ID and  
@@ -139,15 +133,12 @@ page 98 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 6
+            reportColumnQueryId: 7
             derivedColumn: N
             heading {
                 heading: Actions
@@ -166,7 +157,7 @@ page 98 (
         )
 
         column ATTRIBUTE_1 (
-            reportColumnQueryId: 7
+            reportColumnQueryId: 8
             derivedColumn: N
             heading {
                 heading: Attribute 1
@@ -181,7 +172,7 @@ page 98 (
         )
 
         column ATTRIBUTE_2 (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Attribute 2
@@ -196,7 +187,7 @@ page 98 (
         )
 
         column ATTRIBUTE_3 (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Attribute 3
@@ -211,7 +202,7 @@ page 98 (
         )
 
         column ATTRIBUTE_4 (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Attribute 4
@@ -226,7 +217,7 @@ page 98 (
         )
 
         column AUTHOR_ID (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Author Id
@@ -241,7 +232,7 @@ page 98 (
         )
 
         column BODY (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Body
@@ -256,7 +247,7 @@ page 98 (
         )
 
         column BODY_HTML (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Body Html
@@ -285,8 +276,27 @@ page 98 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 270
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 6
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -298,8 +308,10 @@ page 98 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -311,7 +323,7 @@ page 98 (
         )
 
         column CREATED (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Created
@@ -329,7 +341,7 @@ page 98 (
         )
 
         column CREATED_BY (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created By
@@ -344,7 +356,7 @@ page 98 (
         )
 
         column ICON_MODIFIER (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Icon Modifier
@@ -374,7 +386,7 @@ page 98 (
         )
 
         column PRIVATE_COMMENT_LABEL (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Private Comment Label
@@ -388,7 +400,7 @@ page 98 (
         )
 
         column TEAM_MEMBER_ID (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: User ID
@@ -402,7 +414,7 @@ page 98 (
         )
 
         column UPDATED (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 19
             derivedColumn: N
             type: hidden
             layout {
@@ -411,7 +423,7 @@ page 98 (
         )
 
         column UPDATED_BY (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: Updated By
@@ -449,6 +461,9 @@ page 98 (
             }
             layout {
                 sequence: 170
+            }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
             }
             sorting {
                 sortable: false
@@ -510,6 +525,9 @@ page 98 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No documents found
@@ -630,6 +648,9 @@ page 98 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No links found
@@ -766,12 +787,15 @@ page 98 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column DESCRIPTION (
             reportColumnQueryId: 13
             derivedColumn: N
             heading {
-                heading: Description
+                heading: Details
             }
             layout {
                 sequence: 170
@@ -1000,6 +1024,122 @@ page 98 (
 
     )
 
+    region related-tasks (
+        name: Related Tasks
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID relation_id,
+                       nvl(t.relation_type,'relates to') ||' '||
+                           p.task ||
+                           case when p.task is not null then ' (' end ||
+                           (select task_type from sp_task_types rt where rt.id = p.task_type_id)||
+                            case when p.task_sub_type_id is not null 
+                                 then ': '||(select task_type from sp_task_types rt where rt.id = p.task_sub_type_id) 
+                                 end ||
+                                 case when p.task is not null then ')' end  relation,
+                       r.updated
+                  from SP_TASK_RELATED r,
+                       sp_tasks p,
+                       sp_relation_types t
+                 where r.TASK_ID = :P98_TASK_ID
+                   and r.RELATED_TASK_ID = p.id
+                   and r.relation_type_id = t.id (+)
+                union all
+                select r.ID relation_id,
+                        nvl((select nvl(relation_reverse,relation_type) from sp_relation_types
+                              where id = r.relation_type_id),'relates to')||' '||
+                        rp.task ||
+                           case when rp.task is not null then ' (' end ||
+                           (select task_type from sp_task_types rt where rt.id = rp.task_type_id)||
+                            case when rp.task_sub_type_id is not null 
+                                 then ': '||(select task_type from sp_task_types rt where rt.id = rp.task_sub_type_id) 
+                                 end ||
+                                 case when rp.task is not null then ')' end relation,
+                       r.updated
+                  from SP_TASK_RELATED r,
+                       sp_tasks rp
+                 where r.RELATED_TASK_ID = :P98_TASK_ID
+                   and r.task_id = rp.id
+                ```
+            pageItemsToSubmit: P98_TASK_ID
+        }
+        layout {
+            sequence: 120
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: RELATED
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_task_related
+                 where task_id = :P98_TASK_ID
+                    or related_task_id = :P98_TASK_ID
+                ```
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--noBorders
+            ]
+        }
+
+        column RELATION (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Relation
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column RELATION_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+    )
+
     region tags (
         name: Tags
         type: classicReport
@@ -1048,6 +1188,9 @@ page 98 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No tags found

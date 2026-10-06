@@ -2,6 +2,7 @@ create or replace view sp_documents_v as
 select 'Project' doc_type,
        apex_page.get_url (
            p_page   => 30,
+           p_clear_cache => 30,
            p_items  => 'P30_ID,P30_PREV_PAGE',
            p_values => d.ID||',156') link,
        p.project name,
@@ -37,6 +38,7 @@ union all
 select 'Release' doc_type,
        apex_page.get_url (
            p_page   => 42,
+           p_clear_cache => 42,
            p_items  => 'P42_ID,P42_PREV_PAGE',
            p_values => d.ID||',156') link,
        r.release_train ||' ' ||r.release name,
@@ -69,6 +71,7 @@ union all
 select 'Initiative' doc_type,
        apex_page.get_url (
            p_page   => 53,
+           p_clear_cache => 53,
            p_items  => 'P53_ID,P53_PREV_PAGE',
            p_values => d.ID||',156') link,
        a.area || ' / ' ||initiative name,
@@ -103,6 +106,7 @@ union all
 select 'Initiative Focus Area' doc_type,
        apex_page.get_url (
            p_page   => 59,
+           p_clear_cache => 59,
            p_items  => 'P59_ID,P59_PREV_PAGE',
            p_values => d.ID||',156') link,
        i.initiative ||' - '|| f.focus_area name,
@@ -137,6 +141,7 @@ union all
 select 'Task' doc_type,
        apex_page.get_url (
            p_page   => 505,
+           p_clear_cache => 505,
            p_items  => 'P505_ID,P505_PREV_PAGE',
            p_values => d.ID||',156') link,
        case when t.task_sub_type_id is not null

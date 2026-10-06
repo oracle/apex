@@ -1,0 +1,20 @@
+lov link-types (
+    name: LINK TYPES
+    source {
+        location: staticValues
+    }
+
+    entry application (
+        sequence: 2
+        display: Application
+        return: Application
+    )
+
+    entry url (
+        sequence: 1
+        display: URL
+        return: URL
+    )
+
+)
+

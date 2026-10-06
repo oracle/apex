@@ -7,7 +7,6 @@ page 71 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -23,8 +22,6 @@ page 71 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -36,12 +33,12 @@ page 71 (
         source {
             htmlCode:
                 ```html
-                <p>This calendar component has all navigation elements being disabled. Instead, Application Express buttons (<b>NEXT</b> and <b>PREV</b>) have been created to move to the next or previous pages. After entering a date (format <b>YYYY-MM-DD</b>) into the <b>P71_GOTODATE</b> text field, the calendar component displays that date immediately.</p>
-                <p>Dynamic actions with <b>Execute JavaScript Code</b> action have been created on the buttons as well as on the text field. The <i>Application Express region interface</i> allows to access the calendar widget Javascript object, onto which <a href="https://fullcalendar.io/docs/" target="_blank">FullCalendar</a> API methods are being executed as follows.</p>
+                <p>This calendar component has all navigation elements being disabled. Instead, APEX buttons (<strong>NEXT</strong> and <strong>PREV</strong>) have been created to move to the next or previous pages. After entering a date (format <strong>YYYY-MM-DD</strong>) into the <strong>P71_GOTODATE</strong> text field, the calendar component displays that date immediately.</p>
+                <p>Dynamic actions with <strong>Execute JavaScript Code</strong> action have been created on the buttons as well as on the text field. The <em>APEX region interface</em> allows to access the calendar widget Javascript object, onto which <a href="https://fullcalendar.io/docs/" target="_blank" rel="noopener noreferrer external">FullCalendar</a> API methods are being executed as follows.</p>
                 <pre>
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").gotoDate("<i>YYYY-MM-DD</i>");
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").next();
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").prev();
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").gotoDate("<em>YYYY-MM-DD</em>");
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").next();
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").prev();
                 </pre>
                 
                 ```

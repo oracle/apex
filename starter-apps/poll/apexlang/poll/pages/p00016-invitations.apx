@@ -8,11 +8,12 @@ page 16 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -141,7 +142,7 @@ page 16 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -160,7 +161,7 @@ page 16 (
                 sequence: 13
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -179,7 +180,7 @@ page 16 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             columnFilter {
                 type: namedLovWordContains
@@ -208,7 +209,7 @@ page 16 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -230,7 +231,7 @@ page 16 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -250,7 +251,7 @@ page 16 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -269,7 +270,7 @@ page 16 (
                 sequence: 14
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -288,7 +289,7 @@ page 16 (
                 sequence: 1
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -307,7 +308,7 @@ page 16 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -326,7 +327,7 @@ page 16 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -345,7 +346,7 @@ page 16 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -364,7 +365,7 @@ page 16 (
                 sequence: 7
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -386,7 +387,7 @@ page 16 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {

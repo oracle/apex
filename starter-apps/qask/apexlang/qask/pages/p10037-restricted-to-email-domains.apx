@@ -6,14 +6,9 @@ page 10037 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -114,7 +109,7 @@ page 10037 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -130,7 +125,7 @@ page 10037 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -149,7 +144,7 @@ page 10037 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -165,7 +160,7 @@ page 10037 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -182,7 +177,7 @@ page 10037 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -198,7 +193,7 @@ page 10037 (
                 sequence: 4
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -214,7 +209,7 @@ page 10037 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -233,7 +228,7 @@ page 10037 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G

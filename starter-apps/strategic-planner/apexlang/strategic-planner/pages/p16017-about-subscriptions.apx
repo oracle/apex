@@ -10,13 +10,8 @@ page 16017 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @subscriptions

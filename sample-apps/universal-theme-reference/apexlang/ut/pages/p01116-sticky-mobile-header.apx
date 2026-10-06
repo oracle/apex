@@ -21,7 +21,6 @@ page 1116 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -29,6 +28,8 @@ page 1116 (
     }
     security {
         authentication: public
+        pageAccessProtection: unrestricted
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

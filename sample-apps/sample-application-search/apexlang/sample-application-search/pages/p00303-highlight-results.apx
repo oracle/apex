@@ -6,9 +6,6 @@ page 303 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -32,10 +29,6 @@ page 303 (
             }
             
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (

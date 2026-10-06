@@ -7,11 +7,10 @@ page 15 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     help {
         helpText: No help is available for this page.
@@ -518,9 +517,6 @@ page 15 (
             layout {
                 sequence: 110
             }
-            validation {
-                valueRequired: true
-            }
             source {
                 databaseColumn: ONLEAVE
                 dataType: varchar2
@@ -571,7 +567,7 @@ page 15 (
         name: Overview: Linking to Interactive Grids
         type: staticContent
         source {
-            htmlCode: <p>This page demonstrates how to create URLs that link to Oracle Application Express (APEX) interactive grid pages.  Click on the example links below and note the URL syntax used.  Use <strong>RR</strong> to reset an interactive grid, use <strong>CR</strong> to clear an interactive grid filter settings.  Use <strong>IG_&lt;your_report_column&gt;</strong> syntax to filter a report for an exact match.  Use <strong>IGC_&lt;your_report_column&gt;</strong> for a contains match, use <strong>IGGT_</strong> and <strong>IGLT_</strong> for greater than and less than filters.</p>
+            htmlCode: <p>This page demonstrates how to create URLs that link to Oracle APEX interactive grid pages.  Click on the example links below and note the URL syntax used.  Use <strong>RR</strong> to reset an interactive grid, use <strong>CR</strong> to clear an interactive grid filter settings.  Use <strong>IG_&lt;your_report_column&gt;</strong> syntax to filter a report for an exact match.  Use <strong>IGC_&lt;your_report_column&gt;</strong> for a contains match, use <strong>IGGT_</strong> and <strong>IGLT_</strong> for greater than and less than filters.</p>
         }
         layout {
             sequence: 10

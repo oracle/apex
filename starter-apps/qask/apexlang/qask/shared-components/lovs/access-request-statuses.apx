@@ -1,0 +1,26 @@
+lov access-request-statuses (
+    name: ACCESS REQUEST STATUSES
+    source {
+        location: staticValues
+    }
+
+    entry approved (
+        sequence: 2
+        display: Approved
+        return: APPROVED
+    )
+
+    entry declined (
+        sequence: 3
+        display: Declined
+        return: DECLINED
+    )
+
+    entry requested (
+        sequence: 1
+        display: Requested
+        return: REQUESTED
+    )
+
+)
+

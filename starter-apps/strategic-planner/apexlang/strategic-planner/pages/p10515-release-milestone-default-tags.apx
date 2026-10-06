@@ -8,13 +8,8 @@ page 10515 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @releases
@@ -92,10 +87,10 @@ page 10515 (
                 sequence: 70
             }
             appearance {
-                formatMask: SINCE_SHORT
+                formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -111,7 +106,7 @@ page 10515 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -127,7 +122,7 @@ page 10515 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -145,7 +140,7 @@ page 10515 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -172,7 +167,7 @@ page 10515 (
                 linkText: <span class="fa fa-edit" aria-hidden="true"></span>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -188,7 +183,7 @@ page 10515 (
                 sequence: 20
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -205,8 +200,11 @@ page 10515 (
                 sequence: 120
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -222,7 +220,7 @@ page 10515 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -238,7 +236,7 @@ page 10515 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -254,10 +252,10 @@ page 10515 (
                 sequence: 90
             }
             appearance {
-                formatMask: SINCE_SHORT
+                formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -273,7 +271,7 @@ page 10515 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -306,12 +304,16 @@ page 10515 (
                 sequence: 1
             )
 
+            displayColumn RELEASE_MILESTONES (
+                sequence: 5
+            )
+
             displayColumn TAG (
                 sequence: 3
             )
 
             displayColumn UPDATED (
-                sequence: 5
+                sequence: 6
             )
 
             sort (
@@ -374,9 +376,6 @@ page 10515 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column SQL (
@@ -462,10 +461,10 @@ page 10515 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @default-tags
+                region: @sql
             }
             execution {
-                sequence: 10
+                sequence: 20
                 fireOnInit: false
             }
         )
@@ -474,10 +473,10 @@ page 10515 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @sql
+                region: @default-tags
             }
             execution {
-                sequence: 20
+                sequence: 10
                 fireOnInit: false
             }
         )

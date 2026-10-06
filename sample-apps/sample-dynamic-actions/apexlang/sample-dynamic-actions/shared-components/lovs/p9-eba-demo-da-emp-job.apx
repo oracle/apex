@@ -1,0 +1,13 @@
+lov p9-eba-demo-da-emp-job (
+    name: P9_EBA_DEMO_DA_EMP_JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+

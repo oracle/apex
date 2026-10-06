@@ -1,0 +1,13 @@
+lov deal (
+    name: DEAL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select DEAL_NAME display_value, ID return_value 
+            from EBA_SALES_DEALS
+            order by 1
+            ```
+    }
+)
+

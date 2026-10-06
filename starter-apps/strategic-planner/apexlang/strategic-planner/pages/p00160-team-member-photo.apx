@@ -1,0 +1,74 @@
+page 160 (
+    name: Team Member Photo
+    alias: TEAM-MEMBER-PHOTO
+    title: Team Member Photo
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+
+    region for-id (
+        name: for id
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P160_TM_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @for-id
+            slot: regionBody
+        }
+    )
+
+    process get-photo (
+        name: get photo
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                DECLARE
+                    l_file           blob;
+                    l_content_type   varchar2( 4000 );
+                    l_filename       varchar2( 4000 );
+                BEGIN
+                
+                    SELECT photo,
+                           nvl(photo_mimetype,'image/png') photo_mimtype,
+                           nvl(photo_filename,'profile.png') photo_filename
+                      INTO l_file,
+                           l_content_type,
+                           l_filename
+                      FROM sp_team_members
+                     WHERE id = :P160_TM_ID;
+                
+                    apex_http.download(
+                        p_blob           => l_file,
+                        p_content_type   => l_content_type,
+                        p_filename       => l_filename );
+                
+                END;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 38593520213831791839
+        }
+    )
+
+)
+

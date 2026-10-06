@@ -1,0 +1,15 @@
+lov countries (
+    name: COUNTRIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select country_name as d,
+                   id as r
+              from EBA_CUST_COUNTRIES
+             where display_yn = 'Y'
+             order by 1
+            ```
+    }
+)
+

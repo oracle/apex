@@ -1,0 +1,176 @@
+list administration (
+    name: Administration
+
+    entry application-settings (
+        label: Application Settings
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 700
+        }
+        link {
+            target: {
+                page: 28
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change the application settings including the name, displayed on the top left of each page, to one of your choosing. By default, the application name is "&APP_NAME.".
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-adjust
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 11
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the status of build options. Build options allow application functionality to be included or excluded from an application.  Use build options to factor your application.
+            2: formIcon
+            3: &CNT_07.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from apex_application_build_options
+                 where application_id = :APP_ID
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+        userDefinedAttributes {
+            1: Remove, create, or re-create sample data provided with this application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry page-privileges (
+        label: Page Privileges
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 26
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of the pages within this application and their corresponding access control security level.
+            2: reportIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 720
+        }
+        link {
+            target: {
+                page: 70
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry upload-customers (
+        label: Upload Customers
+        icon {
+            imageIconCssClasses: fa-cloud-upload
+        }
+        layout {
+            sequence: 730
+        }
+        link {
+            target: {
+                page: 125
+                clearCache: [
+                    125
+                    126
+                    127
+                    128
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Bulk add customers to the system using file upload from csv or cut and paste.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry welcome-text (
+        label: Welcome Text
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 710
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: Define the welcome text that is displayed on application home page.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

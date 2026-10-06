@@ -1,0 +1,38 @@
+lov rows (
+    name: ROWS
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 1000
+        return: 1000
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 5000
+        return: 5000
+    )
+
+)
+

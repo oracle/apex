@@ -1,0 +1,13 @@
+lov tasks (
+    name: TASKS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select TASK_NAME d, task_id r
+            from   eba_demo_tree_task
+            order by 1
+            ```
+    }
+)
+

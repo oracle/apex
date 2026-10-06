@@ -8,12 +8,11 @@ page 6 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     help {
         helpText: No help is available for this page.
@@ -292,9 +291,6 @@ page 6 (
                 databaseColumn: ID
                 dataType: number
                 primaryKey: true
-            }
-            default {
-                duplicateCopiesExistingValue: false
             }
             exportPrinting {
                 includeInExportPrint: false

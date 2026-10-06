@@ -11,13 +11,8 @@ page 10013 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -116,9 +111,6 @@ page 10013 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @service-term-details

@@ -7,13 +7,6 @@ page 30 (
         dialogTemplate: @/modal-dialog
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region custom-vector-search-navigation (
         name: Custom Vector Search Navigation
@@ -28,9 +21,6 @@ page 30 (
         appearance {
             template: @/blank-with-attributes-no-grid
             templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkLabel: Custom Vector Search
         }
         componentAppearance {
             listTemplate: @/media-list

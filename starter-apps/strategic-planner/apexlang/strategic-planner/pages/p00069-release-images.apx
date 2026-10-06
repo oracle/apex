@@ -7,13 +7,6 @@ page 69 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -235,12 +228,12 @@ page 69 (
             }
             behavior {
                 target: {
-                    page: 59
+                    page: 42
                     items: {
-                        P59_ID: &ID.
-                        P59_PREV_PAGE: 68
+                        P42_ID: &ID.
+                        P42_PREV_PAGE: 69
                     }
-                    clearCache: 59
+                    clearCache: 42
                 }
             }
         )
@@ -309,6 +302,9 @@ page 69 (
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_REMAINING (

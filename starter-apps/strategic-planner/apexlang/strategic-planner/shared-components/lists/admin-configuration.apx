@@ -1,0 +1,213 @@
+list admin-configuration (
+    name: Admin - Configuration
+
+    entry about-page-text (
+        label: About Page Text
+        icon {
+            imageIconCssClasses: fa-info
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 14000
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Contents displayed on the About this App page
+        }
+    )
+
+    entry ai-prompts (
+        label: AI Prompts
+        icon {
+            imageIconCssClasses: fa-ai-prompt
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 12135
+            }
+        }
+        userDefinedAttributes {
+            1: Prompts used for generating summaries
+        }
+        config {
+            buildOption: @ai-project-summaries-create
+        }
+    )
+
+    entry application-settings (
+        label: Application Settings
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 12150
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Provide value for application settings such as Application home url (used in emails)
+        }
+    )
+
+    entry configure-application-features (
+        label: Configure Application Features
+        icon {
+            imageIconCssClasses: fa-sliders
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12130
+                clearCache: 12130
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Enable and disable application features
+        }
+        config {
+            buildOption: @configure-application-features
+        }
+    )
+
+    entry configure-external-person-link (
+        label: Configure External Person Link
+        icon {
+            imageIconCssClasses: fa-user-magnifying-glass
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 12140
+            }
+        }
+        userDefinedAttributes {
+            1: Setup link to provide more detail about the &NOMENCLATURE_USERS. defined in this application
+        }
+    )
+
+    entry delete-sample-data (
+        label: Delete Sample Data
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 14010
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Remove the sample data that installs with this application
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_AREAS
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_INITIATIVES
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from SP_PROJECTS
+                 where id in (1,2,3,4,5,6)
+                union all
+                select 1
+                  from sp_activities
+                 where id in (1,2,3)
+                union all
+                select 1
+                  from sp_release_trains
+                 where id in (1,2)
+                union all
+                select 1
+                  from SP_TEAM_MEMBERS
+                 where id in (1,2,3)
+                ```
+        }
+    )
+
+    entry external-nomenclature-project-links (
+        label: External &NOMENCLATURE_PROJECT. Links
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10750
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Define links to external systems based on &NOMENCLATURE_PROJECT. naming
+        }
+    )
+
+    entry interactive-report-catalog (
+        label: Report Catalog
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-document
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 10300
+            }
+        }
+        userDefinedAttributes {
+            1: List of all Pages that can be used by AI.
+        }
+        config {
+            buildOption: @ir-catalog
+        }
+    )
+
+    entry nomenclature (
+        label: Nomenclature
+        icon {
+            imageIconCssClasses: fa-external-link-square
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10400
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Configure application name and labels of primary attribute names
+        }
+    )
+
+)
+

@@ -7,9 +7,6 @@ page 97 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -41,8 +38,6 @@ page 97 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -299,9 +294,6 @@ page 97 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

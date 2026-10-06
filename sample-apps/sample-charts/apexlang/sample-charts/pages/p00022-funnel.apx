@@ -7,12 +7,7 @@ page 22 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -84,7 +79,7 @@ page 22 (
             regionDisplaySelector: true
         }
         headerAndFooter {
-            headerText: Render your Funnel chart in 3D by setting the <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank">threeDEffect</a> attribute of the ojChart API. Edit the chart, and view the code snippet in the JavaScript Code attribute.<p/>
+            headerText: Render your Funnel chart in 3D by setting the <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank" rel="noopener noreferrer external">threeDEffect</a> attribute of the ojChart API. Edit the chart, and view the code snippet in the JavaScript Code attribute.<p/>
         }
         security {
             escapeSpecialChars: false
@@ -95,6 +90,9 @@ page 22 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         value {
             format: decimal
@@ -172,6 +170,9 @@ page 22 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         componentAdvanced {
             initJavaScriptFunction:
@@ -259,7 +260,7 @@ page 22 (
                 </pre>
                 <p/>
                 <p>
-                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> example.
+                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank" rel="noopener noreferrer external">Funnel Chart: Selection</a> example.
                 ```
         }
         layout {
@@ -310,6 +311,9 @@ page 22 (
             maxWidth: 500
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         value {
             format: decimal
             decimalPlaces: 0
@@ -358,7 +362,7 @@ page 22 (
                 <strong>Link Target</strong> - Use the series-level attribute to define a link on the selection of a segment of the chart.  In this example, the link is using JavaScript to set a page item to the value of the currently selected data point.  The link target is referencing columns in the SQL query using &amp;COLUMN_NAME. syntax.<p/>
                 
                 <p>
-                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=targetValues" target="_blank">Funnel Chart: Target Values</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> examples.
+                For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=targetValues" target="_blank" rel="noopener noreferrer external">Funnel Chart: Target Values</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank" rel="noopener noreferrer external">Funnel Chart: Selection</a> examples.
                 ```
         }
         layout {

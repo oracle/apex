@@ -7,15 +7,11 @@ page 59 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #PRISMJS_DIRECTORY#prism#MIN#.js
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        pageAccessProtection: unrestricted
     }
     advanced {
         reloadOnSubmit: always
@@ -38,6 +34,15 @@ page 59 (
                 t-BreadcrumbRegion--useBreadcrumbTitle
             ]
         }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_INIT_FOCUS_AREA_DOCUMENTS
+                 where id = :P59_ID
+                ```
+        }
         componentAppearance {
             breadcrumbTemplate: @/breadcrumb
             templateOptions: #DEFAULT#
@@ -59,7 +64,7 @@ page 59 (
             pageItemsToSubmit: P59_ID
         }
         layout {
-            sequence: 10
+            sequence: 20
             slot: body
         }
         appearance {
@@ -92,6 +97,9 @@ page 59 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
         heading {
             type: none
@@ -154,12 +162,24 @@ page 59 (
         advanced {
             regionDisplaySelector: true
         }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_INIT_FOCUS_AREA_DOCUMENTS
+                 where id = :P59_ID
+                ```
+        }
         componentAppearance {
             template: @/contextual-info
             templateOptions: [
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column AREA (
@@ -177,7 +197,7 @@ page 59 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #AREA#
+                        P23_FOCUS_AREA: I#AREA#
                     }
                     clearCache: 23
                 }
@@ -283,11 +303,11 @@ page 59 (
             }
             link {
                 target: {
-                    page: 23
+                    page: 94
                     items: {
-                        P23_INITIATIVE: #INITIATIVE#
+                        P94_INITIATIVE_ID: #INITIATIVE_ID#
                     }
-                    clearCache: 23
+                    clearCache: 94
                 }
                 linkText: #INITIATIVE#
             }
@@ -319,6 +339,36 @@ page 59 (
 
     )
 
+    region document-not-found (
+        name: Document Not Found
+        type: staticContent
+        source {
+            htmlCode: The selected document is no longer available and was likely deleted.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_INIT_FOCUS_AREA_DOCUMENTS
+                 where id = :P59_ID
+                ```
+        }
+    )
+
     region html-display-of-markdown (
         name: HTML Display of Markdown
         type: dynamicContent
@@ -341,7 +391,7 @@ page 59 (
                 ```
         }
         layout {
-            sequence: 80
+            sequence: 70
             slot: body
         }
         appearance {
@@ -528,7 +578,7 @@ page 59 (
             htmlCode: This file type cannot be previewed.
         }
         layout {
-            sequence: 20
+            sequence: 30
             slot: body
         }
         appearance {
@@ -556,7 +606,7 @@ page 59 (
         name: &P59_FILE_NAME.
         type: staticContent
         layout {
-            sequence: 30
+            sequence: 40
             slot: body
         }
         appearance {
@@ -806,7 +856,7 @@ page 59 (
                 ```
         }
         layout {
-            sequence: 81
+            sequence: 80
             slot: body
         }
         appearance {
@@ -1021,7 +1071,6 @@ page 59 (
             slot: regionBody
         }
         security {
-            sessionStateProtection: checksumRequiredSessionLevel
             restrictedChars: alphanumWithSpace
         }
     )
@@ -1082,7 +1131,7 @@ page 59 (
         buttonName: download
         label: Download
         layout {
-            sequence: 40
+            sequence: 50
             region: @breadcrumb
             slot: edit
         }
@@ -1123,10 +1172,54 @@ page 59 (
                 page: 56
                 items: {
                     P56_ID: &P59_ID.
+                    P56_ON_DELETE: PREV_PAGE
+                    P56_PREV_PAGE: &P59_PREV_PAGE.
                 }
                 clearCache: 56
             }
             warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P59_PREV_PAGE
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-no-prev-page (
+        buttonName: Edit_no_prev_page
+        label: Edit
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 56
+                items: {
+                    P56_ID: &P59_ID.
+                    P56_ON_DELETE: HOME
+                }
+                clearCache: 56
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P59_PREV_PAGE
         }
         security {
             authorizationScheme: @contribution-rights
@@ -1215,6 +1308,10 @@ page 59 (
                 page: &P59_PREV_PAGE.
             }
             warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P59_PREV_PAGE
         }
     )
 

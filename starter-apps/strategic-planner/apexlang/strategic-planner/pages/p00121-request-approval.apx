@@ -14,10 +14,11 @@ page 121 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -52,6 +53,7 @@ page 121 (
                    and p.id = :P121_PROJECT_ID
                    and ia.id = c.initiative_approval_id
                    and c.team_member_id = tm.id
+                   and c.active_yn = 'Y'
                  order by c.approval_seq
                 )
                 ```
@@ -77,6 +79,9 @@ page 121 (
                 t-Report--rowHighlight
                 t-Report--inline
             ]
+        }
+        pagination {
+            type: showAll
         }
         heading {
             type: none

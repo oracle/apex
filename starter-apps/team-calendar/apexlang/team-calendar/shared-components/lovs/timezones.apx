@@ -1,0 +1,68 @@
+lov timezones (
+    name: TIMEZONES
+    source {
+        location: staticValues
+    }
+
+    entry asia-calcutta (
+        sequence: 10
+        display: Asia/Calcutta
+        return: Asia/Calcutta
+    )
+
+    entry us-alaska (
+        sequence: 8
+        display: US/Alaska
+        return: US/Alaska
+    )
+
+    entry us-arizona (
+        sequence: 6
+        display: US/Arizona
+        return: US/Arizona
+    )
+
+    entry us-central (
+        sequence: 4
+        display: US/Central
+        return: US/Central
+    )
+
+    entry us-east-indiana (
+        sequence: 2
+        display: US/East-Indiana
+        return: US/East-Indiana
+    )
+
+    entry us-eastern (
+        sequence: 1
+        display: US/Eastern
+        return: US/Eastern
+    )
+
+    entry us-hawaii (
+        sequence: 9
+        display: US/Hawaii
+        return: US/Hawaii
+    )
+
+    entry us-michigan (
+        sequence: 3
+        display: US/Michigan
+        return: US/Michigan
+    )
+
+    entry us-mountain (
+        sequence: 5
+        display: US/Mountain
+        return: US/Mountain
+    )
+
+    entry us-pacific (
+        sequence: 7
+        display: US/Pacific
+        return: US/Pacific
+    )
+
+)
+

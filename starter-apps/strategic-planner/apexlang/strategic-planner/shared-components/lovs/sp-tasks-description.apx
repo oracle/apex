@@ -1,0 +1,12 @@
+lov sp-tasks-description (
+    name: SP_TASKS.DESCRIPTION
+    source {
+        tableName: SP_TASKS
+    }
+    columnMapping {
+        return: ID
+        display: DESCRIPTION
+        defaultSort: DESCRIPTION
+    }
+)
+

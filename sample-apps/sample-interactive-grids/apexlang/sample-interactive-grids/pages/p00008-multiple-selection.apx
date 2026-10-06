@@ -7,7 +7,6 @@ page 8 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -17,10 +16,6 @@ page 8 (
                 toggleWidth: true
             });
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -74,11 +69,13 @@ page 8 (
         chartAppearance {
             orientation: horizontal
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -485,9 +482,6 @@ page 8 (
             }
             layout {
                 sequence: 100
-            }
-            validation {
-                valueRequired: true
             }
             source {
                 databaseColumn: ONLEAVE

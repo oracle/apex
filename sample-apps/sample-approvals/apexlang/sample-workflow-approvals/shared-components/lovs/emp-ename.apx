@@ -1,0 +1,12 @@
+lov emp-ename (
+    name: EMP.ENAME
+    source {
+        tableName: EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+

@@ -5,6 +5,7 @@ create table sp_error_log (
    package_name           varchar2(255 char),
    procedure_name         varchar2(500 char),
    error                  varchar2(4000 char)  not null,
+   error_backtrace        varchar2(4000 char),
    --
    arg1_name              varchar2(255 char),
    arg1_val               varchar2(4000 char),
@@ -28,8 +29,8 @@ create or replace trigger sp_error_log_bi
     on sp_error_log
     for each row
 begin
-    :new.created       := sysdate;
-    :new.created_trunc := trunc(sysdate);
-    :new.created_by    := coalesce(sys_context('APEX$SESSION','APP_USER'),user); 
+   :new.created       := nvl(:new.created,sysdate);
+   :new.created_trunc := trunc(:new.created);
+   :new.created_by    := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
 end sp_error_log_bi;
 /

@@ -1,18 +1,27 @@
 begin
     for c1 in (
-        select 1 from user_scheduler_jobs
+        select job_name from user_scheduler_jobs
          where job_name = 'SP_NOTIF_SUBSCRIPTIONS'
     ) loop
-        sys.dbms_scheduler.drop_job(job_name => 'SP_NOTIF_SUBSCRIPTIONS');
+        sys.dbms_scheduler.drop_job(job_name => c1.job_name);
     end loop;
 end;
 /
 begin
     for c1 in (
-        select 1 from user_scheduler_jobs
+        select job_name from user_scheduler_jobs
          where job_name = 'SP_GENERATE_AI_PROJECT_SUMMARIES_JOB'
     ) loop
-        sys.dbms_scheduler.drop_job(job_name => 'SP_GENERATE_AI_PROJECT_SUMMARIES_JOB');
+        sys.dbms_scheduler.drop_job(job_name => c1.job_name);
+    end loop;
+end;
+/
+begin
+    for c1 in (
+        select job_name from user_scheduler_jobs
+         where job_name = 'SP_LOAD_OOO_JOB'
+    ) loop
+        sys.dbms_scheduler.drop_job(job_name => c1.job_name);
     end loop;
 end;
 /
@@ -26,6 +35,7 @@ drop package    sp_log;
 drop package    sp_util;
 drop package    sp_summary_util;
 drop package    sp_comment_util;
+drop package    sp_event_util;
 drop package    sp_value_compare;
 drop package    sp_contributor_summary;
 drop package    sp_approvals;
@@ -39,6 +49,12 @@ drop view sp_project_comments_v;
 drop view sp_task_comments_v;
 drop view sp_release_comments_v;
 drop view sp_documents_v;
+drop view sp_area_details_v;
+drop view sp_initiative_details_v;
+drop view sp_project_details_v;
+drop view sp_project_change_history_v;
+drop view sp_release_details_v;
+drop view sp_person_details_v;
 
 drop table SP_APP_NOMENCLATURE           cascade constraints;
 drop table sp_app_settings               cascade constraints;
@@ -85,6 +101,7 @@ drop table sp_favorites                  cascade constraints;
 drop table sp_configurable_text          cascade constraints;
 drop table sp_project_scales             cascade constraints;
 drop table sp_activity_types             cascade constraints;
+drop table sp_activity_comments          cascade constraints;
 drop table sp_activities                 cascade constraints;
 drop table sp_notifications              cascade constraints;
 drop table sp_notification_subscriptions cascade constraints;
@@ -107,10 +124,16 @@ drop table sp_comment_images             cascade constraints;
 drop table sp_ai_prompts                 cascade constraints;
 drop table sp_project_ai_summaries       cascade constraints;
 drop table sp_release_ai_summaries       cascade constraints;
-drop table sp_report_questions           cascade constraints;
 
 drop table sp_approval_types             cascade constraints;
 drop table sp_initiative_approvals       cascade constraints;
 drop table sp_initiative_approval_chain  cascade constraints;
 drop table sp_project_approvals          cascade constraints;
 drop table sp_project_approval_chain     cascade constraints;
+
+drop table sp_events                     cascade constraints;
+drop table sp_event_series               cascade constraints;
+drop table sp_event_types                cascade constraints;
+
+drop table sp_task_related               cascade constraints;
+drop table sp_relation_types             cascade constraints;

@@ -1,0 +1,21 @@
+emailTemplate INVITE (
+    name: Poll Invitation or Reminder
+    emailSubject: #SUBJECT#
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body: #BODY!RAW#
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message. #OPT_OUT_TEXT!RAW#</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            #BODY#
+            
+            This is a system generated email. Please do not reply to this message. #OPT_OUT_TEXT#
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+

@@ -1,0 +1,16 @@
+lov timeframes-for-ir-col-headings (
+    name: TIMEFRAMES (FOR IR COL HEADINGS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select tf_name d, 
+                   tf_name r
+              from EBA_ca_timeframes
+             where sysdate <= end_date
+             order by start_date
+            
+            ```
+    }
+)
+

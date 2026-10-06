@@ -1,0 +1,15 @@
+lov fiscal-years-deal-close-dates (
+    name: FISCAL YEARS - DEAL CLOSE DATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct sp.fiscal_year + 2000 as dv, sp.fiscal_year as rv
+              from eba_sales_sales_periods sp,
+                   eba_sales_deals d
+             where sp.fiscal_year = substr(d.qtr, -2)
+             order by 2 asc
+            ```
+    }
+)
+

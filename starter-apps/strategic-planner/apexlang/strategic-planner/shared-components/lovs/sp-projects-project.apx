@@ -1,0 +1,12 @@
+lov sp-projects-project (
+    name: SP_PROJECTS.PROJECT
+    source {
+        tableName: SP_PROJECTS
+    }
+    columnMapping {
+        return: ID
+        display: PROJECT
+        defaultSort: PROJECT
+    }
+)
+

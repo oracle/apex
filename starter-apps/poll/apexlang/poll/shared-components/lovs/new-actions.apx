@@ -1,0 +1,32 @@
+lov new-actions (
+    name: NEW ACTIONS
+    source {
+        location: staticValues
+    }
+
+    entry create-a-new-community-of-poll-recipients (
+        sequence: 20
+        display: Create a new community of poll recipients
+        return: C
+    )
+
+    entry create-a-new-question-set (
+        sequence: 10
+        display: Create a New Question Set
+        return: QS
+    )
+
+    entry publish-a-question-set-as-a-poll (
+        sequence: 30
+        display: Publish a question set as a Poll
+        return: P
+    )
+
+    entry send-invitations-to-a-community-to-take-a-published-poll (
+        sequence: 40
+        display: Send invitations to a community to take a published poll
+        return: I
+    )
+
+)
+

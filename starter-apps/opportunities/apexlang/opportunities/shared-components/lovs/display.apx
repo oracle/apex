@@ -1,0 +1,80 @@
+lov display (
+    name: DISPLAY
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 10
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-10 (
+        sequence: 100
+        display: 50
+        return: 50
+    )
+
+    entry lov_data-11 (
+        sequence: 110
+        display: 100
+        return: 100
+    )
+
+    entry lov_data-12 (
+        sequence: 120
+        display: 500
+        return: 500
+    )
+
+    entry lov_data-2 (
+        sequence: 20
+        display: 5
+        return: 5
+    )
+
+    entry lov_data-3 (
+        sequence: 30
+        display: 10
+        return: 10
+    )
+
+    entry lov_data-4 (
+        sequence: 40
+        display: 15
+        return: 15
+    )
+
+    entry lov_data-5 (
+        sequence: 50
+        display: 20
+        return: 20
+    )
+
+    entry lov_data-6 (
+        sequence: 60
+        display: 25
+        return: 25
+    )
+
+    entry lov_data-7 (
+        sequence: 70
+        display: 30
+        return: 30
+    )
+
+    entry lov_data-8 (
+        sequence: 80
+        display: 35
+        return: 35
+    )
+
+    entry lov_data-9 (
+        sequence: 90
+        display: 40
+        return: 40
+    )
+
+)
+

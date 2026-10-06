@@ -1,0 +1,38 @@
+lov emp-jobs (
+    name: EMP_JOBS
+    source {
+        location: staticValues
+    }
+
+    entry analyst (
+        sequence: 5
+        display: Analyst
+        return: ANALYST
+    )
+
+    entry clerk (
+        sequence: 1
+        display: Clerk
+        return: CLERK
+    )
+
+    entry manager (
+        sequence: 4
+        display: Manager
+        return: MANAGER
+    )
+
+    entry president (
+        sequence: 3
+        display: President
+        return: PRESIDENT
+    )
+
+    entry salesman (
+        sequence: 2
+        display: Salesman
+        return: SALESMAN
+    )
+
+)
+

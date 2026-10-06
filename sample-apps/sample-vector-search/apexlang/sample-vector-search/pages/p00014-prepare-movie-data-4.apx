@@ -7,13 +7,6 @@ page 14 (
         dialogTemplate: @/modal-dialog
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region movie-vector-search-navigation (
         name: Movie Vector Search Navigation
@@ -28,9 +21,6 @@ page 14 (
         appearance {
             template: @/blank-with-attributes-no-grid
             templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkLabel: Movie Vector Search
         }
         componentAppearance {
             listTemplate: @/media-list

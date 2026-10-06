@@ -14,10 +14,11 @@ page 4013 (
     dialog {
         chained: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -79,6 +80,9 @@ page 4013 (
                 t-Report--rowHighlight
                 t-Report--horizontalBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_SEQ (
@@ -183,9 +187,6 @@ page 4013 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @nomenclature-initiative-approval-type

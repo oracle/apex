@@ -1,0 +1,898 @@
+page 164 (
+    name: Releases
+    alias: RELEASES-IR
+    title: Releases Interactive Report
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText: All Releases.  Includes owner, start and end date, whether full release or patch and list of milestones and &NOMENCLATURE_PROJECTS..
+    }
+    config {
+        buildOption: @releases
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 20
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+            cssClasses: has-header-actions
+        }
+    )
+
+    region releases-interactive-report (
+        name: Releases Interactive Report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID release_id,
+                       r.RELEASE_TRAIN,
+                       r.RELEASE,
+                       initcap(nvl(r.release_type,'FULL')) release_type,
+                       --
+                       -- details
+                       --
+                       r.RELEASE_OPEN_DATE,
+                       r.RELEASE_TARGET_DATE,
+                       case when release_open_completed = 'Y' and nvl(release_completed,'N') = 'N' then
+                           'Open'
+                           when nvl(release_open_completed,'N') = 'N' then
+                           'Future'
+                           else
+                           'Closed' end release_status,
+                       r.RELEASE_TARGET_DATE - r.RELEASE_OPEN_DATE duration_in_days,
+                       case when r.RELEASE_TARGET_DATE >= trunc(sysdate) 
+                            then trunc(r.RELEASE_TARGET_DATE) - trunc(sysdate) 
+                            end days_remaining,
+                       --
+                       -- release owner
+                       --
+                       r.RELEASE_OWNER_ID owner_id,
+                       (select first_Name||' '||last_name from sp_team_members tm where tm.id =  r.RELEASE_OWNER_ID) owner_name,
+                       (select email from sp_team_members tm where tm.id =  r.RELEASE_OWNER_ID) owner_email,
+                       --
+                       -- project counts
+                       --
+                       (select count(*) 
+                          from sp_projects p 
+                         where p.release_id = r.id and 
+                               p.ARCHIVED_YN = 'N' and 
+                               p.duplicate_of_project_id is null) project_count,
+                       --
+                       (select count(*) c 
+                          from sp_projects p 
+                         where p.release_id = r.id and 
+                               p.pct_complete != 100 and 
+                               p.ARCHIVED_YN = 'N' and 
+                               p.duplicate_of_project_id is null) open_project_count,
+                       --
+                       (select count(*) c 
+                       from sp_projects p 
+                       where p.release_id = r.id and
+                             p.pct_complete = 100 and 
+                             p.ARCHIVED_YN = 'N' and 
+                             p.duplicate_of_project_id is null) completed_project_count,
+                       --
+                       (select listagg(project, ', ' on overflow truncate with count) within group (order by project)
+                         from sp_projects p,
+                              sp_project_priorities pp
+                        where p.release_id = r.id and
+                              p.ARCHIVED_YN = 'N' and 
+                              p.priority_id = pp.id and 
+                              pp.priority = 1) p1_projects,
+                       --
+                       (select count(distinct OWNER_ID)
+                          from SP_TASKS c 
+                         where c.PROJECT_ID in (select id 
+                                                  from sp_projects p
+                                                 where p.release_id  = r.id and 
+                                                       p.ARCHIVED_YN = 'N' and 
+                                                       p.duplicate_of_project_id is null)) project_contributor_count,
+                       --
+                       nvl((select round(avg(p.PCT_COMPLETE))
+                              from sp_projects p 
+                             where p.release_id = r.id and 
+                                   p.ARCHIVED_YN = 'N' and 
+                                   p.duplicate_of_project_id is null), 0) avg_project_pct_complete,
+                       --
+                       -- last project update
+                       --
+                       (select max(updated) 
+                          from sp_projects p 
+                         where p.release_id = r.id and 
+                               p.ARCHIVED_YN = 'N' and 
+                               p.duplicate_of_project_id is null) last_project_update,
+                       --
+                       -- milestone counts
+                       --
+                       (select count(*) from SP_RELEASE_MILESTONES m where m.RELEASE_ID = r.id) milestone_count,
+                       (select count(*) from SP_RELEASE_MILESTONES m where m.RELEASE_ID = r.id and m.MILESTONE_COMPLETED_YN = 'Y') completed_milestone_count,
+                
+                       --
+                       -- audit info
+                       --
+                       r.created created_date,
+                       lower(r.created_by) created_by_app_username,
+                       r.updated last_updated_date,
+                       lower(r.updated_by) last_updated_by_app_username
+                  from SP_RELEASE_TRAINS r
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                js-showMaximizeButton
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 117
+                items: {
+                    P117_RELEASE_ID: #RELEASE_ID#
+                }
+                clearCache: 117
+                action: resetPagination
+            }
+            linkIcon: <img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="">
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Releases.  Includes owner, start and end date, whether full release or patch and list of milestones and projects.
+        }
+        actionsMenu {
+            savePublicReport: true
+            savePublicReportAuthorization: @administration-rights
+        }
+        advanced {
+            savedReportMappingIdentifier: 84703919269987126762
+        }
+
+        column AVG_PROJECT_PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Avg Project Pct Complete
+                alignment: end
+            }
+            layout {
+                sequence: 424
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CI
+            }
+        )
+
+        column COMPLETED_MILESTONE_COUNT (
+            type: plainText
+            heading {
+                heading: Completed Milestone Count
+                alignment: end
+            }
+            layout {
+                sequence: 454
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CL
+            }
+        )
+
+        column COMPLETED_PROJECT_COUNT (
+            type: plainText
+            heading {
+                heading: Completed Project Count
+                alignment: end
+            }
+            layout {
+                sequence: 404
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CG
+            }
+        )
+
+        column CREATED_BY_APP_USERNAME (
+            type: plainText
+            heading {
+                heading: Created By App Username
+            }
+            layout {
+                sequence: 474
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: CN
+            }
+        )
+
+        column CREATED_DATE (
+            type: plainText
+            heading {
+                heading: Created Date
+            }
+            layout {
+                sequence: 464
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: CM
+            }
+        )
+
+        column DAYS_REMAINING (
+            type: plainText
+            heading {
+                heading: Days Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 344
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CA
+            }
+        )
+
+        column DURATION_IN_DAYS (
+            type: plainText
+            heading {
+                heading: Duration In Days
+                alignment: end
+            }
+            layout {
+                sequence: 334
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: BZ
+            }
+        )
+
+        column LAST_PROJECT_UPDATE (
+            type: plainText
+            heading {
+                heading: Last Project Update
+            }
+            layout {
+                sequence: 434
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: CJ
+            }
+        )
+
+        column LAST_UPDATED_BY_APP_USERNAME (
+            type: plainText
+            heading {
+                heading: Last Updated By App Username
+            }
+            layout {
+                sequence: 494
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: CP
+            }
+        )
+
+        column LAST_UPDATED_DATE (
+            type: plainText
+            heading {
+                heading: Last Updated Date
+            }
+            layout {
+                sequence: 484
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: CO
+            }
+        )
+
+        column MILESTONE_COUNT (
+            type: plainText
+            heading {
+                heading: Milestone Count
+                alignment: end
+            }
+            layout {
+                sequence: 444
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CK
+            }
+        )
+
+        column OPEN_PROJECT_COUNT (
+            type: plainText
+            heading {
+                heading: Open Project Count
+                alignment: end
+            }
+            layout {
+                sequence: 394
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CF
+            }
+        )
+
+        column OWNER_EMAIL (
+            type: plainText
+            heading {
+                heading: Owner Email
+            }
+            layout {
+                sequence: 374
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: CD
+            }
+        )
+
+        column OWNER_ID (
+            type: plainText
+            heading {
+                heading: Owner ID
+                alignment: end
+            }
+            layout {
+                sequence: 354
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CB
+            }
+        )
+
+        column OWNER_NAME (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 364
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: CC
+            }
+        )
+
+        column P1_PROJECTS (
+            type: plainText
+            heading {
+                heading: P1 Projects
+            }
+            layout {
+                sequence: 504
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: CQ
+            }
+        )
+
+        column PROJECT_CONTRIBUTOR_COUNT (
+            type: plainText
+            heading {
+                heading: Project Contributor Count
+                alignment: end
+            }
+            layout {
+                sequence: 414
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CH
+            }
+        )
+
+        column PROJECT_COUNT (
+            type: plainText
+            heading {
+                heading: Project Count
+                alignment: end
+            }
+            layout {
+                sequence: 384
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: CE
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 74
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: T
+            }
+            genAI {
+                columnContext: Release Number
+            }
+            config {
+                buildOption: @releases
+            }
+        )
+
+        column RELEASE_ID (
+            type: plainText
+            heading {
+                heading: Release ID
+                alignment: end
+            }
+            layout {
+                sequence: 314
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: BX
+            }
+        )
+
+        column RELEASE_OPEN_DATE (
+            type: plainText
+            heading {
+                heading: Open Date
+            }
+            layout {
+                sequence: 234
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: BP
+            }
+        )
+
+        column RELEASE_STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 324
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: BY
+            }
+            genAI {
+                columnContext: Identifies if Release is Closed (completed), Open or Future (not yet begun)
+            }
+        )
+
+        column RELEASE_TARGET_DATE (
+            type: plainText
+            heading {
+                heading: Target Date
+            }
+            layout {
+                sequence: 224
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: BO
+            }
+        )
+
+        column RELEASE_TRAIN (
+            type: plainText
+            heading {
+                heading: Release Train
+            }
+            layout {
+                sequence: 204
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: BM
+            }
+            genAI {
+                columnContext: Identifies the Product
+            }
+        )
+
+        column RELEASE_TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 304
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: BW
+            }
+            genAI {
+                columnContext: Identifies if Release is a Full or Patch (set) release.
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Projects Interactive Report
+        }
+
+        savedReport 85832204 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn DAYS_REMAINING (
+                sequence: 9
+            )
+
+            displayColumn DURATION_IN_DAYS (
+                sequence: 8
+            )
+
+            displayColumn LAST_UPDATED_DATE (
+                sequence: 11
+            )
+
+            displayColumn OWNER_NAME (
+                sequence: 3
+            )
+
+            displayColumn PROJECT_COUNT (
+                sequence: 10
+            )
+
+            displayColumn RELEASE (
+                sequence: 2
+            )
+
+            displayColumn RELEASE_OPEN_DATE (
+                sequence: 6
+            )
+
+            displayColumn RELEASE_STATUS (
+                sequence: 5
+            )
+
+            displayColumn RELEASE_TARGET_DATE (
+                sequence: 7
+            )
+
+            displayColumn RELEASE_TRAIN (
+                sequence: 1
+            )
+
+            displayColumn RELEASE_TYPE (
+                sequence: 4
+            )
+
+            sort (
+                column: RELEASE_TRAIN
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: RELEASE
+                sort {
+                    sequence: 2
+                }
+            )
+
+        )
+
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu about-releases (
+            label: About Releases
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 108
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu releases-primary-report (
+            label: Releases Primary Report
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 8
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-ship
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 164
+                    clearCache: [
+                        CIR
+                        RIR
+                        164
+                    ]
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep (
+            type: separator
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &LAST_PROJ_JUMP_PG.
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-on-dc (
+        name: refresh on dc
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @releases-interactive-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-on-dc-from-report (
+        name: refresh on dc from report
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @releases-interactive-report
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @releases-interactive-report
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 86
+        }
+    )
+
+)
+

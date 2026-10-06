@@ -8,12 +8,11 @@ page 63 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

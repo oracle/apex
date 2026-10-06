@@ -8,11 +8,10 @@ page 94 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -81,6 +80,9 @@ page 94 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -572,6 +574,9 @@ page 94 (
             ]
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column AGREEMENT_ID (
             reportColumnQueryId: 5
@@ -785,6 +790,9 @@ page 94 (
             ]
             showNullValuesAs: " "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -912,6 +920,9 @@ page 94 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -1082,6 +1093,9 @@ page 94 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 50
@@ -1263,6 +1277,9 @@ page 94 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 50
         }
@@ -1440,6 +1457,9 @@ page 94 (
                 t-Report--inline
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column AMOUNT_ID (

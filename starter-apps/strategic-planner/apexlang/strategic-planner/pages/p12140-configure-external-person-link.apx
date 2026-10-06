@@ -11,13 +11,9 @@ page 12140 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
         pageAccessProtection: noArgumentsSupported
-        formAutoComplete: false
     }
     help {
         helpText:

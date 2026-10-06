@@ -1,0 +1,89 @@
+list primary-reports (
+    name: Primary Reports
+
+    entry competitor-analysis (
+        label: Competitor Analysis
+        icon {
+            imageIconCssClasses: fa-bullseye
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+        userDefinedAttributes {
+            1: View opportunity counts organized by Competitor, Quarter, and Status.
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry opportunities-about-to-close (
+        label: Opportunities About to Close
+        icon {
+            imageIconCssClasses: fa-dollar
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Identifies opportunities that are past due, or about to become past due.
+        }
+    )
+
+    entry opportunity-pipeline (
+        label: Opportunity Pipeline
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunity analysis by sales stage.
+        }
+    )
+
+    entry revenue-by-quarter (
+        label: Revenue by Quarter
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: "Vertical bar chart showing sales forcast by quarter for a user definable reporting period.  "
+        }
+    )
+
+)
+

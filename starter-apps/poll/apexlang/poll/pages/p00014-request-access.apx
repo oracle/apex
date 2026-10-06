@@ -8,12 +8,11 @@ page 14 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -29,7 +28,7 @@ page 14 (
         name: hide nobody
         type: staticContent
         source {
-            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+            htmlCode: "<style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>"
         }
         layout {
             sequence: 10

@@ -7,13 +7,6 @@ page 46 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb

@@ -1,6 +1,6 @@
 app SAMPLE-INTERACTIVE-GRIDS (
     name: Sample Interactive Grids
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -45,10 +45,8 @@ app SAMPLE-INTERACTIVE-GRIDS (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        checksumSalt: 92E41D1C738095B7834060B566F9DC54C5ED9A5237BED7CB0A73E93C3CEEE436
     }
     sessionManagement {
         rejoinSessions: publicSessions

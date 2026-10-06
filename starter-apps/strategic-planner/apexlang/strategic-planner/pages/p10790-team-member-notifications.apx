@@ -7,13 +7,8 @@ page 10790 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -53,21 +48,56 @@ page 10790 (
                           from sp_team_members
                          where id = n.team_member_id) team_member,
                        length(EMAIL_CONTENTS) view_email,
+                       case when project_id is not null
+                            then :NOMENCLATURE_PROJECT
+                            when release_id is not null
+                            then 'Release'
+                            when initiative_id is not null
+                            then :NOMENCLATURE_INITIATIVE
+                            when init_focus_area_id is not null
+                            then :NOMENCLATURE_INITIATIVE||' Focus Area'
+                            when task_id is not null
+                            then 'Milestone/Review/Task'
+                            end notif_about_type,
+                       case when project_id is not null
+                            then (select project
+                                    from sp_projects
+                                   where id = n.project_id)
+                            when release_id is not null
+                            then (select release_train ||release 
+                                    from sp_release_trains
+                                   where id = n.release_id)
+                            when initiative_id is not null
+                            then (select initiative
+                                    from sp_initiatives
+                                   where id = n.initiative_id) 
+                            when init_focus_area_id is not null
+                            then (select i.initiative||' - '||fa.focus_area
+                                    from sp_initiatives i,
+                                         sp_initiative_focus_areas fa
+                                   where fa.initiative_id = i.id
+                                     and fa.id = n.init_focus_area_id)
+                            when task_id is not null
+                            then (select (select task_type from sp_task_types rt where rt.id = task_type_id)||
+                                         case when task_sub_type_id is not null then ': ' end ||
+                                         (select task_type from sp_task_types rt where rt.id = task_sub_type_id) ||
+                                         case when task is not null then ' - '||task end
+                                    from sp_tasks
+                                   where id = n.task_id)
+                            end notif_about,
                        PROJECT_ID,
-                       (select project
-                          from sp_projects
-                         where id = n.project_id) project,
+                       task_id,
+                       release_id,
+                       initiative_id,
+                       init_focus_area_id,
+                       NOTIFICATION_PREF,
+                       TITLE,
+                       NOTIFICATION_TYPE,
                        DISMISSED_YN,
                        CREATED,
                        CREATED_BY,
                        UPDATED,
-                       UPDATED_BY,
-                       NOTIFICATION_PREF,
-                       TITLE,
-                       RELEASE_ID,
-                       INITIATIVE_ID,
-                       TASK_ID,
-                       NOTIFICATION_TYPE
+                       UPDATED_BY
                   from SP_TEAM_MEMBER_NOTIFICATIONS n
                 ```
         }
@@ -105,7 +135,7 @@ page 10790 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -121,7 +151,7 @@ page 10790 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -137,7 +167,7 @@ page 10790 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -154,7 +184,7 @@ page 10790 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -172,10 +202,28 @@ page 10790 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
+            }
+        )
+
+        column INIT_FOCUS_AREA_ID (
+            type: plainText
+            heading {
+                heading: Init Focus Area ID
+                alignment: end
+            }
+            layout {
+                sequence: 125
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: AC
             }
         )
 
@@ -188,7 +236,7 @@ page 10790 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -204,26 +252,42 @@ page 10790 (
                 sequence: 15
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
             }
         )
 
-        column PROJECT (
+        column NOTIF_ABOUT (
             type: plainText
             heading {
-                heading: Project
+                heading: In Reference To
             }
             layout {
-                sequence: 85
+                sequence: 115
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
-                endUserAlias: V
+                endUserAlias: AB
+            }
+        )
+
+        column NOTIF_ABOUT_TYPE (
+            type: plainText
+            heading {
+                heading: Object Type
+            }
+            layout {
+                sequence: 105
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AA
             }
         )
 
@@ -238,7 +302,7 @@ page 10790 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -256,7 +320,7 @@ page 10790 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -266,7 +330,7 @@ page 10790 (
         column TASK_ID (
             type: plainText
             heading {
-                heading: Task Id
+                heading: Task ID
                 alignment: end
             }
             layout {
@@ -274,7 +338,7 @@ page 10790 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: T
@@ -290,7 +354,7 @@ page 10790 (
                 sequence: 75
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -308,7 +372,7 @@ page 10790 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -324,7 +388,7 @@ page 10790 (
                 sequence: 11
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -343,7 +407,7 @@ page 10790 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -359,7 +423,7 @@ page 10790 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -391,7 +455,7 @@ page 10790 (
                 linkAttributes: title="View Email"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: W
@@ -413,7 +477,7 @@ page 10790 (
             }
 
             displayColumn DISMISSED_YN (
-                sequence: 7
+                sequence: 8
             )
 
             displayColumn NOTIFICATION_PREF (
@@ -424,7 +488,11 @@ page 10790 (
                 sequence: 3
             )
 
-            displayColumn PROJECT (
+            displayColumn NOTIF_ABOUT (
+                sequence: 6
+            )
+
+            displayColumn NOTIF_ABOUT_TYPE (
                 sequence: 5
             )
 
@@ -437,11 +505,11 @@ page 10790 (
             )
 
             displayColumn UPDATED (
-                sequence: 8
+                sequence: 9
             )
 
             displayColumn VIEW_EMAIL (
-                sequence: 6
+                sequence: 7
             )
 
             sort (

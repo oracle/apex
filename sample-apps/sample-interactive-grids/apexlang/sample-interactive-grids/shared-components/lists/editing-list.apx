@@ -1,0 +1,156 @@
+list editing-list (
+    name: Editing List
+
+    entry basic-editing (
+        label: Basic Editing
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a standard editable Interactive Grid.
+        }
+    )
+
+    entry delete-only (
+        label: Delete Only
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates changing a grid to only allow deletion of rows.
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 58
+                clearCache: 58
+            }
+        }
+        userDefinedAttributes {
+            1: This example shows how to use Dynamic Actions within an Interactive Grid.
+        }
+    )
+
+    entry editing-in-a-modal-dialog (
+        label: Editing in a modal dialog
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how interactive grids work in a modal dialog.
+        }
+    )
+
+    entry form-with-grid (
+        label: Form with Grid
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a single updateable record (form) and an editable report (grid).
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a master grid, with detail grids which display the child records for the selected master record.
+        }
+    )
+
+    entry other-column-types (
+        label: Other Column Types
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates some of the different column types that can be included.
+        }
+    )
+
+    entry people-paging (
+        label: People (paging)
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates editing a larger data set using traditional paging.
+        }
+    )
+
+    entry protected-rows (
+        label: Protected Rows
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how you can control the ability to update or delete rows.
+        }
+    )
+
+    entry validation (
+        label: Validation
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to include validation in your Interactive Grid.
+        }
+    )
+
+)
+

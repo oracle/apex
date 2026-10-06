@@ -1,6 +1,6 @@
 app SAMPLE-DATA-LOADING (
     name: Sample Data Loading
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -42,11 +42,8 @@ app SAMPLE-DATA-LOADING (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: F105142A3550104BBA2F9DEDD27278AD95438BA8324D188DE98D0D6A07EEDA38
     }
     sessionManagement {
         rejoinSessions: publicSessions

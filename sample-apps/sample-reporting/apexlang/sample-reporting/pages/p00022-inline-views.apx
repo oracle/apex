@@ -7,12 +7,7 @@ page 22 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -179,7 +174,7 @@ page 22 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -197,7 +192,7 @@ page 22 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -218,7 +213,7 @@ page 22 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -234,7 +229,7 @@ page 22 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -255,7 +250,7 @@ page 22 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -271,7 +266,7 @@ page 22 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -292,7 +287,7 @@ page 22 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -313,7 +308,7 @@ page 22 (
                 formatMask: 999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H

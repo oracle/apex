@@ -8,7 +8,6 @@ page 153 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -36,10 +35,6 @@ page 153 (
               margin-block-start: 0;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (

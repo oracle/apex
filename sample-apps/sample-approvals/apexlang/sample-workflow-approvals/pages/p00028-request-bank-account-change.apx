@@ -11,10 +11,11 @@ page 28 (
         width: 350
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

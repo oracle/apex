@@ -16,12 +16,11 @@ page 35 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -96,7 +95,7 @@ page 35 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -112,7 +111,7 @@ page 35 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -128,7 +127,7 @@ page 35 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -144,7 +143,7 @@ page 35 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -162,7 +161,7 @@ page 35 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -178,7 +177,7 @@ page 35 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -194,7 +193,7 @@ page 35 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E

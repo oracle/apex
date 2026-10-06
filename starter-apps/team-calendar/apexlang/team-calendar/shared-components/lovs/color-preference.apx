@@ -1,0 +1,13 @@
+lov color-preference (
+    name: COLOR PREFERENCE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select color_name, id 
+            from EBA_CA_color_prefs 
+            order by display_sequence, id
+            ```
+    }
+)
+

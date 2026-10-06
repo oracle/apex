@@ -16,11 +16,12 @@ page 104 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -104,7 +105,7 @@ page 104 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -121,7 +122,7 @@ page 104 (
                 sequence: 45
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -150,7 +151,7 @@ page 104 (
                 linkText: #CUSTOMER_COUNT#
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -166,7 +167,7 @@ page 104 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -182,7 +183,7 @@ page 104 (
                 sequence: 1
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -201,7 +202,7 @@ page 104 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -220,7 +221,7 @@ page 104 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -237,7 +238,7 @@ page 104 (
                 sequence: 35
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -264,7 +265,7 @@ page 104 (
                 linkText: #USE_CASE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L

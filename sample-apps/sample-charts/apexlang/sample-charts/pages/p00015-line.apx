@@ -7,11 +7,8 @@ page 15 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -89,6 +86,9 @@ page 15 (
         }
         chartAppearance {
             stack: true
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -243,7 +243,7 @@ page 15 (
                 <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
                 <strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>
                 <strong>Label Position</strong> - Use this series-level attribute to control the positioning of the labels on data items of the chart.<p/>
-                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=dataLabels" target="_blank">Line Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=lineTypes" target="_blank">Line Chart: Line Types</a> examples.
+                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Line Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line Chart: Line Types</a> examples.
                 ```
         }
         layout {
@@ -285,6 +285,9 @@ page 15 (
         }
         chartAppearance {
             stack: true
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -516,6 +519,9 @@ page 15 (
             maxWidth: 500
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -698,10 +704,10 @@ page 15 (
                 </pre><p/>
                 
                 <p>
-                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.
                 </p>
                 <p>
-                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=lineChart&demo=refObject" target="_blank">Line Chart: Reference Objects</a> example.
+                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=lineChart&demo=refObject" target="_blank" rel="noopener noreferrer external">Line Chart: Reference Objects</a> example.
                 ```
         }
         layout {
@@ -743,6 +749,9 @@ page 15 (
         }
         chartAppearance {
             stack: true
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -951,10 +960,10 @@ page 15 (
                 apex.region("lineChartLabels").widget().ojChart('refresh');
                 </pre><p/>
                 <p>
-                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.
                 </p>
                 <p>
-                For more information on labelPosition settings, refer to the Oracle JET <a href="&OJCHART_ITEM_API_URL.#labelPosition" target="_blank">ojChartItem API</a> example.
+                For more information on labelPosition settings, refer to the Oracle JET <a href="&OJCHART_ITEM_API_URL.#labelPosition" target="_blank" rel="noopener noreferrer external">ojChartItem API</a> example.
                 ```
         }
         layout {
@@ -997,6 +1006,9 @@ page 15 (
         chartLayout {
             height: 420
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             cursor: true
             behavior: smooth
@@ -1010,7 +1022,6 @@ page 15 (
             show: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -1084,7 +1095,7 @@ page 15 (
                 <strong>Initial Zooming</strong> - Use the chart-level attribute to set the initial zooming behavior of the chart, to focus initial attention on a specific section of the chart.  The setting for this example is <strong>First</strong>, to initially zoom to the first data points on the chart.<p/>
                 <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
                 <strong>Format</strong> - Use the axis-level attribute to define currency formatting on the y-axis, and date formatting on the x-axis. New in APEX 18.1 is the ability to leave the <strong>Currency</strong> property empty, to allow for the currency symbol to be automatically derived from the application language. <p/>
-                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example. For additional examples of time axis settings, refer to the <a href="f?p=&APP_ID.:25:&APP_SESSION.">Combination</a> examples.
+                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank" rel="noopener noreferrer external">Chart: Time Axis</a> example. For additional examples of time axis settings, refer to the <a href="f?p=&APP_ID.:25:&APP_SESSION.">Combination</a> examples.
                 ```
         }
         layout {
@@ -1336,7 +1347,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({type: 'area'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({type: 'area'});"
             }
             affectedElements {
                 selectionType: region
@@ -1364,7 +1375,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({type: 'bar'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({type: 'bar'});"
             }
             affectedElements {
                 selectionType: region
@@ -1392,7 +1403,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({type: 'combo'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({type: 'combo'});"
             }
             affectedElements {
                 selectionType: region
@@ -1458,7 +1469,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'horizontal'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({orientation: 'horizontal'});"
             }
             affectedElements {
                 selectionType: region
@@ -1486,7 +1497,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({type: 'line'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({type: 'line'});"
             }
             affectedElements {
                 selectionType: region
@@ -1514,7 +1525,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({type: 'lineWithArea'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({type: 'lineWithArea'});"
             }
             affectedElements {
                 selectionType: region
@@ -1633,7 +1644,7 @@ page 15 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'vertical'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({orientation: 'vertical'});"
             }
             affectedElements {
                 selectionType: region

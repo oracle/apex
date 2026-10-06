@@ -1,0 +1,53 @@
+list data-load-process-train-customers-3 (
+    name: Data Load Process Train - Customers
+
+    entry data-load-results (
+        label: Data Load Results
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 128
+            }
+        }
+    )
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 125
+            }
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 126
+            }
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 127
+            }
+        }
+    )
+
+)
+

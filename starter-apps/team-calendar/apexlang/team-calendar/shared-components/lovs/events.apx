@@ -1,0 +1,13 @@
+lov events (
+    name: EVENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select event_name d, event_id r
+            from   eba_ca_events
+            order by 1
+            ```
+    }
+)
+

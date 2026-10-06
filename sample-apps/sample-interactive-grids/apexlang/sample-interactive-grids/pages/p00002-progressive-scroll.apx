@@ -7,15 +7,10 @@ page 2 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
         fileUrls: #APP_FILES#sample-interactive-grid#MIN#.css
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.

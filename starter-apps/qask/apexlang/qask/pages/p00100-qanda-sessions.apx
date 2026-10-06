@@ -6,9 +6,6 @@ page 100 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -16,10 +13,6 @@ page 100 (
                 min-width: 100px;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -147,6 +140,7 @@ page 100 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: QUESTION_CNT
@@ -168,6 +162,7 @@ page 100 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: RESPONSE_CNT
@@ -202,6 +197,7 @@ page 100 (
             listEntries {
                 sortByTopCounts: false
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: SESSION_STATUS
@@ -290,7 +286,7 @@ page 100 (
         settings {
             overline: &SESSION_CODE.
             title: &SESSION_NAME.
-            description: {if PURPOSE/}&PURPOSE.<br/>{endif/}&LENGTH. &CREATED_COMMENT. &CREATED_ON.
+            description: "{if PURPOSE/}&PURPOSE.<br/>{endif/}&LENGTH. &CREATED_COMMENT. &CREATED_ON."
             miscellaneous: &QUESTIONS.<br/>&RESPONSES.
             displayBadge: true
         }

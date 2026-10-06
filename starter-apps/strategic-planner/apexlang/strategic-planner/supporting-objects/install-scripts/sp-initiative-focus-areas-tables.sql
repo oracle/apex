@@ -6,8 +6,9 @@ create table sp_initiative_focus_areas (
                                    constraint sp_initiative_focus_areas_fk
                                    references sp_initiatives 
                                    on delete cascade,
-    focus_area                     varchar2(60 char) not null,
-    active_yn                      varchar2(1 char)  default on null 'Y'
+    focus_area                     varchar2(60 char)  not null,
+    external_key                   varchar2(30 char),
+    active_yn                      varchar2(1 char)   default on null 'Y'
                                    constraint sp_initiative_fa_active_cc
                                    check (active_yn in ('Y','N')),
     --
@@ -32,6 +33,7 @@ create table sp_initiative_focus_areas (
 );
 
 create unique index sp_initiative_focus_areas_u1 on sp_initiative_focus_areas (initiative_id, focus_area);
+create unique index sp_initiative_focus_areas_u2 on sp_initiative_focus_areas (lower(external_key));
 
 create table sp_init_focus_area_links (
     id                             number default on null to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') 
@@ -93,6 +95,7 @@ create table sp_init_focus_area_comments (
                                    constraint sp_init_focus_area_comment_ifa_fk
                                    references sp_initiative_focus_areas on delete cascade,
     --
+    comment_nbr                    number,
     body                           clob,
     body_html                      clob,
     body_no_images                 clob,

@@ -1,0 +1,552 @@
+page 710 (
+    name: Out of Office Events
+    alias: OOO-EVENTS
+    title: Out of Office Events
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    css {
+        inline:
+            ```css
+            .no-item-ui {
+                --a-field-input-border-width: 0;
+                --a-field-input-background-color: transparent;
+            }
+            .overline {
+              color: var(--ut-region-text-color,var(--ut-component-text-default-color));
+            }
+            
+            .a-FS-facetsDashboard {--a-fs-chart-grid-gap: 0;
+                   --a-fs-chart-border-width: 0;
+                   --a-fs-chart-shadow: none;
+            }
+            
+            ```
+    }
+    help {
+        helpText: All Events that can affect Team Member availability.  There is a default filter on the report to only include events for today and the future.
+    }
+    config {
+        buildOption: @team-calendar
+    }
+    comments {
+        comments: Events include a type (e.g. Public Holiday, Personal Time Off), the name of the event, if relevant and the repeat frequency (e.g. Repeats Daily, Jan 27-30).
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.id event_id,
+                       t.event_type, 
+                       e.event_date, e.event_name,
+                       case when s.recur_freq is not null
+                            then 'Repeats '||decode(s.recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                            '2W', 'Every 2 Weeks', 'M', 'Montly', s.recur_freq)||', '||
+                            case when to_char(s.start_date,'MONYYYY') = to_char(s.end_date,'MONYYYY') 
+                                 then to_char(s.start_date,'Mon fmDD')||'-'||to_char(s.end_date,'fmDD')
+                                    when to_char(s.start_date,'YYYY') = to_char(s.end_date,'YYYY') 
+                                 then to_char(s.start_date,'Mon fmDD')||' until '||to_char(s.end_date,'Mon fmDD')
+                                    else to_char(s.start_date,'Mon fmDD YYYY')||' until '||to_char(s.end_date,'Mon fmDD YYYY')
+                                    end
+                            end recur_frequency,
+                       case when e.for_user_id is not null
+                            then (select first_name||' '||last_name
+                                    from sp_team_members
+                                   where id = e.for_user_id) 
+                            end for_user,
+                       e.event_details,
+                       lower(e.created_by) created_by,
+                       e.created,
+                       lower(e.updated_by) updated_by,
+                       e.updated,
+                       case when e.for_user_id is not null
+                            then apex_page.get_url(
+                                     p_page => 73, 
+                                     p_items  => 'P73_TEAM_MEMBER_ID',
+                                     p_values => e.for_user_id )
+                            else null
+                            end view_link
+                  from sp_events e,
+                       sp_event_types t,
+                       sp_event_series s
+                 where e.event_type_id = t.id
+                   and e.series_id = s.id (+)
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 704
+                items: {
+                    P704_ID: #EVENT_ID#
+                }
+                clearCache: [
+                    704
+                    705
+                    706
+                ]
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Events that can affect Team Member availability.  There is a default filter on the report to only include events for today and the future.
+        }
+        advanced {
+            savedReportMappingIdentifier: 55979024624030384436
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 220
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 210
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column EVENT_DATE (
+            type: plainText
+            heading {
+                heading: Event Date
+            }
+            layout {
+                sequence: 150
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column EVENT_DETAILS (
+            type: plainText
+            heading {
+                heading: Event Details
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column EVENT_ID (
+            type: hidden
+            heading {
+                heading: Event Id
+            }
+            layout {
+                sequence: 250
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: AO
+            }
+        )
+
+        column EVENT_NAME (
+            type: plainText
+            heading {
+                heading: Event Name
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column EVENT_TYPE (
+            type: plainText
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 140
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column FOR_USER (
+            type: link
+            heading {
+                heading: For User
+            }
+            layout {
+                sequence: 190
+            }
+            link {
+                target: {
+                    type: url
+                    url: #VIEW_LINK#
+                }
+                linkText: #FOR_USER#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AM
+            }
+        )
+
+        column RECUR_FREQUENCY (
+            type: plainText
+            heading {
+                heading: Repeat Frequency
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AN
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 240
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 230
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AL
+            }
+        )
+
+        column VIEW_LINK (
+            type: plainText
+            heading {
+                heading: View Link
+            }
+            layout {
+                sequence: 260
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AP
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport 241804837 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn CREATED (
+                sequence: 6
+            )
+
+            displayColumn EVENT_DATE (
+                sequence: 3
+            )
+
+            displayColumn EVENT_NAME (
+                sequence: 4
+            )
+
+            displayColumn EVENT_TYPE (
+                sequence: 1
+            )
+
+            displayColumn FOR_USER (
+                sequence: 2
+            )
+
+            displayColumn RECUR_FREQUENCY (
+                sequence: 5
+            )
+
+            sort (
+                column: EVENT_DATE
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: NAME
+                sort {
+                    sequence: 2
+                }
+            )
+
+            filter ir-condition (
+                type: rowExpression
+                rowExpression: AD >= trunc(sysdate)
+                identification {
+                    name: today forward
+                }
+            )
+
+        )
+
+    )
+
+    region user-timezone (
+        name: user timezone
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select nvl(timezone,'UTC') user_timezone
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    sys.htp.p('Your timezone is '||apex_escape.html(c1.user_timezone)||'. This is set under your profile.');
+                end loop;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 710
+                clearCache: [
+                    710
+                    CIR
+                    RIR
+                ]
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction create-closed (
+        name: create closed
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction update-closed (
+        name: update closed
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @search-results
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

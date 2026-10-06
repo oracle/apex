@@ -12,6 +12,7 @@ page 149 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -20,10 +21,6 @@ page 149 (
             .t-Button.search-button {padding: 12px 16px;}
             
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.

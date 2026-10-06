@@ -1,0 +1,15 @@
+lov active-statuses-p (
+    name: ACTIVE_STATUSES_P2
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select status d, id r
+            from   EBA_CUST_STATUS
+            where is_active = 'Y'
+               or id = :P2_STATUS_ID
+            order by 1
+            ```
+    }
+)
+

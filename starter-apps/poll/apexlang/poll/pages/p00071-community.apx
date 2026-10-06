@@ -12,7 +12,6 @@ page 71 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -53,8 +52,6 @@ page 71 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -151,9 +148,6 @@ page 71 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

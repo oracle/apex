@@ -7,7 +7,6 @@ page 38 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -67,10 +66,6 @@ page 38 (
             	padding-top: 8px;;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.

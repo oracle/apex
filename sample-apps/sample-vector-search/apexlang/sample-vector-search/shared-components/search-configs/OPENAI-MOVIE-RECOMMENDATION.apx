@@ -1,0 +1,38 @@
+searchConfig OPENAI_MOVIE_RECOMMENDATION (
+    name: OPENAI-MOVIE-RECOMMENDATION
+    type: vector
+    source {
+        whereClause: SUBSTR(moviedescription, 1, 40) <> SUBSTR(:P41_SEARCH, 1, 40)
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 49
+            items: {
+                P49_SEARCH_ID: &ID.
+            }
+            clearCache: 49
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

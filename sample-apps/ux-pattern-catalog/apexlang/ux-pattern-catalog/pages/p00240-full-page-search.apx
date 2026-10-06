@@ -7,7 +7,6 @@ page 240 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -20,8 +19,6 @@ page 240 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments:

@@ -7,9 +7,6 @@ page 250 (
         templateOptions: #DEFAULT#
         cssClasses: ai-chat-page
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -47,8 +44,6 @@ page 250 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments:

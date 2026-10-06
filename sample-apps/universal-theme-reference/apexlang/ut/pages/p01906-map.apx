@@ -7,13 +7,10 @@ page 1906 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -325,7 +322,7 @@ page 1906 (
                 </p>
                 <p>
                     Maps can be connected with additional APEX components such as Faceted Search and Reports, to make filtering and viewing data even easier. 
-                    To see additional Map examples, visit the <a href="https://apex.oracle.com/go/sample_maps" target="_blank" rel="noopener noreferrer">Sample Maps App</a>.
+                    To see additional Map examples, visit the <a href="https://oracleapex.com/go/sample_maps" target="_blank" rel="noopener noreferrer">Sample Maps App</a>.
                 </p>
                 ```
         }

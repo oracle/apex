@@ -15,13 +15,8 @@ page 10091 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @releases
@@ -114,6 +109,7 @@ page 10091 (
             formRegion: @release-milestone-type
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -131,6 +127,7 @@ page 10091 (
             formRegion: @release-milestone-type
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -195,9 +192,6 @@ page 10091 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
-        }
         source {
             formRegion: @release-milestone-type
             column: INCLUDE_YN
@@ -244,6 +238,7 @@ page 10091 (
             formRegion: @release-milestone-type
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -261,6 +256,7 @@ page 10091 (
             formRegion: @release-milestone-type
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel

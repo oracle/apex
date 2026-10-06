@@ -6,13 +6,8 @@ page 408 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -323,6 +318,9 @@ page 408 (
             layout {
                 sequence: 70
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -346,6 +344,9 @@ page 408 (
             layout {
                 sequence: 90
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -365,6 +366,9 @@ page 408 (
             }
             layout {
                 sequence: 80
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -398,6 +402,7 @@ page 408 (
             }
             listEntries {
                 sortByTopCounts: false
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -417,6 +422,9 @@ page 408 (
             }
             layout {
                 sequence: 20
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

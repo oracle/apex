@@ -1,0 +1,284 @@
+jsonSource eba_demo_json_products (
+    name: EBA_DEMO_JSON_PRODUCTS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_PRODUCTS
+    }
+    dataProfile {
+        name: Product source
+        rowSelector: .
+    }
+
+    dataProfileColumn brand (
+        columnName: BRAND
+        source {
+            sequence: 10
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: brand
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn colour (
+        columnName: COLOUR
+        source {
+            sequence: 12
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: colour
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 15
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: description
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn gender (
+        columnName: GENDER
+        source {
+            sequence: 13
+            parentColumn: @product-details
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: gender
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn image-charset (
+        columnName: IMAGE_CHARSET
+        source {
+            sequence: 8
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_CHARSET
+        }
+    )
+
+    dataProfileColumn image-filename (
+        columnName: IMAGE_FILENAME
+        source {
+            sequence: 7
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_FILENAME
+        }
+    )
+
+    dataProfileColumn image-last-updated (
+        columnName: IMAGE_LAST_UPDATED
+        source {
+            sequence: 9
+            type: tableColumn
+            dataType: date
+        }
+        parsing {
+            tableColumn: IMAGE_LAST_UPDATED
+        }
+    )
+
+    dataProfileColumn image-mime-type (
+        columnName: IMAGE_MIME_TYPE
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: IMAGE_MIME_TYPE
+        }
+    )
+
+    dataProfileColumn product-details (
+        columnName: PRODUCT_DETAILS
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: PRODUCT_DETAILS
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn product-id (
+        columnName: PRODUCT_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: PRODUCT_ID
+        }
+    )
+
+    dataProfileColumn product-image (
+        columnName: PRODUCT_IMAGE
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: blob
+        }
+        parsing {
+            tableColumn: PRODUCT_IMAGE
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn product-name (
+        columnName: PRODUCT_NAME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: PRODUCT_NAME
+        }
+    )
+
+    dataProfileColumn rating (
+        columnName: RATING
+        source {
+            sequence: 16
+            parentColumn: @reviews
+            dataType: number
+        }
+        parsing {
+            pathExpression: rating
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn review (
+        columnName: REVIEW
+        source {
+            sequence: 17
+            parentColumn: @reviews
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: review
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn reviews (
+        columnName: REVIEWS
+        source {
+            sequence: 14
+            parentColumn: @product-details
+            dataType: array
+        }
+        parsing {
+            pathExpression: reviews
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn reviews-pos (
+        columnName: REVIEWS_POS
+        source {
+            sequence: 18
+            parentColumn: @reviews
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn sizes (
+        columnName: SIZES
+        source {
+            sequence: 11
+            parentColumn: @product-details
+            dataType: array
+        }
+        parsing {
+            pathExpression: sizes
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn sizes-2 (
+        columnName: SIZES2
+        source {
+            sequence: 19
+            parentColumn: @sizes
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: .
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn sizes-pos (
+        columnName: SIZES_POS
+        source {
+            sequence: 20
+            parentColumn: @sizes
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn unit-price (
+        columnName: UNIT_PRICE
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: UNIT_PRICE
+        }
+    )
+
+)
+

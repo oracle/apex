@@ -10,13 +10,6 @@ page 9 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region buttons (
         name: Buttons
@@ -162,10 +155,22 @@ page 9 (
     )
 
     pageItem P9_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
         }
         layout {
             sequence: 100

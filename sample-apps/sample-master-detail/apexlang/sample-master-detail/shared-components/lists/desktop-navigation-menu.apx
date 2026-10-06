@@ -1,0 +1,242 @@
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry activity-calendar (
+        label: Activity Calendar
+        layout {
+            sequence: 120
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry drill-down (
+        label: Drill Down
+        icon {
+            imageIconCssClasses: fa-clone
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                48
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        layout {
+            sequence: 80
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 1
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        layout {
+            sequence: 130
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+    )
+
+    entry report-and-marquee (
+        label: Report and Marquee
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                5
+                11
+                31
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry reports (
+        label: Reports
+        layout {
+            sequence: 110
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 24
+                anchor: adminReports
+            }
+        }
+    )
+
+    entry sample-data (
+        label: Sample Data
+        layout {
+            sequence: 90
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 26
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry side-by-side (
+        label: Side by Side
+        icon {
+            imageIconCssClasses: fa-layout-header-sidebar-left
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry stacked (
+        label: Stacked
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry stacked-with-sub-detail (
+        label: Stacked with Sub Detail
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        layout {
+            sequence: 100
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 27
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        layout {
+            sequence: 140
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+)
+

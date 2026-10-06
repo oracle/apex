@@ -6,9 +6,6 @@ page 23 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
@@ -22,8 +19,6 @@ page 23 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (

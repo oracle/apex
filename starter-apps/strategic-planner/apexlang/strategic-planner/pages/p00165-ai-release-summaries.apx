@@ -1,7 +1,7 @@
 page 165 (
     name: AI Release Summaries
     alias: AI-RELEASE-SUMMARIES
-    title: AI Release Summaries
+    title: AI Summaries
     appearance {
         pageMode: modalDialog
         dialogTemplate: @/drawer
@@ -10,15 +10,8 @@ page 165 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
-        buildOption: @ai-release-summaries
+        buildOption: @ai-release-summaries-view
     }
 
     region ai-summaries (
@@ -30,7 +23,7 @@ page 165 (
             sqlQuery:
                 ```sql
                 select null user_name,
-                       apex_escape.html(SUMMARY) comment_text,
+                       replace(apex_escape.html_clob(summary), CHR(10), '<br/>') comment_text,
                        '<br/>'||HIGHLIGHTS attribute_1,
                        null attribute_2,
                        null attribute_3,
@@ -62,9 +55,6 @@ page 165 (
                 #DEFAULT#
                 t-Comments--chat
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500
@@ -251,6 +241,27 @@ page 165 (
         }
     )
 
+    pageItem P165_RELEASE (
+        type: displayOnly
+        label {
+            label: New
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @ai-summaries
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     pageItem P165_RELEASE_ID (
         type: hidden
         layout {
@@ -283,6 +294,9 @@ page 165 (
         security {
             authorizationScheme: @contribution-rights
         }
+        config {
+            buildOption: @ai-release-summaries-create
+        }
     )
 
     button information (
@@ -311,6 +325,22 @@ page 165 (
                 clearCache: 78
             }
             warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    computation p165-release (
+        itemName: P165_RELEASE
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select release_train ||' '|| release   
+                  from sp_release_trains
+                 where id = :P165_RELEASE_ID
+                ```
         }
     )
 

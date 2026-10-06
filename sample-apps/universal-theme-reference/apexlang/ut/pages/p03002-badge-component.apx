@@ -6,13 +6,8 @@ page 3002 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -174,9 +169,6 @@ page 3002 (
                 t-Report--staticRowColors
                 t-Report--rowHighlightOff
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column ASSIGNED_TO (
@@ -417,7 +409,7 @@ page 3002 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -433,7 +425,7 @@ page 3002 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -449,7 +441,7 @@ page 3002 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -470,7 +462,7 @@ page 3002 (
                 formatMask: FML999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -486,7 +478,7 @@ page 3002 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -505,7 +497,7 @@ page 3002 (
                 formatMask: DD-MON
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -521,7 +513,7 @@ page 3002 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -540,7 +532,7 @@ page 3002 (
                 formatMask: DD-MON
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -563,7 +555,7 @@ page 3002 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -583,7 +575,7 @@ page 3002 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D

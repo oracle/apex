@@ -1,0 +1,20 @@
+lov people-gender (
+    name: PEOPLE_GENDER
+    source {
+        location: staticValues
+    }
+
+    entry female (
+        sequence: 2
+        display: Female
+        return: F
+    )
+
+    entry male (
+        sequence: 1
+        display: Male
+        return: M
+    )
+
+)
+

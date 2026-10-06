@@ -10,13 +10,6 @@ page 132 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @approvals
     }
@@ -78,6 +71,9 @@ page 132 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_TYPE (
@@ -213,6 +209,9 @@ page 132 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_TYPE (

@@ -8,10 +8,11 @@ page 42 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -156,7 +157,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -180,7 +181,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -201,7 +202,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -225,7 +226,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -246,7 +247,7 @@ page 42 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: C
@@ -267,7 +268,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -286,7 +287,7 @@ page 42 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -305,7 +306,7 @@ page 42 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -329,7 +330,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -360,7 +361,7 @@ page 42 (
                 linkText: #TERRITORY_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -381,7 +382,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -555,7 +556,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -579,7 +580,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -600,7 +601,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -624,7 +625,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -645,7 +646,7 @@ page 42 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: C
@@ -666,7 +667,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -685,7 +686,7 @@ page 42 (
                 sequence: 24
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -709,7 +710,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -741,7 +742,7 @@ page 42 (
                 linkText: #TERRITORY_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -762,7 +763,7 @@ page 42 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D

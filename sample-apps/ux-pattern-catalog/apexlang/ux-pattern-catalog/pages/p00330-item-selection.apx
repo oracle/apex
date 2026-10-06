@@ -6,9 +6,6 @@ page 330 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#js/split-view-selection#MIN#.js
     }
@@ -39,8 +36,6 @@ page 330 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -456,6 +451,9 @@ page 330 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column REFERENCE (
             reportColumnQueryId: 1
@@ -560,6 +558,9 @@ page 330 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column DUE (
             reportColumnQueryId: 4
@@ -657,6 +658,7 @@ page 330 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: CATEGORY
@@ -689,6 +691,7 @@ page 330 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             actionsMenu {
                 chart: false
@@ -847,6 +850,9 @@ page 330 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CATEGORY (

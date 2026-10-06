@@ -6,13 +6,8 @@ page 401 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region api-key-not-provided (
@@ -154,7 +149,7 @@ page 401 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -170,7 +165,7 @@ page 401 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -186,7 +181,7 @@ page 401 (
                 sequence: 60
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -214,7 +209,7 @@ page 401 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -230,7 +225,7 @@ page 401 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -246,7 +241,7 @@ page 401 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -262,7 +257,7 @@ page 401 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -278,7 +273,7 @@ page 401 (
                 sequence: 70
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -294,7 +289,7 @@ page 401 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -310,7 +305,7 @@ page 401 (
                 sequence: 100
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -329,7 +324,7 @@ page 401 (
                 valueIdentifiesRow: true
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -345,7 +340,7 @@ page 401 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -363,7 +358,7 @@ page 401 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -381,7 +376,7 @@ page 401 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H

@@ -15,9 +15,6 @@ page 31 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -28,8 +25,6 @@ page 31 (
     }
     security {
         authorizationScheme: @operations-team
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region workflow-diagram (
@@ -50,6 +45,7 @@ page 31 (
         settings {
             workflowId: P31_CURRENT_WORKFLOW
             enableNavigator: false
+            enableExport: false
         }
     )
 

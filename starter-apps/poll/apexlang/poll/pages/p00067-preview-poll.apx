@@ -18,7 +18,6 @@ page 67 (
         overrideUserInterfaceLevel: true
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -136,7 +135,7 @@ page 67 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

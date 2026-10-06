@@ -12,6 +12,9 @@ page 122 (
         chained: false
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
         executeWhenPageLoads:
@@ -35,8 +38,6 @@ page 122 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

@@ -6,8 +6,8 @@ plugin timer (
         standardAttributes: [
             forItem
             forRegion
-            forJavaScriptExpression
             forJquerySelector
+            forJavaScriptExpression
             forTriggeringElement
             forEventSource
             affectedElementRequired
@@ -55,7 +55,6 @@ plugin timer (
     }
     information {
         version: 1.0
-        aboutUrl: http://www.oracleapex.info/
         helpText:
             ```
             <p>
@@ -70,7 +69,6 @@ plugin timer (
             	<li>
             		Create a dynamic action for the event &quot;Timer Expired [Plug-in]&quot; where you execute your periodic actions.</li>
             </ol>
-            
             ```
     }
 )

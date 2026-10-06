@@ -1,0 +1,14 @@
+lov support-amount-types (
+    name: SUPPORT AMOUNT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_SUPRT_AMT_TYPES
+             order by 1
+            ```
+    }
+)
+

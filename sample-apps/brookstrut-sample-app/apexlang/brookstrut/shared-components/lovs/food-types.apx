@@ -1,0 +1,38 @@
+lov food-types (
+    name: FOOD TYPES
+    source {
+        location: staticValues
+    }
+
+    entry drink (
+        sequence: 20
+        display: Drink
+        return: Drink
+    )
+
+    entry food (
+        sequence: 10
+        display: Food
+        return: Food
+    )
+
+    entry miscellaneous (
+        sequence: 40
+        display: Miscellaneous
+        return: Miscellaneous
+    )
+
+    entry snacks (
+        sequence: 50
+        display: Snacks
+        return: Snacks
+    )
+
+    entry soap (
+        sequence: 30
+        display: Soap
+        return: Soap
+    )
+
+)
+

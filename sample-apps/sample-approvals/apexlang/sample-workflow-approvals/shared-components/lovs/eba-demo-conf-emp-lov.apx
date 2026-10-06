@@ -1,0 +1,12 @@
+lov eba-demo-conf-emp-lov (
+    name: EBA_DEMO_CONF_EMP_LOV
+    source {
+        tableName: EBA_DEMO_APPR_EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+

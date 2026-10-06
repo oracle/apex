@@ -32,8 +32,8 @@ plugin copyOfContentRow (
             
             
             ```
-        reportBody: <ul class="t-ContentRow{if ?STYLE/} #STYLE!ATTR#{endif/}{if ?ALIGN/} #ALIGN!ATTR#{endif/}{if APPLY_THEME_COLORS/} u-colors{endif/} #APEX$COMPONENT_CSS_CLASSES#">#APEX$ROWS#</ul>
-        reportRow: <li class="t-ContentRow-item{if ?ITEM_CLASSES/} #ITEM_CLASSES#{endif/}" #APEX$ROW_IDENTIFICATION#>#APEX$PARTIAL#</li>
+        reportBody: "<ul class=\"t-ContentRow{if ?STYLE/} #STYLE!ATTR#{endif/}{if ?ALIGN/} #ALIGN!ATTR#{endif/}{if APPLY_THEME_COLORS/} u-colors{endif/} #APEX$COMPONENT_CSS_CLASSES#\">#APEX$ROWS#</ul>"
+        reportRow: "<li class=\"t-ContentRow-item{if ?ITEM_CLASSES/} #ITEM_CLASSES#{endif/}\" #APEX$ROW_IDENTIFICATION#>#APEX$PARTIAL#</li>"
         numberOfLazyLoadingSkeletons: 3
     }
     component {

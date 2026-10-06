@@ -1,0 +1,38 @@
+searchConfig cancelled_orders_search_configuration (
+    name: Cancelled Orders Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select order_id,
+                   'ORDER#' || order_id as order_title,
+                   order_status,
+                   order_datetime,
+                   customer_id,
+                   full_name            as customer_name,
+                   items 
+             from eba_demo_search_cust_ord_prd 
+            where order_status = 'CANCELLED'
+            ```
+        searchableColumns: [
+            ORDER_TITLE
+            ORDER_STATUS
+            ITEMS
+            ORDER_ID
+            CUSTOMER_NAME
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ORDER_ID
+        titleColumn: ORDER_TITLE
+        subtitleColumn: CUSTOMER_NAME
+        descriptionColumn: ITEMS
+        badgeColumn: ORDER_STATUS
+        lastModifiedColumn: ORDER_DATETIME
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-exclamation-circle u-danger-text
+    }
+)
+

@@ -8,12 +8,11 @@ page 10 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -123,9 +122,6 @@ page 10 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No validations have been recorded

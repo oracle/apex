@@ -1,0 +1,166 @@
+list top-bar (
+    name: Top Bar
+
+    entry about (
+        label: About
+        icon {
+            imageIconCssClasses: fa-info-circle-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 39
+                clearCache: 39
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                39
+                50
+                63
+                68
+            ]
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                50
+                51
+                63
+                68
+                69
+                90
+            ]
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: a-Icon icon-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                51
+                57
+            ]
+        }
+    )
+
+    entry communities (
+        label: Communities
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 25
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                9
+                14
+                50
+                51
+                63
+                68
+                69
+                90
+            ]
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: [
+                14
+                50
+                51
+                57
+                67
+            ]
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-power-off
+        }
+        layout {
+            sequence: 100
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+

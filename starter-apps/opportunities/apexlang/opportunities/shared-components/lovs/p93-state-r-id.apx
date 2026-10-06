@@ -1,0 +1,17 @@
+lov p93-state-r-id (
+    name: P93_STATE_R_ID
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select state d, id r
+            from  eba_sales_states
+            where id not in (select state_id
+                             from eba_sales_terr_map
+                             where territory_id = :P93_ID
+                             and state_id is not null)
+            order by 1
+            ```
+    }
+)
+

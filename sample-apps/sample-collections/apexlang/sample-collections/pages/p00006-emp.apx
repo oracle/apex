@@ -7,6 +7,7 @@ page 6 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -16,10 +17,6 @@ page 6 (
             	border-top: 1px solid var(--ut-report-cell-border-color, var(--ut-component-inner-border-color))
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -31,7 +28,7 @@ page 6 (
         source {
             htmlCode:
                 ```html
-                <p>This use case populates an Oracle Application Express (APEX) collection from a sample Employees table, the user updates the collection, and then synchroniz
+                <p>This use case populates an Oracle APEX collection from a sample Employees table, the user updates the collection, and then synchroniz
                 es the data in the collection with the base table.  To use this example, please follow the instructions below.</p>
                 <ol>
                 <li>Populate the collection from the EBA_DEMO_CS_EMP table

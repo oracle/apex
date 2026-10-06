@@ -7,7 +7,6 @@ page 2 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -32,8 +31,6 @@ page 2 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -118,9 +115,6 @@ page 2 (
                 t-Comments--chat
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 5000
@@ -354,6 +348,9 @@ page 2 (
             ]
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -544,9 +541,6 @@ page 2 (
                 t-Report--inline
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 5000
@@ -768,6 +762,9 @@ page 2 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -1104,9 +1101,6 @@ page 2 (
                 t-Report--inline
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 5000

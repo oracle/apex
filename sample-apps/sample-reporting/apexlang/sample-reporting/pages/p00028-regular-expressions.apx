@@ -7,15 +7,10 @@ page 28 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .highlight {background-color: yellow;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".highlight {background-color: yellow;}"
     }
     advanced {
         reloadOnSubmit: always
@@ -157,7 +152,7 @@ page 28 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -178,7 +173,7 @@ page 28 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -199,7 +194,7 @@ page 28 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -220,7 +215,7 @@ page 28 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -236,7 +231,7 @@ page 28 (
                 sequence: 4
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -252,7 +247,7 @@ page 28 (
                 sequence: 1
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -268,7 +263,7 @@ page 28 (
                 sequence: 3
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: C
@@ -284,7 +279,7 @@ page 28 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -300,7 +295,7 @@ page 28 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B

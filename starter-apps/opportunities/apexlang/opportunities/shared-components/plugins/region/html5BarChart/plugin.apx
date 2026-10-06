@@ -411,7 +411,6 @@ plugin html5BarChart (
     }
     information {
         version: 20.2
-        aboutUrl: http://apex.oracle.com/plugins
         helpText: <p>This plugin draws horizontal bar charts containing labels, values and even icons</p>
     }
 

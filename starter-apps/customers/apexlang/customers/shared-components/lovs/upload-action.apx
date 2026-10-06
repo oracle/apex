@@ -1,0 +1,30 @@
+lov upload-action (
+    name: UPLOAD_ACTION
+    source {
+        location: staticValues
+    }
+
+    entry insert (
+        sequence: 1
+        display: Insert
+        return: INSERT
+    )
+
+    entry no-change (
+        sequence: 3
+        display: No Change
+        return: NOTHING
+        serverSideCondition {
+            type: currentPage!=page
+            page: 35
+        }
+    )
+
+    entry update (
+        sequence: 2
+        display: Update
+        return: UPDATE
+    )
+
+)
+

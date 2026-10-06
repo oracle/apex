@@ -39,7 +39,7 @@ begin
                set status = 'NO-APPROVERS'
              where id = p_project_approval_id;
         else 
-            -- if submittor is in approval chain, start after that person
+            -- if submittor is in approval chain, auto-approve that person
             for c2 in (
                 select id
                   from sp_initiative_approval_chain
@@ -51,13 +51,23 @@ begin
                    and active_yn = 'Y'
             ) loop
                 insert into sp_project_approval_chain
-                    (project_approval_id, initiative_approval_chain_id, team_member_id, status)
+                    (project_approval_id, initiative_approval_chain_id, team_member_id, status, comments)
                 values
-                    (p_project_approval_id, c2.id, p_team_member_id, 'APPROVED');
+                    (p_project_approval_id, c2.id, p_team_member_id, 'APPROVED', 'auto approved');
                 commit;
             end loop;
         end if;
     end loop;
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'submit_for_approval', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_id', p_arg1_val => p_project_id, 
+            p_arg2_name       => 'p_approval_type_id', p_arg2_val => p_approval_type_id,
+            p_arg3_name       => 'p_team_member_id', p_arg3_val => p_team_member_id );
 end submit_for_approval;
 
 
@@ -93,6 +103,15 @@ begin
         set status = 'PENDING'
       where id = l_project_approval_id;
 
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'clarify', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id, 
+            p_arg2_name       => 'p_team_member_id', p_arg2_val => p_team_member_id );
 end clarify;
 
 
@@ -118,6 +137,15 @@ begin
      where project_approval_id = p_project_approval_id
        and initiative_approval_chain_id is not null;
 
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'withdraw', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_id', p_arg1_val => p_project_approval_id, 
+            p_arg2_name       => 'p_team_member_id', p_arg2_val => p_team_member_id );
 end withdraw;
 
 
@@ -207,12 +235,101 @@ begin
 end more_info_pending_cnt;
 
 
+procedure delegate (
+    p_project_approval_chain_id  in  number,
+    p_delegate_reason            in  varchar2, -- 'APPROVER-SET-INACTIVE','REASSIGNMENT'
+    p_delegate_comments          in  varchar2,
+    p_team_member_id             in  number )
+is
+    l_task_id                      number;
+    l_new_proj_approval_chain_id   number;
+    l_parameters                   apex_human_task.t_task_parameters;
+begin
+
+    for c1 in (
+        select project_approval_id,
+               initiative_approval_chain_id,
+               (select upper(email)
+                  from sp_team_members
+                 where id = p_team_member_id) team_member_email,
+               (select task_id
+                  from apex_task_parameters
+                 where param_static_id = 'V_PROJECT_APPROVAL_CHAIN_ID'
+                   and param_value = p_project_approval_chain_id) task_id
+          from sp_project_approval_chain
+         where id = p_project_approval_chain_id
+    ) loop
+        l_task_id := c1.task_id;
+
+        -- UPDATE OLD REQUEST
+        update sp_project_approval_chain
+           set status = p_delegate_reason, 
+               last_status_on = sysdate,
+               final_yn = 'N',
+               comments = p_delegate_comments
+         where id = p_project_approval_chain_id;
+
+        -- CREATE NEW REQUEST
+        insert into sp_project_approval_chain
+            (project_approval_id, initiative_approval_chain_id, team_member_id, status)
+        values
+            (c1.project_approval_id, c1.initiative_approval_chain_id, p_team_member_id, 'PENDING')
+        returning id into l_new_proj_approval_chain_id;
+	
+        l_parameters(1) := apex_human_task.t_task_parameter (
+            static_id    => 'V_PROJECT_APPROVAL_CHAIN_ID',
+            string_value => to_char(l_new_proj_approval_chain_id) );
+        l_parameters(2) := apex_human_task.t_task_parameter (
+            static_id    => 'V_REVIEWER_TM_ID',
+            string_value => to_char(p_team_member_id) );
+
+        apex_human_task.set_task_parameter_values (
+            p_task_id    => l_task_id,
+            p_parameters => l_parameters );
+
+        for c2 in (
+            select workflow_id
+              from apex_workflow_variables
+             where static_id = 'V_PROJECT_APPROVAL_CHAIN_ID'
+               and display_value = p_project_approval_chain_id
+        ) loop
+            --  MUST SUSPEND TO UPDATE
+            apex_workflow.suspend(p_instance_id => c2.workflow_id);
+            apex_workflow.update_variables (
+                p_instance_id => c2.workflow_id,
+                p_changed_params => apex_workflow.t_workflow_parameters (
+                    1 => apex_workflow.t_workflow_parameter(static_id => 'V_PROJECT_APPROVAL_CHAIN_ID', string_value => to_char(l_new_proj_approval_chain_id)),
+                    2 => apex_workflow.t_workflow_parameter(static_id => 'V_REVIEWER_TM_ID', string_value => to_char(p_team_member_id)) ));
+            apex_workflow.resume(p_instance_id => c2.workflow_id);
+        end loop;
+
+        apex_human_task.add_task_potential_owner (
+            p_task_id         => l_task_id,
+            p_potential_owner => c1.team_member_email );
+
+        apex_human_task.delegate_task (
+            p_task_id => l_task_id,
+            p_to_user => c1.team_member_email );
+
+    end loop;
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'delegate', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id, 
+            p_arg2_name       => 'p_team_member_id', p_arg2_val => p_team_member_id,
+            p_arg3_name       => 'l_task_id', p_arg3_val => l_task_id );
+end delegate;
+
+
 -----------------------------------------------
 
 procedure identify_next_reviewer (
     p_project_approval_id        in   number,
     p_project_approval_chain_id  out  number,
-    p_reviewer_email             out  varchar2,
     p_reviewer_tm_id             out  number )
 is
     l_project_approval_chain_id  number;
@@ -238,13 +355,13 @@ begin
                                where project_approval_id = pa.id
                                  and status = 'APPROVED'
                                  and final_yn = 'Y')
-           and iac.approval_seq > nvl((select max(iac2.approval_seq)
-                                         from sp_project_approval_chain pac,
-                                              sp_initiative_approval_chain iac2
-                                        where pac.initiative_approval_chain_id = iac2.id
-                                          and pac.project_approval_id = pa.id
-                                          and pac.status = 'APPROVED'
-                                          and pac.final_yn = 'Y'),-100)
+--           and iac.approval_seq > nvl((select max(iac2.approval_seq)
+--                                         from sp_project_approval_chain pac,
+--                                              sp_initiative_approval_chain iac2
+--                                        where pac.initiative_approval_chain_id = iac2.id
+--                                          and pac.project_approval_id = pa.id
+--                                          and pac.status = 'APPROVED'
+--                                          and pac.final_yn = 'Y'),-100)
          order by iac.approval_seq
          )
     ) loop
@@ -254,11 +371,21 @@ begin
         commit;
 
         p_project_approval_chain_id := l_project_approval_chain_id;
-        p_reviewer_email := c1.reviewer_email;
         p_reviewer_tm_id := c1.team_member_id;
 
         exit;  -- to just get the next stop
     end loop;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'identify_next_reviewer', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_id', p_arg1_val => p_project_approval_id, 
+            p_arg2_name       => 'p_project_approval_chain_id', p_arg2_val => p_project_approval_chain_id, 
+            p_arg3_name       => 'p_reviewer_tm_id', p_arg3_val => p_reviewer_tm_id );
 end identify_next_reviewer;
 
 
@@ -270,6 +397,15 @@ begin
        set status = 'APPROVED',
            last_status_on = sysdate
      where id = p_project_approval_chain_id;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'approve', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id );
 end approve;
 
 
@@ -293,6 +429,15 @@ begin
        set initiative_approval_chain_id = null
      where project_approval_id = l_project_approval_id
        and initiative_approval_chain_id is not null;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'reject', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id );
 end reject;
 
 
@@ -304,6 +449,16 @@ begin
     update sp_project_approval_chain
        set comments = p_comments
      where id = p_project_approval_chain_id;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'add_comments', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id, 
+            p_arg2_name       => 'p_comments', p_arg2_val => substr(p_comments,1,4000) );
 end add_comments;
 
 
@@ -323,6 +478,16 @@ begin
     update sp_project_approvals
        set status = 'CLARIFICATION-REQUESTED'
      where id = l_project_approval_id;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'request_clarification', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_chain_id', p_arg1_val => p_project_approval_chain_id, 
+            p_arg2_name       => 'p_comments', p_arg2_val => substr(p_comments,1,4000) );
 end request_clarification;
 
 
@@ -339,7 +504,17 @@ begin
        set initiative_approval_chain_id = null
      where project_approval_id = p_project_approval_id
        and initiative_approval_chain_id is not null;
+
+exception
+    when others then
+        sp_util.add_error_log (
+            p_package_name    => 'sp_approvals',
+            p_procedure_name  => 'approve_request', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_approval_id', p_arg1_val => p_project_approval_id );
 end approve_request;
+
 
 end sp_approvals;
 /

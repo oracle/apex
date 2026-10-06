@@ -8,13 +8,8 @@ page 4014 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -124,7 +119,7 @@ page 4014 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -142,7 +137,7 @@ page 4014 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -158,7 +153,7 @@ page 4014 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -177,7 +172,7 @@ page 4014 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: C
@@ -193,7 +188,7 @@ page 4014 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -210,7 +205,7 @@ page 4014 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -226,7 +221,7 @@ page 4014 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -242,7 +237,7 @@ page 4014 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -258,7 +253,7 @@ page 4014 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -277,7 +272,7 @@ page 4014 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -293,7 +288,7 @@ page 4014 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F

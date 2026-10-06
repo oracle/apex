@@ -7,12 +7,7 @@ page 9 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -574,9 +569,6 @@ page 9 (
             layout {
                 sequence: 100
                 columnAlignment: center
-            }
-            validation {
-                valueRequired: true
             }
             source {
                 databaseColumn: ONLEAVE

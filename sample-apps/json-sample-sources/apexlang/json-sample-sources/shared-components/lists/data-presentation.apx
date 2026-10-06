@@ -1,0 +1,113 @@
+list data-presentation (
+    name: Data Presentation
+
+    entry charts-from-json (
+        label: Charts from JSON
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+        userDefinedAttributes {
+            1: Visualizes JSON data using dynamic charts and graphical components.
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 403
+            }
+        }
+        userDefinedAttributes {
+            1: Enables advanced filtering and search capabilities across JSON datasets.
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        icon {
+            imageIconCssClasses: fa-layout-grid-3x
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            1: Provides an editable grid interface for managing structured and JSON-based data.
+        }
+    )
+
+    entry map (
+        label: Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+        userDefinedAttributes {
+            1: Displays location-based data using map visualization integrated with JSON data.
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        icon {
+            imageIconCssClasses: fa-layout-header-sidebar-left
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+        userDefinedAttributes {
+            1: Shows relationships between datasets with synchronized master-detail views.
+        }
+    )
+
+    entry search-page (
+        label: Search Page
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 45
+        }
+        link {
+            target: {
+                page: 408
+            }
+        }
+        userDefinedAttributes {
+            1: Searches JSON-based product data instantly using Standard Search Configuration.
+        }
+    )
+
+)
+

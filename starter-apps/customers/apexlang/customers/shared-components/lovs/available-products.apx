@@ -1,0 +1,13 @@
+lov available-products (
+    name: AVAILABLE_PRODUCTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_name d, id r
+            from   eba_cust_products
+            order by 1
+            ```
+    }
+)
+

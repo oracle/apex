@@ -6,9 +6,6 @@ page 6307 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -89,8 +86,6 @@ page 6307 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -162,9 +157,6 @@ page 6307 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column COLOR_BLOCK (
@@ -757,9 +749,6 @@ page 6307 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column CLASS (

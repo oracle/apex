@@ -12,13 +12,14 @@ page 76 (
         chained: false
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:

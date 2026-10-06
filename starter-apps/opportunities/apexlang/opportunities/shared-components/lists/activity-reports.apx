@@ -1,0 +1,76 @@
+list activity-reports (
+    name: Activity Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 3
+        }
+        link {
+            target: {
+                page: 139
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of application activity, reporting distinct users and total page views by day.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 90
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of page view details.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 91
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of page views aggregated by user.
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+

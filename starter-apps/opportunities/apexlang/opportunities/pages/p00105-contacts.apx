@@ -16,14 +16,13 @@ page 105 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .t-Dialog-body {padding: 0; overflow: hidden;}
+        inline: ".t-Dialog-body {padding: 0; overflow: hidden;}"
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -131,7 +130,7 @@ page 105 (
                 sequence: 13
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -147,7 +146,7 @@ page 105 (
                 sequence: 57
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -163,7 +162,7 @@ page 105 (
                 sequence: 15
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -179,7 +178,7 @@ page 105 (
                 sequence: 37
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -195,7 +194,7 @@ page 105 (
                 sequence: 17
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -211,7 +210,7 @@ page 105 (
                 sequence: 16
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -227,7 +226,7 @@ page 105 (
                 sequence: 27
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -243,7 +242,7 @@ page 105 (
                 sequence: 47
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -262,7 +261,7 @@ page 105 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -279,7 +278,7 @@ page 105 (
                 sequence: 87
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -295,7 +294,7 @@ page 105 (
                 sequence: 107
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: X
@@ -317,7 +316,7 @@ page 105 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -334,7 +333,7 @@ page 105 (
                 sequence: 97
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G

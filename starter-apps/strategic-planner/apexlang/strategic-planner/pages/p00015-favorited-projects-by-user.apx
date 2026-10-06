@@ -7,13 +7,8 @@ page 15 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: &NOMENCLATURE_PROJECTS. that have been favorited.
@@ -267,9 +262,6 @@ page 15 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

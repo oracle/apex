@@ -7,6 +7,7 @@ page 20 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -25,8 +26,6 @@ page 20 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -112,7 +111,7 @@ page 20 (
                 formatMask: 999G999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -128,7 +127,7 @@ page 20 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -146,7 +145,7 @@ page 20 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -162,7 +161,7 @@ page 20 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -178,7 +177,7 @@ page 20 (
                 sequence: 6
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -194,7 +193,7 @@ page 20 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -210,7 +209,7 @@ page 20 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -226,7 +225,7 @@ page 20 (
                 sequence: 1
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             advanced {
                 endUserAlias: A
@@ -250,7 +249,7 @@ page 20 (
                 formatMask: 999G999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G

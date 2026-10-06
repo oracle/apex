@@ -3,13 +3,7 @@ declare
                                                 'eba_util_farest_cat_baseurl',
                                                 'eba_util_farest_endpoint_attrs',
                                                 'eba_util_farest_endpoint_chobj',
-                                                'eba_util_farest_endpoints',
-                                                'eba_util_facat_pillars',
-                                                'eba_util_facat_releases',
-                                                'eba_util_facat_catalogs',
-                                                'eba_util_facat_endpoints',
-                                                'eba_util_facat_endpoint_attrs',
-                                                'eba_util_facat_server_prefixes');
+                                                'eba_util_farest_endpoints');
 begin
     --
     -- Quietly drop all tables in the list

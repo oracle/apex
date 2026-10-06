@@ -11,13 +11,6 @@ page 222 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region p222-label-a (
         name: &P222_LABEL_A.
@@ -106,6 +99,9 @@ page 222 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DESCRIPTION (
@@ -245,6 +241,9 @@ page 222 (
                 t-Report--rowHighlight
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column DESCRIPTION (
             reportColumnQueryId: 3
@@ -382,6 +381,9 @@ page 222 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DESCRIPTION (
@@ -521,6 +523,9 @@ page 222 (
                 t-Report--rowHighlight
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column DESCRIPTION (
             reportColumnQueryId: 3
@@ -658,6 +663,9 @@ page 222 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DESCRIPTION (

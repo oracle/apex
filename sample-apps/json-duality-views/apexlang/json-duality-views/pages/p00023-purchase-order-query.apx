@@ -10,13 +10,8 @@ page 23 (
     dialog {
         chained: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about (
@@ -277,6 +272,9 @@ page 23 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column "Child Array" (

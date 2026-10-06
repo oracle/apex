@@ -1,0 +1,16 @@
+lov timeframes-showing-dates (
+    name: TIMEFRAMES (SHOWING DATES)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select tf_name || ' (' || start_date || ' to ' ||
+                                      end_date || ')' d, 
+                   tf_id r
+              from EBA_ca_timeframes
+             order by start_date
+            
+            ```
+    }
+)
+

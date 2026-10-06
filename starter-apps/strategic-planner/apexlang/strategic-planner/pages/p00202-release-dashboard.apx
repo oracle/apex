@@ -7,35 +7,15 @@ page 202 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
+        warnOnUnsavedChanges: false
     }
     css {
         inline:
             ```css
-            .sp-tag {
-                padding: 2px 4px;
-                display: inline-block;
-                vertical-align: text-bottom;
-                border-radius: 3px;
-                background-color: rgba(0,0,0,.1);
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
-            .sp-tags-container {
-                display: flex;
-                align-items: center;
-                flex-wrap: wrap;
-                gap: 4px;
-                justify-content: flex-start;
-            }
-            
             .resize-region {
               resize: vertical;
               overflow: auto;
             }
-            
-            .a-CardView-iconWrap,
-            .a-CardView-badge { align-self: flex-start; }
             
             .project-rds-region {
                 background-color: rgb(219 204 175 / 20%);
@@ -83,8 +63,10 @@ page 202 (
             th#SPECS_COMPLETED,
             td[headers="SPECS_COMPLETED"],
             th#P1,
-            td[headers="P1"] {
-              border-inline-start-width: 0.25rem;
+            td[headers="P1"],
+            th#INCOMPLETE_CNT,
+            td[headers="INCOMPLETE_CNT"] {
+              border-inline-start-width: 2px;
             }
             
             th#P1,
@@ -186,25 +168,31 @@ page 202 (
             }
             
             th#MOST_RECENT_COMMENT,
-            th#CURRENTLY_ACTIVE_PROJECTS,
-            [headers="MOST_RECENT_COMMENT"],
-            [headers="CURRENTLY_ACTIVE_PROJECTS"] {
+            [headers="MOST_RECENT_COMMENT"] {
               background-color: var(--rw-palette-plum-10);
             }
             
             tr:hover th#MOST_RECENT_COMMENT,
-            tr:hover th#CURRENTLY_ACTIVE_PROJECTS,
-            tr:hover [headers="MOST_RECENT_COMMENT"],
-            tr:hover [headers="CURRENTLY_ACTIVE_PROJECTS"] {
+            tr:hover [headers="MOST_RECENT_COMMENT"] {
               background-color: var(--rw-palette-plum-20);
             }
             
             h3:first-of-type { margin-top: 0; }
+            
+            th#INCOMPLETE_CNT,
+            th#TOTAL_CNT,
+            [headers="INCOMPLETE_CNT"],
+            [headers="TOTAL_CNT"] {
+              background-color: var(--rw-palette-red-10);
+            }
+            
+            tr:hover th#INCOMPLETE_CNT,
+            tr:hover th#TOTAL_CNT,
+            tr:hover [headers="INCOMPLETE_CNT"],
+            tr:hover [headers="TOTAL_CNT"] {
+              background-color: var(--rw-palette-red-20);
+            }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @releases
@@ -234,11 +222,209 @@ page 202 (
         }
     )
 
-    region dashboard (
-        name: Dashboard
+    region by-focus-area (
+        name: &NOMENCLATURE_PROJECTS. by Focus Area
         type: staticContent
         layout {
-            sequence: 50
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region by-reviewer (
+        name: Reviews
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select reviewer_id,
+                       (select tm.first_Name||' '||tm.last_name 
+                          from sp_team_members tm
+                         where tm.id = x.reviewer_id) ob,
+                       nvl((select tm.first_Name||' '||tm.last_name 
+                              from sp_team_members tm
+                             where tm.id = x.reviewer_id),'Unknown') reviewer,
+                       listagg(cnt||' '||review_type||' '||status,', ') within group (order by t_seq, s_seq, review_type, status) details,
+                       sum(incomplete) incomplete_cnt,
+                       sum(cnt) total_cnt
+                  from
+                (
+                select r.owner_id reviewer_id,
+                       t.task_type review_type,
+                       t.display_seq t_seq,
+                       s.status,
+                       s.display_seq s_seq,
+                       case when s.indicates_complete_yn = 'N' then 1 else 0 end incomplete,
+                       count(*) cnt
+                  from sp_projects p,
+                       sp_tasks r,
+                       sp_task_types t,
+                       sp_task_statuses s
+                 where p.release_id = :P202_RELEASE_ID
+                   and nvl(p.archived_yn,'N') = 'N'
+                   and p.duplicate_of_project_id is null
+                   and r.project_id = p.id
+                   and nvl(r.task_sub_type_id,r.task_type_id) = t.id
+                   and t.static_id like 'REVIEW%'
+                   and s.id = r.status_id
+                 group by r.owner_id, t.task_type, t.display_seq, s.status, s.display_seq, s.indicates_complete_yn
+                ) x
+                 group by reviewer_id
+                ```
+            pageItemsToSubmit: P202_RELEASE_ID
+        }
+        layout {
+            sequence: 100
+            parentRegion: @dashboard
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 150
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+        }
+        messages {
+            whenNoDataFound: No Reviews found
+        }
+        breakFormatting {
+            reportSumLabel: &nbsp;
+        }
+
+        column DETAILS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Review Details
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column INCOMPLETE_CNT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Incomplete Reviews
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+        column OB (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column REVIEWER (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Reviewer
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #REVIEWER_ID#
+                    }
+                    clearCache: 73
+                }
+                linkText: #REVIEWER#
+            }
+            columnFormatting {
+                cssClasses: nowrap;
+            }
+        )
+
+        column REVIEWER_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column TOTAL_CNT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Total Reviews
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            advanced {
+                computeSum: true
+            }
+        )
+
+    )
+
+    region dashboard (
+        name: Grid Reports
+        type: staticContent
+        layout {
+            sequence: 60
             slot: body
         }
         appearance {
@@ -255,179 +441,250 @@ page 202 (
         }
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
+    region fa-by-count (
+        name: project count
+        type: chart
         layout {
             sequence: 30
-            parentRegion: @breadcrumb
-            slot: subRegions
+            parentRegion: @by-focus-area
+            slot: regionBody
         }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Priority"
+                    };
+                
+                    options.valueFormats.group = {
+                        tooltipLabel: "Focus Area"
+                    };
+                
+                    options.valueFormats.value.tooltipLabel = "&NOMENCLATURE_PROJECT. Count";
+                
+                    return options;
+                }
+                ```
         }
 
-        column ACTIONS (
-            layout {
+        series data (
+            name: data
+            execution {
                 sequence: 10
             }
             source {
-                databaseColumn: ACTIONS
-                dataType: number
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select nvl(f.focus_area,'{None Assigned}') label,
+                           'P'||r.priority series, 
+                           count(*) value
+                      from sp_projects p,
+                           sp_release_trains t,
+                           sp_project_priorities r,
+                           sp_initiative_focus_areas f
+                     where t.id = :P202_RELEASE_ID
+                       and p.release_id = t.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                       and p.priority_id = r.id
+                       and p.focus_area_id = f.id (+)
+                    group by f.focus_area, r.priority
+                    order by f.focus_area nulls last
+                    ```
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
             }
         )
 
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            title: &NOMENCLATURE_PROJECT. Count
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
             }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 70
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 20
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 202
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu release-calendar (
-                label: Release Calendar
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 203
-                        items: {
-                            P203_RELEASE_ID: &P202_RELEASE_ID.
-                        }
-                        clearCache: 203
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-calendar-o
-                }
-            )
-
-            menu release-home (
-                label: Release Home
-                layout {
-                    sequence: 10
-                }
-                behavior {
-                    target: {
-                        page: 117
-                        items: {
-                            P117_RELEASE_ID: &P202_RELEASE_ID.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-ship
-                }
-            )
-
-            menu release-nomenclature-projects (
-                label: Release &NOMENCLATURE_PROJECTS.
-                layout {
-                    sequence: 30
-                }
-                behavior {
-                    target: {
-                        page: 300
-                        items: {
-                            P300_RELEASE_ID: &P202_RELEASE_ID.
-                        }
-                        clearCache: 300
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-search
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 90
-                }
-                behavior {
-                    target: {
-                        page: 202
-                        items: {
-                            P202_RELEASE_ID: &P202_RELEASE_ID.
-                        }
-                        clearCache: 202
-                        action: resetRegions
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-            menu view-history (
-                label: View History
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 14
-                        items: {
-                            P14_RELEASE_ID: &P202_RELEASE_ID.
-                        }
-                        clearCache: 14
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-clock-o
-                }
-            )
-
         )
 
     )
 
-    region nomenclature-projects-by-owner (
+    region fa-by-est-days (
+        name: estimated days
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @by-focus-area
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            footerText: Weighted count multiplies each &NOMENCLATURE_PROJECT. by the effort in days associated with its identified size.
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Priority"
+                    };
+                
+                    options.valueFormats.group = {
+                        tooltipLabel: "Focus Area"
+                    };
+                
+                    options.valueFormats.value.tooltipLabel = "Estimated Effort in Days";
+                
+                    return options;
+                }
+                ```
+        }
+
+        series data (
+            name: data
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select label, series, sum(effort_days) value
+                      from
+                    (
+                    with min_size as
+                        (select min(effort_days) min_days
+                           from sp_project_sizes
+                          where include_yn = 'Y')
+                    select f.focus_area,
+                           nvl(f.focus_area,'{None Assigned}') label,
+                           'P'||r.priority series, 
+                           nvl(s.effort_days,m.min_days) effort_days
+                      from sp_projects p,
+                           sp_release_trains t,
+                           sp_project_priorities r,
+                           sp_initiative_focus_areas f,
+                           sp_project_sizes s,
+                           min_size m
+                     where t.id = :P202_RELEASE_ID
+                       and p.release_id = t.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                       and p.priority_id = r.id
+                       and p.project_size = s.project_size (+)
+                       and p.focus_area_id = f.id (+)
+                    )
+                    group by focus_area, label, series
+                    order by focus_area nulls last
+                    ```
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
+            }
+        )
+
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            title: Estimated Days
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region new (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region pie-charts (
+        name: Pie Charts
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region projects-by-owner (
         name: &NOMENCLATURE_PROJECTS. by Owner
         type: classicReport
         source {
@@ -445,18 +702,6 @@ page 202 (
                     effort_days - days_completed as days_outstanding,
                     round(sum_pct_complete / project_count) pct_complete,
                     100 - round(sum_pct_complete / project_count) pct_outstanding,
-                    --
-                    -- currently active projects
-                    --
-                    (select count(*) 
-                       from sp_projects p, SP_ACTIVITIES a
-                      where p.ARCHIVED_YN = 'N' and 
-                            p.DUPLICATE_OF_PROJECT_ID is null and 
-                            p.release_id = :P202_RELEASE_ID and
-                            p.id = a.project_id and
-                            sysdate > a.START_DATE and
-                            trunc(sysdate) <= a.END_DATE and
-                            p.owner_id = x.owner_id) currently_active_projects,
                     --
                     -- most recent comment
                     --
@@ -551,25 +796,6 @@ page 202 (
             reportSumLabel: &nbsp;
         }
 
-        column CURRENTLY_ACTIVE_PROJECTS (
-            reportColumnQueryId: 10
-            derivedColumn: N
-            heading {
-                heading: Currently Active &NOMENCLATURE_PROJECT. Count
-                alignment: end
-            }
-            layout {
-                sequence: 270
-                columnAlignment: end
-            }
-            appearance {
-                formatMask: 999G999G999G999G999G999G990
-            }
-            advanced {
-                computeSum: true
-            }
-        )
-
         column DAYS_COMPLETED (
             reportColumnQueryId: 6
             derivedColumn: N
@@ -628,7 +854,7 @@ page 202 (
         )
 
         column MOST_RECENT_COMMENT (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Last Comment
@@ -644,7 +870,7 @@ page 202 (
         )
 
         column P1 (
-            reportColumnQueryId: 23
+            reportColumnQueryId: 22
             derivedColumn: N
             heading {
                 heading: P1
@@ -663,7 +889,7 @@ page 202 (
         )
 
         column P2 (
-            reportColumnQueryId: 24
+            reportColumnQueryId: 23
             derivedColumn: N
             heading {
                 heading: P2
@@ -682,7 +908,7 @@ page 202 (
         )
 
         column P3 (
-            reportColumnQueryId: 25
+            reportColumnQueryId: 24
             derivedColumn: N
             heading {
                 heading: P3
@@ -701,7 +927,7 @@ page 202 (
         )
 
         column P4 (
-            reportColumnQueryId: 26
+            reportColumnQueryId: 25
             derivedColumn: N
             heading {
                 heading: P4
@@ -720,7 +946,7 @@ page 202 (
         )
 
         column P5 (
-            reportColumnQueryId: 27
+            reportColumnQueryId: 26
             derivedColumn: N
             heading {
                 heading: P5
@@ -739,7 +965,7 @@ page 202 (
         )
 
         column PCT_0 (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 11
             derivedColumn: N
             type: hidden
             layout {
@@ -748,7 +974,7 @@ page 202 (
         )
 
         column PCT_10 (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: 10%
@@ -767,7 +993,7 @@ page 202 (
         )
 
         column PCT_100 (
-            reportColumnQueryId: 22
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: 100%
@@ -786,7 +1012,7 @@ page 202 (
         )
 
         column PCT_20 (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: 20%
@@ -805,7 +1031,7 @@ page 202 (
         )
 
         column PCT_30 (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: 30%
@@ -824,7 +1050,7 @@ page 202 (
         )
 
         column PCT_40 (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: 40%
@@ -843,7 +1069,7 @@ page 202 (
         )
 
         column PCT_50 (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: 50%
@@ -862,7 +1088,7 @@ page 202 (
         )
 
         column PCT_60 (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: 60%
@@ -881,7 +1107,7 @@ page 202 (
         )
 
         column PCT_70 (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: 70%
@@ -900,7 +1126,7 @@ page 202 (
         )
 
         column PCT_80 (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: 80%
@@ -919,7 +1145,7 @@ page 202 (
         )
 
         column PCT_90 (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: 90%
@@ -1038,7 +1264,92 @@ page 202 (
 
     )
 
-    region nomenclature-projects-by-priority (
+    region projects-by-percent-complete (
+        name: &NOMENCLATURE_PROJECTS. by Percent Complete Chart
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @pie-charts
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: pie
+        }
+        performance {
+            lazyLoading: true
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Percent Complete"
+                    };
+                
+                    options.valueFormats.value = {
+                        tooltipLabel: "&NOMENCLATURE_PROJECT. Count",
+                        scaling: "none",
+                        converter: {
+                            format: function (value) {
+                                return apex.locale.formatNumber(value, "FM9999999990");
+                            }
+                        }
+                    };
+                
+                    return options;
+                }
+                ```
+        }
+
+        series series-1 (
+            name: Series
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select pct_complete||'%' label, count(*) value
+                      from sp_projects
+                     where nvl(archived_yn,'N') = 'N'
+                       and duplicate_of_project_id is null
+                       and release_id = :P202_RELEASE_ID
+                     group by pct_complete
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region projects-by-priority (
         name: &NOMENCLATURE_PROJECTS. by Priority
         type: classicReport
         source {
@@ -1055,19 +1366,6 @@ page 202 (
                     effort_days - round(sum_pct_complete / project_count) * EFFORT_DAYS * .01 as days_outstanding,
                     round(sum_pct_complete / project_count) pct_complete,
                     100 - round(sum_pct_complete / project_count) pct_outstanding,
-                    --
-                    -- count of projects with current activity
-                    --
-                    (select count(*) 
-                        from  sp_projects p, SP_ACTIVITIES a
-                        where p.ARCHIVED_YN = 'N' and 
-                              p.DUPLICATE_OF_PROJECT_ID is null and 
-                              p.release_id = :P202_RELEASE_ID and
-                              p.id = a.project_id and
-                              sysdate > a.START_DATE and
-                              trunc(sysdate) <= a.END_DATE and
-                              p.priority_id = x.PRIORITY_ID 
-                              ) currently_active_projects,
                     --
                     -- most recent comment
                     --
@@ -1135,28 +1433,12 @@ page 202 (
                 t-Report--rowHighlight
             ]
         }
+        pagination {
+            type: showAll
+        }
         breakFormatting {
             reportSumLabel: &nbsp;
         }
-
-        column CURRENTLY_ACTIVE_PROJECTS (
-            reportColumnQueryId: 9
-            derivedColumn: N
-            heading {
-                heading: Currently Active &NOMENCLATURE_PROJECT. Count
-                alignment: end
-            }
-            layout {
-                sequence: 220
-                columnAlignment: end
-            }
-            sorting {
-                sortable: false
-            }
-            advanced {
-                computeSum: true
-            }
-        )
 
         column DAYS_COMPLETED (
             reportColumnQueryId: 5
@@ -1225,7 +1507,7 @@ page 202 (
         )
 
         column MOST_RECENT_COMMENT (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Last Comment
@@ -1244,7 +1526,7 @@ page 202 (
         )
 
         column PCT_0 (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 10
             derivedColumn: N
             type: hidden
             layout {
@@ -1253,7 +1535,7 @@ page 202 (
         )
 
         column PCT_10 (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: 10%
@@ -1272,7 +1554,7 @@ page 202 (
         )
 
         column PCT_100 (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: 100%
@@ -1291,7 +1573,7 @@ page 202 (
         )
 
         column PCT_20 (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: 20%
@@ -1310,7 +1592,7 @@ page 202 (
         )
 
         column PCT_30 (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: 30%
@@ -1329,7 +1611,7 @@ page 202 (
         )
 
         column PCT_40 (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: 40%
@@ -1348,7 +1630,7 @@ page 202 (
         )
 
         column PCT_50 (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: 50%
@@ -1367,7 +1649,7 @@ page 202 (
         )
 
         column PCT_60 (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: 60%
@@ -1386,7 +1668,7 @@ page 202 (
         )
 
         column PCT_70 (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: 70%
@@ -1405,7 +1687,7 @@ page 202 (
         )
 
         column PCT_80 (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: 80%
@@ -1424,7 +1706,7 @@ page 202 (
         )
 
         column PCT_90 (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: 90%
@@ -1528,7 +1810,135 @@ page 202 (
 
     )
 
-    region nomenclature-projects-by-size (
+    region projects-by-priority-chart (
+        name: &NOMENCLATURE_PROJECTS. by Priority Chart
+        type: chart
+        layout {
+            sequence: 50
+            parentRegion: @pie-charts
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        chart {
+            type: donut
+        }
+        performance {
+            lazyLoading: true
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+        legend {
+            show: false
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                options.valueFormats.series = {
+                    tooltipLabel: "Priority"
+                };
+                
+                options.valueFormats.value = {
+                    tooltipLabel: "&NOMENCLATURE_PROJECT. Count",
+                    scaling: "none",
+                    converter: {
+                        format: function (value) {
+                            return apex.locale.formatNumber(value, "FM9999999990");
+                        }
+                    }
+                };
+                
+                var total = apex.item("P202_PROJECT_TOTAL").getValue();
+                
+                options.pieCenter = {
+                    renderer: function(context) {
+                
+                        var div = document.createElement("div");
+                
+                        div.innerHTML =
+                            '<div class="u-bold" style="font-size: 1.5em; line-height: 0.9; text-align: center;">' +
+                            apex.util.escapeHTML(total) +
+                            '</div>' +
+                            '<div style="font-size: 0.8em; margin-top:2px; line-height: 0.9; text-align: center;">' +
+                            'Total' +
+                            '</div>';
+                
+                        /*
+                         * Size and position the content inside the donut hole.
+                         */
+                        div.style.position = "absolute";
+                        div.style.left = context.innerBounds.x + "px";
+                        div.style.top = context.innerBounds.y + "px";
+                        div.style.width = context.innerBounds.width + "px";
+                        div.style.height = context.innerBounds.height + "px";
+                
+                        div.style.display = "flex";
+                        div.style.flexDirection = "column";
+                        div.style.alignItems = "center";
+                        div.style.justifyContent = "center";
+                
+                        div.style.pointerEvents = "none";
+                
+                        return div;
+                    }
+                };
+                
+                return options;
+                
+                }
+                ```
+        }
+
+        series series-1 (
+            name: Series
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'P'||r.priority label, count(*) value
+                      from sp_projects p,
+                           sp_project_priorities r
+                     where p.priority_id = r.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                       and p.release_id = :P202_RELEASE_ID
+                     group by r.priority
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: 1
+            }
+            columnMapping {
+                label: LABEL
+                value: VALUE
+            }
+            label {
+                show: true
+                position: center
+            }
+            performance {
+                maxRowsToProcess: 20
+            }
+        )
+
+    )
+
+    region projects-by-size (
         name: &NOMENCLATURE_PROJECTS. by Size
         type: classicReport
         source {
@@ -1548,18 +1958,6 @@ page 202 (
                     --
                     round(((sum_pct_complete / project_count) * EFFORT_DAYS) * .01) days_completed,
                     EFFORT_DAYS - round(((sum_pct_complete / project_count) * EFFORT_DAYS) * .01) days_outstanding,
-                    --
-                    -- currently active projects
-                    --
-                    (select count(*) 
-                        from  sp_projects p, SP_ACTIVITIES a
-                        where p.ARCHIVED_YN = 'N' and 
-                              p.DUPLICATE_OF_PROJECT_ID is null and 
-                              p.release_id = :P202_RELEASE_ID and
-                              p.id = a.project_id and
-                              sysdate > a.START_DATE and
-                              trunc(sysdate) <= a.END_DATE and
-                              p.PROJECT_SIZE = x.PROJECT_SIZE) currently_active_projects,
                     --
                     -- most recent comment
                     --
@@ -1651,28 +2049,12 @@ page 202 (
                 t-Report--rowHighlight
             ]
         }
+        pagination {
+            type: showAll
+        }
         breakFormatting {
             reportSumLabel: &nbsp;
         }
-
-        column CURRENTLY_ACTIVE_PROJECTS (
-            reportColumnQueryId: 11
-            derivedColumn: N
-            heading {
-                heading: Currently Active
-                alignment: end
-            }
-            layout {
-                sequence: 300
-                columnAlignment: end
-            }
-            sorting {
-                sortable: false
-            }
-            advanced {
-                computeSum: true
-            }
-        )
 
         column DAYS_COMPLETED (
             reportColumnQueryId: 9
@@ -1757,7 +2139,7 @@ page 202 (
         )
 
         column MOST_RECENT_COMMENT (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Last Comment
@@ -1776,7 +2158,7 @@ page 202 (
         )
 
         column P1 (
-            reportColumnQueryId: 24
+            reportColumnQueryId: 23
             derivedColumn: N
             heading {
                 heading: P1
@@ -1798,7 +2180,7 @@ page 202 (
         )
 
         column P2 (
-            reportColumnQueryId: 25
+            reportColumnQueryId: 24
             derivedColumn: N
             heading {
                 heading: P2
@@ -1820,7 +2202,7 @@ page 202 (
         )
 
         column P3 (
-            reportColumnQueryId: 26
+            reportColumnQueryId: 25
             derivedColumn: N
             heading {
                 heading: P3
@@ -1842,7 +2224,7 @@ page 202 (
         )
 
         column P4 (
-            reportColumnQueryId: 27
+            reportColumnQueryId: 26
             derivedColumn: N
             heading {
                 heading: P4
@@ -1864,7 +2246,7 @@ page 202 (
         )
 
         column P5 (
-            reportColumnQueryId: 28
+            reportColumnQueryId: 27
             derivedColumn: N
             heading {
                 heading: P5
@@ -1886,7 +2268,7 @@ page 202 (
         )
 
         column PCT_0 (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 12
             derivedColumn: N
             type: hidden
             layout {
@@ -1895,7 +2277,7 @@ page 202 (
         )
 
         column PCT_10 (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: 10%
@@ -1917,7 +2299,7 @@ page 202 (
         )
 
         column PCT_100 (
-            reportColumnQueryId: 23
+            reportColumnQueryId: 22
             derivedColumn: N
             heading {
                 heading: 100%
@@ -1939,7 +2321,7 @@ page 202 (
         )
 
         column PCT_20 (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: 20%
@@ -1961,7 +2343,7 @@ page 202 (
         )
 
         column PCT_30 (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: 30%
@@ -1983,7 +2365,7 @@ page 202 (
         )
 
         column PCT_40 (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: 40%
@@ -2005,7 +2387,7 @@ page 202 (
         )
 
         column PCT_50 (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: 50%
@@ -2027,7 +2409,7 @@ page 202 (
         )
 
         column PCT_60 (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: 60%
@@ -2049,7 +2431,7 @@ page 202 (
         )
 
         column PCT_70 (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: 70%
@@ -2071,7 +2453,7 @@ page 202 (
         )
 
         column PCT_80 (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: 80%
@@ -2093,7 +2475,7 @@ page 202 (
         )
 
         column PCT_90 (
-            reportColumnQueryId: 22
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: 90%
@@ -2279,6 +2661,9 @@ page 202 (
                 t-ContextualInfo-label--stacked
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column DAYS_REMAINING (
             reportColumnQueryId: 5
@@ -2408,6 +2793,312 @@ page 202 (
 
     )
 
+    region target-complete-by (
+        name: &NOMENCLATURE_PROJECT. Target Complete
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: * indicates target dates outside the identified release window
+        }
+    )
+
+    region target-complete-by-month (
+        name: Target Complete by Month
+        type: chart
+        layout {
+            sequence: 30
+            parentRegion: @target-complete-by
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Priority"
+                    };
+                
+                    options.valueFormats.group = {
+                        tooltipLabel: "Close Month"
+                    };
+                
+                    options.valueFormats.value.tooltipLabel = "&NOMENCLATURE_PROJECT. Count";
+                
+                    return options;
+                }
+                ```
+        }
+
+        series data (
+            name: data
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select nvl(to_char(close_month,'YYYY-MM'),'No Date')||flag label, 
+                    --       nvl(to_char(close_month,'Mon YYYY'),'No Date Given') label, 
+                           priority series, 
+                           sum(cnt) value
+                      from
+                    (
+                    select trunc(p.target_complete,'MM') close_month, 
+                           case when p.target_complete < nvl(t.release_open_date,p.target_complete) or
+                                     p.target_complete > nvl(t.release_target_date,p.target_complete)
+                                then ' *'
+                                end flag,
+                           'P'||r.priority priority, 1 cnt
+                      from sp_projects p,
+                           sp_release_trains t,
+                           sp_project_priorities r
+                     where t.id = :P202_RELEASE_ID
+                       and p.release_id = t.id
+                       and p.priority_id = r.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                    union all
+                    select add_months(trunc(r.release_open_date,'MM'),d.i-1) close_month, 
+                           null flag,
+                           'P1' priority, 0 cnt
+                      from sp_release_trains r,
+                           wwv_flow_dual100 d
+                     where r.id = :P202_RELEASE_ID
+                       and d.i <= ceil(months_between(r.release_target_date,r.release_open_date)) --+ 1
+                    )
+                    group by close_month, priority, flag
+                    order by 1, 2
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: LABEL ASC, SERIES
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+                labelTooltip: LABEL
+            }
+        )
+
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region target-complete-by-week (
+        name: Target Complete by Week
+        type: chart
+        layout {
+            sequence: 40
+            parentRegion: @target-complete-by
+            slot: regionBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        chartAppearance {
+            stack: true
+            stackLabel: true
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Priority"
+                    };
+                
+                    options.valueFormats.group = {
+                        tooltipLabel: "Close Week"
+                    };
+                
+                    options.valueFormats.value.tooltipLabel = "&NOMENCLATURE_PROJECT. Count";
+                
+                    return options;
+                }
+                ```
+        }
+
+        series data (
+            name: data
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select nvl(to_char(close_week,'YYYY MM-DD'),'No Date')||flag label,
+                    --       nvl(to_char(close_week,'Mon DD, YYYY'),'No Date Given') label, 
+                           priority series, sum(cnt) value
+                      from
+                    (
+                    select trunc(p.target_complete,'IW') close_week, 
+                           case when p.target_complete < nvl(r.release_open_date,p.target_complete) or
+                                     p.target_complete > nvl(r.release_target_date,p.target_complete)
+                                then ' *'
+                                end flag,
+                           'P'||pp.priority priority, 1 cnt
+                      from sp_projects p,
+                           sp_project_priorities pp,
+                           sp_release_trains r
+                     where p.priority_id = pp.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                       and p.release_id = r.id  
+                       and r.id = :P202_RELEASE_ID
+                    union all
+                    select add_months(trunc(r.release_open_date,'MM'),d.i-1) close_month, 
+                           null flag, 
+                           'P1' priority, 0 cnt
+                      from sp_release_trains r,
+                           wwv_flow_dual100 d
+                     where r.id = :P202_RELEASE_ID
+                       and d.i <= ceil(months_between(r.release_target_date,r.release_open_date)) --+ 1
+                    )
+                    group by close_week, priority, flag
+                    order by 1
+                    ```
+            }
+            orderBy {
+                type: staticValue
+                orderByClause: LABEL ASC, SERIES
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    pageItem P202_FOCUS_AREA_BY (
+        type: radioGroup
+        label {
+            label: Show By
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:&NOMENCLATURE_PROJECT. Count;P,Estimated Days;E
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @by-focus-area
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: P
+        }
+    )
+
+    pageItem P202_PROJECT_TOTAL (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @release
+            slot: regionBody
+        }
+        source {
+            type: sqlQuerySingleValue
+            sqlQuery:
+                ```sql
+                select to_char(count(*),'999G999G999G999G999G999G990') cnt
+                  from sp_projects
+                 where nvl(archived_yn,'N') = 'N'
+                   and duplicate_of_project_id is null
+                   and release_id = :P202_RELEASE_ID
+                ```
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
     pageItem P202_RELEASE (
         type: hidden
         layout {
@@ -2433,6 +3124,165 @@ page 202 (
         }
     )
 
+    pageItem P202_TARGET_COMPLETE_BY (
+        type: radioGroup
+        label {
+            label: Show By
+            alignment: left
+        }
+        settings {
+            noOfCols: 2
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Month;M,Week;W
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @target-complete-by
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: M
+        }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 202
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu release-calendar (
+            label: Release Calendar
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 203
+                    items: {
+                        P203_RELEASE_ID: &P202_RELEASE_ID.
+                    }
+                    clearCache: 203
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-calendar-o
+            }
+        )
+
+        menu release-home (
+            label: Release Home
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 117
+                    items: {
+                        P117_RELEASE_ID: &P202_RELEASE_ID.
+                    }
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-ship
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 202
+                    items: {
+                        P202_RELEASE_ID: &P202_RELEASE_ID.
+                    }
+                    clearCache: 202
+                    action: resetRegions
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 20
+            }
+        )
+
+        menu sep2 (
+            type: separator
+            layout {
+                sequence: 50
+            }
+        )
+
+        menu view-history (
+            label: View History
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 14
+                    items: {
+                        P14_RELEASE_ID: &P202_RELEASE_ID.
+                    }
+                    clearCache: 14
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clock-o
+            }
+        )
+
+    )
+
     button up (
         buttonName: UP
         label: Navigate Up
@@ -2453,10 +3303,140 @@ page 202 (
             action: redirectThisApp
             target: {
                 page: 117
+                items: {
+                    P117_RELEASE_ID: &P202_RELEASE_ID.
+                }
+                clearCache: 117
                 action: resetPagination
             }
             warnOnUnsavedChanges: doNotCheck
         }
+    )
+
+    dynamicAction when-change-focus-area (
+        name: when change focus area
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P202_FOCUS_AREA_BY
+        }
+        clientSideCondition {
+            type: item=value
+            item: P202_FOCUS_AREA_BY
+            value: P
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @fa-by-est-days
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-hide_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @fa-by-count
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @fa-by-count
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show_1 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @fa-by-est-days
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction when-change-merge-by (
+        name: when change merge by
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P202_TARGET_COMPLETE_BY
+        }
+        clientSideCondition {
+            type: item=value
+            item: P202_TARGET_COMPLETE_BY
+            value: M
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @target-complete-by-week
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-hide_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @target-complete-by-month
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @target-complete-by-month
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show_1 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @target-complete-by-week
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
     )
 
     computation p202-release (

@@ -1,0 +1,17 @@
+lov label-templates (
+    name: LABEL_TEMPLATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select
+                template_name || ' (' || decode(theme_number, 50, 'Mobile Theme', 42, 'Desktop Theme', theme_number) || ')'  dv,
+                label_template_id rv
+            from apex_application_temp_label
+            where application_id = :APP_ID
+            and theme_number = 42
+            order by 1
+            ```
+    }
+)
+

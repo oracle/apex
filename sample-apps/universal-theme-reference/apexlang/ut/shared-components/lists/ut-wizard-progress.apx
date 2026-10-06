@@ -1,0 +1,72 @@
+list ut-wizard-progress (
+    name: UT - Wizard Progress
+
+    entry step (
+        label: Step 1
+        icon {
+            imageIconCssClasses: fa-check-circle
+        }
+        layout {
+            sequence: 10
+        }
+    )
+
+    entry step-2 (
+        label: Step 2
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 15
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry step-3 (
+        label: Step 3
+        icon {
+            imageIconCssClasses: fa-comment
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: always
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry step-4 (
+        label: Step 4
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

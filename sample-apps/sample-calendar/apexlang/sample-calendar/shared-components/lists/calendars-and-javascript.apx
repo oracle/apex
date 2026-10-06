@@ -1,0 +1,77 @@
+list calendars-and-javascript (
+    name: Calendars and Javascript
+
+    entry calendar-client-events (
+        label: Calendar Client Events
+        icon {
+            imageIconCssClasses: fa-calendar-plus-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+        userDefinedAttributes {
+            1: Add "client-only" events" to your calendar view with JavaScript. Edit them and when ready, save to the database.
+        }
+    )
+
+    entry custom-navigation (
+        label: Custom Navigation
+        icon {
+            imageIconCssClasses: fa-calendar-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+        userDefinedAttributes {
+            1: Use APEX components like buttons or page items to navigate within your Calendar.
+        }
+    )
+
+    entry query-calendar-status (
+        label: Query Calendar Status
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows how to get the current calendar status with the FullCalendar JavaScript API.
+        }
+    )
+
+    entry schedule-builder (
+        label: Schedule Builder
+        icon {
+            imageIconCssClasses: fa-apex
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+        userDefinedAttributes {
+            1: Explore how to create a <em>Schedule Builder</em> with APEX
+        }
+    )
+
+)
+

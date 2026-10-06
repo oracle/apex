@@ -1,0 +1,14 @@
+lov product-statuses (
+    name: PRODUCT STATUSES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select status as d,
+                   id as r
+              from eba_cust_product_statuses
+             order by 1
+            ```
+    }
+)
+

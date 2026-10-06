@@ -1,0 +1,140 @@
+list pagination-list (
+    name: Pagination List
+
+    entry full-page-with-maximize (
+        label: Full Page with Maximize
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates traditional pagination but with the headers fixed to the page. Also includes the Universal Theme maximize region feature.
+        }
+    )
+
+    entry load-more (
+        label: Load More
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates progressive scrolling but with a Load More Rows button.
+        }
+    )
+
+    entry progressive-scroll (
+        label: Progressive Scroll
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates progressive or infinite scrolling.
+        }
+    )
+
+    entry scroll (
+        label: Scroll
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates virtual paging by scrolling.
+        }
+    )
+
+    entry scroll-with-maximize (
+        label: Scroll with Maximize
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates scroll pagination but with the headers fixed to the page. Also includes the Universal Theme maximize region feature.
+        }
+    )
+
+    entry traditional (
+        label: Traditional
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates traditional paging with next and previous buttons.
+        }
+    )
+
+    entry traditional-custom (
+        label: Traditional (Custom)
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using advanced configuration to remove the page range and increase the number of links to 12.
+        }
+    )
+
+    entry traditional-select-list (
+        label: Traditional (Select List)
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using advanced configuration to include a select list for the pages.
+        }
+    )
+
+    entry traditional-total-rows (
+        label: Traditional (Total Rows)
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates additional features available when the total number of rows is known.
+        }
+    )
+
+)
+

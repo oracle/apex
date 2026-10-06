@@ -1,0 +1,59 @@
+list rest-data-sources (
+    name: REST Data Sources
+
+    entry odata (
+        label: OData
+        icon {
+            imageIconCssClasses: fa-database-check
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            1: Seamlessly integrate and consume external OData REST services.
+        }
+    )
+
+    entry ords (
+        label: ORDS
+        icon {
+            imageIconCssClasses: fa-database-application
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        userDefinedAttributes {
+            1: Enable insert, update and delete on ORDS compliant endpoints.
+        }
+    )
+
+    entry simple-http (
+        label: Simple HTTP
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+        userDefinedAttributes {
+            1: One‑shot HTTP endpoint delivering your complete dataset instantly.
+        }
+    )
+
+)
+

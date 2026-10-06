@@ -8,6 +8,7 @@ page 12 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -29,10 +30,6 @@ page 12 (
             .t-Badge.apex-cal-white { background-color: #F0F0F0; border-color: #F0F0F0; color: #404040; }
             .t-Badge.apex-cal-yellow { background-color: #F1C40F; border-color: #F1C40F; color: #404040; }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -138,6 +135,9 @@ page 12 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -211,6 +211,9 @@ page 12 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -300,6 +303,9 @@ page 12 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -377,6 +383,9 @@ page 12 (
         componentAppearance {
             template: @/alerts
             templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: showAll
         }
         componentAdvanced {
             stripHtml: true

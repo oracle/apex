@@ -7,7 +7,6 @@ page 9 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -30,7 +29,7 @@ page 9 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -86,6 +85,9 @@ page 9 (
         chartLayout {
             maxWidth: 700
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -331,11 +333,13 @@ page 9 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -471,6 +475,9 @@ page 9 (
         chartLayout {
             maxWidth: 700
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -613,7 +620,7 @@ page 9 (
                 <strong>Stack Category</strong> - Set the series-level attribute to assign a series to a specific category on the chart.  This attribute allows you to render multiple stacks on a stacked chart, without the need to use JavaScript code.<p/>
                 
                 <p>
-                For more information on the Stack Label and Stack Category attributes, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=barChart&demo=dataLabels" target="_blank">Bar Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=stackCategory" target="_blank">Stack Categories</a> examples, and the <a href="&OJCHART_API_URL.#stackLabel" target="_blank">stackLabel</a> attribute in the ojChart API guide.
+                For more information on the Stack Label and Stack Category attributes, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=barChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Bar Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=stackCategory" target="_blank" rel="noopener noreferrer external">Stack Categories</a> examples, and the <a href="&OJCHART_API_URL.#stackLabel" target="_blank" rel="noopener noreferrer external">stackLabel</a> attribute in the ojChart API guide.
                 
                 
                 ```
@@ -677,11 +684,13 @@ page 9 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -767,11 +776,13 @@ page 9 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -899,6 +910,9 @@ page 9 (
         chartLayout {
             height: 340
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             fillGapsInChartData: false
         }
@@ -1009,6 +1023,9 @@ page 9 (
         chartLayout {
             height: 340
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             fillGapsInChartData: false
         }
@@ -1109,6 +1126,9 @@ page 9 (
         chartLayout {
             height: 340
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             fillGapsInChartData: false
         }
@@ -1199,6 +1219,9 @@ page 9 (
         }
         chartLayout {
             height: 340
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false
@@ -1365,7 +1388,7 @@ page 9 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("stackCategoryChart").widget().ojChart({orientation: 'horizontal'});
+                jsCode: "apex.region(\"stackCategoryChart\").widget().ojChart({orientation: 'horizontal'});"
             }
             affectedElements {
                 selectionType: region
@@ -1393,7 +1416,7 @@ page 9 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("stackCategoryChart").widget().ojChart({stack: 'on'});
+                jsCode: "apex.region(\"stackCategoryChart\").widget().ojChart({stack: 'on'});"
             }
             affectedElements {
                 selectionType: region
@@ -1421,7 +1444,7 @@ page 9 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("stackCategoryChart").widget().ojChart({stack: 'off'});
+                jsCode: "apex.region(\"stackCategoryChart\").widget().ojChart({stack: 'off'});"
             }
             affectedElements {
                 selectionType: region
@@ -1449,7 +1472,7 @@ page 9 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("stackCategoryChart").widget().ojChart({orientation: 'vertical'});
+                jsCode: "apex.region(\"stackCategoryChart\").widget().ojChart({orientation: 'vertical'});"
             }
             affectedElements {
                 selectionType: region

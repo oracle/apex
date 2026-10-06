@@ -1,0 +1,16 @@
+lov team-member (
+    name: TEAM MEMBER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select r.rep_email||' - '||r2.role_name display_value, 
+                     r.ID return_value 
+            from eba_sales_SALESREPS r, 
+                    eba_sales_salesrep_roles r2
+            where r.rep_role = r2.id(+)
+            order by 1
+            ```
+    }
+)
+

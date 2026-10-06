@@ -8,14 +8,11 @@ page 10023 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -139,7 +136,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -160,7 +157,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -181,7 +178,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -202,7 +199,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -223,7 +220,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -244,7 +241,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -265,7 +262,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: C
@@ -286,7 +283,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -304,7 +301,7 @@ page 10023 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -320,7 +317,7 @@ page 10023 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -341,7 +338,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -362,7 +359,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -383,7 +380,7 @@ page 10023 (
                 formatMask: 999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -404,7 +401,7 @@ page 10023 (
                 formatMask: 999G999G999G999G999G990D99
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D

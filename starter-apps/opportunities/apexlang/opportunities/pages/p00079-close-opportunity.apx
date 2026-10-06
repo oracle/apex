@@ -12,12 +12,11 @@ page 79 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -115,6 +114,9 @@ page 79 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

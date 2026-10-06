@@ -1,0 +1,237 @@
+list customer-actions (
+    name: Customer Actions
+
+    entry add-activity (
+        label: Add Activity
+        icon {
+            imageIconCssClasses: fa-newspaper-o
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 150
+                items: {
+                    P150_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 150
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @activities
+        }
+    )
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 64
+                items: {
+                    P64_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 64
+            }
+        }
+    )
+
+    entry add-competitor-s (
+        label: Add Competitor(s)
+        icon {
+            imageIconCssClasses: fa-emoji-cringe
+        }
+        layout {
+            sequence: 36
+        }
+        link {
+            target: {
+                page: 111
+                items: {
+                    P111_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: [
+                    111
+                    RIR
+                ]
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @view-competitors
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry add-contact (
+        label: Add Contact
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 37
+                items: {
+                    P37_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 37
+            }
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry add-issue (
+        label: Add Issue
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 22
+        }
+        link {
+            target: {
+                page: 129
+                items: {
+                    P129_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 129
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @issues
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-chain
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 66
+                items: {
+                    P66_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 66
+            }
+        }
+    )
+
+    entry add-partner-s (
+        label: Add Partner(s)
+        icon {
+            imageIconCssClasses: fa-thumbs-o-up
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 110
+                items: {
+                    P110_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: [
+                    110
+                    RIR
+                ]
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @partners
+        }
+    )
+
+    entry add-product-s (
+        label: Add Product(s)
+        icon {
+            imageIconCssClasses: fa-square-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 68
+                items: {
+                    P68_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: [
+                    68
+                    RIR
+                ]
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry add-update (
+        label: Add Update
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 97
+                items: {
+                    P97_CUSTOMER_ID: &P50_ID.
+                }
+                clearCache: 97
+            }
+        }
+    )
+
+    entry referenceability (
+        label: Referenceability
+        icon {
+            imageIconCssClasses: fa-phone
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 96
+                items: {
+                    P96_ID: &P50_ID.
+                }
+                clearCache: 96
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+

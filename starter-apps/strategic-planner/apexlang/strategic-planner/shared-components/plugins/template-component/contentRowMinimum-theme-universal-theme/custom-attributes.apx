@@ -20,7 +20,7 @@ customAttribute APPLY_THEME_COLORS (
 )
 
 customAttribute AVATAR_DESCRIPTION (
-    apexlangName: description
+    apexlangName: description2
     attribute: 9
     name: Description
     security {
@@ -408,7 +408,7 @@ customAttribute BADGE_COL_WIDTH (
 )
 
 customAttribute BADGE_ICON (
-    apexlangName: icon
+    apexlangName: icon2
     attribute: 16
     name: Icon
     type: icon
@@ -511,7 +511,7 @@ customAttribute BADGE_POS (
 )
 
 customAttribute BADGE_SHAPE (
-    apexlangName: shape
+    apexlangName: shape2
     attribute: 19
     name: Shape
     type: selectList
@@ -570,7 +570,7 @@ customAttribute BADGE_SHAPE (
 )
 
 customAttribute BADGE_SIZE (
-    apexlangName: size
+    apexlangName: size2
     attribute: 21
     name: Size
     type: selectList
@@ -833,7 +833,7 @@ customAttribute REMOVE_PADDING (
 )
 
 customAttribute STYLE (
-    apexlangName: style
+    apexlangName: style2
     attribute: 27
     name: Style
     scope: report

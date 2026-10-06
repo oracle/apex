@@ -1,0 +1,20 @@
+list mobile-navigation-menu (
+    name: Mobile Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: a-Icon icon-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+)
+

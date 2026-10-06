@@ -8,10 +8,11 @@ page 14 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -64,11 +65,13 @@ page 14 (
         chartLayout {
             height: 300
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {

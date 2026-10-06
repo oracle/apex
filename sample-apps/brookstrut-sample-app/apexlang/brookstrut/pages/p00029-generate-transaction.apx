@@ -8,12 +8,7 @@ page 29 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -92,6 +87,9 @@ page 29 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CREATED_ON (

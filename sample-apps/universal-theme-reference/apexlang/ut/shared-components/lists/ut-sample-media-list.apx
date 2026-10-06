@@ -1,0 +1,127 @@
+list ut-sample-media-list (
+    name: UT - Sample Media List
+
+    entry amet-incorporated (
+        label: Amet Incorporated
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Mauris nulla. Integer urna. Vivamus molestie dapibus ligula. Aliquam erat volutpat. Nulla dignissim. Maecenas ornare egestas ligula. Nullam feugiat placerat
+            2: 4
+            3: ML
+        }
+    )
+
+    entry cras-interdum-consulting (
+        label: Cras Interdum Consulting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Integer tincidunt aliquam arcu. Aliquam ultrices iaculis odio. Nam interdum enim non nisi. Aenean eget metus. In nec orci.
+            2: 431
+        }
+    )
+
+    entry eros-nec-corporation (
+        label: Eros Nec Corporation
+        icon {
+            imageIconCssClasses: fa-credit-card-terminal
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Purus gravida sagittis. Duis gravida. Praesent eu nulla at sem molestie sodales. Mauris blandit enim consequat purus. Maecenas libero est.
+        }
+    )
+
+    entry felis-associates (
+        label: Felis Associates
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Aenean gravida nunc sed pede. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin vel arcu.
+            2: Pending
+        }
+    )
+
+    entry ridiculus-llp (
+        label: Ridiculus LLP
+        icon {
+            imageIconCssClasses: fa-comments-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Phasellus nulla. Integer vulputate, risus a ultricies adipiscing, enim mi tempor lorem, eget mollis lectus pede et risus. Quisque libero.
+            2: 12
+            3: AR
+        }
+    )
+
+    entry tristique-llc (
+        label: Tristique LLC
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Aliquam nisl. Nulla eu neque pellentesque massa lobortis ultrices. Vivamus rhoncus. Donec est. Nunc ullamcorper, velit in aliquet lobortis, nisi.
+            2: 4
+            3: SR
+        }
+    )
+
+)
+

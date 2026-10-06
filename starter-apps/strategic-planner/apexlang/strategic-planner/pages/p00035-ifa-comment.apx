@@ -14,13 +14,14 @@ page 35 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -98,6 +99,14 @@ page 35 (
                             data: {
                                 imageRefId: apex.item('P35_NEW_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'FOCUS_AREA',
+                            objectId: apex.items.P35_INIT_FOCUS_AREA_ID.value
+                        },
+                        docs: {
+                            scope: 'FOCUS_AREA',
+                            objectId: apex.items.P35_INIT_FOCUS_AREA_ID.value
                         }
                     });
                 }
@@ -131,10 +140,27 @@ page 35 (
         }
     )
 
+    pageItem P35_INIT_FOCUS_AREA_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @edit-comment
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-comment
+            column: INIT_FOCUS_AREA_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     pageItem P35_NEW_IMAGE_REF_ID (
         type: hidden
         layout {
-            sequence: 150
+            sequence: 50
             region: @edit-comment
             slot: regionBody
         }
@@ -154,7 +180,7 @@ page 35 (
             alignment: left
         }
         layout {
-            sequence: 50
+            sequence: 40
             region: @edit-comment
             slot: regionBody
             alignment: left
@@ -162,9 +188,6 @@ page 35 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @edit-comment

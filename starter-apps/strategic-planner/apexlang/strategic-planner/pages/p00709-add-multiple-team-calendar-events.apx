@@ -1,0 +1,1071 @@
+page 709 (
+    name: Add Multiple Team Calendar Events
+    alias: ADD-MULTIPLE-TEAM-CALENDAR-EVENTS
+    title: Add Multiple Team Calendar Events
+    pageGroup: @administrative-utilities
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    security {
+        authorizationScheme: @administration-rights
+    }
+    config {
+        buildOption: @team-calendar
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region events (
+        name: Events
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: This allows Administrators to add multiple, single-day events (such as holidays).
+        }
+    )
+
+    region events-recently-created (
+        name: Events Recently Created
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.event_type, 
+                       e.event_date, 
+                       e.event_name,
+                       e.event_details,
+                       e.created
+                  from sp_events e,
+                       sp_event_types t
+                 where e.event_type_id = t.id
+                   and e.created_by = :APP_USER
+                   and e.created > sysdate-1
+                 order by e.created desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+            ]
+        }
+
+        column CREATED (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DATE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Date
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_DETAILS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EVENT_TYPE (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region quick-picks (
+        name: quick picks
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        accessibility {
+            useLandmark: false
+        }
+    )
+
+    region user-timezone (
+        name: user timezone
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select nvl(timezone,'UTC') user_timezone
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    sys.htp.p('Your timezone is '||apex_escape.html(c1.user_timezone)||'. This is set under your profile.');
+                end loop;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 15
+            parentRegion: @events
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P709_EVENT_DATE_1 (
+        type: datePicker
+        label {
+            label: Event Date
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-above
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 15
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DATE_2 (
+        type: datePicker
+        label {
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 15
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DATE_3 (
+        type: datePicker
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 190
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 15
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DATE_4 (
+        type: datePicker
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 270
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 15
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DATE_5 (
+        type: datePicker
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 340
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 15
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DETAILS_1 (
+        type: textField
+        label {
+            label: Details
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DETAILS_2 (
+        type: textField
+        label {
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DETAILS_3 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 230
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DETAILS_4 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 310
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_DETAILS_5 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 360
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_NAME_1 (
+        type: textField
+        label {
+            label: Name
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_NAME_2 (
+        type: textField
+        label {
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_NAME_3 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_NAME_4 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 290
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_NAME_5 (
+        type: textField
+        label {
+            label: " "
+            alignment: left
+        }
+        layout {
+            sequence: 350
+            region: @events
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-above
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_EVENT_TYPE (
+        type: selectList
+        label {
+            label: Type
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select event_type d, id r
+                  from sp_event_types
+                 where general_event_yn = 'Y'
+                   and active_yn = 'Y'
+                 order by event_type
+                ```
+            displayExtraValues: false
+        }
+        layout {
+            sequence: 10
+            region: @events
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-above
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        quickPicks {
+            type: static
+            label1: &P709_QP1.
+            value1: &P709_QP1_ID.
+            label2: &P709_QP2.
+            value2: &P709_QP2_ID.
+            label3: &P709_QP3.
+            value3: &P709_QP3_ID.
+            label4: &P709_QP4.
+            value4: &P709_QP4_ID.
+            label5: &P709_QP5.
+            value5: &P709_QP5_ID.
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP1 (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP1_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP2 (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP2_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP3 (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP3_ID (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP4 (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP4_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP5 (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P709_QP5_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @quick-picks
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button create-events (
+        buttonName: CREATE_EVENTS
+        label: Create Events
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 700
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    validation fifth (
+        name: fifth
+        execution {
+            sequence: 40
+        }
+        validation {
+            plsqlExpression: :P709_EVENT_DATE_5 is not null and :P709_EVENT_NAME_5 is not null
+        }
+        error {
+            errorMessage: Must provide both date and name.
+            associatedItem: @P709_EVENT_DATE_5
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-events
+            type: expression
+            plsqlExpression: :P709_EVENT_DATE_5 is not null or :P709_EVENT_NAME_5 is not null or :P709_EVENT_DETAILS_5 is not null
+        }
+    )
+
+    validation fourth-event (
+        name: fourth event
+        execution {
+            sequence: 30
+        }
+        validation {
+            plsqlExpression: :P709_EVENT_DATE_4 is not null and :P709_EVENT_NAME_4 is not null
+        }
+        error {
+            errorMessage: Must provide both date and name.
+            associatedItem: @P709_EVENT_DATE_4
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-events
+            type: expression
+            plsqlExpression: :P709_EVENT_DATE_4 is not null or :P709_EVENT_NAME_4 is not null or :P709_EVENT_DETAILS_4 is not null
+        }
+    )
+
+    validation second-event (
+        name: second event
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: :P709_EVENT_DATE_2 is not null and :P709_EVENT_NAME_2 is not null
+        }
+        error {
+            errorMessage: Must provide both date and name.
+            associatedItem: @P709_EVENT_DATE_2
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-events
+            type: expression
+            plsqlExpression: :P709_EVENT_DATE_2 is not null or :P709_EVENT_NAME_2 is not null or :P709_EVENT_DETAILS_2 is not null
+        }
+    )
+
+    validation third-event (
+        name: third event
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: :P709_EVENT_DATE_3 is not null and :P709_EVENT_NAME_3 is not null
+        }
+        error {
+            errorMessage: Must provide both date and name.
+            associatedItem: @P709_EVENT_DATE_3
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-events
+            type: expression
+            plsqlExpression: :P709_EVENT_DATE_3 is not null or :P709_EVENT_NAME_3 is not null or :P709_EVENT_DETAILS_3 is not null
+        }
+    )
+
+    computation last-project-view (
+        itemName: LAST_PROJECT_VIEW
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 142
+        }
+    )
+
+    process create (
+        name: create
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if :P709_EVENT_DATE_1 is not null and
+                   :P709_EVENT_NAME_1 is not null
+                then
+                    sp_event_util.create_event ( 
+                        p_event_type_id  => :P709_EVENT_TYPE, 
+                        p_event_date     => to_date(:P709_EVENT_DATE_1,'DD-Mon-YYYY'), 
+                        p_event_name     => :P709_EVENT_NAME_1, 
+                        p_for_user_id    => null,
+                        p_event_details  => :P709_EVENT_DETAILS_1, 
+                        p_recur_freq     => null, 
+                        p_recur_end_date => null ); 
+                end if;
+                
+                if :P709_EVENT_DATE_2 is not null and
+                   :P709_EVENT_NAME_2 is not null
+                then
+                    sp_event_util.create_event ( 
+                        p_event_type_id  => :P709_EVENT_TYPE, 
+                        p_event_date     => to_date(:P709_EVENT_DATE_2,'DD-Mon-YYYY'), 
+                        p_event_name     => :P709_EVENT_NAME_2, 
+                        p_for_user_id    => null,
+                        p_event_details  => :P709_EVENT_DETAILS_2, 
+                        p_recur_freq     => null, 
+                        p_recur_end_date => null ); 
+                end if;
+                
+                if :P709_EVENT_DATE_3 is not null and
+                   :P709_EVENT_NAME_3 is not null
+                then
+                    sp_event_util.create_event ( 
+                        p_event_type_id  => :P709_EVENT_TYPE, 
+                        p_event_date     => to_date(:P709_EVENT_DATE_3,'DD-Mon-YYYY'), 
+                        p_event_name     => :P709_EVENT_NAME_3, 
+                        p_for_user_id    => null,
+                        p_event_details  => :P709_EVENT_DETAILS_3, 
+                        p_recur_freq     => null, 
+                        p_recur_end_date => null ); 
+                end if;
+                
+                if :P709_EVENT_DATE_4 is not null and
+                   :P709_EVENT_NAME_4 is not null
+                then
+                    sp_event_util.create_event ( 
+                        p_event_type_id  => :P709_EVENT_TYPE, 
+                        p_event_date     => to_date(:P709_EVENT_DATE_4,'DD-Mon-YYYY'), 
+                        p_event_name     => :P709_EVENT_NAME_4, 
+                        p_for_user_id    => null,
+                        p_event_details  => :P709_EVENT_DETAILS_4, 
+                        p_recur_freq     => null, 
+                        p_recur_end_date => null ); 
+                end if;
+                
+                if :P709_EVENT_DATE_5 is not null and
+                   :P709_EVENT_NAME_5 is not null
+                then
+                    sp_event_util.create_event ( 
+                        p_event_type_id  => :P709_EVENT_TYPE, 
+                        p_event_date     => to_date(:P709_EVENT_DATE_5,'DD-Mon-YYYY'), 
+                        p_event_name     => :P709_EVENT_NAME_5, 
+                        p_for_user_id    => null,
+                        p_event_details  => :P709_EVENT_DETAILS_5, 
+                        p_recur_freq     => null, 
+                        p_recur_end_date => null ); 
+                end if;
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) created.
+        }
+        advanced {
+            executionMappingIdentifier: 35903687522841405406
+        }
+        serverSideCondition {
+            whenButtonPressed: @create-events
+            type: itemIsNotNull
+            item: P709_EVENT_TYPE
+        }
+    )
+
+    process load-quick-picks (
+        name: Load Quick Picks
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_cnt  number := 1;
+                begin
+                
+                for c1 in (
+                    select event_type, id
+                      from sp_event_types
+                     where active_yn = 'Y'
+                       and general_event_yn = 'Y'
+                       and quick_pick_yn = 'Y'
+                      order by event_type desc
+                ) loop
+                    if l_cnt = 1 then
+                        :P709_QP1    := c1.event_type;
+                        :P709_QP1_ID := c1.id;
+                    elsif l_cnt = 2 then
+                        :P709_QP2    := c1.event_type;
+                        :P709_QP2_ID := c1.id;
+                    elsif l_cnt = 3 then
+                        :P709_QP3    := c1.event_type;
+                        :P709_QP3_ID := c1.id;
+                    elsif l_cnt = 4 then
+                        :P709_QP4    := c1.event_type;
+                        :P709_QP4_ID := c1.id;
+                    elsif l_cnt = 5 then
+                        :P709_QP5    := c1.event_type;
+                        :P709_QP5_ID := c1.id;
+                    end if;
+                
+                    l_cnt := l_cnt + 1;
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 35933891040384364379
+        }
+    )
+
+    branch (
+        name: Go To Page 709
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: 709
+                items: {
+                    P709_EVENT_TYPE: &P709_EVENT_TYPE.
+                }
+                clearCache: 709
+            }
+        }
+    )
+
+)
+

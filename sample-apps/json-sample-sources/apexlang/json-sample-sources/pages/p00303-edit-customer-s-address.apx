@@ -14,10 +14,11 @@ page 303 (
     dialog {
         chained: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

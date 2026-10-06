@@ -12,7 +12,6 @@ page 74 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -53,7 +52,7 @@ page 74 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     help {
         helpText: No help is available for this page.
@@ -129,6 +128,9 @@ page 74 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

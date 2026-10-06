@@ -13,9 +13,6 @@ page 2 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -33,8 +30,6 @@ page 2 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @subscriptions
@@ -77,16 +72,24 @@ page 2 (
                            p_application => :APP_ID,
                            p_page        => case when task_id is not null then 502
                                                  when project_id is not null then 3
+                                                 when release_id is not null then 117
+                                                 when initiative_id is not null then 94
                                                  end,
                            p_session     => :APP_SESSION,
                            p_clear_cache => case when task_id is not null then 502
                                                  when project_id is not null then 3
+                                                 when release_id is not null then 117
+                                                 when initiative_id is not null then 94
                                                  end,
                            p_items       => case when task_id is not null then 'P502_PREV_PAGE,P502_TASK_ID,P502_PROJECT_ID'
                                                  when project_id is not null then 'P3_PROJECT_ID'
+                                                 when release_id is not null then 'P117_RELEASE_ID'
+                                                 when initiative_id is not null then 'P94_INITIATIVE_ID'
                                                  end,
                            p_values      => case when task_id is not null then '3,'||task_id||','||project_id
                                                  when project_id is not null then to_char(project_id)
+                                                 when release_id is not null then to_char(release_id)
+                                                 when initiative_id is not null then to_char(initiative_id)
                                                  end ) link,
                        title,
                        created,

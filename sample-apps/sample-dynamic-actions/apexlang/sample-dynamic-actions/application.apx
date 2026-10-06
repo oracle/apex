@@ -1,6 +1,6 @@
 app SAMPLE-DYNAMIC-ACTIONS (
     name: Sample Dynamic Actions
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -41,11 +41,8 @@ app SAMPLE-DYNAMIC-ACTIONS (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 8B6494283EF1119D1F36668439AA03D243AF5FE0FE734B7F3F17325D350A55E5
     }
     sessionManagement {
         rejoinSessions: publicSessions

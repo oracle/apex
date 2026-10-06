@@ -1,0 +1,17 @@
+lov p68-prod-use-external-contact (
+    name: P68_PROD_USE_EXTERNAL_CONTACT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select '- New Contact -' d, -1 r
+              from dual
+            union all
+            select decode( email, null, name, name || ' (' || email || ')' ) d, id r
+              from eba_cust_contacts
+             where customer_id = :P68_CUSTOMER_ID
+             order by 1
+            ```
+    }
+)
+

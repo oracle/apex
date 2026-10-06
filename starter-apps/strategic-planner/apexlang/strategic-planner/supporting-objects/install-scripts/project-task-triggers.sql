@@ -4,13 +4,14 @@ create or replace trigger sp_task_types_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
-    --
-    --
     --
     :new.static_id := upper(:new.static_id);
 end sp_task_types_biu;
@@ -23,15 +24,20 @@ create or replace trigger sp_initiative_def_tasks_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     -- touch parent table
     --
-    update sp_initiatives set updated = sysdate, updated_by = :new.updated_by where id = :new.initiative_id;
+    if sp_globals.g_audit_this then
+        update sp_initiatives set updated = sysdate, updated_by = :new.updated_by where id = :new.initiative_id;
+    end if;
 end sp_initiative_def_tasks_biu;
 /
 
@@ -42,11 +48,14 @@ create or replace trigger sp_task_statuses_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     :new.static_id := upper(:new.static_id);
 end sp_task_statuses_biu;
@@ -66,13 +75,15 @@ begin
     --
     -- maintain tracking columns
     --
-    
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
 
     -- maintain status_last_changed
     if not sp_value_compare.is_equal(:old.status_id,:new.status_id) then
@@ -104,8 +115,9 @@ begin
     --
     -- touch parent table
     --
-    update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
-
+    if sp_globals.g_audit_this then
+        update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
+    end if;
     --
     -- change history tracking
     --
@@ -286,15 +298,20 @@ create or replace trigger sp_task_links_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     -- touch parent table
     --
-    update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    if sp_globals.g_audit_this then
+        update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    end if;
     --
     -- history
     --
@@ -344,19 +361,22 @@ declare
     l_tags varchar2(4000) := null;
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
-    --
-    --
     --
     :new.tags := upper(:new.tags);
     --
     -- touch parent table
     --
-    update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    if sp_globals.g_audit_this then
+        update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    end if;
     --
     -- adjust tag data
     --
@@ -419,13 +439,19 @@ create or replace trigger sp_task_comments_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
-    --
+    if inserting then
+        for c1 in (select nvl(max(comment_nbr),0) cnbr from sp_task_comments where task_id = :new.task_id)
+        loop :new.comment_nbr := c1.cnbr+1; end loop;
+    end if;
     --
     if :new.private_yn is null then 
         :new.private_yn := 'N';
@@ -433,7 +459,9 @@ begin
     --
     -- touch parent table
     --
-    update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    if sp_globals.g_audit_this then
+        update sp_tasks set updated = sysdate, updated_by = :new.updated_by where id = :new.task_id;
+    end if;
     --
     -- history
     --

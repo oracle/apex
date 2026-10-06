@@ -6,6 +6,9 @@ page 49 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -15,8 +18,6 @@ page 49 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region audit-details (
@@ -142,6 +143,9 @@ page 49 (
                 t-Comments--chat
             ]
             showNullValuesAs: &nbsp;
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No comments for this project.
@@ -522,9 +526,6 @@ page 49 (
                 databaseColumn: ID
                 dataType: number
                 primaryKey: true
-            }
-            default {
-                duplicateCopiesExistingValue: false
             }
             exportPrinting {
                 includeInExportPrint: false
@@ -958,9 +959,6 @@ page 49 (
                 databaseColumn: ID
                 dataType: number
                 primaryKey: true
-            }
-            default {
-                duplicateCopiesExistingValue: false
             }
             exportPrinting {
                 includeInExportPrint: false

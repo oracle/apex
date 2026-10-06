@@ -12,7 +12,6 @@ page 1907 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -20,7 +19,7 @@ page 1907 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -88,9 +87,6 @@ page 1907 (
         appearance {
             template: @/blank-with-attributes-no-grid
             templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkLabel: Demo Tab List
         }
     )
 

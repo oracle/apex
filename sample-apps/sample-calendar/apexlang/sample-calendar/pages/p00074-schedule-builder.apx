@@ -7,7 +7,6 @@ page 74 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -34,8 +33,6 @@ page 74 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -47,8 +44,8 @@ page 74 (
         source {
             htmlCode:
                 ```html
-                <p>This page demomstrates how to build a <i>schedule builder</i> using the Application Express Calendar Component. On the right side, you see a list of available sessions; on the left side is the personal schedule. Click an event on the right hand side to copy to your schedule; clicking in the personal schedule deletes it. With the mouse and the text fields, additional events can be added to the personal schedule.</p>
-                <p>This example makes use of the <i>FullCalendar API</i> <b>EventObject / CalendarObject</b> and its methods <b>setProp</b>, <b>setDates</b> and <b>addEvent</b> (<a href="https://fullcalendar.io/docs/" target="_blank">FullCalendar Documentation</a>).</p>
+                <p>This page demomstrates how to build a <em>schedule builder</em> using the APEX Calendar Component. On the right side, you see a list of available sessions; on the left side is the personal schedule. Click an event on the right hand side to copy to your schedule; clicking in the personal schedule deletes it. With the mouse and the text fields, additional events can be added to the personal schedule.</p>
+                <p>This example makes use of the <em>FullCalendar API</em> <strong>EventObject / CalendarObject</strong> and its methods <strong>setProp</strong>, <strong>setDates</strong> and <strong>addEvent</strong> (<a href="https://fullcalendar.io/docs/" target="_blank" rel="noopener noreferrer external">FullCalendar Documentation</a>).</p>
                 ```
         }
         layout {

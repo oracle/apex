@@ -1,0 +1,122 @@
+lov lov-dataload-customers (
+    name: LOV_DATALOAD_CUSTOMERS
+    source {
+        location: staticValues
+    }
+
+    entry category (
+        sequence: 30
+        display: Category
+        return: CATEGORY_ID
+    )
+
+    entry customer-name (
+        sequence: 10
+        display: Customer Name
+        return: CUSTOMER_NAME
+    )
+
+    entry customer-profile (
+        sequence: 250
+        display: Customer Profile
+        return: CUSTOMER_PROFILE
+    )
+
+    entry duns (
+        sequence: 210
+        display: DUNS #
+        return: DUNS
+    )
+
+    entry facebook (
+        sequence: 250
+        display: Facebook
+        return: FACEBOOK
+    )
+
+    entry geography (
+        sequence: 40
+        display: Geography
+        return: GEOGRAPHY_ID
+    )
+
+    entry industry (
+        sequence: 50
+        display: Industry
+        return: INDUSTRY_ID
+    )
+
+    entry linkedin (
+        sequence: 240
+        display: LinkedIn
+        return: LINKEDIN
+    )
+
+    entry marque-customer-y-n (
+        sequence: 80
+        display: Marque Customer Y/N
+        return: MARQUEE_CUSTOMER_YN
+    )
+
+    entry number-of-users (
+        sequence: 90
+        display: Number of Users
+        return: NUMBER_OF_USERS
+    )
+
+    entry referenceable-y-n (
+        sequence: 70
+        display: Referenceable Y/N
+        return: REFERENCABLE
+    )
+
+    entry sic (
+        sequence: 220
+        display: SIC
+        return: SIC
+    )
+
+    entry status (
+        sequence: 20
+        display: Status
+        return: STATUS_ID
+    )
+
+    entry stock-symbol (
+        sequence: 200
+        display: Stock Symbol
+        return: STOCK_SYMBOL
+    )
+
+    entry summary (
+        sequence: 100
+        display: Summary
+        return: SUMMARY
+    )
+
+    entry tags (
+        sequence: 60
+        display: Tags
+        return: TAGS
+    )
+
+    entry twitter (
+        sequence: 260
+        display: Twitter
+        return: TWITTER
+    )
+
+    entry unique-id (
+        sequence: 1
+        display: Unique ID
+        return: ID
+    )
+
+    entry web-site (
+        sequence: 230
+        display: Web Site
+        return: WEB_SITE
+    )
+
+)
+

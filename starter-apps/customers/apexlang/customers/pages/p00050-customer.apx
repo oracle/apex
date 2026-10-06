@@ -8,7 +8,6 @@ page 50 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -26,7 +25,7 @@ page 50 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -86,6 +85,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -292,6 +294,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -523,6 +528,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -701,6 +709,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -1030,6 +1041,9 @@ page 50 (
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -1316,9 +1330,6 @@ page 50 (
             ]
             showNullValuesAs: " - "
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No validations have been recorded
         }
@@ -1499,6 +1510,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -2215,6 +2229,9 @@ page 50 (
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column CREATED (
             reportColumnQueryId: 6
@@ -2403,6 +2420,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -2615,6 +2635,9 @@ page 50 (
             ]
             cssClasses: t-Report--cleanBorders
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -2801,6 +2824,9 @@ page 50 (
                 t-Report--noBorders
             ]
             cssClasses: t-Report--cleanBorders
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -3140,6 +3166,9 @@ page 50 (
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column ID (
             reportColumnQueryId: 1
@@ -3297,6 +3326,9 @@ page 50 (
                 t-Report--noBorders
             ]
             cssClasses: t-Report--cleanBorders
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -3528,6 +3560,9 @@ page 50 (
                 #DEFAULT#
                 t-Comments--chat
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

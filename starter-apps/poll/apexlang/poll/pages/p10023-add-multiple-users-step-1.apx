@@ -12,6 +12,9 @@ page 10023 (
         chained: false
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     css {
         inline:
             ```css
@@ -24,8 +27,6 @@ page 10023 (
     security {
         authorizationScheme: @administration-rights
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feature-access-control

@@ -8,14 +8,13 @@ page 93 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .tooltip-hint .t-Icon { color: rgba(0,0,0,.5); vertical-align: top; }
+        inline: ".tooltip-hint .t-Icon { color: rgba(0,0,0,.5); vertical-align: top; }"
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -74,9 +73,6 @@ page 93 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500
@@ -211,9 +207,6 @@ page 93 (
                 t-Report--inline
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         performance {
             maxRowsToProcess: 500
         }
@@ -335,9 +328,6 @@ page 93 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500
@@ -477,6 +467,9 @@ page 93 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

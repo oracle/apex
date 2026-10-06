@@ -6,9 +6,6 @@ page 320 (
         pageTemplate: @/marquee
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -33,8 +30,6 @@ page 320 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -445,6 +440,9 @@ page 320 (
                 t-Report--inline
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column CHILD_RECORD_NAME (
             reportColumnQueryId: 1
@@ -777,6 +775,9 @@ page 320 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column REFERENCE (
             reportColumnQueryId: 1
@@ -865,6 +866,9 @@ page 320 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DUE (
@@ -1280,6 +1284,9 @@ page 320 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CATEGORY (

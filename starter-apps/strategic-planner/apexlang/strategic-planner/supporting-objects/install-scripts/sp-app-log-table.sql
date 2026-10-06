@@ -17,8 +17,8 @@ create or replace trigger sp_app_log_bi
    before insert on sp_app_log
    for each row
 begin
-   :new.created       := sysdate;
-   :new.created_trunc := trunc(sysdate);
-   :new.created_by    := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+   :new.created       := nvl(:new.created,sysdate);
+   :new.created_trunc := trunc(:new.created);
+   :new.created_by    := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
 end sp_app_log_bi;
 /

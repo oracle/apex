@@ -1,0 +1,26 @@
+searchConfig OPENAI_ADVANCED_VECTOR_SEARCH (
+    name: OPENAI-BASIC-VECTOR-SEARCH-DATATABLE
+    type: vector
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-sitemap-vertical
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

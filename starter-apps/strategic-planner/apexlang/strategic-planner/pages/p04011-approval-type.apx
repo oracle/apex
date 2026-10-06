@@ -14,10 +14,11 @@ page 4011 (
     dialog {
         chained: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -106,6 +107,9 @@ page 4011 (
                 t-Report--inline
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column ACTIVE (
             reportColumnQueryId: 3
@@ -169,9 +173,6 @@ page 4011 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @approval-type

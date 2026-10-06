@@ -7,10 +7,11 @@ page 24 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -89,11 +90,13 @@ page 24 (
         title {
             title: Increased Font Size
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -161,6 +164,9 @@ page 24 (
         title {
             title: Title at End
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -169,7 +175,6 @@ page 24 (
             decimalPlaces: 0
         }
         animation {
-            onDisplay: alphaFade
             onDataChange: none
         }
         legend {
@@ -296,6 +301,9 @@ page 24 (
         title {
             title: Default
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -366,6 +374,9 @@ page 24 (
         title {
             title: Title at Start
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -375,7 +386,6 @@ page 24 (
             decimalPlaces: 0
         }
         animation {
-            onDisplay: alphaFade
             onDataChange: none
         }
         legend {

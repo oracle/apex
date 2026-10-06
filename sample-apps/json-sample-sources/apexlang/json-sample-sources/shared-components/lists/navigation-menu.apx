@@ -1,0 +1,317 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 230
+        }
+        isCurrent {
+            type: pages
+            pages: 600
+        }
+        link {
+            target: {
+                page: 600
+            }
+        }
+    )
+
+    entry charts-from-json (
+        label: Charts from JSON
+        layout {
+            sequence: 140
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry data-loading (
+        label: Data Loading
+        layout {
+            sequence: 180
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+    )
+
+    entry data-presentation (
+        label: Data Presentation
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry duality-view (
+        label: Duality View
+        icon {
+            imageIconCssClasses: fa-exchange
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        layout {
+            sequence: 150
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 403
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        layout {
+            sequence: 120
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry json-and-workflow (
+        label: JSON and Workflow
+        layout {
+            sequence: 200
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+    )
+
+    entry json-collection-table (
+        label: JSON Collection Table
+        layout {
+            sequence: 80
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry json-sources (
+        label: JSON Sources
+        icon {
+            imageIconCssClasses: fa-file-json-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry json-table (
+        label: JSON_TABLE
+        layout {
+            sequence: 100
+            parentEntry: @sql-json-functions
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry json-transform (
+        label: JSON_TRANSFORM
+        layout {
+            sequence: 110
+            parentEntry: @sql-json-functions
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry map (
+        label: Map
+        layout {
+            sequence: 160
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        layout {
+            sequence: 210
+            parentEntry: @data-presentation
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+    )
+
+    entry post-processing (
+        label: Post Processing
+        layout {
+            sequence: 170
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry reset-data (
+        label: Reset Data
+        layout {
+            sequence: 250
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: 602
+        }
+        link {
+            target: {
+                page: 602
+            }
+        }
+    )
+
+    entry search-page (
+        label: Search Page
+        layout {
+            sequence: 155
+            parentEntry: @data-presentation
+        }
+        isCurrent {
+            type: pages
+            pages: 408
+        }
+        link {
+            target: {
+                page: 408
+            }
+        }
+    )
+
+    entry sql-json-functions (
+        label: SQL/JSON Functions
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 225
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry table-with-json-column (
+        label: Table with JSON Column
+        layout {
+            sequence: 75
+            parentEntry: @json-sources
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry theme-style-selection (
+        label: Theme Style Selection
+        layout {
+            sequence: 245
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 601
+            }
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-missile
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,26 @@
+lov answer-type (
+    name: ANSWER TYPE
+    source {
+        location: staticValues
+    }
+
+    entry free-form-answer (
+        sequence: 3
+        display: Free Form Answer
+        return: FREEFORM
+    )
+
+    entry multiple-answers (
+        sequence: 2
+        display: Multiple Answers
+        return: MULTI
+    )
+
+    entry single-answer (
+        sequence: 1
+        display: Single Answer
+        return: SINGLE
+    )
+
+)
+

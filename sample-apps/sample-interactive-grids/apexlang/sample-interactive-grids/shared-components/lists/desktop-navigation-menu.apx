@@ -1,0 +1,727 @@
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry add-toolbar-button (
+        label: Add Toolbar Button
+        layout {
+            sequence: 40
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 14
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry advanced-delete (
+        label: Advanced Delete
+        layout {
+            sequence: 270
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 53
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry basic-editing (
+        label: Basic Editing
+        layout {
+            sequence: 160
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 30
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry basic-reporting (
+        label: Basic Reporting
+        layout {
+            sequence: 20
+            parentEntry: @reporting
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry chart-view (
+        label: Chart View
+        layout {
+            sequence: 285
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 14
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry client-validation (
+        label: Client Validation
+        layout {
+            sequence: 250
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 51
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry column-groups (
+        label: Column Groups
+        layout {
+            sequence: 30
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry custom-server-processing (
+        label: Custom Server Processing
+        layout {
+            sequence: 320
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 57
+        }
+        link {
+            target: {
+                page: 57
+            }
+        }
+    )
+
+    entry delete-only (
+        label: Delete Only
+        layout {
+            sequence: 180
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        layout {
+            sequence: 215
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 58
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+    )
+
+    entry editing (
+        label: Editing
+        icon {
+            imageIconCssClasses: fa-pencil-square-o
+        }
+        layout {
+            sequence: 13
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry editing-dialog (
+        label: Editing (Dialog)
+        layout {
+            sequence: 300
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 54
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry feature-customization (
+        label: Feature Customization
+        layout {
+            sequence: 240
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 50
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry form-with-grid (
+        label: Form with Grid
+        layout {
+            sequence: 200
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 34
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry full-page-with-maximize (
+        label: Full Page with Maximize
+        layout {
+            sequence: 220
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                23
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry icon-and-detail-views (
+        label: Icon and Detail Views
+        layout {
+            sequence: 95
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 13
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry item-type-plug-ins (
+        label: Item Type Plug-Ins
+        layout {
+            sequence: 310
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 56
+        }
+        link {
+            target: {
+                page: 56
+            }
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        layout {
+            sequence: 330
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry load-more (
+        label: Load More
+        layout {
+            sequence: 150
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        layout {
+            sequence: 210
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 35
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry multiple-selection (
+        label: Multiple Selection
+        layout {
+            sequence: 70
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        layout {
+            sequence: 290
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 70
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry other-column-types (
+        label: Other Column Types
+        layout {
+            sequence: 172
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 36
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry pagination (
+        label: Pagination
+        icon {
+            imageIconCssClasses: fa-arrow-circle-o-right
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+    )
+
+    entry people-paging (
+        label: People (paging)
+        layout {
+            sequence: 280
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 60
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+    )
+
+    entry progressive-scroll (
+        label: Progressive Scroll
+        layout {
+            sequence: 145
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry protected-rows (
+        label: Protected Rows
+        layout {
+            sequence: 190
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry reporting (
+        label: Reporting
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry row-header (
+        label: Row Header
+        layout {
+            sequence: 50
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry saved-reports (
+        label: Saved Reports
+        layout {
+            sequence: 80
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 9
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry scroll (
+        label: Scroll
+        layout {
+            sequence: 140
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry scroll-with-maximize (
+        label: Scroll with Maximize
+        layout {
+            sequence: 230
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 22
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry sequence-row-header (
+        label: Sequence Row Header
+        layout {
+            sequence: 60
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry single-row-view (
+        label: Single Row View
+        layout {
+            sequence: 90
+            parentEntry: @reporting
+        }
+        isCurrent {
+            type: pages
+            pages: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry tooltips (
+        label: Tooltips
+        layout {
+            sequence: 260
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 52
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry traditional (
+        label: Traditional
+        layout {
+            sequence: 100
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry traditional-custom (
+        label: Traditional (Custom)
+        layout {
+            sequence: 120
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry traditional-select-list (
+        label: Traditional (Select List)
+        layout {
+            sequence: 130
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry traditional-total-rows (
+        label: Traditional (Total Rows)
+        layout {
+            sequence: 110
+            parentEntry: @pagination
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry validation (
+        label: Validation
+        layout {
+            sequence: 170
+            parentEntry: @editing
+        }
+        isCurrent {
+            type: pages
+            pages: 31
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+)
+

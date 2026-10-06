@@ -8,13 +8,10 @@ page 35 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -144,8 +141,8 @@ page 35 (
             template: @/optional
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
+        advanced {
+            customAttributes: required
         }
         source {
             type: functionBody

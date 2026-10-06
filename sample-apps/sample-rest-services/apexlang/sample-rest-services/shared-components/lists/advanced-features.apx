@@ -1,0 +1,113 @@
+list advanced-features (
+    name: Advanced Features
+
+    entry invoke-api-process (
+        label: Invoke API Process
+        icon {
+            imageIconCssClasses: fa-compass
+        }
+        layout {
+            sequence: 19
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to declaratively invoke a REST API using the Invoke API Page Process type.
+        }
+    )
+
+    entry nested-json-and-dynamic-actions (
+        label: Nested JSON and Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+        userDefinedAttributes {
+            1: Use Dynamic Actions to visualize nested JSON from a REST Data Source in two regions.
+        }
+    )
+
+    entry rest-and-workflow (
+        label: REST and Workflow
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 51
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+        userDefinedAttributes {
+            1: Explains how to orchestrate REST calls using Workflows.
+        }
+    )
+
+    entry rest-data-and-pl-sql (
+        label: REST Data and PL/SQL
+        icon {
+            imageIconCssClasses: fa-window-pointer
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 404
+            }
+        }
+        userDefinedAttributes {
+            1: Illustrates how to invoke REST endpoints with PL/SQL and the APEX_EXEC package.
+        }
+    )
+
+    entry rest-data-source-plugins (
+        label: REST Data Source Plugins
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 41
+        }
+        link {
+            target: {
+                page: 406
+            }
+        }
+        userDefinedAttributes {
+            1: Use a REST Data Source Plug-In to support special functionality of an external REST API.
+        }
+    )
+
+    entry rest-synchronization (
+        label: REST Synchronization
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            1: Leverage REST Synchronization for improved performance and availability.
+        }
+    )
+
+)
+

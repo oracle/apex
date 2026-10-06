@@ -1,0 +1,77 @@
+list data-densify (
+    name: Data Densify
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a single-series Bar chart, with the ordering controlled via the series SQL query
+        }
+    )
+
+    entry bar-chart-series-name-column-mapping-page (
+        label: Bar Chart (Series Name Column Mapping)  - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a multi-series Bar chart, with differing numbers of data points per series, using <strong>Fill Gaps in Chart Data</strong> chart-level attribute.
+        }
+    )
+
+    entry data-densification-page (
+        label: Data Densification - Page 14
+        icon {
+            imageIconCssClasses: fa-code-group
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: This page demonstrates the behaviour of the new <strong>Fill Gaps in Chart Data</strong> and associated <strong>Sort Order</strong> attributes, in the densification of a multi-series chart.  There are also examples of opting out of the densification logic, to base the chart data and ordering solely on the chart query provided.
+        }
+    )
+
+    entry line-chart-mixed-series-length-quantity-40-page (
+        label: Line Chart (Mixed Series Length - Quantity > 40) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a multi-series Line with Area chart, with series of differing lengths
+        }
+    )
+
+)
+

@@ -1,0 +1,104 @@
+list access-control (
+    name: Access Control
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 130
+            }
+        }
+        userDefinedAttributes {
+            1: Use to change the Access Control Scope or to disable Access Control.
+            2: switchIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry acl-features (
+        label: ACL Features
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 123
+            }
+        }
+        userDefinedAttributes {
+            1: "Manage the access levels required to access specific functionality. "
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry username-format (
+        label: Username Format
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Define the username format for new users in this application.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 57
+                request: 57,RIR
+            }
+        }
+        userDefinedAttributes {
+            1: Administrators can define the domain of users and assign each a role.
+            2: userIcon
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

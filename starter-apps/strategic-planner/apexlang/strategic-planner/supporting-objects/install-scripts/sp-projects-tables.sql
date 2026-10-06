@@ -103,6 +103,14 @@ create table sp_projects (
     blocked_by_project_id          number,
     blocked_by_comment             varchar2(4000 char),
     --
+    -- external sync
+    --
+    sync_identifier                varchar2(60 char),
+    sync_system_link               varchar2(4000 char),
+    last_synced_on                 date,
+    last_sync_status               varchar2(60 char),
+    last_sync_error                varchar2(4000 char),
+    --
     -- Standard auditing columns
     --
     created                        date not null,

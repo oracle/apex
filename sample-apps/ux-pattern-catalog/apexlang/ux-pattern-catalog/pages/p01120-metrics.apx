@@ -7,7 +7,6 @@ page 1120 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -38,8 +37,6 @@ page 1120 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -315,6 +312,9 @@ page 1120 (
         chart {
             type: statusMeterGauge
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             innerRadius: 0.7
         }
@@ -530,6 +530,9 @@ page 1120 (
         chart {
             type: statusMeterGauge
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             innerRadius: 0.7
         }
@@ -703,6 +706,9 @@ page 1120 (
                 t-Report--noBorders
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column PROGRESS_DETAIL (
             reportColumnQueryId: 3
@@ -813,6 +819,9 @@ page 1120 (
         }
         chartLayout {
             maxWidth: 250
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: horizontal
@@ -1071,6 +1080,9 @@ page 1120 (
                 t-AVPList--variableLabelLarge
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column BUDGET (

@@ -6,13 +6,8 @@ page 303 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -124,7 +119,7 @@ page 303 (
                 formatMask: FML999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -142,7 +137,7 @@ page 303 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -159,7 +154,7 @@ page 303 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -178,7 +173,7 @@ page 303 (
                 valueIdentifiesRow: true
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -194,7 +189,7 @@ page 303 (
                 sequence: 50
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -210,7 +205,7 @@ page 303 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -226,7 +221,7 @@ page 303 (
                 sequence: 100
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -256,7 +251,7 @@ page 303 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -274,7 +269,7 @@ page 303 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -295,7 +290,7 @@ page 303 (
                 formatMask: FML999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F

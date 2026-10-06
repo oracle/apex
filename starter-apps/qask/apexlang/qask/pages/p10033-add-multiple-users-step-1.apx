@@ -12,11 +12,12 @@ page 10033 (
         chained: false
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feature-access-control
@@ -169,9 +170,6 @@ page 10033 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         default {
             type: static

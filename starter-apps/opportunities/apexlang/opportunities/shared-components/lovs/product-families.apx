@@ -1,0 +1,14 @@
+lov product-families (
+    name: PRODUCT FAMILIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_family as d,
+                   id as r
+              from eba_sales_product_families
+             order by 1
+            ```
+    }
+)
+

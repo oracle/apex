@@ -1,6 +1,117 @@
+appProcess get-doc-links (
+    name: get_doc_links
+    source {
+        plsqlCode:
+            ```plsql
+            sys.htp.p (
+                sp_comment_util.get_doc_links (
+                    p_search          => apex_application.g_x01,
+                    p_scope           => apex_application.g_x02,
+                    p_object_id       => apex_application.g_x03 ) );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
+appProcess get-edit-project-url (
+    name: get_edit_project_url
+    source {
+        plsqlCode:
+            ```plsql
+            DECLARE
+              l_url VARCHAR2(32767);
+            BEGIN
+              l_url := apex_util.prepare_url(
+                         apex_page.get_url(
+                           p_page        => 24,
+                           p_clear_cache => '24',
+                           p_items       => 'P24_ID',
+                           p_values      => :P3_PROJECT_ID
+                         )
+                       );
+            
+              apex_json.initialize_clob_output;
+              apex_json.open_object;
+              apex_json.write('url', l_url);
+              apex_json.close_object;
+              htp.p(apex_json.get_clob_output);
+              apex_json.free_output;
+            END;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
+appProcess get-favorite-project-url (
+    name: get_favorite_project_url
+    source {
+        plsqlCode:
+            ```plsql
+            DECLARE
+              l_url VARCHAR2(32767);
+            BEGIN
+              l_url := apex_util.prepare_url(
+                         apex_page.get_url(
+                           p_page        => 128,
+                           p_clear_cache => '128',
+                           p_items       => 'P128_PROJECT_ID',
+                           p_values      => :P3_PROJECT_ID
+                         )
+                       );
+            
+              apex_json.initialize_clob_output;
+              apex_json.open_object;
+              apex_json.write('url', l_url);
+              apex_json.close_object;
+              htp.p(apex_json.get_clob_output);
+              apex_json.free_output;
+            END;
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
+appProcess get-mentions (
+    name: get_mentions
+    source {
+        plsqlCode:
+            ```plsql
+            sys.htp.p (
+                sp_comment_util.get_mentions (
+                    p_search    => apex_application.g_x01,
+                    p_scope     => apex_application.g_x02,
+                    p_object_id => apex_application.g_x03 ) );
+            ```
+    }
+    execution {
+        sequence: 1
+        point: ajaxCallback
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+)
+
 appProcess initialize-nomenclature (
     name: Initialize nomenclature
-    type: executeCode
     source {
         plsqlCode: sp_util.set_nomenclature;
     }
@@ -12,7 +123,6 @@ appProcess initialize-nomenclature (
 
 appProcess load-counts (
     name: Load Counts
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -33,10 +143,6 @@ appProcess load-counts (
                         :P1_AREAS := to_char(c1.c,'FM999G999G990'); 
                     end loop;
                     
-                    for c1 in (select count(*) c from sp_project_groups) loop
-                        :P1_PROJECT_GROUPS := to_char(c1.c,'FM999G999G990'); 
-                    end loop;
-                    
                     for c1 in (select count(*) c from sp_initiatives)  loop
                         :P1_INITIATIVES := to_char(c1.c,'FM999G999G990'); 
                     end loop;
@@ -51,7 +157,8 @@ appProcess load-counts (
                     
                     for c1 in (select count(*) c 
                                  from sp_activities ap, sp_projects p
-                                where ap.project_id = p.id(+) and
+                                where (nvl(ap.private_yn,'N') = 'N' or lower(ap.created_by) = lower(:APP_USER)) and
+                                      ap.project_id = p.id(+) and
                                       p.DUPLICATE_OF_PROJECT_ID is null and
                                       (p.ARCHIVED_YN = 'N' or p.archived_yn is null) -- need the is null to         accomodate the outer join
                     ) loop
@@ -64,10 +171,6 @@ appProcess load-counts (
                     
                     for c1 in (select count(*) c from SP_TEAM_MEMBERS) loop
                         :P1_PEOPLE := to_char(c1.c,'FM999G999G990'); 
-                    end loop;
-                    
-                    for c1 in (select count(*) c from SP_GROUPS) loop
-                        :P1_GROUPS := to_char(c1.c,'FM999G999G990'); 
                     end loop;
                     
                     :LAST_COUNT_REFRESH := to_char(sysdate,'YYYY.MM.DD-HH24:MI:SS');
@@ -90,7 +193,6 @@ appProcess load-counts (
 
 appProcess post-comment-image (
     name: POST_COMMENT_IMAGE
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -112,7 +214,6 @@ appProcess post-comment-image (
 
 appProcess set-app-home-url-if-null (
     name: set APP_HOME_URL (if null)
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -130,7 +231,6 @@ appProcess set-app-home-url-if-null (
 
 appProcess set-get-comment-image-prefix-if-null (
     name: set GET_COMMENT_IMAGE_PREFIX (if null)
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -148,7 +248,6 @@ appProcess set-get-comment-image-prefix-if-null (
 
 appProcess set-navigation-strings (
     name: set navigation strings
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -162,9 +261,29 @@ appProcess set-navigation-strings (
     }
 )
 
+appProcess set-user-timezone (
+    name: set user timezone
+    source {
+        plsqlCode:
+            ```plsql
+            for c1 in (
+                select timezone
+                  from sp_team_members
+                 where (id = :APP_USER_ID or email = lower(:APP_USER))
+                   and timezone is not null
+            ) loop
+                apex_util.set_session_time_zone (p_time_zone => c1.timezone);
+            end loop;
+            ```
+    }
+    execution {
+        sequence: 30
+        point: afterAuthentication
+    }
+)
+
 appProcess viewinitfocusareapdf (
     name: viewInitFocusAreaPDF
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -200,7 +319,6 @@ appProcess viewinitfocusareapdf (
 
 appProcess viewinitiativepdf (
     name: viewInitiativePDF
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -236,7 +354,6 @@ appProcess viewinitiativepdf (
 
 appProcess viewprojectpdf (
     name: viewProjectPDF
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -272,7 +389,6 @@ appProcess viewprojectpdf (
 
 appProcess viewreleasepdf (
     name: viewReleasePDF
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -308,7 +424,6 @@ appProcess viewreleasepdf (
 
 appProcess viewtaskpdf (
     name: viewTaskPDF
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

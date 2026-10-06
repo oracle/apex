@@ -1,0 +1,100 @@
+list ig-report-linking-examples (
+    name: IG Report Linking Examples
+
+    entry clearing-report-settings (
+        label: Clearing report settings
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 37
+                action: clearRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry filtering-report-for-budgets-greater-than (
+        label: Filtering Report for budgets greater than 5000
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 37
+                items: {
+                    IGGT_BUDGET: 5000
+                }
+                clearCache: 18
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry invoking-a-saved-report (
+        label: Invoking a Saved Report
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 37
+                action: resetRegions
+                request: IG_Status
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry linking-to-a-saved-report (
+        label: Linking to a Saved Report
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 17
+                items: {
+                    IGGT_BUDGET: 6000
+                }
+                action: clearRegions
+                request: "IG[projects_report]_Costings"
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry resetting-to-developer-defaults (
+        label: Resetting to Developer Defaults
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 37
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+)
+

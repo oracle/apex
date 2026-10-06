@@ -1,0 +1,95 @@
+list calendars-and-dynamic-actions (
+    name: Calendars and Dynamic Actions
+
+    entry calendar-with-report (
+        label: Calendar with Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: This page contains a classic report region which is always in sync with the Calendar view, i.e. shows only data which is also visible on the calendar.
+        }
+    )
+
+    entry copy-events-by-click (
+        label: Copy Events by Click
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows, how existing calendar events can be copied with a simple mouse click.
+        }
+    )
+
+    entry create-calendar-events (
+        label: Create Calendar Events
+        icon {
+            imageIconCssClasses: fa-calendar-plus-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+        userDefinedAttributes {
+            1: Select a date range in the calendar and have a new event being created in the database immediately.
+        }
+    )
+
+    entry custom-drag-and-drop-handlers (
+        label: Custom Drag and Drop Handlers
+        icon {
+            imageIconCssClasses: fa-calendar-pointer
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+        userDefinedAttributes {
+            1: Explore how to capture drag and drop events with dynamic actions.
+        }
+    )
+
+    entry delete-events-by-click (
+        label: Delete Events By Click
+        icon {
+            imageIconCssClasses: fa-calendar-times-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+        userDefinedAttributes {
+            1: Delete a calendar event in the database by simply clicking it in the Calendar.
+        }
+    )
+
+)
+

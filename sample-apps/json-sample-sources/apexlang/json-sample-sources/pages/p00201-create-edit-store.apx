@@ -8,10 +8,11 @@ page 201 (
         dialogTemplate: @/modal-dialog
         templateOptions: #DEFAULT#
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

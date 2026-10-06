@@ -1,0 +1,14 @@
+lov i-accept (
+    name: I ACCEPT
+    source {
+        location: staticValues
+    }
+
+    entry i-accept (
+        sequence: 10
+        display: " I Accept"
+        return: ACCEPTED
+    )
+
+)
+

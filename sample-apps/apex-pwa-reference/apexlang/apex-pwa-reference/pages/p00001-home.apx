@@ -6,12 +6,9 @@ page 1 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region about (
@@ -205,6 +202,9 @@ page 1 (
                 t-MediaList--cols t-MediaList--2cols
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (

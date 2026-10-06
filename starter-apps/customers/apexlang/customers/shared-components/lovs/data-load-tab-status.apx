@@ -1,0 +1,20 @@
+lov data-load-tab-status (
+    name: DATA_LOAD_TAB_STATUS
+    source {
+        location: staticValues
+    }
+
+    entry disable (
+        sequence: 2
+        display: Disable
+        return: DISABLE
+    )
+
+    entry enable (
+        sequence: 1
+        display: Enable
+        return: ENABLE
+    )
+
+)
+

@@ -1,0 +1,311 @@
+list reference-js (
+    name: Reference - JS
+
+    entry 3d-effect (
+        label: 3D Effect
+        icon {
+            imageIconCssClasses: fa-cube
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to apply the 3D effect on your chart
+        }
+    )
+
+    entry chart-links (
+        label: Chart Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 49
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to link from chart to reports and charts
+        }
+    )
+
+    entry customizing-data-labels (
+        label: Customizing Data Labels
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to declaratively style chart data labels using CSS, or customize the labels using JavaScript
+        }
+    )
+
+    entry customizing-tooltip-labels (
+        label: Customizing Tooltip Labels
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to customise the labels displayed in a tooltip, both declaratively and via JavaScript customization
+        }
+    )
+
+    entry data-densification (
+        label: Data Densification
+        icon {
+            imageIconCssClasses: fa-plus
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how a multi-series chart with differing series lengths, use new data densification handling to render the data points correctly on your chart
+        }
+    )
+
+    entry datetime-x-axis (
+        label: Datetime x-axis
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of the Time Axis Type attribute, to render DATETIME information on the x-axis of a chart
+        }
+    )
+
+    entry dynamic-actions (
+        label: Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-bolt
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of Dynamic Actions
+        }
+    )
+
+    entry font-formatting (
+        label: Font Formatting
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of examples demonstrating the declarative styling of text rendered on a chart
+        }
+    )
+
+    entry formatting-values (
+        label: Formatting Values
+        icon {
+            imageIconCssClasses: fa-eur
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to format the values on your chart
+        }
+    )
+
+    entry javascript-code-customizations (
+        label: JavaScript Code Customizations
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of JavaScript Code to customize the chart at initialization
+        }
+    )
+
+    entry jet-plug-in-component (
+        label: JET Plug-in Component
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of an APEX plug-in, to incorporate other Oracle JET components in your application
+        }
+    )
+
+    entry series-color (
+        label: Series Color
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating how to set the color of chart series
+        }
+    )
+
+    entry sorting (
+        label: Sorting
+        icon {
+            imageIconCssClasses: fa-sort-alpha-asc
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of chart examples demonstrating how to sort chart values and labels, using the new <strong>Fill Gaps in Chart Data</strong> and <strong>Sort Order</strong> chart-level attributes.
+        }
+    )
+
+    entry stack-grouping (
+        label: Stack Grouping
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of examples demonstrating the declarative grouping and labeling of stacked charts.
+        }
+    )
+
+    entry style-chart-title (
+        label: Style Chart Title
+        icon {
+            imageIconCssClasses: fa-font-size
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: See chart examples demonstrating the use of JavaScript Code to customize the chart title at initialization
+        }
+    )
+
+    entry y2-axis (
+        label: Y2 Axis
+        icon {
+            imageIconCssClasses: fa-y2-axis
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of an extra, y2 axis
+        }
+    )
+
+    entry zoom-scroll (
+        label: Zoom & Scroll
+        icon {
+            imageIconCssClasses: fa-search-plus
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: See a list of the chart examples demonstrating the use of Zoom and Scroll, making it easier to view charts rendering large volumes of data
+        }
+    )
+
+)
+

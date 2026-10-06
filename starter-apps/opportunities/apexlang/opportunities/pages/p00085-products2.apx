@@ -8,11 +8,10 @@ page 85 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -122,7 +121,7 @@ page 85 (
                 sequence: 100
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -145,7 +144,7 @@ page 85 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -162,7 +161,7 @@ page 85 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -178,7 +177,7 @@ page 85 (
                 sequence: 60
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -197,7 +196,7 @@ page 85 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -227,7 +226,7 @@ page 85 (
                 linkAttributes: title="Edit #PRODUCT#"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -258,7 +257,7 @@ page 85 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -277,7 +276,7 @@ page 85 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -293,7 +292,7 @@ page 85 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -317,7 +316,7 @@ page 85 (
                 formatMask: FML999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -341,7 +340,7 @@ page 85 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -363,7 +362,7 @@ page 85 (
                 sequence: 130
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q

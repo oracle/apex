@@ -6,12 +6,9 @@ page 100 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region apex-pwas (
@@ -936,8 +933,8 @@ page 100 (
                     incremental offline data capabilities into future Oracle APEX
                     versions. You can do this by logging new ideas for targeted
                     offline capabilities based on your experiences
-                    at <a target="_blank"
-                    href="https://apex.oracle.com/ideas">apex.oracle.com/ideas</a>.
+                    at <a target="_blank" rel="noopener noreferrer external"
+                    href="https://oracleapex.com/ideas">oracleapex.com/ideas</a>.
                 
                 </p>
                 

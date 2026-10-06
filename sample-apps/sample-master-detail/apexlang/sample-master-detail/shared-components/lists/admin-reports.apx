@@ -1,0 +1,64 @@
+list admin-reports (
+    name: Admin Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 28
+                clearCache: 28
+            }
+        }
+        userDefinedAttributes {
+            1: View page views by user in a monthly calendar
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 29
+                clearCache: 29
+            }
+        }
+        userDefinedAttributes {
+            1: Report page view for this application
+            2: &P33_PAGE_VIEWS.
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 30
+                clearCache: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Report user activity for this application
+            2: &P33_USER_COUNT.
+        }
+    )
+
+)
+

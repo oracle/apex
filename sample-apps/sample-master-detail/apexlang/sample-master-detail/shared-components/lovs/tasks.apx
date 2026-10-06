@@ -1,0 +1,14 @@
+lov tasks (
+    name: TASKS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as display
+            , id as return
+            from eba_demo_md_tasks
+            order by start_date
+            ```
+    }
+)
+

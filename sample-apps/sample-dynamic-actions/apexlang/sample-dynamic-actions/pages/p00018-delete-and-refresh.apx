@@ -7,12 +7,11 @@ page 18 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -97,7 +96,7 @@ page 18 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -113,7 +112,7 @@ page 18 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -131,7 +130,7 @@ page 18 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -147,7 +146,7 @@ page 18 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -163,7 +162,7 @@ page 18 (
                 sequence: 6
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -189,7 +188,7 @@ page 18 (
                 linkAttributes: id="#ID#" class="delete t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete Employee: #ENAME#"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -205,7 +204,7 @@ page 18 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -221,7 +220,7 @@ page 18 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -237,7 +236,7 @@ page 18 (
                 sequence: 1
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             advanced {
                 endUserAlias: A
@@ -258,7 +257,7 @@ page 18 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G

@@ -1,0 +1,84 @@
+aiAgent all-interactive-reports (
+    name: All Reports
+    genAI {
+        systemPrompt:
+            ```
+            You are a data analyst.
+            
+            Help users navigate to the appropriate reports. You may use the `get_reports` to retrieve a list of reports.
+            Analyze the descriptions of the reports provided and decide which report would best answer the question asked.
+            If there is not a clear winner, you can return more than one result.
+            Keep your answers concise. Ideally, answer only with the list of related reports.
+            Do not use bullet points.
+            
+            The current application ID: &APP_ID.
+            ```
+        welcomeMessage: Ask a question about the data within this application, I will find the report that I believe will provide your answer.
+    }
+    comments {
+        comments:
+            ```
+            removd this
+            There may be an Interactive Report and Faceted Search (per the Report Type) that would address the same question.  If so, return both.
+            
+            ```
+    }
+
+    tool get-reports (
+        name: get_reports
+        type: plugin/retrieveDataAdvanced
+        executionPoint: onDemand
+        description:
+            ```
+            Returns the list of available reports for a specific application.
+            Returns a JSON array containing [{page_number, page_title, description, additional_details, report_type, url}]
+            When presenting a report to the user, format it as:
+            
+            """
+            **Page Title** (Report Type)
+            Description
+            [Access Report](url)
+            """
+            
+            - Bold the page title
+            - Keep the description as is, word for word. Do not change it, do not extend it.
+            - Include only the description. Never include data from "additional_details"! This internal information is for ranking the reports only!
+            ```
+        settings {
+            sqlQuery:
+                ```sql
+                select 'Page ' || page_id                           page_number,
+                       sp_util.replace_nomenclature(page_title)     page_title,
+                       sp_util.replace_nomenclature(help_text)      description,
+                       sp_util.replace_nomenclature(page_comment)   additional_details,
+                       case when page_id = 710 then 'Interactive Report'
+                            else page_function
+                            end report_type,
+                       apex_page.get_url(:APP_ID,page_id) url
+                  from APEX_APPLICATION_PAGES p
+                 where application_id = :APP_ID
+                   and page_mode = 'Normal'
+                   and ( page_function = 'Interactive Report' or
+                         page_id = 710 or
+                         (page_function = 'Faceted Search' and page_id in (8, 17, 19, 21, 23, 55, 74, 102, 700)) )
+                   and nvl(authorization_scheme,'Reader Rights') = 'Reader Rights'  
+                --   and (authorization_scheme is null or
+                --        apex_authorization.is_authorized (p_authorization_name => authorization_scheme))
+                   and (build_option is null or 
+                        apex_util.get_build_option_status (
+                            p_application_id    => :APP_ID,
+                            p_build_option_name => build_option) = 'INCLUDE')
+                ```
+        }
+
+        parameter APP_ID (
+            description: ID of the current application, provided in the prompt
+            value {
+                dataType: number
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,13 @@
+lov country-codes (
+    name: COUNTRY CODES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select COUNTRY_NAME display_value, COUNTRY_CODE return_value 
+            from eba_sales_COUNTRIES
+            order by 1
+            ```
+    }
+)
+

@@ -1,0 +1,26 @@
+lov logo-sizes (
+    name: LOGO SIZES
+    source {
+        location: staticValues
+    }
+
+    entry large (
+        sequence: 3
+        display: Large
+        return: L
+    )
+
+    entry medium (
+        sequence: 2
+        display: Medium
+        return: M
+    )
+
+    entry small (
+        sequence: 1
+        display: Small
+        return: S
+    )
+
+)
+

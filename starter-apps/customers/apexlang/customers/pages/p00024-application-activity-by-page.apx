@@ -8,10 +8,11 @@ page 24 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -97,7 +98,7 @@ page 24 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AD
@@ -118,7 +119,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -136,7 +137,7 @@ page 24 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AC
@@ -157,7 +158,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: V
@@ -178,7 +179,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: X
@@ -199,7 +200,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -220,7 +221,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -241,7 +242,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990D9999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -259,7 +260,7 @@ page 24 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -275,7 +276,7 @@ page 24 (
                 sequence: 26
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -296,7 +297,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Y
@@ -317,7 +318,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: W
@@ -335,7 +336,7 @@ page 24 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AA
@@ -356,7 +357,7 @@ page 24 (
                 formatMask: 999G999G999G999G999G990D99
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AB

@@ -7,7 +7,6 @@ page 4 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -33,7 +32,7 @@ page 4 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -46,7 +45,7 @@ page 4 (
             htmlCode:
                 ```html
                 <h2>About this Application</h2>
-                <p>Learn how to create a tree control using a SQL query. This application shows various methods of integrating tree controls into your Oracle Application Express application. The sample Project Tracking example demonstrates how you can represent your hierarchical data using a tree, with custom icons, tool tips and links for each level of the tree. The sample Project Documentation example demonstrates how you can customize a tree region to add a context menu and support the download of documents via the tree node link.</p><p>
+                <p>Learn how to create a tree control using a SQL query. This application shows various methods of integrating tree controls into your Oracle APEX application. The sample Project Tracking example demonstrates how you can represent your hierarchical data using a tree, with custom icons, tool tips and links for each level of the tree. The sample Project Documentation example demonstrates how you can customize a tree region to add a context menu and support the download of documents via the tree node link.</p><p>
                 
                 Use this application to familiarize yourself with the Tree region options available, and custom JavaScript driven tree rendering techniques. The JavaScript required is included in the "JavaScript" attribute of the Project Documentation page. This makes the JavaScript easy to integrate into your own application.</p>
                 ```
@@ -97,6 +96,9 @@ page 4 (
                 t-AVPList--rightAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column APP_VERSION (
@@ -160,32 +162,6 @@ page 4 (
         }
     )
 
-    region help (
-        name: Help
-        type: breadcrumb
-        source {
-            breadcrumb: @breadcrumb
-        }
-        layout {
-            sequence: 50
-            slot: breadcrumbBar
-        }
-        appearance {
-            template: @/title-bar
-            templateOptions: [
-                #DEFAULT#
-                t-BreadcrumbRegion--useBreadcrumbTitle
-            ]
-        }
-        serverSideCondition {
-            type: never
-        }
-        componentAppearance {
-            breadcrumbTemplate: @/breadcrumb
-            templateOptions: #DEFAULT#
-        }
-    )
-
     region help-container (
         name: Help Container
         type: staticContent
@@ -210,7 +186,7 @@ page 4 (
             htmlCode:
                 ```html
                 <H2>Getting Started</h2>
-                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the APEX Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
                 <p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137">OTN Forum</a>.</p>
                 ```
         }

@@ -1,6 +1,6 @@
 app STRATEGIC-PLANNER (
     name: Strategic Planner
-    version: 26.1.1
+    version: 26.2
     group: @starter-apps
     logo {
         type: text
@@ -19,8 +19,8 @@ app STRATEGIC-PLANNER (
         templateOptions: [
             #DEFAULT#
             js-defaultCollapsed
-            js-navCollapsed--hidden
-            t-TreeNav--classic
+            js-navCollapsed--default
+            t-TreeNav--styleA
         ]
         list: @navigation-menu
     }
@@ -52,9 +52,6 @@ app STRATEGIC-PLANNER (
     security {
         deepLinking: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        checksumSalt: 965CC55C8FE2B2FD4B2CAE6F064CE5EF63F7CA0EB756701DD35CEE6AC2937D19
     }
     sessionManagement {
         sessionStateCommits: immediate

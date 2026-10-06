@@ -7,15 +7,11 @@ page 37 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: All the AI Summaries for all &NOMENCLATURE_PROJECTS..  This includes the data sent to the AI engine along with the JSON return, the summary, highlights and risks extracted from the return.
     }
     config {
-        buildOption: @ai-project-summaries
+        buildOption: @ai-project-summaries-view
     }
 
     region breadcrumb (
@@ -56,6 +52,10 @@ page 37 (
                            case when length(s.details_sent) > 3000
                             then ' ...'
                             end details_sent,
+                       sys.dbms_lob.substr(s.DETAILS_JSON,3000)||
+                           case when length(s.details_json) > 3000
+                            then ' ...'
+                            end details_json,
                        s.SUMMARY_TYPE,
                        s.DATA_RECEIVED,
                        s.SUMMARY,
@@ -76,12 +76,22 @@ page 37 (
             template: @/interactive-report
             templateOptions: #DEFAULT#
         }
+        link {
+            linkColumn: singleRowView
+            uniquelyIdentifyRowsBy: uniqueColumn
+            uniqueColumn: ID
+            linkIcon: <img src="#APEX_FILES#app_ui/img/icons/apex-edit-view.png" class="apex-edit-view" alt="">
+        }
         pagination {
             type: rowRangesXToY
         }
         messages {
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All the AI Summaries for all projects.  This includes the data sent to the AI engine along with the JSON return, the summary, highlights and risks extracted from the return.
         }
         actionsMenu {
             controlBreak: false
@@ -110,7 +120,7 @@ page 37 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -126,7 +136,7 @@ page 37 (
                 sequence: 80
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -145,6 +155,22 @@ page 37 (
             }
         )
 
+        column DETAILS_JSON (
+            type: plainText
+            heading {
+                heading: Details JSON
+            }
+            layout {
+                sequence: 150
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
         column DETAILS_SENT (
             type: plainText
             heading {
@@ -154,7 +180,7 @@ page 37 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -170,7 +196,7 @@ page 37 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -186,7 +212,7 @@ page 37 (
                 sequence: 0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -212,7 +238,7 @@ page 37 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y
@@ -228,7 +254,7 @@ page 37 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -244,7 +270,7 @@ page 37 (
                 sequence: 50
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -272,10 +298,14 @@ page 37 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
+            }
+            genAI {
+                referenceDataType: staticValues
+                staticValues: STATIC:Low,Moderate,High,None
             }
         )
 
@@ -288,7 +318,7 @@ page 37 (
                 sequence: 90
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -316,10 +346,14 @@ page 37 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
+            }
+            genAI {
+                referenceDataType: staticValues
+                staticValues: STATIC:update,full
             }
         )
 

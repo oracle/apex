@@ -1,6 +1,6 @@
 app SAMPLE-REST-SERVICES (
     name: Sample REST Services
-    version: 26.1.1
+    version: 26.2.0
     logo {
         type: text
         text: Sample REST Services
@@ -42,10 +42,8 @@ app SAMPLE-REST-SERVICES (
         publicUser: APEX_PUBLIC_USER
     }
     security {
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        checksumSalt: 05B9E120A271E945304560BECB549D85DEE17C5ED6456E0EC9639844218CDDEA
     }
     runtime {
         allowFeedback: true

@@ -7,13 +7,10 @@ page 10 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -33,11 +30,13 @@ page 10 (
             slot: body
         }
         appearance {
-            template: @/hero
+            template: @/standard
             templateOptions: [
                 #DEFAULT#
-                t-HeroRegion--hideIcon
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
             ]
+            renderComponents: belowContent
         }
     )
 
@@ -64,44 +63,10 @@ page 10 (
         }
     )
 
-    region items (
-        name: items
-        type: staticContent
-        layout {
-            sequence: 30
-            parentRegion: @set-user-interface-theme-style
-            slot: subRegions
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-        advanced {
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region set-user-interface-theme-style (
-        name: Set User Interface Theme Style
-        type: staticContent
-        layout {
-            sequence: 20
-            slot: body
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--hideHeader js-addHiddenHeadingRoleDesc
-                t-Region--hiddenOverflow
-            ]
-        }
-    )
-
-    pageItem P10_DESKTOP_THEME_STYLE_ID (
+    pageItem P10_THEME_STYLE_ID (
         type: selectList
         label {
-            label: Desktop Theme Style
+            label: Theme Style
             alignment: left
         }
         lov {
@@ -109,21 +74,22 @@ page 10 (
             sqlQuery:
                 ```sql
                 select s.name d,
-                          s.theme_style_id r
-                from apex_application_theme_styles s, apex_application_themes t
-                where s.application_id = t.application_id
-                and s.theme_number = t.theme_number
-                and s.application_id = :app_id
-                and t.ui_type_name   = 'DESKTOP'
-                and t.is_current = 'Yes'
-                order by 1
+                       s.theme_style_id r
+                  from apex_application_theme_styles s,
+                       apex_application_themes       t
+                 where s.application_id = t.application_id
+                   and s.theme_number   = t.theme_number
+                   and s.application_id = :app_id
+                   and t.ui_type_name   = 'DESKTOP'
+                   and t.is_current     = 'Yes'
+                 order by 1
                 ```
             displayExtraValues: false
             displayNullValue: false
         }
         layout {
-            sequence: 10
-            region: @items
+            sequence: 20
+            region: @about-this-page
             slot: regionBody
             alignment: left
         }
@@ -215,7 +181,7 @@ page 10 (
         source {
             plsqlCode:
                 ```plsql
-                if :P10_DESKTOP_THEME_STYLE_ID is not null then
+                if :P10_THEME_STYLE_ID is not null then
                     for c1 in (select theme_number
                                from apex_application_themes
                                where application_id = :app_id
@@ -224,7 +190,7 @@ page 10 (
                     loop
                         apex_theme.set_current_style (
                             p_theme_number   => c1.theme_number,
-                            p_id => :P10_DESKTOP_THEME_STYLE_ID
+                            p_id => :P10_THEME_STYLE_ID
                             );
                     end loop;
                 end if;

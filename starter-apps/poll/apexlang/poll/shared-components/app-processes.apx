@@ -1,6 +1,5 @@
 appProcess set-poll-details (
     name: Set POLL Details
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

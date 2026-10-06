@@ -5,14 +5,15 @@ vectorProvider EBA_VECTOR_OCI (
         provider: ociGenAI
         modelName: cohere.embed-english-v3.0
     }
+    ociGenAI {
+        compartmentId: ocid1.compartment.oc1
+        servingMode: onDemand
+    }
     endpointUrl {
         url: https://inference.generativeai.us-chicago-1.oci.oraclecloud.com
     }
     authentication {
         credentials: @EBA_CREDENTIALS_OCI
-    }
-    additionalData {
-        attributes: {"compartmentId":"ocid1.compartment.oc1","servingMode":{"modelId":"cohere.embed-english-v3.0","servingType":"ON_DEMAND"}}
     }
 )
 

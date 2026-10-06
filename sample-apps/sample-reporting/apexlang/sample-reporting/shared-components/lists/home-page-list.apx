@@ -1,0 +1,151 @@
+list home-page-list (
+    name: Home Page List
+
+    entry analytic-functions (
+        label: Analytic Functions
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of various analytic functions available in Oracle SQL.
+        }
+    )
+
+    entry cards (
+        label: Cards
+        layout {
+            sequence: 45
+        }
+        link {
+            target: {
+                page: 41
+                clearCache: 41
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report displayed in cards
+        }
+    )
+
+    entry classic-report (
+        label: Classic Report
+        icon {
+            imageIconCssClasses: #APP_IMAGES#reports_classic.png
+        }
+        layout {
+            sequence: 47
+        }
+        link {
+            target: {
+                page: 3
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Tabular data which can be filtered by page item values
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: #APP_IMAGES#reports_filter.png
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 42
+                clearCache: 42
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report with facets to filter the result
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Reports which allow for in-line editing and other customization by the end user
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        icon {
+            imageIconCssClasses: #APP_IMAGES#reports_ir.png
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Reports which enable customization by the end user
+        }
+    )
+
+    entry sql-examples (
+        label: SQL Examples
+        icon {
+            imageIconCssClasses: #APP_IMAGES#reports_usecases.jpg
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 39
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrations of advanced SQL techniques
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: #APP_IMAGES#reports_usecases.jpg
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: "Demonstrations of advanced APEX report techniques "
+        }
+    )
+
+)
+

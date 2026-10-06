@@ -1,0 +1,81 @@
+list user-related-actions (
+    name: User Related Actions
+    config {
+        buildOption: @feature-access-control
+    }
+
+    entry accepted-service-terms (
+        label: Accepted Service Terms
+        icon {
+            imageIconCssClasses: fa-file-signature
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10014
+            }
+        }
+        userDefinedAttributes {
+            1: All users that have accepted Service Terms
+        }
+    )
+
+    entry account-requests (
+        label: Account Requests
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10035
+            }
+        }
+        userDefinedAttributes {
+            1: Review requests for accounts (for creating sessions)
+        }
+    )
+
+    entry restricted-to-email-domains (
+        label: Restricted To Email Domains
+        icon {
+            imageIconCssClasses: fa-envelope-check
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10037
+            }
+        }
+        userDefinedAttributes {
+            1: Control email domains that can be added as users
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10031
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Set level of access for authenticated users of this application
+        }
+    )
+
+)
+

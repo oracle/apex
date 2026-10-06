@@ -1,0 +1,133 @@
+list movie-vector-search (
+    name: Movie Vector Search
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Search movie data using vector search based on the TITLE, MOVIEDESCRIPTION, and ACTORS fields.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry mixed-languages (
+        label: Mixed Languages
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+        userDefinedAttributes {
+            1: Apply vector search to find relevant content across different languages, <strong>bridging language barriers</strong> in your data.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry movie-recommendation (
+        label: Movie Recommendation
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+        userDefinedAttributes {
+            1: Use vector search to recommend movies <strong>based on </strong>their<strong> vector similarity</strong>.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-file-code-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Use AI to generate real movie data to perform vector search on.
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+)
+

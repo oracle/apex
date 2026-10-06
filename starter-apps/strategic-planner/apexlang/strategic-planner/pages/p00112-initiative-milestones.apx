@@ -8,7 +8,6 @@ page 112 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -66,10 +65,6 @@ page 112 (
                 display: none;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -174,6 +169,9 @@ page 112 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -195,7 +193,7 @@ page 112 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #AREA#
+                        P23_FOCUS_AREA: I#AREA#
                     }
                     clearCache: 23
                 }
@@ -276,89 +274,6 @@ page 112 (
         advanced {
             regionDisplaySelector: true
         }
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 100
-                }
-                behavior {
-                    target: {
-                        page: 112
-                        items: {
-                            P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 90
-                }
-                behavior {
-                    target: {
-                        page: 112
-                        items: {
-                            P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
-                        }
-                        clearCache: 112
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
     )
 
     region report-results (
@@ -476,6 +391,9 @@ page 112 (
                 t-Report--horizontalBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No &NOMENCLATURE_PROJECTS. found.
@@ -654,7 +572,7 @@ page 112 (
                 formatMask: DD-Mon-YYYY
             }
             columnFormatting {
-                htmlExpression: {if OVERDUE/}<span style="color:red;">#TARGET_DATE#</span>{else/}#TARGET_DATE#{endif/}
+                htmlExpression: "{if OVERDUE/}<span style=\"color:red;\">#TARGET_DATE#</span>{else/}#TARGET_DATE#{endif/}"
             }
             sorting {
                 sortable: false
@@ -994,6 +912,64 @@ page 112 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 112
+                    items: {
+                        P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
+                    }
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 112
+                    items: {
+                        P112_INITIATIVE_ID: &P112_INITIATIVE_ID.
+                    }
+                    clearCache: 112
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+    )
+
     button run-report (
         buttonName: run_report
         label: Run Report
@@ -1047,31 +1023,6 @@ page 112 (
             }
             warnOnUnsavedChanges: doNotCheck
         }
-    )
-
-    dynamicAction after-edit (
-        name: after edit
-        execution {
-            sequence: 60
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @menubar
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @details-2
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
     )
 
     computation p112-initiative (

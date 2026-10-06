@@ -12,7 +12,6 @@ page 36 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -30,7 +29,7 @@ page 36 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -94,6 +93,9 @@ page 36 (
         componentAppearance {
             templateType: predefined
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No community invites found.

@@ -7,7 +7,6 @@ page 5 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -23,10 +22,6 @@ page 5 (
               }
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -131,9 +126,6 @@ page 5 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500

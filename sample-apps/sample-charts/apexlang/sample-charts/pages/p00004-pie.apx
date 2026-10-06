@@ -7,10 +7,11 @@ page 4 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -85,6 +86,9 @@ page 4 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -92,7 +96,6 @@ page 4 (
             pieSelectionEffect: highlightAndExplode
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -166,6 +169,9 @@ page 4 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -173,7 +179,6 @@ page 4 (
             pieSelectionEffect: highlightAndExplode
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -241,6 +246,9 @@ page 4 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -250,7 +258,6 @@ page 4 (
             decimalPlaces: 0
         }
         animation {
-            onDisplay: alphaFade
             onDataChange: none
         }
         legend {
@@ -306,7 +313,7 @@ page 4 (
                 </ul>
                 <p/>
                 <strong>Label Position</strong> - The series-level attribute is set to Outside Slice, to ensure lengthy labels are visible, and rendered outside the slice of the donut.<p/>
-                For more information on the custom label settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=dataLabel" target="_blank">Chart: Data Label Callback</a> example.
+                For more information on the custom label settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=dataLabel" target="_blank" rel="noopener noreferrer external">Chart: Data Label Callback</a> example.
                 ```
         }
         layout {
@@ -349,6 +356,9 @@ page 4 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -361,7 +371,6 @@ page 4 (
             decimalPlaces: 0
         }
         animation {
-            onDisplay: alphaFade
             onDataChange: none
         }
         legend {
@@ -421,7 +430,7 @@ page 4 (
                 <strong>Label Position</strong> - The series-level attribute is set to Outside Slice, rendering the label on the outside of each slice.<p/>
                 <strong>Label Display As</strong> - The new series-level attribute is set to <strong>Percentage ( Value )</strong>, rendering the label in that format, without the need to use custom JavaScript code to acomplish it.<p/>
                 <strong>Sort Order</strong> - Donut chart slices can be sorted based on the values. The new <strong>Sort Order</strong> chart-level attribute allows you to define the sort order of your chart. Through the use of Dynamic actions, you can allow your end users to toggle the sort order. Use the Ascending/Descending buttons to the top right of the chart to change the sorting of the data items on the charts.<p/>
-                <strong>JavaScript Initialization Code</strong> - Use this chart-level attribute to customize the <a href="&OJCHART_API_URL.#styleDefaults.otherColor" target="_blank">otherColor</a> JET attribute, to set the color of the 'Other' slice of the chart.  By default, that slice will use the color black. Use the following code snippet to achieve this:<br/>
+                <strong>JavaScript Initialization Code</strong> - Use this chart-level attribute to customize the <a href="&OJCHART_API_URL.#styleDefaults.otherColor" target="_blank" rel="noopener noreferrer external">otherColor</a> JET attribute, to set the color of the 'Other' slice of the chart.  By default, that slice will use the color black. Use the following code snippet to achieve this:<br/>
                 <pre>
                 function (options) {
                     // Set color of 'Other' slice to pink
@@ -430,7 +439,7 @@ page 4 (
                 }
                 </pre>
                 <p/>
-                For more information on the Pie chart sort settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=sorting" target="_blank">Pie Chart: Sorting</a> example.
+                For more information on the Pie chart sort settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=sorting" target="_blank" rel="noopener noreferrer external">Pie Chart: Sorting</a> example.
                 ```
         }
         layout {
@@ -470,11 +479,13 @@ page 4 (
         chart {
             type: donut
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -521,7 +532,7 @@ page 4 (
             htmlCode:
                 ```html
                 Drill into a slice of the Products pie chart on the left, to display its associated orders in the Orders bar chart on the right. To drill using the mouse, click on the chart slice.  To drill using the keyboard, navigate to the slice and hit Enter.<p/>
-                For more information on the <a href="&OJCHART_API_URL.#drilling" target="_blank">drilling</a> attribute, refer to the ojChart API.
+                For more information on the <a href="&OJCHART_API_URL.#drilling" target="_blank" rel="noopener noreferrer external">drilling</a> attribute, refer to the ojChart API.
                 ```
         }
         layout {
@@ -550,7 +561,7 @@ page 4 (
                 <strong>Link Target</strong> - Use this series-level attribute to define a JavaScript call to set the value of a hidden page item to the currently selected product ID.<p/>
                 <strong>Dynamic Action</strong> - Define a dynamic action, to be triggered upon a change to the hidden page item.  That action will trigger a refresh of the Orders bar chart, to reflect the orders associated with the selected product.<p/>
                 <strong>Page Items To Submit</strong> - Ensure this series-level attribute is set to the name of the hidden page item, to ensure its value is used at the time of processing the chart SQL query.<p/>
-                <strong>JavaScript Code</strong> - Use this chart-level attribute to define JavaScript code, to customise the pie chart attributes at initialization, to render the chart in 3D.  The <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank">threeDEffect</a> attribute in the ojChart API should be set, using the following JavaScript code:</br/>
+                <strong>JavaScript Code</strong> - Use this chart-level attribute to define JavaScript code, to customise the pie chart attributes at initialization, to render the chart in 3D.  The <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank" rel="noopener noreferrer external">threeDEffect</a> attribute in the ojChart API should be set, using the following JavaScript code:</br/>
                 <pre>
                 function( options ) {
                 
@@ -600,11 +611,13 @@ page 4 (
         chartLayout {
             height: 380
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -686,6 +699,9 @@ page 4 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -748,7 +764,7 @@ page 4 (
                 
                 <strong>Label Display As</strong> - To display the 'Label' column mapping information in the label on each pie slice, this new series-level attribute is set to <strong>Label</strong>.<p/>
                 
-                <strong>Legend size</strong> - To decrease the amount of space between the pie chart and legend, the legend <strong>size</strong> attribute can be set to a value, in pixels or percent. Click the <strong>Increase Legend Size</strong> or <strong>Decrease Legend Size</strong> buttons to trigger a change in the legend size in relation to the chart.  A dynamic action is used to update the region size.  Refer to the <a href="&OJCHART_API_URL.#legend.size" target="_blank">ojChart API guide</a> for more information on this setting.<p>
+                <strong>Legend size</strong> - To decrease the amount of space between the pie chart and legend, the legend <strong>size</strong> attribute can be set to a value, in pixels or percent. Click the <strong>Increase Legend Size</strong> or <strong>Decrease Legend Size</strong> buttons to trigger a change in the legend size in relation to the chart.  A dynamic action is used to update the region size.  Refer to the <a href="&OJCHART_API_URL.#legend.size" target="_blank" rel="noopener noreferrer external">ojChart API guide</a> for more information on this setting.<p>
                 
                 <strong>Link</strong> - This series-level attribute can be set to define a link on the chart element.  For this example, the new Interactive Grid URL Filtering support is demonstrated here.  When you click on a chart element, the URL will redirect you to page 47 in the application, which contains an Interactive Grid saved report on the EBA_DEMO_CHART_TASKS table.  The report will filter information based upon the project (ID) associated with the selected chart element.  The URL Filtering is achieved by defining a link on the chart series, with the following settings:
                 <ul>
@@ -764,7 +780,7 @@ page 4 (
                 </ul>
                 <p/><p/>
                 
-                For more information on the Pie chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=hideShow" target="_blank">Pie Chart: Hide & Show</a> and <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=animation" target="_blank">Pie Chart: Animations</a> examples.
+                For more information on the Pie chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=hideShow" target="_blank" rel="noopener noreferrer external">Pie Chart: Hide & Show</a> and <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=animation" target="_blank" rel="noopener noreferrer external">Pie Chart: Animations</a> examples.
                 ```
         }
         layout {
@@ -866,6 +882,9 @@ page 4 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -873,7 +892,6 @@ page 4 (
             pieSelectionEffect: explode
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -1087,7 +1105,7 @@ page 4 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("pie1").widget().ojChart({legend:{size:'30%'}});
+                jsCode: "apex.region(\"pie1\").widget().ojChart({legend:{size:'30%'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1115,7 +1133,7 @@ page 4 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("pie1").widget().ojChart({legend:{size:'50%'}});
+                jsCode: "apex.region(\"pie1\").widget().ojChart({legend:{size:'50%'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1200,7 +1218,7 @@ page 4 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("donut1").widget().ojChart({sorting:'ascending'});
+                jsCode: "apex.region(\"donut1\").widget().ojChart({sorting:'ascending'});"
             }
             affectedElements {
                 selectionType: region
@@ -1228,7 +1246,7 @@ page 4 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("donut1").widget().ojChart({sorting:'descending'});
+                jsCode: "apex.region(\"donut1\").widget().ojChart({sorting:'descending'});"
             }
             affectedElements {
                 selectionType: region

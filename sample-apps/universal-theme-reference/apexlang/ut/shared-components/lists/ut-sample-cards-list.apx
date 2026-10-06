@@ -1,0 +1,93 @@
+list ut-sample-cards-list (
+    name: UT - Sample Cards List
+
+    entry amet-incorporated-amet-incorporated (
+        label: Amet Incorporated Amet Incorporated
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Mauris nulla. Integer urna. Vivamus molestie dapibus ligula. Aliquam erat volutpat. Nulla dignissim. Maecenas ornare egestas ligula. Nullam feugiat placerat
+            2: 4 Widgets
+            3: AM
+            7: New York
+        }
+    )
+
+    entry cras-interdum-consulting-cras-interdum-consulting (
+        label: Cras Interdum Consulting Cras Interdum Consulting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Integer tincidunt aliquam arcu. Aliquam ultrices iaculis odio. Nam interdum enim non nisi. Aenean eget metus. In nec orci.
+            2: 431 Widgets
+            3: CI
+            7: Vienna
+        }
+    )
+
+    entry ridiculus-llp-ridiculus-llp (
+        label: Ridiculus LLP Ridiculus LLP
+        icon {
+            imageIconCssClasses: fa-comments-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Phasellus nulla. Integer vulputate, risus a ultricies adipiscing, enim mi tempor lorem, eget mollis lectus pede et risus. Quisque libero.
+            2: 12 Widgets
+            3: RD
+            7: Reston
+        }
+    )
+
+    entry tristique-llc-tristique-llc (
+        label: Tristique LLC Tristique LLC
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Aliquam nisl. Nulla eu neque pellentesque massa lobortis ultrices. Vivamus rhoncus. Donec est. Nunc ullamcorper, velit in aliquet lobortis, nisi.
+            2: 4 Widgets
+            3: TR
+            7: Columbus
+        }
+    )
+
+)
+

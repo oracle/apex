@@ -1,0 +1,148 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry customize-appearance (
+        label: Customize Appearance
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 55
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: #CUSTOMIZE_URL#
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: '#CUSTOMIZE_URL#' is not null
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 1001
+                items: {
+                    P1001_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 1001
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 56
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry preferences (
+        label: Preferences
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 148
+            }
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 149
+                clearCache: 149
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+        serverSideCondition {
+            type: currentPageNotInList
+            pages: 1000
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        icon {
+            imageIconCssClasses: fa-sign-out
+        }
+        layout {
+            sequence: 60
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+

@@ -1,0 +1,166 @@
+list reports (
+    name: Reports
+
+    entry customer-detail (
+        label: Customer Detail
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Customer detail report with options to download and subscribe.
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry customers-by-category (
+        label: Customers by Category
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Chart of customer counts
+        }
+    )
+
+    entry customers-by-geography (
+        label: Customers by Geography
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 85
+            }
+        }
+        userDefinedAttributes {
+            1: Chart of customer counts
+        }
+    )
+
+    entry customers-by-reference-type (
+        label: Customers by Reference Type
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 3
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+        userDefinedAttributes {
+            1: "Chart of customer counts "
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    entry recent-updates (
+        label: Recent Updates
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 29
+                clearCache: 29
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Recent activity, changes to this customer repository
+        }
+    )
+
+    entry tags (
+        label: Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 40
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Display tag clouds
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 124
+            }
+        }
+        userDefinedAttributes {
+            1: Recent activity, changes to this customer repository
+        }
+    )
+
+    entry updates (
+        label: Updates
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View date of last update to customers in a calendar format.  Use this report to see what customers have been recently updated.
+        }
+    )
+
+)
+

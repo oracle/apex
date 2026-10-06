@@ -6,9 +6,6 @@ page 10 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -30,7 +27,7 @@ page 10 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region apex-admin-instance (
@@ -243,7 +240,7 @@ page 10 (
                     <li>Set the <strong>lifetime</strong> duration for the automatic session renewal, in days</li>
                 </ol>
                 <ul>
-                    <li style="list-style-type: none;"><em class="u-flex">Note: apex.oracle.com has this enabled for demo purposes</em></li>
+                    <li style="list-style-type: none;"><em class="u-flex">Note: oracleapex.com has this enabled for demo purposes</em></li>
                 </ul>
                 
                 ```

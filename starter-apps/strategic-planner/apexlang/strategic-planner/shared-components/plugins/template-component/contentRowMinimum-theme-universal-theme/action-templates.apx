@@ -1,4 +1,4 @@
-actionTemplate button (
+actionTemplate button2 (
     name: Button
     type: button
     template {
@@ -17,11 +17,11 @@ actionTemplate button (
             ```
     }
     advanced {
-        staticId: button
+        staticId: button-2
     }
 )
 
-actionTemplate menu (
+actionTemplate menu2 (
     name: Menu
     type: menu
     template {
@@ -40,7 +40,7 @@ actionTemplate menu (
             ```
     }
     advanced {
-        staticId: menu
+        staticId: menu-2
     }
 )
 

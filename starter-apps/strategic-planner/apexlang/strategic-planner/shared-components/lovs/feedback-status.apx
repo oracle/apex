@@ -1,0 +1,32 @@
+lov feedback-status (
+    name: FEEDBACK_STATUS
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: No Action
+        return: 0
+    )
+
+    entry lov_data-2 (
+        sequence: 2
+        display: Acknowledged
+        return: 1
+    )
+
+    entry lov_data-3 (
+        sequence: 3
+        display: Open
+        return: 3
+    )
+
+    entry lov_data-4 (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+)
+

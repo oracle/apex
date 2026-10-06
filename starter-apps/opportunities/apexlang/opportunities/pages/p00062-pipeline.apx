@@ -8,7 +8,6 @@ page 62 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -18,10 +17,6 @@ page 62 (
             .tbl-main .rounded-corner-region .rc-body-r { height: 170px !important; }
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always

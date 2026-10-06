@@ -1,0 +1,12 @@
+lov oow-demo-items-type (
+    name: OOW_DEMO_ITEMS.TYPE
+    source {
+        tableName: OOW_DEMO_ITEMS
+    }
+    columnMapping {
+        return: ID
+        display: TYPE
+        defaultSort: TYPE
+    }
+)
+

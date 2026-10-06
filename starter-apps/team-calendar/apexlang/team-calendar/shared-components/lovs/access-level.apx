@@ -1,0 +1,13 @@
+lov access-level (
+    name: ACCESS_LEVEL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select access_level d, id r
+              from eba_ca_access_levels
+             order by 1
+            ```
+    }
+)
+

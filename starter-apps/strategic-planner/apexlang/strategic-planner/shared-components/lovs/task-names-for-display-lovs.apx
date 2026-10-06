@@ -1,0 +1,21 @@
+lov task-names-for-display-lovs (
+    name: TASK NAMES FOR DISPLAY LOVS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select r.id r,
+                   (select task_type from sp_task_types rt where rt.id = r.task_type_id)||
+                       case when r.task_sub_type_id is not null then ': ' end ||
+                       (select task_type from sp_task_types rt where rt.id = r.task_sub_type_id) ||
+                       case when r.task is not null then ' - '||r.task end d
+              from sp_tasks r
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+        defaultSort: D
+    }
+)
+

@@ -6,13 +6,8 @@ page 504 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -48,7 +43,7 @@ page 504 (
                   <strong>Remote Server Update Guide:</strong>
                   <p style="margin: 5px 0;">
                     1. Enter the base portion of your ORDS URL  into the first field.  
-                    <em>Example:</em> https://apex.oracle.com/pls/apex/
+                    <em>Example:</em> https://oracleapex.com/pls/apex/
                   </p>
                   <p style="margin: 5px 0;">
                     2. In the second field, enter the  schema name that appears in the URL path.  

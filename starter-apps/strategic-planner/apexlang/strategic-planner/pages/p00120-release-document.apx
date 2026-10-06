@@ -14,13 +14,8 @@ page 120 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -75,6 +70,7 @@ page 120 (
             formRegion: @document
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -92,6 +88,7 @@ page 120 (
             formRegion: @document
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -207,14 +204,10 @@ page 120 (
     )
 
     pageItem P120_DOC_DESCRIPTION (
-        type: richTextEditor
+        type: textarea
         label {
             label: Description
             alignment: left
-        }
-        settings {
-            minHeight: 180
-            allowCustomHtml: true
         }
         layout {
             sequence: 70
@@ -225,6 +218,11 @@ page 120 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            maxLength: 4000
         }
         source {
             formRegion: @document
@@ -281,6 +279,30 @@ page 120 (
         }
     )
 
+    pageItem P120_ON_DELETE (
+        type: hidden
+        layout {
+            sequence: 210
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P120_PREV_PAGE (
+        type: hidden
+        layout {
+            sequence: 220
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     pageItem P120_RELEASE_ID (
         type: hidden
         layout {
@@ -299,10 +321,22 @@ page 120 (
     )
 
     pageItem P120_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
         }
         layout {
             sequence: 80
@@ -339,6 +373,7 @@ page 120 (
             formRegion: @document
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -356,6 +391,7 @@ page 120 (
             formRegion: @document
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -492,7 +528,27 @@ page 120 (
         }
         serverSideCondition {
             type: requestIsContainedInValue
-            value: CREATE,SAVE,DELETE
+            value: CREATE,SAVE
+        }
+    )
+
+    process close-dialog-for-delete (
+        name: Close Dialog for delete
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 100
+        }
+        advanced {
+            executionMappingIdentifier: 17534192403713303848
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P120_ON_DELETE
+            value: CLOSE
         }
     )
 
@@ -518,6 +574,42 @@ page 120 (
         }
         advanced {
             executionMappingIdentifier: 16035716510100577497
+        }
+    )
+
+    branch (
+        name: on delete, prev page
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: &P120_PREV_PAGE.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P120_ON_DELETE
+            value: PREV_PAGE
+        }
+    )
+
+    branch (
+        name: on delete, no prev page
+        execution {
+            sequence: 30
+        }
+        behavior {
+            target: {
+                page: 8
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P120_ON_DELETE
+            value: HOME
         }
     )
 

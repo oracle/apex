@@ -1,0 +1,81 @@
+list home (
+    name: Home
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Explore advanced Application Search variations: Highlight search results, Integrate your Search Configurations with APEX regions like Maps, Cards ...
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Create Search Configurations based on Local data source, REST Enabled SQL Service, REST Data Source ... And integrate it with Search regions.
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Leverage to Oracle Text advanced searching capabilities: Keyword searching, Fuzzy search and much more.
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-puzzle-piece
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Explore different use case of the Search Configuration: prefix searching, link search result to from ...
+        }
+    )
+
+)
+

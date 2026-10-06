@@ -1,0 +1,101 @@
+list ut-sample-menu-popup-actions (
+    name: UT - Sample Menu Popup (Actions)
+
+    entry exit (
+        label: Exit
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry image (
+        label: Image
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 60
+            parentEntry: @open
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry list_item (
+        label: ---
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: separator
+            }
+        }
+    )
+
+    entry new (
+        label: New
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: action_a
+            5: Ctrl+Alt+D
+        }
+    )
+
+    entry open (
+        label: Open
+        icon {
+            imageIconCssClasses: fa-folder-open-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry spreadsheet (
+        label: Spreadsheet
+        icon {
+            imageIconCssClasses: fa-file-excel-o
+        }
+        layout {
+            sequence: 50
+            parentEntry: @open
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

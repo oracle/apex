@@ -9,9 +9,6 @@ page 102 (
             t-PageBody--noContentPadding
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -40,12 +37,14 @@ page 102 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: All Activities along with who they are related to and the timeframe.
     }
     config {
         buildOption: @activity-planning
+    }
+    comments {
+        comments: Filterable by Project Relates (yes or no), Timeframe (past, current, future), Owner, &NOMENCLATURE_INITIATIVE., Release, Team Member tags, and Type.
     }
 
     region activities (
@@ -60,13 +59,13 @@ page 102 (
                        ap.project_id,
                        decode(ap.project_id,null,'No','Yes') project_related,
                        at.activity_type,
-                       ap.comments,
+                       ap.activity,
                        ap.start_date,
                        ap.end_date,
                        to_char(ap.end_date,'YYYY.MM') end_month,
                        to_char(ap.start_date,'YYYY.MM') start_month,
-                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
-                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       to_char(ap.end_date,'fmDay DD-Mon-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'fmDay DD-Mon-YYYY')||' to '||to_char(ap.end_date,'fmDay DD-Mon-YYYY') TIMELINE,
                        ap.end_date - ap.start_date days,
                        round(ap.end_date - sysdate) days_remaining,
                        ap.url,
@@ -77,6 +76,8 @@ page 102 (
                        apex_util.get_since(ap.updated) last_updated,
                        --
                        decode(tm.id,:APP_USER_ID,'Yes','No') my_activity,
+                       ap.private_yn,
+                       decode(ap.private_yn,'Y','Private',null) private_label,
                        --
                        decode(trunc(sysdate),trunc(ap.end_date),'success',
                        decode(trunc(sysdate),trunc(ap.start_date),'success',
@@ -137,8 +138,9 @@ page 102 (
                      sp_activity_types at,
                      sp_team_members tm
                 where 
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
                       ap.activity_type_id = at.id and
-                      ap.team_member_id = tm.id (+)
+                      ap.team_member_id = tm.id
                 
                 ```
             pageItemsToSubmit: APP_USER_ID
@@ -182,15 +184,19 @@ page 102 (
             display: report
         }
         settings {
-            title: &COMMENTS!HTML.
+            title: &ACTIVITY!HTML.
             description:
                 ```html
                 <strong>Owner</strong>: &PERSON!HTML.<br />
                 <strong>&ACTIVITY_TYPE.</strong>: &TIMELINE.<br>
                 {if PROJECT/}<strong>&NOMENCLATURE_PROJECT!HTML.</strong>: &PROJECT!HTML.<br>{endif/}
-                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE!HTML.</strong>: &INITIATIVE!HTML.<br>{endif/}
+                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE!HTML.</strong>: &INITIATIVE!HTML.{endif/}
                 ```
-            miscellaneous: &LAST_UPDATED.
+            miscellaneous:
+                ```html
+                {if PRIVATE_LABEL/}<strong class="u-danger-text">&PRIVATE_LABEL!HTML.</strong><br/>{endif/}&LAST_UPDATED.
+                
+                ```
             displayAvatar: true
             displayBadge: true
         }
@@ -209,6 +215,16 @@ page 102 (
         pagination {
             entitiesPerPage: 30
         }
+
+        column ACTIVITY (
+            layout {
+                sequence: 560
+            }
+            source {
+                databaseColumn: ACTIVITY
+                dataType: varchar2
+            }
+        )
 
         column ACTIVITY_TAGS (
             layout {
@@ -236,16 +252,6 @@ page 102 (
             }
             source {
                 databaseColumn: BADGE_CLASS
-                dataType: varchar2
-            }
-        )
-
-        column COMMENTS (
-            layout {
-                sequence: 200
-            }
-            source {
-                databaseColumn: COMMENTS
                 dataType: varchar2
             }
         )
@@ -387,6 +393,26 @@ page 102 (
             }
             source {
                 databaseColumn: PERSON
+                dataType: varchar2
+            }
+        )
+
+        column PRIVATE_LABEL (
+            layout {
+                sequence: 570
+            }
+            source {
+                databaseColumn: PRIVATE_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column PRIVATE_YN (
+            layout {
+                sequence: 550
+            }
+            source {
+                databaseColumn: PRIVATE_YN
                 dataType: varchar2
             }
         )
@@ -548,17 +574,17 @@ page 102 (
             }
             behavior {
                 target: {
-                    page: 140
+                    page: 129
                     items: {
-                        P140_ID: &ID.
+                        P129_ACTIVITY_ID: &ID.
                     }
-                    clearCache: 140
+                    clearCache: 129
                     action: resetPagination
                 }
             }
         )
 
-        action actions (
+        action actions-2 (
             position: primaryActions
             template: menu
             label: Actions
@@ -745,7 +771,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 120
+                sequence: 130
             }
             appearance {
                 display: addFilterDialog
@@ -772,7 +798,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 140
+                sequence: 150
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -791,7 +817,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 80
+                sequence: 90
             }
             appearance {
                 display: addFilterDialog
@@ -813,7 +839,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 90
+                sequence: 100
             }
             listEntries {
                 maxDisplayedEntries: 7
@@ -832,13 +858,49 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 150
+                sequence: 160
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: MY_ACTIVITY
+            }
+        )
+
+        facet P102_MY_PRIVATE (
+            type: checkboxGroup
+            label {
+                label: My Private
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:Yes;Y,No;N
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 7
+                allowToExclude: false
+            }
+            actionsMenu {
+                chart: false
+            }
+            source {
+                databaseColumn: PRIVATE_YN
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_activities
+                     where private_yn = 'Y' 
+                       and team_member_id = :APP_USER_ID
+                    ```
             }
         )
 
@@ -874,6 +936,7 @@ page 102 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PROJECT_RELATED
@@ -889,7 +952,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 130
+                sequence: 140
             }
             appearance {
                 display: addFilterDialog
@@ -916,7 +979,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 100
+                sequence: 110
             }
             listEntries {
                 maxDisplayedEntries: 7
@@ -948,7 +1011,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 70
+                sequence: 80
             }
             appearance {
                 display: addFilterDialog
@@ -970,7 +1033,7 @@ page 102 (
                 type: distinctValues
             }
             layout {
-                sequence: 110
+                sequence: 120
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -998,177 +1061,10 @@ page 102 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: TIMEFRAME
-            }
-        )
-
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu about-activity (
-                label: About Activity
-                layout {
-                    sequence: 110
-                }
-                behavior {
-                    target: {
-                        page: 110
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-info
-                }
-            )
-
-            menu all-nomenclature-projects (
-                label: All &NOMENCLATURE_PROJECTS.
-                layout {
-                    sequence: 60
-                }
-                behavior {
-                    target: {
-                        page: 23
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-package
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 120
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 100
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 130
-                }
-                behavior {
-                    target: {
-                        page: 102
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu releases (
-                label: Releases
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 8
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-ship
-                }
-                config {
-                    buildOption: @releases
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 140
-                }
-                behavior {
-                    target: {
-                        page: 102
-                        clearCache: 102
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-        action add-activity (
-            position: primaryActions
-            template: button
-            label: Add Activity
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 101
-                    items: {
-                        P101_TEAM_MEMBER_ID: &APP_USER_ID.
-                    }
-                    clearCache: 101
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-plus
-                hot: true
-            }
-            security {
-                authorizationScheme: @contribution-rights
             }
         )
 
@@ -1214,6 +1110,113 @@ page 102 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu about-activity (
+            label: About Activity
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 110
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu new_1 (
+            type: separator
+            layout {
+                sequence: 50
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 102
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 102
+                    clearCache: 102
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+    )
+
+    button add-activity (
+        buttonName: add_activity
+        label: Add Activity
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 101
+                items: {
+                    P101_TEAM_MEMBER_ID: &APP_USER_ID.
+                }
+                clearCache: 101
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
     button up (
         buttonName: UP
         label: Navigate Up
@@ -1241,21 +1244,21 @@ page 102 (
     )
 
     dynamicAction on-dc (
-        name: on dc
+        name: refresh after add
         execution {
             sequence: 30
         }
         when {
             event: apexafterclosedialog
-            selectionType: region
-            region: @breadcrumb
+            selectionType: button
+            button: @add-activity
         }
 
         action native-refresh (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @activities
+                region: @faceted-search
             }
             execution {
                 sequence: 10
@@ -1267,7 +1270,7 @@ page 102 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @faceted-search
+                region: @activities
             }
             execution {
                 sequence: 20

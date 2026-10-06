@@ -1,0 +1,58 @@
+lov employee-popup-lov (
+    name: EMPLOYEE_POPUP_LOV
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select ename as employee,
+                   empno as return_value,
+                   sal   as old_salary
+              from eba_demo_rest_employee
+             order by ename
+            
+            ```
+    }
+    columnMapping {
+        return: RETURN_VALUE
+        display: EMPLOYEE
+    }
+
+    column EMPLOYEE (
+        heading {
+            heading: Employee
+        }
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column OLD_SALARY (
+        heading {
+            heading: Old Salary
+        }
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: number
+        }
+    )
+
+    column RETURN_VALUE (
+        show: false
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+)
+

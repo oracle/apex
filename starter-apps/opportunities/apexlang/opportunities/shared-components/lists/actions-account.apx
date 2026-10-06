@@ -1,0 +1,224 @@
+list actions-account (
+    name: Actions - Account
+
+    entry add-agreement (
+        label: Add Agreement
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 102
+                items: {
+                    P102_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 102
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_application_build_options bo
+                where application_id = :APP_ID
+                  and build_option_name = 'Agreements'
+                  and build_option_status = 'Include'
+                  and (select count(*) from EBA_SALES_AGREEMENTS) > 0
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: ACCOUNT
+                    P99_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 99
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: ACCOUNT
+                    P22_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 22
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-competition (
+        label: Add Competition
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 145
+                items: {
+                    P145_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 145
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry add-contact (
+        label: Add Contact
+        icon {
+            imageIconCssClasses: fa-phone
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 106
+                items: {
+                    P106_CUSTOMER_ID: &P94_ID.
+                    P106_SHOW_ACCOUNT: N
+                }
+                clearCache: 106
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: ACCOUNT
+                    P114_ENTITY_ID: &P94_ID.
+                }
+                clearCache: 114
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry add-location (
+        label: Add Location
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 32
+                items: {
+                    P32_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 32
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @account-locations
+        }
+    )
+
+    entry add-support-amount (
+        label: Add Support Amount
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 122
+                items: {
+                    P122_CUSTOMER_ID: &P94_ID.
+                }
+                clearCache: 122
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                from apex_application_build_options bo
+                where application_id = :APP_ID
+                  and build_option_name = 'Support Amounts'
+                  and build_option_status = 'Include'
+                  and (select count(*) from EBA_SALES_SUPPORT_AMTS) > 0
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+)
+

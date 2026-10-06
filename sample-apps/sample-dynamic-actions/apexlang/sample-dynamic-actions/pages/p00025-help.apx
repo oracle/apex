@@ -7,12 +7,11 @@ page 25 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -79,6 +78,9 @@ page 25 (
                 t-AVPList--rightAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column APP_VERSION (
@@ -200,8 +202,8 @@ page 25 (
         source {
             htmlCode:
                 ```html
-                <H2>Getting Started</h2>
-                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <h2>Getting Started</h2>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the APEX Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
                 <p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137">OTN Forum</a>.</p>
                 ```
         }

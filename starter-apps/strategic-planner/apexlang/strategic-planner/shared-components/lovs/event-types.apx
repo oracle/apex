@@ -1,0 +1,12 @@
+lov event-types (
+    name: EVENT_TYPES
+    source {
+        tableName: SP_EVENT_TYPES
+    }
+    columnMapping {
+        return: ID
+        display: EVENT_TYPE
+        defaultSort: EVENT_TYPE
+    }
+)
+

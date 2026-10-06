@@ -6,19 +6,12 @@ page 57 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
             $("button[data-action=save]").after($("#save-button"));
             $("#save-button").css("margin-left", "4px");
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region basic-editing (
@@ -416,9 +409,6 @@ page 57 (
             layout {
                 sequence: 110
             }
-            validation {
-                valueRequired: true
-            }
             source {
                 databaseColumn: ONLEAVE
                 dataType: varchar2
@@ -587,7 +577,7 @@ page 57 (
             regionDisplaySelector: true
         }
         headerAndFooter {
-            footerText: <p>The upload log persists for the lifetime of the Application Express session.</p>
+            footerText: <p>The upload log persists for the lifetime of the APEX session.</p>
         }
         componentAppearance {
             template: @/standard
@@ -599,6 +589,9 @@ page 57 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column COMM (

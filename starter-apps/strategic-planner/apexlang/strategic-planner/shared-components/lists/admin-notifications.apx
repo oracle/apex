@@ -1,0 +1,68 @@
+list admin-notifications (
+    name: Admin - Notifications
+
+    entry home-page-messages (
+        label: Home Page Messages
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10770
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Application home page messages
+            2: &P10000_SYSTEM_NOTIFICATIONS.
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10074
+            }
+        }
+        userDefinedAttributes {
+            1: Manage available notifications that team members can subscribe to
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+    entry subscriptions (
+        label: Subscriptions
+        icon {
+            imageIconCssClasses: fa-envelope-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16015
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View and manage which team members are subscribed to a given notification
+        }
+        config {
+            buildOption: @subscriptions
+        }
+    )
+
+)
+

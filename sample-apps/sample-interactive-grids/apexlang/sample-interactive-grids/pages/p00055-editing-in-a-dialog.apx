@@ -11,13 +11,6 @@ page 55 (
         width: 80%
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region basic-editing (
         name: Basic Editing

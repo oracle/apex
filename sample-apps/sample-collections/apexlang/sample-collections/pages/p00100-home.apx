@@ -7,7 +7,6 @@ page 100 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -106,7 +105,7 @@ page 100 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -119,7 +118,7 @@ page 100 (
         name: About this Application
         type: staticContent
         source {
-            htmlCode: <p>Use this Oracle Application Express (APEX) collections sample to extend session state management to deal with arrays of session-based data.  Oracle APEX page items provides automatic session management for single value items, but does not manage arrays of session state.  Oracle APEX collections provides the ability to manager user session state for an array ("table" of rows and columns).  The Oracle database has temporary tables, but since each page view in Oracle APEX has a stateless model, each page view in Oracle APEX is a new database session.  For this reason Oracle temporary tables can not be used for any multi page use case. Oracle APEX provides API's to create and manage APEX collection session state.  See the example Use Cases and example API syntax links below to learn more about using Oracle APEX collections. </p>
+            htmlCode: <p>Use this Oracle APEX collections sample to extend session state management to deal with arrays of session-based data.  Oracle APEX page items provides automatic session management for single value items, but does not manage arrays of session state.  Oracle APEX collections provides the ability to manager user session state for an array ("table" of rows and columns).  The Oracle database has temporary tables, but since each page view in Oracle APEX has a stateless model, each page view in Oracle APEX is a new database session.  For this reason Oracle temporary tables can not be used for any multi page use case. Oracle APEX provides API's to create and manage APEX collection session state.  See the example Use Cases and example API syntax links below to learn more about using Oracle APEX collections. </p>
         }
         layout {
             sequence: 10

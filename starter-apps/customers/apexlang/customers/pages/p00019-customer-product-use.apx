@@ -8,11 +8,8 @@ page 19 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -128,7 +125,7 @@ page 19 (
                 sequence: 79
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AZ
@@ -147,7 +144,7 @@ page 19 (
                 sequence: 6
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -177,7 +174,7 @@ page 19 (
                 linkText: #CUSTOMER_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -193,7 +190,7 @@ page 19 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -209,7 +206,7 @@ page 19 (
                 sequence: 89
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BA
@@ -228,7 +225,7 @@ page 19 (
                 sequence: 7
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -247,7 +244,7 @@ page 19 (
                 sequence: 1
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -263,7 +260,7 @@ page 19 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -291,7 +288,7 @@ page 19 (
                 sequence: 59
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AX
@@ -316,7 +313,7 @@ page 19 (
                 sequence: 69
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AY
@@ -341,7 +338,7 @@ page 19 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -357,7 +354,7 @@ page 19 (
                 sequence: 99
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: BB
@@ -373,7 +370,7 @@ page 19 (
                 sequence: 109
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: BC

@@ -6,13 +6,8 @@ page 6 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -84,6 +79,9 @@ page 6 (
             layout {
                 sequence: 80
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -102,6 +100,9 @@ page 6 (
             }
             layout {
                 sequence: 40
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -125,6 +126,9 @@ page 6 (
             }
             layout {
                 sequence: 20
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -150,6 +154,9 @@ page 6 (
             layout {
                 sequence: 100
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -170,6 +177,9 @@ page 6 (
             layout {
                 sequence: 90
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -189,6 +199,9 @@ page 6 (
             layout {
                 sequence: 70
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -207,6 +220,9 @@ page 6 (
             }
             layout {
                 sequence: 110
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -230,6 +246,7 @@ page 6 (
             }
             listEntries {
                 sortByTopCounts: false
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -264,6 +281,7 @@ page 6 (
             }
             listEntries {
                 sortByTopCounts: false
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -284,6 +302,9 @@ page 6 (
             }
             layout {
                 sequence: 30
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

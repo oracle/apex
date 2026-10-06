@@ -1,0 +1,13 @@
+lov steps-to-close-status-code (
+    name: STEPS TO CLOSE (STATUS CODE)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CORRESPONDING_PROB_PCT/10 ||'. '||status_code d,id
+            from EBA_SALES_DEAL_STATUS_CODES
+            order by CORRESPONDING_PROB_PCT/10 
+            ```
+    }
+)
+

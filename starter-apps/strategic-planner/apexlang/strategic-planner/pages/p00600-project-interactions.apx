@@ -10,13 +10,6 @@ page 600 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region button-bar (
         name: button_bar
@@ -77,9 +70,6 @@ page 600 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column APP_USER (

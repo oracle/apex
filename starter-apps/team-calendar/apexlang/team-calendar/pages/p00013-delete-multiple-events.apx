@@ -8,6 +8,7 @@ page 13 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -15,8 +16,6 @@ page 13 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -194,9 +193,6 @@ page 13 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500

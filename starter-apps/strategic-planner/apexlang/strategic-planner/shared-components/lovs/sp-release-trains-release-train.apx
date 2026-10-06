@@ -1,0 +1,12 @@
+lov sp-release-trains-release-train (
+    name: SP_RELEASE_TRAINS.RELEASE_TRAIN
+    source {
+        type: sqlQuery
+        sqlQuery: select release_train||' '||release release_train, id from SP_RELEASE_TRAINS
+    }
+    columnMapping {
+        return: ID
+        display: RELEASE_TRAIN
+    }
+)
+

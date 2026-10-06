@@ -6,13 +6,6 @@ page 103 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     errorHandling {
         errorHandlingFunctionName: eba_demo_search_error_handling
     }

@@ -1,0 +1,161 @@
+list activity-reports (
+    name: Activity Reports
+    config {
+        buildOption: @feature-activity-reporting
+    }
+
+    entry all-sessions (
+        label: All Sessions
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10005
+            }
+        }
+        userDefinedAttributes {
+            1: All sessions created within this system
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-exclamation
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10022
+                clearCache: 10022
+            }
+        }
+        userDefinedAttributes {
+            1: Report of errors logged by this application
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10020
+                clearCache: 10020
+            }
+        }
+        userDefinedAttributes {
+            1: View application activity metrics
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+    )
+
+    entry job-reporting (
+        label: Job Reporting
+        icon {
+            imageIconCssClasses: fa-database-clock
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10051
+                clearCache: 10051
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all database jobs that are associated with this application
+        }
+    )
+
+    entry logged-messages (
+        label: Logged Messages
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 10026
+                clearCache: 10026
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of messages logged by the apis supporting this application
+        }
+    )
+
+    entry page-performance (
+        label: Page Performance
+        icon {
+            imageIconCssClasses: fa-file-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10023
+                clearCache: 10023
+            }
+        }
+        userDefinedAttributes {
+            1: Report of activity and performance by application page
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-search
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 10024
+                clearCache: 10024
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of each page view by user including date of access and elapsed time
+        }
+    )
+
+)
+

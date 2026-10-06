@@ -76,6 +76,9 @@ componentSetting (
 componentSetting (
     type: region
     name: interactiveReport
+    settings {
+        autoResetButton: false
+    }
 )
 
 componentSetting (

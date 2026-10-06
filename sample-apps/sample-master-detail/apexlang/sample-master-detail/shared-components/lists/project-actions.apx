@@ -1,0 +1,100 @@
+list project-actions (
+    name: Project Actions
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 13
+                items: {
+                    P13_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 13
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 23
+                items: {
+                    P23_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    entry add-milestone (
+        label: Add Milestone
+        icon {
+            imageIconCssClasses: fa-flag-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+                items: {
+                    P7_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 7
+            }
+        }
+    )
+
+    entry add-task (
+        label: Add Task
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 9
+                items: {
+                    P9_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 9
+            }
+        }
+    )
+
+    entry add-to-do (
+        label: Add To Do
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+                items: {
+                    P15_PROJECT_ID: &P11_PROJECT_ID.
+                }
+                clearCache: 15
+            }
+        }
+    )
+
+)
+

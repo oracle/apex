@@ -12,11 +12,12 @@ page 86 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -81,9 +82,6 @@ page 86 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None.
@@ -227,9 +225,6 @@ page 86 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None.

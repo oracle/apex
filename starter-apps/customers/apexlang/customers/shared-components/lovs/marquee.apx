@@ -1,0 +1,20 @@
+lov marquee (
+    name: MARQUEE
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 20
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+

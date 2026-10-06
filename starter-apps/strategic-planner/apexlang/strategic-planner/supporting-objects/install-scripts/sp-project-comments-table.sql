@@ -4,6 +4,7 @@ create table sp_project_comments (
     project_id                     number
                                    constraint sp_project_comm_proj_id_fk
                                    references sp_projects on delete cascade,
+    comment_nbr                    number,
     body                           clob,
     body_html                      clob,
     body_no_images                 clob,

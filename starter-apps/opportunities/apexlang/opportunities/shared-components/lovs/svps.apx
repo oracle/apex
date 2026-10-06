@@ -1,0 +1,8 @@
+lov svps (
+    name: SVPS
+    source {
+        type: legacySqlQuery
+        sqlQuery: select svp_name, id from eba_sales_svps order by upper(svp_name)
+    }
+)
+

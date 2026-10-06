@@ -1,0 +1,26 @@
+lov card-ir-chart (
+    name: CARD, IR, CHART
+    source {
+        location: staticValues
+    }
+
+    entry bar-chart (
+        sequence: 30
+        display: Bar Chart
+        return: BAR
+    )
+
+    entry cards (
+        sequence: 10
+        display: Cards
+        return: CARDS
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: REPORT
+    )
+
+)
+

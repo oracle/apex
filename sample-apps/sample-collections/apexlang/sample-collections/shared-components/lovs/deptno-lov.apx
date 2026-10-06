@@ -1,0 +1,13 @@
+lov deptno-lov (
+    name: DEPTNO LOV
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct deptno d, deptno r
+              from eba_demo_cs_emp
+             order by 1
+            ```
+    }
+)
+

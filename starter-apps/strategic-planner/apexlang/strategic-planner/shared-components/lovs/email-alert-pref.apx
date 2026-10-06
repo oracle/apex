@@ -1,0 +1,29 @@
+lov email-alert-pref (
+    name: EMAIL_ALERT_PREF
+    source {
+        location: staticValues
+    }
+
+    entry app (
+        sequence: 1
+        display: Within Application
+        return: APP
+    )
+
+    entry email (
+        sequence: 2
+        display: Email
+        return: EMAIL
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    entry none (
+        sequence: 3
+        display: None
+        return: NONE
+    )
+
+)
+

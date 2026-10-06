@@ -1,0 +1,125 @@
+list standard-calendars (
+    name: Standard Calendars
+
+    entry faceted-search-projects (
+        label: Faceted Search: Projects
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This page allows to choose the time format (12h, 24h) which is being used to display the time component of an event timestamp.
+                
+                ```
+        }
+    )
+
+    entry monthly-calendar-projects (
+        label: Monthly Calendar: Projects
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: This is a standard Oracle APEX calendar region component built using the create calendar region wizard.
+        }
+    )
+
+    entry weekly-calendar-conference (
+        label: Weekly Calendar: Conference
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: "This is a standard Oracle APEX calendar region component showing a weekly view on events with a time component. "
+        }
+    )
+
+    entry weekly-calendar-drag-drop (
+        label: Weekly Calendar: Drag & Drop
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Change the start and end timestamps for calendar events with drag and drop.
+        }
+    )
+
+    entry weekly-calendar-edit-sessions (
+        label: Weekly Calendar: Edit Sessions
+        icon {
+            imageIconCssClasses: fa-calendar-edit
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This weekly calendar allows to edit existing events by clicking them or to select a date range in the Calendar to create a new event.
+                
+                ```
+        }
+    )
+
+    entry weekly-calendar-time-format (
+        label: Weekly Calendar: Time Format
+        icon {
+            imageIconCssClasses: fa-calendar-clock
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                This page allows to choose the time format (12h, 24h) which is being used to display the time component of an event timestamp.
+                
+                ```
+        }
+    )
+
+)
+

@@ -1,0 +1,329 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 270
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                500
+                501
+                502
+                503
+            ]
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+    )
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: pages
+            pages: 300
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry cards-region (
+        label: Cards Region
+        layout {
+            sequence: 210
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 301
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+    )
+
+    entry custom-result-row-template (
+        label: Custom Result Row Template
+        layout {
+            sequence: 180
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 204
+        }
+        link {
+            target: {
+                page: 204
+            }
+        }
+    )
+
+    entry filter-search-configurations (
+        label: Filter Search Configurations
+        layout {
+            sequence: 190
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 206
+        }
+        link {
+            target: {
+                page: 206
+            }
+        }
+    )
+
+    entry highlight-results (
+        label: Highlight Results
+        layout {
+            sequence: 230
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 303
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry link-search-result-to-form (
+        label: Link Search Result To Form
+        layout {
+            sequence: 175
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+    )
+
+    entry map-region (
+        label: Map Region
+        layout {
+            sequence: 220
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 302
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+    )
+
+    entry multiple-search-configurations (
+        label: Multiple Search Configurations
+        layout {
+            sequence: 150
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 102
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+    )
+
+    entry multiple-search-regions (
+        label: Multiple Search Regions
+        layout {
+            sequence: 200
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 207
+        }
+        link {
+            target: {
+                page: 207
+            }
+        }
+    )
+
+    entry oracle-text (
+        label: Oracle Text
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: 400
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        layout {
+            sequence: 260
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 103
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+    )
+
+    entry search-query-prefix (
+        label: Search Query Prefix
+        layout {
+            sequence: 170
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 201
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+    )
+
+    entry single-search-configuration (
+        label: Single Search Configuration
+        layout {
+            sequence: 140
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 101
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+    )
+
+    entry standard (
+        label: Standard
+        layout {
+            sequence: 240
+            parentEntry: @oracle-text
+        }
+        isCurrent {
+            type: pages
+            pages: 401
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry text-index-function (
+        label: Text Index Function
+        layout {
+            sequence: 250
+            parentEntry: @oracle-text
+        }
+        isCurrent {
+            type: pages
+            pages: 402
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-puzzle-piece
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+)
+

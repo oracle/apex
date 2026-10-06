@@ -1,0 +1,26 @@
+list activity-reporting (
+    name: Activity Reporting
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of page views with summary of page views by user by day.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

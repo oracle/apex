@@ -1,0 +1,35 @@
+searchConfig store_prefix (
+    name: Store Search Configuration With Prefix
+    searchQueryPrefix: store
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address,
+                   longitude,
+                   latitude
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag u-color-4-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

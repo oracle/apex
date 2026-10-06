@@ -1,0 +1,14 @@
+lov tasks-with-dates (
+    name: TASKS WITH DATES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' [' || start_date || ' - ' || end_date || ']' as display
+            , id as return
+            from eba_demo_md_tasks
+            order by start_date
+            ```
+    }
+)
+

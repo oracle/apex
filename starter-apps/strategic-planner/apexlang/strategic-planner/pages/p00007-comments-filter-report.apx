@@ -7,9 +7,6 @@ page 7 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -21,11 +18,12 @@ page 7 (
             .overline {
               color: var(--ut-region-text-color, var(--ut-component-text-default-color));
             }
+            
+            .t-Comments-comment img {
+              max-width: 750px; 
+              height: auto;
+            }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -183,6 +181,7 @@ page 7 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PRIVATE_YN
@@ -221,8 +220,11 @@ page 7 (
                        '' attribute_3,
                        '' attribute_4,
                        --
+                       comment_nbr,
                        body_html comment_text,
-                       decode(private_yn,'Yes',' Private Comment',null) private_comment_label,
+                       case when private_act_yn = 'Y' then ' Private Activity'
+                            else decode(private_yn,'Yes',' Private Comment',null) 
+                            end private_comment_label,
                        action actions,
                        comment_type,
                        area,
@@ -245,6 +247,7 @@ page 7 (
                        p.project,
                        null task_id,
                        p.project context,
+                       c.comment_nbr,
                        c.body_no_images body,
                        c.body_html,
                        nvl((select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id),'system') author,
@@ -253,10 +256,13 @@ page 7 (
                        c.CREATED,
                        to_char(c.created,'YYYY.MM') created_yyyyMM,
                        decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       null private_act_yn,
                        :NOMENCLATURE_PROJECT||': '||
-                           '<a href="'||apex_util.prepare_URL(
-                                            p_url => 'f?p='||:APP_ID||':3:'||:APP_SESSION||'::NO:3:P3_PROJECT_ID:'||p.id,
-                                            p_checksum_type => '3')||'">'||apex_escape.html(p.project)||'</a>' action
+                           '<a href="'|| apex_page.get_url (
+                                             p_page   => 3,
+                                             p_clear_cache => 3,
+                                             p_items  => 'P3_PROJECT_ID',
+                                             p_values => p.id ) || '">'||apex_escape.html(p.project)||'</a>' action
                   from SP_PROJECT_COMMENTS_V c,
                        sp_projects p,
                        sp_initiatives i,
@@ -280,6 +286,7 @@ page 7 (
                        '' project,
                        null task_id,
                        i.initiative context,
+                       c.comment_nbr,
                        c.body_no_images body,
                        c.body_html,
                        (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
@@ -288,10 +295,13 @@ page 7 (
                        c.CREATED,
                        to_char(c.created,'YYYY.MM') created_yyyyMM,
                        decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       null private_act_yn,
                        :NOMENCLATURE_INITIATIVE||': '||
-                           '<a href="'||apex_util.prepare_URL(
-                                            p_url => 'f?p='||:APP_ID||':94:'||:APP_SESSION||'::NO:94:P94_INITIATIVE_ID:'||i.id,
-                                            p_checksum_type => '3')||'">'||apex_escape.html(i.initiative)||'</a>' action
+                           '<a href="'|| apex_page.get_url (
+                                             p_page   => 94,
+                                             p_clear_cache => 94,
+                                             p_items  => 'P94_INITIATIVE_ID',
+                                             p_values => i.id ) || '">'||apex_escape.html(i.initiative)||'</a>' action
                 from SP_INITIATIVE_COMMENTS_V c,
                      sp_initiatives i,
                      sp_areas a 
@@ -306,11 +316,12 @@ page 7 (
                        null initiative_id,
                        '' initiative,
                        r.id release_id,
-                       r.release_train||' '||release release,
+                       r.release_train||' '||r.release release,
                        null PROJECT_ID,
                        '' project,
                        null task_id,
-                       r.release_train||' '||release context,
+                       r.release_train||' '||r.release context,
+                       c.comment_nbr,
                        c.body_no_images body,
                        c.body_html,
                        (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
@@ -319,12 +330,15 @@ page 7 (
                        c.CREATED,
                        to_char(c.created,'YYYY.MM') created_yyyyMM,
                        decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       null private_act_yn,
                        'Release: '||
-                           '<a href="'||apex_util.prepare_URL(
-                                            p_url => 'f?p='||:APP_ID||':117:'||:APP_SESSION||'::NO:117:P117_RELEASE_ID:'||r.id,
-                                            p_checksum_type => '3')||'">'||apex_escape.html(r.release_train||' '||release)||'</a>' action
-                from SP_RELEASE_COMMENTS_V c,
-                     sp_release_trains r
+                           '<a href="'||apex_page.get_url (
+                                             p_page   => 117,
+                                             p_clear_cache => 117,
+                                             p_items  => 'P117_RELEASE_ID',
+                                             p_values => r.id ) ||'">'||apex_escape.html(r.release_train||' '||release)||'</a>' action
+                  from SP_RELEASE_COMMENTS_V c,
+                       sp_release_trains r
                  where c.release_id = r.id and
                        c.author_id is not null and
                        (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
@@ -334,8 +348,10 @@ page 7 (
                        a.area,
                        i.id initiative_id,
                        i.initiative,
-                       null release_id,
-                       '' Release,
+                       p.release_id release_id,
+                       case when p.release_id is not null
+                            then (select release_train||' '|| release from sp_release_trains where id = p.release_id)
+                            end Release,
                        t.PROJECT_ID,
                        p.project,
                        t.id task_id,
@@ -343,6 +359,7 @@ page 7 (
                            case when t.task_sub_type_id is not null then ': ' end ||
                            (select task_type from sp_task_types rt where rt.id = t.task_sub_type_id) ||
                            case when t.task is not null then ' - '||t.task end context,
+                       c.comment_nbr,
                        c.body_no_images body,
                        c.body_html,
                        (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
@@ -351,9 +368,12 @@ page 7 (
                        c.CREATED,
                        to_char(c.created,'YYYY.MM') created_yyyyMM,
                        decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
-                       '<a href="'||apex_util.prepare_URL(
-                                            p_url => 'f?p='||:APP_ID||':502:'||:APP_SESSION||'::NO:502:P502_PREV_PAGE,P502_PROJECT_ID,P502_TASK_ID:3,'||p.id||','||t.id,
-                                            p_checksum_type => '3')||'">'||
+                       null private_act_yn,
+                       '<a href="'||apex_page.get_url (
+                                             p_page   => 502,
+                                             p_clear_cache => 502,
+                                             p_items  => 'P502_PREV_PAGE,P502_PROJECT_ID,P502_TASK_ID',
+                                             p_values => '3,'||p.id||','||t.id )||'">'||
                            (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_type_id)||
                            case when t.task_sub_type_id is not null then ': ' end ||
                            (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_sub_type_id) ||
@@ -370,8 +390,57 @@ page 7 (
                        i.area_id = a.id and
                        p.DUPLICATE_OF_PROJECT_ID is null and
                        p.ARCHIVED_YN = 'N' and 
-                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) )
-                
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:APP_USER) )
+                union all
+                select 'Activity' comment_type,
+                       'activity' internal_type,
+                       case when t.initiative_id is not null
+                            then (select a2.area from sp_areas a2, sp_initiatives i2 where i2.id = t.initiative_id and i2.area_id = a2.id)
+                            else a.area
+                            end area,
+                       nvl(i.id,t.initiative_id) initiative_id,
+                       case when t.initiative_id is not null
+                            then (select initiative from sp_initiatives where id = t.initiative_id)
+                            else i.initiative
+                            end initiative,
+                       p.release_id,
+                       case when p.release_id is not null
+                            then (select release_train||' '|| release from sp_release_trains where id = p.release_id)
+                            end Release,
+                       t.PROJECT_ID,
+                       p.project,
+                       null task_id,
+                       t.activity context,
+                       c.comment_nbr,
+                       c.body_no_images body,
+                       c.body_html,
+                       (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
+                       (select initials from sp_team_members tm where tm.id = c.author_id) initials,
+                       c.AUTHOR_ID,
+                       c.CREATED,
+                       to_char(c.created,'YYYY.MM') created_yyyyMM,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       t.private_yn private_act_yn,
+                       '<a href="'||apex_page.get_url (
+                                             p_page   => 129, 
+                                             p_clear_cache => 129,
+                                             p_items  => 'P129_ACTIVITY_ID',
+                                             p_values => t.id )||'">'||
+                           apex_escape.html(t.activity) ||'</a>' action
+                  from SP_ACTIVITY_COMMENTS c,
+                       sp_activities t,
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas a 
+                 where t.id = c.activity_id and
+                       (nvl(t.private_yn,'N') = 'N' or t.team_member_id = :APP_USER_ID) and
+                       c.author_id is not null and
+                       t.project_id = p.id (+) and
+                       p.initiative_id = i.id (+) and
+                       i.area_id = a.id (+) and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       nvl(p.ARCHIVED_YN,'N') = 'N' and 
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:APP_USER) )
                 ) order by comment_date desc
                 ```
         }
@@ -398,15 +467,12 @@ page 7 (
                 t-Comments--iconsRounded
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Actions
@@ -423,7 +489,7 @@ page 7 (
         )
 
         column AREA (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Area
@@ -493,7 +559,7 @@ page 7 (
         )
 
         column AUTHOR (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Author
@@ -507,7 +573,7 @@ page 7 (
         )
 
         column BODY (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: Body
@@ -537,8 +603,27 @@ page 7 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -549,8 +634,10 @@ page 7 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -562,7 +649,7 @@ page 7 (
         )
 
         column COMMENT_TYPE (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Comment Type
@@ -576,7 +663,7 @@ page 7 (
         )
 
         column CONTEXT (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: Context
@@ -590,7 +677,7 @@ page 7 (
         )
 
         column CREATED_YYYYMM (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created Yyyymm
@@ -604,7 +691,7 @@ page 7 (
         )
 
         column INITIATIVE (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Initiative
@@ -618,7 +705,7 @@ page 7 (
         )
 
         column PRIVATE_COMMENT_LABEL (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Private Comment Label
@@ -632,7 +719,7 @@ page 7 (
         )
 
         column PRIVATE_YN (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Private Yn
@@ -646,7 +733,7 @@ page 7 (
         )
 
         column RELEASE (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Release
@@ -682,33 +769,14 @@ page 7 (
             layout {
                 sequence: 30
             }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
+            }
             sorting {
                 sortable: false
             }
         )
 
-    )
-
-    button interactive-report (
-        buttonName: Interactive-Report
-        label: Interactive Report
-        layout {
-            sequence: 20
-            region: @breadcrumb
-            slot: next
-        }
-        appearance {
-            buttonTemplate: @/text
-            hot: true
-            templateOptions: #DEFAULT#
-        }
-        behavior {
-            action: redirectThisApp
-            target: {
-                page: 158
-            }
-            warnOnUnsavedChanges: doNotCheck
-        }
     )
 
     button reset (
@@ -775,25 +843,21 @@ page 7 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: $('#COMMENTS a').attr('target','_blank');
+                jsCode:
+                    ```javascript-browser
+                    $('#COMMENTS a')
+                      .not('[href*="#action$a-dialog-open"]')
+                      .attr('target', '_blank');
+                    ```
             }
             execution {
                 sequence: 10
             }
+            comments {
+                comments: $('#COMMENTS a').attr('target','_blank');
+            }
         )
 
-    )
-
-    dynamicAction refresh (
-        name: refresh
-        execution {
-            sequence: 10
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @breadcrumb
-        }
     )
 
 )

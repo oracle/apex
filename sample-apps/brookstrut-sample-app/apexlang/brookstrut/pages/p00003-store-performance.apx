@@ -7,7 +7,6 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -18,10 +17,6 @@ page 3 (
             section#addProduct.uRegion div.uRegionContent table.formlayout {margin-left: 20px;}
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -109,6 +104,9 @@ page 3 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_OPEN (
@@ -295,6 +293,9 @@ page 3 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 1000

@@ -1,0 +1,21 @@
+lov communities-p-2 (
+    name: COMMUNITIES, P90
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select name || ' (member count: '|| (select count(*) 
+                                                   from eba_qpoll_resp_comm_ref rc
+                                                  where rc.community_id = c.id) ||')' d,
+                   id r
+            from EBA_QPOLL_RESP_COMMUNITIES c
+            where publish_yn = 'Y'
+            )
+            order by 1
+            ```
+    }
+)
+

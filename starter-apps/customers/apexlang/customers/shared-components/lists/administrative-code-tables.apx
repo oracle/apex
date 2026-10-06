@@ -1,0 +1,460 @@
+list administrative-code-tables (
+    name: Administrative Code Tables
+
+    entry activity-types (
+        label: Activity Types
+        icon {
+            imageIconCssClasses: fa-newspaper-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 53
+                clearCache: [
+                    RIR
+                    53
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the types of activities tracked by the system.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @activities
+        }
+    )
+
+    entry categories (
+        label: Categories
+        icon {
+            imageIconCssClasses: fa-bullseye
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the categories used to bucket customers.
+            2: formIcon
+            3: &CNT_02.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry contact-types (
+        label: Contact Types
+        icon {
+            imageIconCssClasses: fa-crosshairs
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of customer contact types.
+            2: formIcon
+            3: &CNT_04.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry countries (
+        label: Countries
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 98
+                clearCache: [
+                    98
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of countries used to organize customers.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @countries
+        }
+    )
+
+    entry customer-statuses (
+        label: Customer Statuses
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 102
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of customer statuses.
+            2: formIcon
+            3: &CNT_03.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-status
+        }
+    )
+
+    entry customer-types (
+        label: Customer Types
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of customer types.
+            2: formIcon
+            3: &CNT_03.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry customer-use-cases (
+        label: Customer Use Cases
+        icon {
+            imageIconCssClasses: fa-check
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 104
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of customer use cases.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-use-case
+        }
+    )
+
+    entry geographies (
+        label: Geographies
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: 48
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of geographies used to organize customers.
+            2: formIcon
+            3: &CNT_06.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @geography
+        }
+    )
+
+    entry industries (
+        label: Industries
+        icon {
+            imageIconCssClasses: fa-building-o
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 27
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of industries a customer can be assigned to
+            2: formIcon
+            3: &CNT_09.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry issue-statuses (
+        label: Issue Statuses
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 95
+        }
+        link {
+            target: {
+                page: 132
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of statuses a customer issue can be assigned to
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @issues
+        }
+    )
+
+    entry product-families (
+        label: Product Families
+        icon {
+            imageIconCssClasses: fa-tags
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+                clearCache: [
+                    RIR
+                    112
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of available product families that a product can belong to.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry products (
+        label: Products
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 110
+        }
+        isCurrent {
+            type: pages
+            pages: 42
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of available products that can be associated with a customer.
+            2: formIcon
+            3: &CNT_05.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry reference-phases (
+        label: Reference Phases
+        icon {
+            imageIconCssClasses: fa-moon-o
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 87
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage reference life cycle using phases.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    entry reference-statuses (
+        label: Reference Statuses
+        icon {
+            imageIconCssClasses: fa-tags
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 94
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the reference statuses for customer product assignments.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    entry reference-types (
+        label: Reference Types
+        icon {
+            imageIconCssClasses: fa-group
+        }
+        layout {
+            sequence: 140
+        }
+        isCurrent {
+            type: pages
+            pages: 78
+        }
+        link {
+            target: {
+                page: 78
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of customer reference types.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                    P_APPLICATION_ID => :APP_ID,
+                    P_BUILD_OPTION_NAME => 'Customer Referencability') = 'INCLUDE'
+                or
+                APEX_UTIL.GET_BUILD_OPTION_STATUS(
+                    P_APPLICATION_ID => :APP_ID,
+                    P_BUILD_OPTION_NAME => 'Product Referencability') = 'INCLUDE'
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    entry sales-channels (
+        label: Sales Channels
+        icon {
+            imageIconCssClasses: fa-exchange
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 89
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage domain of available sales channels
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

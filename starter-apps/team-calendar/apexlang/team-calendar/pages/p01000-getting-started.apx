@@ -6,9 +6,6 @@ page 1000 (
         pageTemplate: @/minimal-no-navigation
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -33,10 +30,6 @@ page 1000 (
             }
             .apex-item-yes-no {white-space:pre;}
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region access-control (
@@ -188,6 +181,9 @@ page 1000 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column BUILD_OPTION (
@@ -448,6 +444,9 @@ page 1000 (
                 t-Cards--animColorFill
             ]
             cssClasses: users-table
+        }
+        pagination {
+            type: showAll
         }
 
         column CARD_COLOR (

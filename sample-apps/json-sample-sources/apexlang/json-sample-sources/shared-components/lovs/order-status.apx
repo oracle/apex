@@ -1,0 +1,20 @@
+lov order-status (
+    name: ORDER STATUS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_orders
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct order_status
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: ORDER_STATUS
+        display: ORDER_STATUS
+    }
+)
+

@@ -1,0 +1,13 @@
+lov departments (
+    name: DEPARTMENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from   eba_demo_load_dept
+            order by 1
+            ```
+    }
+)
+

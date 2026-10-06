@@ -1,0 +1,19 @@
+lov active-polls (
+    name: ACTIVE POLLS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select
+                poll_name dv, 
+                id        rv
+            from
+                eba_qpoll_polls p
+            where
+                status_id = 3
+            order by
+                1
+            ```
+    }
+)
+

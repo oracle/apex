@@ -7,13 +7,6 @@ page 111 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -118,6 +111,9 @@ page 111 (
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_REMAINING (

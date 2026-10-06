@@ -1,0 +1,12 @@
+lov sp-project-groups-group-name (
+    name: SP_PROJECT_GROUPS.GROUP_NAME
+    source {
+        tableName: SP_PROJECT_GROUPS
+    }
+    columnMapping {
+        return: ID
+        display: GROUP_NAME
+        defaultSort: GROUP_NAME
+    }
+)
+

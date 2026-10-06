@@ -1,0 +1,34 @@
+lov calendars-with-default (
+    name: CALENDARS WITH DEFAULT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select 'Default' d,
+                   -1 r,
+                   1 ob
+              from dual
+             where exists (select 1 from eba_ca_events
+                            where calendar_id is null)
+            union
+            select short_name ||' - '|| calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d,
+                   calendar_id r,
+                   2 ob
+              from eba_ca_calendars c
+              where public_view_yn = 'Y'
+              or    exists (select 'x'
+                            from eba_ca_users u
+                            where u.username = :APP_USER
+                            and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                   or (access_level_id = 3 and restricted_to is null)
+                                  )
+                           ) 
+            )
+             order by ob, d
+            ```
+    }
+)
+

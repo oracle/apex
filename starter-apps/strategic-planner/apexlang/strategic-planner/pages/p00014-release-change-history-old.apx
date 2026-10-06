@@ -7,13 +7,6 @@ page 14 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -119,6 +112,9 @@ page 14 (
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_REMAINING (
@@ -475,9 +471,6 @@ page 14 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

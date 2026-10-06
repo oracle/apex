@@ -14,13 +14,8 @@ page 172 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -100,6 +95,9 @@ page 172 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         heading {
             type: none

@@ -1,0 +1,13 @@
+lov customers (
+    name: CUSTOMERS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select customer_name d, id r 
+            from EBA_CUST_CUSTOMERS
+            order by upper(customer_name)
+            ```
+    }
+)
+

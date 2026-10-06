@@ -7,12 +7,7 @@ page 14 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -386,7 +381,7 @@ page 14 (
         source {
             htmlCode:
                 ```html
-                <p>This page shows the result of firstly going through the create page wizard and choosing Report for page type, then Interactive Grid, and selecting EBA_DEMO_IG_EMP for the table (leave Editing Enabled set to the default: No). Secondly, the Actions > Chart menu item was selected, launching the Chart dialog to define a chart on the Interactive Grid columns. Interactive Grid charts are based on our new charting solution in Oracle Application Express 5.1, Oracle JET Data Visualizations.
+                <p>This page shows the result of firstly going through the create page wizard and choosing Report for page type, then Interactive Grid, and selecting EBA_DEMO_IG_EMP for the table (leave Editing Enabled set to the default: No). Secondly, the Actions > Chart menu item was selected, launching the Chart dialog to define a chart on the Interactive Grid columns. Interactive Grid charts are based on the charting solution introduced in Oracle APEX 5.1, Oracle JET Data Visualizations.
                 </p>
                 <p>In many ways it looks and acts like an Interactive Report chart. Here are some new features and differences:
                 </p>

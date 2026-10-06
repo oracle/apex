@@ -1,0 +1,59 @@
+list upload-data (
+    name: upload data
+
+    entry accounts (
+        label: Accounts
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 136
+                clearCache: [
+                    136
+                    137
+                    140
+                    143
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Upload accounts from a spreadsheet
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry opportunities (
+        label: Opportunities
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 210
+                clearCache: [
+                    210
+                    211
+                    212
+                    213
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Upload opportunities from a spreadsheet
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

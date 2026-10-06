@@ -17,7 +17,6 @@ page 1117 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -25,6 +24,8 @@ page 1117 (
     }
     security {
         authentication: public
+        pageAccessProtection: unrestricted
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

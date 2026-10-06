@@ -1,0 +1,24 @@
+list activity-actions (
+    name: Activity Actions
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ACTIVITY_ID: &P145_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+)
+

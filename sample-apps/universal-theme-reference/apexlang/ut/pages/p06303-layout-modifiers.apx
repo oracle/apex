@@ -11,7 +11,6 @@ page 6303 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -77,7 +76,7 @@ page 6303 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -679,7 +678,7 @@ page 6303 (
                 ```
         }
         layout {
-            sequence: 30
+            sequence: 40
             parentRegion: @overflow
             slot: subRegions
             startNewRow: false
@@ -1057,6 +1056,43 @@ page 6303 (
         }
     )
 
+    region options-2_1_1_1 (
+        name: Options
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <table class="u-Report u-Report--staticBG u-Report--stretch dm-Report--doc">
+                  <thead>
+                    <tr>
+                      <th style="width: 30%" class="u-textStart">Class</th>
+                      <th class="u-textStart">Description</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="class">u-displayNone</span></td><td>Hides an element, but another CSS rule may override it.</td></tr>
+                    <tr><td><span class="class">u-hidden</span></td><td>Hides an element, and gives the rule priority over competing declarations.</td></tr>
+                    </tbody>
+                </table>
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @overflow_1
+            slot: subRegions
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        accessibility {
+            landmarkLabel: Margin Options
+        }
+    )
+
     region options-3 (
         name: Options
         type: staticContent
@@ -1394,6 +1430,30 @@ page 6303 (
         }
         layout {
             sequence: 110
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region overflow_1 (
+        name: Display
+        type: staticContent
+        source {
+            htmlCode: <p>Controls whether an element is displayed and whether its hidden state can be overridden by other CSS rules.</p>
+        }
+        layout {
+            sequence: 120
             slot: body
             columnSpan: 8
             columnCssClasses: col-sm-12

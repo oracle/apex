@@ -1,0 +1,43 @@
+list oracle-text (
+    name: Oracle Text
+
+    entry standard (
+        label: Standard
+        icon {
+            imageIconCssClasses: fa-server-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on Oracle Text.
+        }
+    )
+
+    entry text-index-function (
+        label: Text Index Function
+        icon {
+            imageIconCssClasses: fa-function
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to Text Index Function to translate user queries to complex Oracle text syntax.
+        }
+    )
+
+)
+

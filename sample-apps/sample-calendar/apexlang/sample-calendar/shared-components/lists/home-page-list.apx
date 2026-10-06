@@ -1,0 +1,95 @@
+list home-page-list (
+    name: Home Page List
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Administer this Sample Application.
+        }
+    )
+
+    entry calendar-styling (
+        label: Calendar Styling
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+        userDefinedAttributes {
+            1: Apply custom styles to your Calendar region. Change colors, fonts or add icons to your calendar events.
+        }
+    )
+
+    entry calendars-and-javascript (
+        label: Calendars and Javascript
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+        userDefinedAttributes {
+            1: Use the FullCalendar Javascript API and fully exploit the capabilities of your calendar component.
+        }
+    )
+
+    entry dynamic-action-examples (
+        label: Dynamic Action Examples
+        icon {
+            imageIconCssClasses: fa-calendar-check-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: These Calendar Regions are using Dynamic Actions to communicate with other page components of your APEX application.
+        }
+    )
+
+    entry standard-calendars (
+        label: Standard Calendars
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Review a collection of Standard Calendar examples. These Calendars only utilize standard component attributes and no custom Dynamic Actions or Javascript code.
+        }
+    )
+
+)
+

@@ -7,7 +7,6 @@ page 5 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -32,10 +31,6 @@ page 5 (
             
             span.t-HeroRegion-icon.t-Icon.fa.fa-clock-o:before {font-size: 42px;}
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -102,6 +97,9 @@ page 5 (
                 t-BadgeList--dash
                 t-BadgeList--fixed
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column SALES (
@@ -183,6 +181,9 @@ page 5 (
         }
         chartLayout {
             height: 480
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: mixedFrequency

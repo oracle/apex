@@ -6,6 +6,7 @@ procedure add_error_log (
     p_package_name    in varchar2,
     p_procedure_name  in varchar2, 
     p_error           in varchar2, 
+    p_error_backtrace in varchar2 default null,
     p_arg1_name       in varchar2 default null, 
     p_arg1_val        in varchar2 default null, 
     p_arg2_name       in varchar2 default null, 
@@ -21,11 +22,11 @@ as
 begin 
 
     insert into sp_error_log 
-       (package_name, procedure_name, error, 
+       (package_name, procedure_name, error, error_backtrace,
         arg1_name, arg1_val, arg2_name, arg2_val, arg3_name, arg3_val, 
         arg4_name, arg4_val, arg5_name, arg5_val ) 
     values 
-       (substr(p_package_name,1,255), substr(p_procedure_name,1,500), substr(p_error,1,4000), 
+       (substr(p_package_name,1,255), substr(p_procedure_name,1,500), substr(p_error,1,4000), substr(p_error_backtrace,1,4000),
         substr(p_arg1_name,1,255), substr(p_arg1_val,1,4000), substr(p_arg2_name,1,255), substr(p_arg2_val,1,4000), 
         substr(p_arg3_name,1,255), substr(p_arg3_val,1,4000), substr(p_arg4_name,1,255), substr(p_arg4_val,1,4000), 
         substr(p_arg5_name,1,255), substr(p_arg5_val,1,4000) );
@@ -1540,6 +1541,7 @@ begin
 
 end send_notif_subscriptions;
 
+
 procedure assignment_notification (
     p_team_member_id     in  number,
     p_app_name           in  varchar2,
@@ -1578,7 +1580,7 @@ begin
                 p_to                 => c1.email,   
                 p_from               => c1.email,  
                 p_application_id     => p_app_id,  
-                p_template_static_id => 'PROJECT_RELATED',  
+                p_template_static_id => 'NOTIFICATIONS',  
                 p_placeholders       => '{' || '"VIEW_LINK": "' || p_link ||'", '|| 
                                                '"APP_NAME": '   || apex_json.stringify( p_app_name ) ||', '||
                                                '"SUBJECT": '    || apex_json.stringify( p_title ) ||', '||
@@ -1591,16 +1593,19 @@ end assignment_notification;
 
 
 procedure comment_notification (
-    p_team_member_id     in  number,
-    p_app_name           in  varchar2,
-    p_app_id             in  number,
-    p_project_id         in  number  default null,
-    p_task_id            in  number  default null,
-    p_link               in  varchar2,
-    p_view_what          in  varchar2,
-    p_title              in  varchar2,
-    p_email_contents     in  varchar2,
-    p_notification_type  in  varchar2 default 'COMMENT' )
+    p_team_member_id      in  number,
+    p_app_name            in  varchar2,
+    p_app_id              in  number,
+    p_project_id          in  number  default null,
+    p_task_id             in  number  default null,
+    p_release_id          in  number  default null,
+    p_initiative_id       in  number  default null,
+    p_init_focus_area_id  in  number  default null,
+    p_link                in  varchar2,
+    p_view_what           in  varchar2,
+    p_title               in  varchar2,
+    p_email_contents      in  varchar2,
+    p_notification_type   in  varchar2 default 'COMMENT' )
 is
 begin
     -- only send if person is also a user (project owners may not be users)
@@ -1617,9 +1622,11 @@ begin
                           and user_name_lc = t.email)
     ) loop
         insert into sp_team_member_notifications
-            (team_member_id, project_id, title, email_contents, notification_pref, notification_type)
+            (team_member_id, project_id, task_id, release_id, initiative_id, init_focus_area_id,
+             title, email_contents, notification_pref, notification_type)
         values
-            (p_team_member_id, p_project_id, p_title, substr(p_email_contents,1,4000), c1.comment_pref, p_notification_type);
+            (p_team_member_id, p_project_id, p_task_id, p_release_id, p_initiative_id, p_init_focus_area_id,
+             p_title, substr(p_email_contents,1,4000), c1.comment_pref, p_notification_type);
 
         if instr(':'||c1.comment_pref||':',':EMAIL:') > 0 and
            apex_util.get_build_option_status (
@@ -1630,7 +1637,7 @@ begin
                 p_to                 => c1.email,   
                 p_from               => c1.email,  
                 p_application_id     => p_app_id,  
-                p_template_static_id => 'PROJECT_RELATED',  
+                p_template_static_id => 'NOTIFICATIONS',  
                 p_placeholders       => '{' || '"VIEW_LINK": "' || p_link ||'", '|| 
                                                '"APP_NAME": '   || apex_json.stringify( p_app_name ) ||', '||
                                                '"SUBJECT": '    || apex_json.stringify( p_title ) ||', '||
@@ -1696,7 +1703,7 @@ begin
             l_project := '<strong>'||apex_escape.html(c1.project)||'</strong>';
             -- broken out to avoid bulk bind error
             if c1.owner_id = p_team_member_id then l_role := ' (Owner)';
-            else select ' ('||listagg(rt.resource_type, ', ') within group (order by rt.resource_type) ||')'
+            else select listagg(rt.resource_type, ', ' on overflow truncate with count) within group (order by rt.resource_type)
                    into l_role
                    from sp_project_contributors c,
                         sp_resource_types rt
@@ -1707,7 +1714,7 @@ begin
 
             if p_link_type = 'APP' then
                l_url := apex_util.prepare_url('f?p='||p_app_id||':3:'||p_apex_session||'::NO:3:FI:'||apex_escape.html(c1.friendly_identifier));
-               l_project := '<a href="'||l_url||'">'||l_project||'</a>' || apex_escape.html(l_role) || apex_escape.html(c1.owner) || apex_escape.html(c1.quick_summary);
+               l_project := '<a href="'||l_url||'">'||l_project||'</a>' || case when l_role is not null then ' ('||apex_escape.html(l_role)||')' end || apex_escape.html(c1.owner) || apex_escape.html(c1.quick_summary);
             elsif p_link_type in ('EMAIL','JOB') then
                l_url := apex_page.get_url(
                             p_application => p_app_id,
@@ -1788,7 +1795,10 @@ begin
                  l_proj_yn := 'Y';
              end if;
              l_exceptions_yn := 'Y';
-             x := x||'<li>'|| apex_escape.html(c2.type)||' assigned to '||apex_escape.html(c2.owner) ||' was due '|| to_char(c2.target_complete,l_date_fm)||'  ('||apex_escape.html(c2.status)||')</li>'||chr(10);
+             x := x||'<li>'|| apex_escape.html(c2.type)|| case when c2.owner is not null 
+                                                               then ' assigned to '||apex_escape.html(c2.owner) 
+                                                               else ', no owner,' 
+                                                               end ||' was due '|| to_char(c2.target_complete,l_date_fm)||'  ('||apex_escape.html(c2.status)||')</li>'||chr(10);
         end loop;
 
         -- OVERDUE REVIEWS
@@ -1814,7 +1824,10 @@ begin
                     l_proj_yn := 'Y';
                 end if;
                 l_exceptions_yn := 'Y';
-                x := x||'<li>'||apex_escape.html(c2.type)||' by '||apex_escape.html(c2.reviewer)||' was targeted for '||to_char(c2.review_date,l_date_fm)||'  ('||apex_escape.html(c2.status)||')</li>'||chr(10);
+                x := x||'<li>'||apex_escape.html(c2.type)|| case when c2.reviewer is not null
+                                                                 then ' by '||apex_escape.html(c2.reviewer)
+                                                                 else ', no reviewer assigned,'
+                                                                 end || ' was targeted for '||to_char(c2.review_date,l_date_fm)||'  ('||apex_escape.html(c2.status)||')</li>'||chr(10);
             end loop;
 
             -- REVIEWS WITHOUT DATES
@@ -1837,7 +1850,10 @@ begin
                     l_proj_yn := 'Y';
                 end if;
                 l_exceptions_yn := 'Y';
-                x := x||'<li>'||apex_escape.html(c2.type)||' by '||apex_escape.html(c2.reviewer)||' has no target date ('||apex_escape.html(c2.status)||')</li>'||chr(10);
+                x := x||'<li>'||apex_escape.html(c2.type)|| case when c2.reviewer is not null
+                                                                 then ' by '||apex_escape.html(c2.reviewer)
+                                                                 else ', no reviewer assigned,'
+                                                                 end || ' has no target date ('||apex_escape.html(c2.status)||')</li>'||chr(10);
             end loop;
         end if;
 
@@ -1906,6 +1922,19 @@ begin
 
 end replace_nomenclature;
 
+
+function fix_demo_dates (
+    p_date  in  date
+) return date
+is
+    l_date  date;
+begin
+    l_date := case to_char(p_date,'DY') when 'SAT' then p_date-1
+                                        when 'SUN' then p_date+1
+                                        else p_date
+                                        end;
+    return l_date;
+end fix_demo_dates;
 
 end sp_util;
 /

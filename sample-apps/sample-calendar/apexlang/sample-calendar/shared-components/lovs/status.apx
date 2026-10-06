@@ -1,0 +1,20 @@
+lov status (
+    name: STATUS
+    source {
+        location: staticValues
+    }
+
+    entry active (
+        sequence: 1
+        display: Active
+        return: ACTIVE
+    )
+
+    entry inactive (
+        sequence: 2
+        display: Inactive
+        return: INACTIVE
+    )
+
+)
+

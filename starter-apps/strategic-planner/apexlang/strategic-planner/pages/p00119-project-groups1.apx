@@ -7,13 +7,6 @@ page 119 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @project-groups
     }
@@ -28,7 +21,7 @@ page 119 (
                 ```sql
                 select ap.id, 
                        at.activity_type,
-                       ap.comments,
+                       ap.activity,
                        ap.start_date,
                        ap.end_date,
                        to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
@@ -37,6 +30,7 @@ page 119 (
                        round(ap.end_date - sysdate) days_remaining,
                        ap.url,
                        tm.first_name||' '||tm.last_name name,
+                       decode(ap.private_yn,'Y','Private',null) private_label,
                        --
                        p.project,
                        p.friendly_identifier,
@@ -80,17 +74,15 @@ page 119 (
                                p.DUPLICATE_OF_PROJECT_ID is null and
                                p.project_group_id = :P119_PROJECT_GROUP_ID
                                ) and
-                      --p.id = :P119_PROJECT_ID and
                       ap.activity_type_id = at.id and
                       ap.team_member_id = tm.id and
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
                       --
                       --
                       --
                       (  
                          trunc(sysdate) between ap.start_date and ap.end_date 
                       )
-                --order by ap.updated desc
-                
                 ```
             pageItemsToSubmit: P119_PROJECT_ID
         }
@@ -117,7 +109,7 @@ page 119 (
             display: report
         }
         settings {
-            title: &COMMENTS.
+            title: &ACTIVITY.
             description:
                 ```html
                 <strong>Owner</strong>: &OWNER.<br>
@@ -125,7 +117,7 @@ page 119 (
                 {if PROJECT/}<strong>&NOMENCLATURE_PROJECT.</strong>: &PROJECT.<br>{endif/}
                 {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE.</strong>: &INITIATIVE.<br>{endif/}
                 ```
-            miscellaneous: Updated &LAST_UPDATED.
+            miscellaneous: "{if PRIVATE_LABEL/}<strong class=\"u-danger-text\">&PRIVATE_LABEL!HTML.</strong><br/>{endif/}Updated &LAST_UPDATED."
             displayAvatar: true
             displayBadge: true
         }
@@ -143,22 +135,22 @@ page 119 (
             entitiesPerPage: 30
         }
 
+        column ACTIVITY (
+            layout {
+                sequence: 370
+            }
+            source {
+                databaseColumn: ACTIVITY
+                dataType: varchar2
+            }
+        )
+
         column ACTIVITY_TYPE (
             layout {
                 sequence: 190
             }
             source {
                 databaseColumn: ACTIVITY_TYPE
-                dataType: varchar2
-            }
-        )
-
-        column COMMENTS (
-            layout {
-                sequence: 200
-            }
-            source {
-                databaseColumn: COMMENTS
                 dataType: varchar2
             }
         )
@@ -284,6 +276,16 @@ page 119 (
             }
         )
 
+        column PRIVATE_LABEL (
+            layout {
+                sequence: 380
+            }
+            source {
+                databaseColumn: PRIVATE_LABEL
+                dataType: varchar2
+            }
+        )
+
         column PROJECT (
             layout {
                 sequence: 260
@@ -361,7 +363,7 @@ page 119 (
             }
         )
 
-        action actions (
+        action actions-2 (
             position: primaryActions
             template: menu
             label: Actions
@@ -545,9 +547,6 @@ page 119 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
@@ -692,8 +691,10 @@ page 119 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -889,83 +890,6 @@ page 119 (
         }
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 120
-                }
-                behavior {
-                    target: {
-                        page: 119
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 130
-                }
-                behavior {
-                    target: {
-                        page: 119
-                        clearCache: 119
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-    )
-
     region nomenclature-projects (
         name: "&NOMENCLATURE_PROJECTS. "
         type: interactiveReport
@@ -1085,7 +1009,7 @@ page 119 (
                 linkAttributes: View &NOMENCLATURE_PROJECTS. Details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -1101,7 +1025,7 @@ page 119 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -1117,7 +1041,7 @@ page 119 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1133,7 +1057,7 @@ page 119 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -1149,7 +1073,7 @@ page 119 (
                 sequence: 110
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -1170,7 +1094,7 @@ page 119 (
                 htmlExpression: #PCT_COMPLETE#%
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -1186,7 +1110,7 @@ page 119 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -1214,7 +1138,7 @@ page 119 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -1230,7 +1154,7 @@ page 119 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -1246,7 +1170,7 @@ page 119 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -1262,7 +1186,7 @@ page 119 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -1278,7 +1202,7 @@ page 119 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y
@@ -1297,7 +1221,7 @@ page 119 (
                 formatMask: DD-Mon-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: Z
@@ -1324,7 +1248,7 @@ page 119 (
                 linkText: #THE_OWNER#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1343,7 +1267,7 @@ page 119 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -1359,7 +1283,7 @@ page 119 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -1475,6 +1399,58 @@ page 119 (
         security {
             sessionStateProtection: checksumRequiredSessionLevel
         }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 119
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 119
+                    clearCache: 119
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
     )
 
     button up (

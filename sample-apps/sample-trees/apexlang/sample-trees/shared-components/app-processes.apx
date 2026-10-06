@@ -1,6 +1,5 @@
 appProcess trim-all-page-items (
     name: Trim All Page Items
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

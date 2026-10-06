@@ -8,12 +8,7 @@ page 46 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -122,9 +117,6 @@ page 46 (
                 t-Cards--3cols
                 t-Cards--animColorFill
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column CARD_SUBTEXT (
@@ -383,6 +375,9 @@ page 46 (
             layout {
                 sequence: 20
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -401,6 +396,9 @@ page 46 (
             }
             layout {
                 sequence: 40
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -430,6 +428,9 @@ page 46 (
             }
             layout {
                 sequence: 30
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

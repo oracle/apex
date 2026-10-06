@@ -14,13 +14,8 @@ page 40 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -64,40 +59,6 @@ page 40 (
         }
     )
 
-    pageItem P40_CREATED (
-        type: hidden
-        layout {
-            sequence: 110
-            region: @link
-            slot: regionBody
-        }
-        source {
-            formRegion: @link
-            column: CREATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P40_CREATED_BY (
-        type: hidden
-        layout {
-            sequence: 120
-            region: @link
-            slot: regionBody
-        }
-        source {
-            formRegion: @link
-            column: CREATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
     pageItem P40_ID (
         type: hidden
         layout {
@@ -131,9 +92,6 @@ page 40 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @link
@@ -224,40 +182,6 @@ page 40 (
         }
         security {
             restrictedChars: webSafe
-        }
-    )
-
-    pageItem P40_UPDATED (
-        type: hidden
-        layout {
-            sequence: 130
-            region: @link
-            slot: regionBody
-        }
-        source {
-            formRegion: @link
-            column: UPDATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P40_UPDATED_BY (
-        type: hidden
-        layout {
-            sequence: 140
-            region: @link
-            slot: regionBody
-        }
-        source {
-            formRegion: @link
-            column: UPDATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 

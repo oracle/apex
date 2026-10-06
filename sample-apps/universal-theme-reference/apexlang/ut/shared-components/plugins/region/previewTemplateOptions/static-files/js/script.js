@@ -4,10 +4,15 @@ apex.theme42demo.initPreviewTemplateOptions = ({
     previewId,
     componentType,
     componentStaticId,
-    templateOptions
+    templateOptions,
+    templateOptionsId
 }) => {
 
-    templateOptions = JSON.parse(templateOptions);
+    if ( templateOptionsId ) {
+        templateOptions = JSON.parse(document.getElementById(templateOptionsId).textContent);
+    } else {
+        templateOptions = JSON.parse(templateOptions);
+    }
 
     let element$ = $(`#${componentStaticId}`);
 

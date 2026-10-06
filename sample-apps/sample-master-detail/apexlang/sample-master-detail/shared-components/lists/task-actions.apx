@@ -1,0 +1,45 @@
+list task-actions (
+    name: Task Actions
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 23
+                items: {
+                    P23_PROJECT_ID: &P31_PROJECT_ID.
+                    P23_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    entry add-to-do (
+        label: Add To Do
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+                items: {
+                    P15_PROJECT_ID: &P31_PROJECT_ID.
+                    P15_TASK_ID: &P31_TASK_ID.
+                }
+                clearCache: 15
+            }
+        }
+    )
+
+)
+

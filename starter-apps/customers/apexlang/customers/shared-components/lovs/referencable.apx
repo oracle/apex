@@ -1,0 +1,26 @@
+lov referencable (
+    name: REFERENCABLE
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 20
+        display: No
+        return: No
+    )
+
+    entry potentially (
+        sequence: 30
+        display: Potentially
+        return: Potentially
+    )
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Yes
+    )
+
+)
+

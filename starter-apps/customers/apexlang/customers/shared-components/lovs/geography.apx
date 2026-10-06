@@ -1,0 +1,13 @@
+lov geography (
+    name: GEOGRAPHY
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select GEOGRAPHY_NAME display_value, ID return_value 
+            from EBA_CUST_GEOGRAPHIES
+            order by 1
+            ```
+    }
+)
+

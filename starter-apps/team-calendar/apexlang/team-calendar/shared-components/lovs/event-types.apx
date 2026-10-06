@@ -1,0 +1,25 @@
+lov event-types (
+    name: EVENT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select 1 ob, '- New Event Type -' d, -1 r
+              from dual
+            union all
+            select 2 ob, type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', ' (External)'), null) d, type_id r
+              from EBA_ca_event_types
+            where (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                   or (   nvl(internal_yn, 'N') = 'N'
+                       or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                      )
+                  )
+            )
+            order by ob, d
+            ```
+    }
+)
+

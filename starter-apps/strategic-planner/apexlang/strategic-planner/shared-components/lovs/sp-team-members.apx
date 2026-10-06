@@ -1,0 +1,17 @@
+lov sp-team-members (
+    name: SP_TEAM_MEMBERS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+

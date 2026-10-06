@@ -6,9 +6,6 @@ page 110 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -19,8 +16,6 @@ page 110 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -70,6 +65,9 @@ page 110 (
         }
         chartLayout {
             height: 220
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -173,6 +171,9 @@ page 110 (
                 AI guidance: Use when users need to compare magnitudes quickly. Keep category labels short and avoid too many bars.
                 ```
         }
+        performance {
+            lazyLoading: true
+        }
         legend {
             show: false
         }
@@ -264,6 +265,9 @@ page 110 (
         }
         chart {
             type: pie
+        }
+        performance {
+            lazyLoading: true
         }
         value {
             format: decimal
@@ -908,6 +912,9 @@ page 110 (
         }
         chartLayout {
             height: 220
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: enabled

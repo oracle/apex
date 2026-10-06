@@ -1,0 +1,41 @@
+list calendar-styling (
+    name: Calendar Styling
+
+    entry custom-css-classes (
+        label: Custom CSS Classes
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+        userDefinedAttributes {
+            1: This page shows custom styling of calendar events using your own CSS classes.
+        }
+    )
+
+    entry custom-event-icons (
+        label: Custom Event Icons
+        icon {
+            imageIconCssClasses: fa-square-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+        userDefinedAttributes {
+            1: "Add custom icons to your calendar events. "
+        }
+    )
+
+)
+

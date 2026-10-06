@@ -1,0 +1,41 @@
+list use-cases (
+    name: Use Cases
+
+    entry data-loading (
+        label: Data Loading
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 502
+            }
+        }
+        userDefinedAttributes {
+            1: Allows importing and processing external data into JSON formats.
+        }
+    )
+
+    entry json-and-workflow (
+        label: JSON and Workflow
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 503
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates integrating JSON data within business workflows and processes.
+        }
+    )
+
+)
+

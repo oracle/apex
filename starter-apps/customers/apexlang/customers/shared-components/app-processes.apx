@@ -1,6 +1,5 @@
 appProcess get-image (
     name: GET_IMAGE
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -53,7 +52,6 @@ appProcess get-image (
 
 appProcess set-globals (
     name: set globals
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -70,7 +68,6 @@ appProcess set-globals (
 
 appProcess timezone (
     name: timezone
-    type: executeCode
     source {
         plsqlCode: eba_cust_tz_init;
     }
@@ -85,7 +82,6 @@ appProcess timezone (
 
 appProcess trim-all-page-items (
     name: Trim All Page Items
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

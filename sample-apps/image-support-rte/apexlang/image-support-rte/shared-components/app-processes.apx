@@ -1,6 +1,5 @@
 appProcess post-image (
     name: POST_IMAGE
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -22,7 +21,6 @@ appProcess post-image (
 
 appProcess set-get-image-prefix (
     name: set GET_IMAGE_PREFIX
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

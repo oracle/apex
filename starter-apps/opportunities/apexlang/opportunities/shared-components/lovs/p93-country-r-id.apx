@@ -1,0 +1,17 @@
+lov p93-country-r-id (
+    name: P93_COUNTRY_R_ID
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select COUNTRY_NAME display_value, id return_value 
+            from eba_sales_COUNTRIES
+            where id not in (select country_id
+                             from eba_sales_terr_map
+                             where territory_id = :P93_ID
+                             and country_id is not null)
+            order by 1
+            ```
+    }
+)
+

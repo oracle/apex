@@ -7,13 +7,6 @@ page 79 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: Changes made across &NOMENCLATURE_INITIATIVES., &NOMENCLATURE_PROJECTS., &NOMENCLATURE_PROJECT. Milestones, Reviews, Tasks and Releases.  Includes old and new values and who made the change and when the change was made.
     }
@@ -305,6 +298,10 @@ page 79 (
         performance {
             maxRowsToProcess: 1000000
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: Changes made across Initiatives, Projects, Project Milestones, Reviews, Tasks and Releases.  Includes old and new values and who made the change and when the change was made.
+        }
         advanced {
             savedReportMappingIdentifier: 7173903725518637015
         }
@@ -321,7 +318,7 @@ page 79 (
                 formatMask: DD-MON-YYYY HH:MIPM
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: L
@@ -337,7 +334,7 @@ page 79 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -353,7 +350,7 @@ page 79 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -377,7 +374,7 @@ page 79 (
                 linkAttributes: alt="View Object"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -393,10 +390,14 @@ page 79 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
+            }
+            genAI {
+                referenceDataType: staticValues
+                staticValues: STATIC:Addition,Delete,Update
             }
         )
 
@@ -409,7 +410,7 @@ page 79 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -425,7 +426,7 @@ page 79 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -441,7 +442,7 @@ page 79 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -460,7 +461,7 @@ page 79 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -476,7 +477,7 @@ page 79 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -492,7 +493,7 @@ page 79 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -508,7 +509,7 @@ page 79 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -524,7 +525,7 @@ page 79 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y

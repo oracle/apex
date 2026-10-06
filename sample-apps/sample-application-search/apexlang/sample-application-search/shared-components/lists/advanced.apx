@@ -1,0 +1,62 @@
+list advanced (
+    name: Advanced
+
+    entry cards-region (
+        label: Cards Region
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to integrate Search Configurations with native APEX Cards regions.
+        }
+    )
+
+    entry highlight-results (
+        label: Highlight Results
+        icon {
+            imageIconCssClasses: fa-underline
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to perform search on Search configurations and highlight search terms in search results.
+        }
+    )
+
+    entry map-regions (
+        label: Map Regions
+        icon {
+            imageIconCssClasses: fa-map-marker-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to integrate Search Configurations with Map regions.
+        }
+    )
+
+)
+

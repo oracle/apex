@@ -1,0 +1,727 @@
+page 700 (
+    name: Team Calendar
+    alias: TEAM-CAL
+    title: Team Calendar
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    javaScript {
+        executeWhenPageLoads:
+            ```javascript-browser
+            var calendar = apex.region("eventscal").widget().data("fullCalendar");
+            calendar.setOption('contentHeight', "auto");
+            ```
+    }
+    help {
+        helpText: Calendar showing all Events that can affect Team Member availability.
+    }
+    config {
+        buildOption: @team-calendar
+    }
+    comments {
+        comments: Filterable by Event Type, whether or not the user has Open Reviews, User tags and who the event is for (useful when looking for events affecting a single user versus those affecting all, such as holidays).
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region events (
+        name: Events
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.id event_id,
+                       case when e.for_user_id is not null
+                            then tm.first_name||' '||tm.last_name||' - '
+                            end || 
+                            t.event_type ||
+                            case when e.event_name is not null
+                                 then ' ('||e.event_name
+                                 end ||
+                            case when t.general_event_yn = 'Y' and e.event_details is not null
+                                 then ' - '|| e.event_details
+                                 end ||
+                             case when e.event_name is not null
+                                  then ')'
+                                  end name,
+                       e.event_date,
+                       e.event_date end_date,
+                       null recur_frequency,
+                       e.event_details,
+                       case when t.calendar_event_color is not null
+                            then 'apex-cal-'||t.calendar_event_color
+                            end icon_color,
+                       t.icon_class,
+                       t.event_type,
+                       lower(tm.tags) person_tags,
+                       case when e.for_user_id is not null
+                            then (select decode(count(*),0,0,1)
+                                    from sp_tasks r, sp_task_types tt, sp_task_statuses s
+                                   where r.owner_id = tm.id 
+                                     and nvl(r.task_sub_type_id,r.task_type_id) = tt.id
+                                     and tt.static_id like 'REVIEW%'
+                                     and r.status_id = s.id
+                                     and s.indicates_complete_yn != 'Y')
+                            end open_review_cnt,
+                       case when :IS_CONTRIBUTOR = 'Y'
+                            then apex_page.get_url(
+                                     p_page => 704, 
+                                     p_clear_cache => '704',
+                                     p_items  => 'P704_ID',
+                                     p_values => e.id )
+                            else null
+                            end edit_link,
+                       case when e.for_user_id is null then 0 
+                            when e.for_user_id = :APP_USER_ID then 1
+                            else 2 
+                            end main_ob,
+                       e.for_user_id event_for,
+                       case when e.event_date < trunc(to_date(:APP_SYSDATE,'DD-MON-YYYY') + 1, 'IW') - 1
+                            then 'past'
+                            else 'present'
+                            end past_or_present
+                  from sp_events e,
+                       sp_event_types t,
+                       sp_team_members tm
+                 where e.event_type_id = t.id
+                   and e.series_id is null
+                   and e.for_user_id = tm.id (+)
+                union all
+                select e.id event_id,
+                       case when e.for_user_id is not null
+                            then tm.first_name||' '||tm.last_name||' - '
+                            end || 
+                            t.event_type ||
+                            case when e.event_name is not null
+                                 then ' ('||e.event_name
+                                 end ||
+                            case when t.general_event_yn = 'Y' and e.event_details is not null
+                                 then ' - '|| e.event_details
+                                 end ||
+                             case when e.event_name is not null
+                                  then ')'
+                                  end name,
+                       e.event_date,
+                       case when s.recur_freq = 'D'
+                            then s.end_date
+                            end end_date,
+                       case when s.recur_freq is not null
+                            then 'Repeats '||decode(s.recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                            '2W', 'Every 2 Weeks', 'M', 'Montly', s.recur_freq)
+                            end recur_frequency,
+                       e.event_details,
+                       case when t.calendar_event_color is not null
+                            then 'apex-cal-'||t.calendar_event_color
+                            end icon_color,
+                       t.icon_class,
+                       t.event_type,
+                       lower(tm.tags) person_tags,
+                       case when e.for_user_id is not null
+                            then (select decode(count(*),0,0,1)
+                                    from sp_tasks r, sp_task_types tt, sp_task_statuses s
+                                   where r.owner_id = tm.id 
+                                     and nvl(r.task_sub_type_id,r.task_type_id) = tt.id
+                                     and tt.static_id like 'REVIEW%'
+                                     and r.status_id = s.id
+                                     and s.indicates_complete_yn != 'Y')
+                            end open_review_cnt,
+                       case when :IS_CONTRIBUTOR = 'Y'
+                            then apex_page.get_url(
+                                     p_page => 704, 
+                                     p_clear_cache => '704',
+                                     p_items  => 'P704_ID',
+                                     p_values => e.id )
+                            else null
+                            end edit_link,
+                       case when e.for_user_id is null then 0 
+                            when e.for_user_id = :APP_USER_ID then 1
+                            else 2 
+                            end main_ob,
+                       e.for_user_id event_for,
+                       case when s.end_date < trunc(to_date(:APP_SYSDATE,'DD-MON-YYYY') + 1, 'IW') - 1
+                            then 'past'
+                            else 'present'
+                            end past_or_present
+                  from sp_events e,
+                       sp_event_types t,
+                       sp_team_members tm,
+                       sp_event_series s
+                 where e.event_type_id = t.id
+                   and e.series_id = s.id
+                   and e.for_user_id = tm.id (+)
+                   and s.recur_freq = 'D'
+                   and e.event_date = s.start_date
+                union all
+                select e.id event_id,
+                       case when e.for_user_id is not null
+                            then tm.first_name||' '||tm.last_name||' - '
+                            end || 
+                            t.event_type ||
+                            case when e.event_name is not null
+                                 then ' ('||e.event_name
+                                 end ||
+                            case when t.general_event_yn = 'Y' and e.event_details is not null
+                                 then ' - '|| e.event_details
+                                 end ||
+                             case when e.event_name is not null
+                                  then ')'
+                                  end name,
+                       e.event_date,
+                       e.event_date end_date,
+                       'Repeats '||decode(s.recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                            '2W', 'Every 2 Weeks', 'M', 'Montly', s.recur_freq) recur_frequency,
+                       e.event_details,
+                       case when t.calendar_event_color is not null
+                            then 'apex-cal-'||t.calendar_event_color
+                            end icon_color,
+                       t.icon_class,
+                       t.event_type,
+                       lower(tm.tags) person_tags,
+                       case when e.for_user_id is not null
+                            then (select decode(count(*),0,0,1)
+                                    from sp_tasks r, sp_task_types tt, sp_task_statuses s
+                                   where r.owner_id = tm.id 
+                                     and nvl(r.task_sub_type_id,r.task_type_id) = tt.id
+                                     and tt.static_id like 'REVIEW%'
+                                     and r.status_id = s.id
+                                     and s.indicates_complete_yn != 'Y')
+                            end open_review_cnt,
+                       case when :IS_CONTRIBUTOR = 'Y'
+                            then apex_page.get_url(
+                                     p_page => 704, 
+                                     p_clear_cache => '704',
+                                     p_items  => 'P704_ID',
+                                     p_values => e.id )
+                            else null
+                            end edit_link,
+                       case when e.for_user_id is null then 0 
+                            when e.for_user_id = :APP_USER_ID then 1
+                            else 2 
+                            end main_ob,
+                       e.for_user_id event_for,
+                       case when e.event_date < trunc(to_date(:APP_SYSDATE,'DD-MON-YYYY') + 1, 'IW') - 1
+                            then 'past'
+                            else 'present'
+                            end past_or_present
+                  from sp_events e,
+                       sp_event_types t,
+                       sp_team_members tm,
+                       sp_event_series s
+                 where e.event_type_id = t.id
+                   and e.series_id = s.id
+                   and e.for_user_id = tm.id (+)
+                   and s.recur_freq != 'D'
+                 order by main_ob, name
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: eventscal
+        }
+        settings {
+            displayColumn: NAME
+            startDateColumn: EVENT_DATE
+            endDateColumn: END_DATE
+            pkColumn: EVENT_ID
+            eventSorting: byRegionSource
+            additionalCalendarViews: [
+                list
+                navigation
+            ]
+            createLink: {
+                page: 702
+                items: {
+                    P702_DATE: &APEX$NEW_START_DATE.
+                }
+                clearCache: 702
+                request: NOT_TODAY
+            }
+            viewEditLink: {
+                type: url
+                url: &EDIT_LINK.
+            }
+            maxEventsDay: 50
+            cssClass: ICON_COLOR
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (pOptions) {   
+                
+                    //If you like to know what pOptions contains, uncomment below
+                    console.log(pOptions);
+                
+                    pOptions.contentHeight = 500;
+                    //return pOptions
+                    return pOptions;
+                }
+                ```
+        }
+    )
+
+    region filters (
+        name: Filters
+        type: facetedSearch
+        source {
+            filteredRegion: @events
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P700_EVENT_FOR (
+            type: checkboxGroup
+            label {
+                label: Event For
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select d, r
+                      from
+                    (
+                    select 'For Me' d,
+                           to_number(:APP_USER_ID) r,
+                           1 ob
+                      from dual
+                     where :APP_USER_ID is not null
+                    union all
+                    select 'For All' d,
+                           null r,
+                           2 ob
+                      from dual
+                    union all
+                    select unique tm.first_name||' '||tm.last_name d,
+                           tm.id r,
+                           3 ob
+                      from sp_events e,
+                           sp_team_members tm
+                     where e.for_user_id = tm.id
+                    ) order by ob, d
+                    ```
+            }
+            layout {
+                sequence: 80
+            }
+            listEntries {
+                computeCounts: false
+                maxDisplayedEntries: 7
+            }
+            advanced {
+                collapsible: true
+                initiallyCollapsed: true
+            }
+            source {
+                databaseColumn: EVENT_FOR
+            }
+        )
+
+        facet P700_EVENT_TYPES (
+            type: checkboxGroup
+            label {
+                label: Event Types
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select event_type d, event_type r
+                      from sp_event_types
+                     where active_yn = 'Y'
+                        or id in (select event_type_id from sp_events
+                                   where event_date > sysdate-90)
+                    ```
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: EVENT_TYPE
+            }
+        )
+
+        facet P700_OPEN_REVIEWS (
+            type: checkboxGroup
+            label {
+                label: User has Open Reviews
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC:Yes;1,No;0
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                computeCounts: false
+                maxDisplayedEntries: 7
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: OPEN_REVIEW_CNT
+                dataType: number
+            }
+        )
+
+        facet P700_PAST_OR_PRESENT (
+            type: checkboxGroup
+            label {
+                label: Exclude Past
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:Yes;present
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                computeCounts: false
+                maxDisplayedEntries: 2
+                allowToExclude: false
+            }
+            actionsMenu {
+                filter: false
+            }
+            source {
+                databaseColumn: PAST_OR_PRESENT
+            }
+            default {
+                type: static
+                staticValue: present
+            }
+        )
+
+        facet P700_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        facet P700_TAGS (
+            type: checkboxGroup
+            label {
+                label: User Tags
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                computeCounts: false
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: PERSON_TAGS
+            }
+            multipleValues {
+                type: delimitedList
+                separator: ,
+                trimWhitespace: true
+            }
+        )
+
+    )
+
+    region user-timezone (
+        name: user timezone
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select nvl(timezone,'UTC') user_timezone
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    sys.htp.p('Your timezone is '||apex_escape.html(c1.user_timezone)||'. This is set under your profile.');
+                end loop;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu add-multiple-team-calendar-events (
+            label: Add Multiple Team Calendar Events
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 709
+                    clearCache: 709
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-calendar-wrench
+            }
+            security {
+                authorizationScheme: @contribution-rights
+            }
+        )
+
+        menu new (
+            type: separator
+            layout {
+                sequence: 40
+            }
+        )
+
+        menu out-of-office-interactive-report (
+            label: Out of Office Interactive Report
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 710
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-file-text-o
+            }
+        )
+
+        menu out-today (
+            label: Out Today
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 702
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-calendar-day
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 700
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 700
+                    clearCache: 700
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+    )
+
+    button add-event (
+        buttonName: add-event
+        label: Add Event
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 704
+                clearCache: 704
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-after-create (
+        name: refresh after create
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @breadcrumb
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @events
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction refresh-after-update (
+        name: refresh after update
+        execution {
+            sequence: 20
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @events
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @events
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

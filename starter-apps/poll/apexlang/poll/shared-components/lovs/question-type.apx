@@ -1,0 +1,137 @@
+lov question-type (
+    name: QUESTION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry free-form-text (
+        sequence: 10
+        display: Free form text
+        return: TEXTAREA
+    )
+
+    entry pick-many (
+        sequence: 10
+        display: Pick Many
+        return: CHECKBOX
+    )
+
+    entry pick-one (
+        sequence: 10
+        display: Pick One
+        return: RADIO_GROUP
+    )
+
+    entry pick-two-values (
+        sequence: 10
+        display: Pick Two Values
+        return: PICK_TWO
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry range-1-complex-to-5-simple (
+        sequence: 10
+        display: Range: 1 = Complex to 5 = Simple
+        return: RANGE_SIMPLE_TO_COMPLEX
+    )
+
+    entry range-1-disagree-to-5-fully-agree (
+        sequence: 10
+        display: Range: 1 = Disagree to 5 = Fully Agree
+        return: RANGE_AGREE_DISAGREE
+    )
+
+    entry range-1-hard-to-5-easy (
+        sequence: 10
+        display: Range: 1 = Hard to 5 = Easy
+        return: RANGE_HARD_TO_EASY
+    )
+
+    entry range-1-hate-it-to-5-love-it (
+        sequence: 10
+        display: Range: 1 = Hate it to 5 = Love it
+        return: RANGE_LOVE_HATE
+    )
+
+    entry range-1-least-likely-to-5-most-likely (
+        sequence: 10
+        display: Range: 1 = Least Likely to 5 = Most Likely
+        return: RANGE_LIKELIHOOD
+    )
+
+    entry range-1-least-valuable-to-5-most-valuable (
+        sequence: 10
+        display: Range: 1 = Least valuable to 5 = Most Valuable
+        return: RANGE_VALUE
+    )
+
+    entry range-1-lowest-to-5-highest (
+        sequence: 10
+        display: Range: 1 = Lowest to 5 = Highest
+        return: RANGE_LOW_TO_HIGH
+    )
+
+    entry range-1-megabytes-or-less-to-5-petabytes-or-more (
+        sequence: 10
+        display: Range: 1 = Megabytes or less to 5 = Petabytes or more
+        return: RANGE_STORAGE
+    )
+
+    entry range-1-never-to-5-all-of-the-time (
+        sequence: 10
+        display: Range: 1 = Never to 5 = All of the time
+        return: RANGE_FREQUENCY
+    )
+
+    entry range-1-not-applicable-to-5-broadly-applicable (
+        sequence: 10
+        display: Range: 1 = Not Applicable to 5 = Broadly Applicable
+        return: RANGE_APPLICABILITY
+    )
+
+    entry range-1-obtuse-to-5-elegant (
+        sequence: 10
+        display: Range: 1 = Obtuse to 5 = Elegant
+        return: RANGE_ELEGANCE
+    )
+
+    entry range-1-poor-to-5-excellent (
+        sequence: 10
+        display: Range: 1 = Poor to 5 = Excellent
+        return: RANGE_POOR_TO_EXCELLENT
+    )
+
+    entry range-1-will-not-use-to-5-will-immediately-use (
+        sequence: 10
+        display: Range: 1 = Will not use to 5 = Will immediately use
+        return: RANGE_TIMEFRAME
+    )
+
+    entry range-1-would-not-consider-using-to-5-will-consider-using (
+        sequence: 10
+        display: Range: 1 = Would not consider using to 5 = Will consider using
+        return: RANGE_CONSIDERATION
+    )
+
+    entry range-1-would-not-endorse-to-5-would-fully-endorse (
+        sequence: 10
+        display: Range: 1 = Would not endorse to 5 = Would fully endorse
+        return: RANGE_ENDORSE
+    )
+
+    entry range-1-would-not-recommend-to-5-would-highly-recommend (
+        sequence: 10
+        display: Range: 1 = Would not recommend to 5 = Would highly recommend
+        return: RANGE_RECOMMENDATION
+    )
+
+    entry yes-no (
+        sequence: 10
+        display: Yes / No
+        return: YES_NO
+    )
+
+)
+

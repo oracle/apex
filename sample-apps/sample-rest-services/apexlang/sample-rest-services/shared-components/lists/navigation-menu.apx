@@ -1,0 +1,107 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 10000
+            subentriesList: @user-interface
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry advanced-features (
+        label: Advanced Features
+        icon {
+            imageIconCssClasses: fa-ellipsis-h-o
+        }
+        layout {
+            sequence: 14
+            subentriesList: @advanced-features
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry combine-with-relational-data (
+        label:
+            ```html
+            Combine with Relational Data
+            
+            ```
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 11
+            subentriesList: @combine-with-relational-data
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry data-display-options (
+        label: Data Display Options
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 13
+            subentriesList: @data-display-options
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 9
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        icon {
+            imageIconCssClasses: fa-window-search
+        }
+        layout {
+            sequence: 10
+            subentriesList: @rest-data-sources
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+)
+

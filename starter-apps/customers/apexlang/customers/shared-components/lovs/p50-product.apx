@@ -1,0 +1,16 @@
+lov p50-product (
+    name: P50_PRODUCT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_name d, id r
+            from   eba_cust_products
+            where id not in (select product_id
+            from eba_cust_product_uses
+            where customer_id = :P50_ID)
+            order by 1
+            ```
+    }
+)
+

@@ -1,0 +1,14 @@
+lov products (
+    name: PRODUCTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_name as d,
+                   id as r
+              from EBA_CUST_PRODUCTS
+             order by 1
+            ```
+    }
+)
+

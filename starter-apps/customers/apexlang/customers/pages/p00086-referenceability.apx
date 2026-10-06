@@ -8,11 +8,10 @@ page 86 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -85,6 +84,9 @@ page 86 (
         }
         config {
             buildOption: @geography
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -185,6 +187,9 @@ page 86 (
         }
         config {
             buildOption: @geography
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false

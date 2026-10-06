@@ -1,0 +1,20 @@
+lov no-yes-n-y (
+    name: NO YES (N/Y)
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 10
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 20
+        display: Yes
+        return: Y
+    )
+
+)
+

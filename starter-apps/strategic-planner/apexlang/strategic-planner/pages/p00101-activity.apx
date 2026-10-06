@@ -14,13 +14,11 @@ page 101 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    }
+    config {
+        buildOption: @activity-planning
     }
 
     region activity (
@@ -64,6 +62,34 @@ page 101 (
         }
     )
 
+    pageItem P101_ACTIVITY (
+        type: textField
+        label {
+            label: Activity
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 255
+        }
+        source {
+            formRegion: @activity
+            column: ACTIVITY
+            dataType: varchar2
+        }
+    )
+
     pageItem P101_ACTIVITY_TYPE_ID (
         type: radioGroup
         label {
@@ -71,7 +97,7 @@ page 101 (
             alignment: left
         }
         settings {
-            noOfCols: 4
+            noOfCols: 5
         }
         lov {
             type: sqlQuery
@@ -120,25 +146,23 @@ page 101 (
     pageItem P101_COMMENTS (
         type: textarea
         label {
-            label: Activity
+            label: Details
             alignment: left
         }
         layout {
-            sequence: 60
+            sequence: 70
             region: @activity
             slot: regionBody
             alignment: left
         }
         appearance {
-            template: @/required-floating
+            template: @/optional-floating
             templateOptions: #DEFAULT#
             width: 60
             height: 3
-            valuePlaceholder: Briefly describe your activity in 280 characters or less
         }
         validation {
-            valueRequired: true
-            maxLength: 280
+            maxLength: 4000
         }
         source {
             formRegion: @activity
@@ -154,7 +178,7 @@ page 101 (
             alignment: left
         }
         layout {
-            sequence: 80
+            sequence: 100
             region: @activity
             slot: regionBody
             alignment: left
@@ -268,7 +292,7 @@ page 101 (
             lov: @sp-initiatives-initiative
         }
         layout {
-            sequence: 130
+            sequence: 150
             region: @activity
             slot: regionBody
             alignment: left
@@ -288,6 +312,29 @@ page 101 (
         }
     )
 
+    pageItem P101_PRIVATE_YN (
+        type: switch
+        label {
+            label: Private
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @activity
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @activity
+            column: PRIVATE_YN
+            dataType: varchar2
+        }
+    )
+
     pageItem P101_PROJECT_ID (
         type: selectOne
         label {
@@ -302,7 +349,7 @@ page 101 (
             lov: @projects-detail
         }
         layout {
-            sequence: 120
+            sequence: 140
             region: @activity
             slot: regionBody
             alignment: left
@@ -332,7 +379,7 @@ page 101 (
             alignment: left
         }
         layout {
-            sequence: 70
+            sequence: 90
             region: @activity
             slot: regionBody
             alignment: left
@@ -371,20 +418,14 @@ page 101 (
         }
         lov {
             type: sqlQuery
-            sqlQuery:
-                ```sql
-                select 'research' tag from dual
-                union select 'development' tag from dual
-                union select 'integration' tag from dual
-                union select 'collaboration' tag from dual
-                ```
+            sqlQuery: select 1 from dual where 1=2
         }
         multipleValues {
             type: delimitedList
             separator: ,
         }
         layout {
-            sequence: 140
+            sequence: 160
             region: @activity
             slot: regionBody
             alignment: left
@@ -431,13 +472,13 @@ page 101 (
                 ```
         }
         layout {
-            sequence: 110
+            sequence: 130
             region: @activity
             slot: regionBody
             alignment: left
         }
         appearance {
-            template: @/optional-floating
+            template: @/required-floating
             templateOptions: #DEFAULT#
             width: 30
         }
@@ -465,7 +506,7 @@ page 101 (
             alignment: left
         }
         layout {
-            sequence: 150
+            sequence: 170
             region: @activity
             slot: regionBody
             alignment: left
@@ -488,7 +529,7 @@ page 101 (
     pageItem P101_USER_TEAM_MEMBER_ID (
         type: hidden
         layout {
-            sequence: 90
+            sequence: 110
             region: @activity
             slot: regionBody
         }
@@ -501,7 +542,7 @@ page 101 (
     pageItem P101_USER_TEAM_MEMBER_NAME (
         type: hidden
         layout {
-            sequence: 100
+            sequence: 120
             region: @activity
             slot: regionBody
         }
@@ -777,6 +818,57 @@ page 101 (
             }
         )
 
+    )
+
+    dynamicAction when-private-assign-to-current-user (
+        name: when private, assign to current user
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P101_PRIVATE_YN
+        }
+        clientSideCondition {
+            type: item=value
+            item: P101_PRIVATE_YN
+            value: Y
+        }
+
+        action native-set-value (
+            action: setValue
+            settings {
+                value: &APP_USER_ID.
+            }
+            affectedElements {
+                selectionType: items
+                items: P101_TEAM_MEMBER_ID
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation if-private-must-be-owned-by-current-user (
+        name: if private, must be owned by current user
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression: :P101_TEAM_MEMBER_ID = :APP_USER_ID
+        }
+        error {
+            errorMessage: Private Activities must be owned by the current user.
+            associatedItem: @P101_TEAM_MEMBER_ID
+        }
+        serverSideCondition {
+            type: item=value
+            item: P101_PRIVATE_YN
+            value: Y
+        }
     )
 
     computation p101-end-date-one-week (

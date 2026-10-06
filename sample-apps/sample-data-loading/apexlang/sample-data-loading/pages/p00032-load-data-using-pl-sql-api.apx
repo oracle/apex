@@ -6,9 +6,6 @@ page 32 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -19,8 +16,6 @@ page 32 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -126,9 +121,6 @@ page 32 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: The EBA_DEMO_LOAD_EMP table is empty.
@@ -336,9 +328,6 @@ page 32 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: The EBA_DEMO_LOAD_EMP table is empty.

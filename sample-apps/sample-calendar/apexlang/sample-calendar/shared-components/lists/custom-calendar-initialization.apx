@@ -1,0 +1,23 @@
+list custom-calendar-initialization (
+    name: Custom Calendar Initialization
+
+    entry weekly-schedule (
+        label: Weekly schedule
+        icon {
+            imageIconCssClasses: fa-calendar-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+        userDefinedAttributes {
+            1: This example customizes the weekly view to act as a conference schedule without day dates. Column headings are set to week names, a custom title is being used and nightly hours are removed from the calendar.
+        }
+    )
+
+)
+

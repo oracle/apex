@@ -12,12 +12,11 @@ page 1902 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -49,11 +48,13 @@ page 1902 (
         chartLayout {
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -125,13 +126,15 @@ page 1902 (
         chartLayout {
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             innerRadius: 0.7
             startAngle: 180
             angleExtent: 180
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
 
@@ -188,11 +191,13 @@ page 1902 (
         chartLayout {
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {

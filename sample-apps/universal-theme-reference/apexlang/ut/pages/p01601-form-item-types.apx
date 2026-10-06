@@ -11,7 +11,6 @@ page 1601 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -34,8 +33,6 @@ page 1601 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -81,9 +78,6 @@ page 1601 (
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkLabel: Demo Region Items
         }
         advanced {
             htmlDomId: Demo1
@@ -608,7 +602,7 @@ page 1601 (
         }
         source {
             type: staticValue
-            staticValue: https://apex.oracle.com/en/
+            staticValue: https://oracleapex.com/en/
         }
     )
 

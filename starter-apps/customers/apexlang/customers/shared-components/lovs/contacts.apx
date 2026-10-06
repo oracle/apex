@@ -1,0 +1,13 @@
+lov contacts (
+    name: CONTACTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name d, id r
+            from   eba_cust_contacts
+            order by 1
+            ```
+    }
+)
+

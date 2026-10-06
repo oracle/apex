@@ -11,6 +11,7 @@ page 10 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -18,8 +19,6 @@ page 10 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -430,7 +429,6 @@ page 10 (
             region: @subtask-information
             slot: regionBody
             alignment: left
-            columnAttributes: class="fielddatabold"
         }
         appearance {
             template: @/required

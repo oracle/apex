@@ -8,12 +8,7 @@ page 32 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -81,6 +76,9 @@ page 32 (
                 t-BadgeList--fixed
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column HIST_GEN_LOG (

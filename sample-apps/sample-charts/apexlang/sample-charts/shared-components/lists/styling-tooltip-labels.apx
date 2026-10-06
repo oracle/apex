@@ -1,0 +1,41 @@
+list styling-tooltip-labels (
+    name: Styling Tooltip Labels
+
+    entry area-chart-legend-javascript-code-customization-page (
+        label: Area Chart (Legend JavaScript Code Customization) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart, rendering a customised tooltip on the Acme series of the multi-series chart, via the SQL query and use of the declarative Custom Tooltip attribute
+        }
+    )
+
+    entry line-with-area-chart-custom-tooltip-labels-page (
+        label: Line with Area Chart ( Custom Tooltip Labels ) - Page 18
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line with Area chart, rendering customised tooltip labels using JavaScript, via the JavaScript Initialization Code attribute
+        }
+    )
+
+)
+

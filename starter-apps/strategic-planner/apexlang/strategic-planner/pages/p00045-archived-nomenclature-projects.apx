@@ -7,13 +7,6 @@ page 45 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: All &NOMENCLATURE_PROJECTS. that have been archived and by whom and when they were archived.
     }
@@ -73,6 +66,10 @@ page 45 (
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Projects that have been archived and by whom and when they were archived.
+        }
         advanced {
             savedReportMappingIdentifier: 11664821743972252886
         }
@@ -86,7 +83,7 @@ page 45 (
                 sequence: 27
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -105,7 +102,7 @@ page 45 (
                 formatMask: DD-Mon-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: Z
@@ -124,7 +121,7 @@ page 45 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AM
@@ -140,7 +137,7 @@ page 45 (
                 sequence: 25
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y
@@ -156,7 +153,7 @@ page 45 (
                 sequence: 98
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AI
@@ -175,7 +172,7 @@ page 45 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: T
@@ -191,7 +188,7 @@ page 45 (
                 sequence: 21
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -207,7 +204,7 @@ page 45 (
                 sequence: 11
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -246,7 +243,7 @@ page 45 (
                 linkText: #DUPLICATE_OF#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AJ
@@ -262,7 +259,7 @@ page 45 (
                 sequence: 118
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AK
@@ -278,7 +275,7 @@ page 45 (
                 sequence: 0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -294,7 +291,7 @@ page 45 (
                 sequence: 88
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AH
@@ -310,7 +307,7 @@ page 45 (
                 sequence: 148
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AN
@@ -326,7 +323,7 @@ page 45 (
                 sequence: 158
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AO
@@ -344,7 +341,7 @@ page 45 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AL
@@ -371,7 +368,7 @@ page 45 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -387,7 +384,7 @@ page 45 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -403,7 +400,7 @@ page 45 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -419,7 +416,7 @@ page 45 (
                 sequence: 17
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -439,7 +436,7 @@ page 45 (
                 formatMask: DD-Mon-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -458,7 +455,7 @@ page 45 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: V
@@ -474,7 +471,7 @@ page 45 (
                 sequence: 23
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W

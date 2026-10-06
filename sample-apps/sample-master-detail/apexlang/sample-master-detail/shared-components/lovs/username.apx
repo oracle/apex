@@ -1,0 +1,14 @@
+lov username (
+    name: USERNAME
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select full_name as display
+            , username as return
+            from eba_demo_md_team_members
+            order by 1
+            ```
+    }
+)
+

@@ -7,6 +7,9 @@ page 115 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     css {
         inline:
             ```css
@@ -18,8 +21,6 @@ page 115 (
     security {
         authorizationScheme: @host
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments: Start a new Q&A session and asks the first session question
@@ -160,9 +161,6 @@ page 115 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
-        }
         source {
             formRegion: @start-session
             column: RESP_EMAIL_REQUIRED_YN
@@ -185,9 +183,6 @@ page 115 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @start-session

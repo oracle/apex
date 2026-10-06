@@ -1,6 +1,9 @@
 {
   "app" : {
     "id" : 9100,
+    "sessionStateProtection" : {
+      "checksumSalt" : "A13146FF78975F54FB3D6477EBD6762603EB60A1DE561795C1DDC173C8D0E343"
+    },
     "runtime" : {
       "debugging" : true
     }

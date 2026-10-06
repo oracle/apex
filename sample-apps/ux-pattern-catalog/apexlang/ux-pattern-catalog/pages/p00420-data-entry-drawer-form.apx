@@ -10,6 +10,9 @@ page 420 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     css {
         inline:
             ```css
@@ -20,8 +23,6 @@ page 420 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:

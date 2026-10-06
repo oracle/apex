@@ -12,12 +12,11 @@ page 1301 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -90,6 +89,9 @@ page 1301 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column '#LIST_CLASS#' (
@@ -207,6 +209,9 @@ page 1301 (
             ]
             cssClasses: dm-TemplateOption-previewTarget
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -398,6 +403,9 @@ page 1301 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column '#A01#' (

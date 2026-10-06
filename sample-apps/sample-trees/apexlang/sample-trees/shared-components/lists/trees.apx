@@ -1,0 +1,20 @@
+list trees (
+    name: Trees
+
+    entry project-tracking (
+        label: Project Tracking
+        icon {
+            imageIconCssClasses: #APP_IMAGES#trees_project_tracking.jpg
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+

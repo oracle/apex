@@ -1,0 +1,255 @@
+jsonSource eba_demo_json_customers (
+    name: EBA_DEMO_JSON_CUSTOMERS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_CUSTOMERS
+    }
+    dataProfile {
+        name: EBA_DEMO_JSON_CUSTOMERS
+        rowSelector: .
+    }
+
+    dataProfileColumn address-city (
+        columnName: ADDRESS_CITY
+        source {
+            sequence: 8
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.city
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-country (
+        columnName: ADDRESS_COUNTRY
+        source {
+            sequence: 10
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.country
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-postal-code (
+        columnName: ADDRESS_POSTAL_CODE
+        source {
+            sequence: 11
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.postal_code
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-state-province (
+        columnName: ADDRESS_STATE_PROVINCE
+        source {
+            sequence: 12
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.state_province
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn address-street (
+        columnName: ADDRESS_STREET
+        source {
+            sequence: 9
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: address.street
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn birth-year (
+        columnName: BIRTH_YEAR
+        source {
+            sequence: 13
+            parentColumn: @customer-metadata
+            dataType: number
+        }
+        parsing {
+            pathExpression: birth_year
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: CUSTOMER_ID
+        }
+    )
+
+    dataProfileColumn customer-metadata (
+        columnName: CUSTOMER_METADATA
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: CUSTOMER_METADATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn email-address (
+        columnName: EMAIL_ADDRESS
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: EMAIL_ADDRESS
+        }
+    )
+
+    dataProfileColumn full-name (
+        columnName: FULL_NAME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: FULL_NAME
+        }
+    )
+
+    dataProfileColumn gender (
+        columnName: GENDER
+        source {
+            sequence: 7
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: gender
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn latitude (
+        columnName: LATITUDE
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: LATITUDE
+        }
+    )
+
+    dataProfileColumn longitude (
+        columnName: LONGITUDE
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: LONGITUDE
+        }
+    )
+
+    dataProfileColumn loyalty-tier (
+        columnName: LOYALTY_TIER
+        source {
+            sequence: 15
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: loyalty_tier
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn preferred-lang (
+        columnName: PREFERRED_LANG
+        source {
+            sequence: 16
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: preferred_lang
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn signup-channel (
+        columnName: SIGNUP_CHANNEL
+        source {
+            sequence: 17
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: signup_channel
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn subscribed (
+        columnName: SUBSCRIBED
+        source {
+            sequence: 14
+            parentColumn: @customer-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: subscribed
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

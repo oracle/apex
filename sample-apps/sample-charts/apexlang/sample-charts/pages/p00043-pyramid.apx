@@ -7,14 +7,13 @@ page 43 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
         functionAndGlobalVariableDeclaration: var gAppImages = "#APP_IMAGES#";
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -94,6 +93,9 @@ page 43 (
             maxWidth: 500
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             cursor: true
             behavior: smooth
@@ -103,9 +105,6 @@ page 43 (
             format: decimal
             decimalPlaces: 0
             formatScaling: none
-        }
-        animation {
-            onDisplay: alphaFade
         }
 
         series deli (
@@ -142,7 +141,7 @@ page 43 (
                 <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>With Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. This allows the user to focus on specific series that are interesting to them. The chart will rescale as the minimum and maximum values of the visible data increase or decrease. This can be useful for series with largely varying values.<p/>
                 <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the 2D/3D buttons to the top left of the chart to change the three dimensional effect of the chart.<p/>
                 <p>
-                For more information on the Pyramid chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=default" target="_blank">Pyramid Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=legend" target="_blank">Pyramid Chart: Legend</a> examples.
+                For more information on the Pyramid chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=default" target="_blank" rel="noopener noreferrer external">Pyramid Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=legend" target="_blank" rel="noopener noreferrer external">Pyramid Chart: Legend</a> examples.
                 
                 
                 ```
@@ -261,7 +260,7 @@ page 43 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("pyramid1").widget().ojChart({styleDefaults: { 'threeDEffect': 'on' }});
+                jsCode: "apex.region(\"pyramid1\").widget().ojChart({styleDefaults: { 'threeDEffect': 'on' }});"
             }
             affectedElements {
                 selectionType: region

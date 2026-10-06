@@ -13,13 +13,6 @@ page 162 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @kanban
     }
@@ -51,6 +44,9 @@ page 162 (
         }
         chartLayout {
             height: 800
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             title: Sizes

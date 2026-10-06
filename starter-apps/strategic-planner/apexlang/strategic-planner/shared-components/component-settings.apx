@@ -1,4 +1,9 @@
 componentSetting (
+    type: genAITool
+    name: plugin/retrieveDataAdvanced
+)
+
+componentSetting (
     type: dynamicAction
     name: showAiAssistant
 )
@@ -72,6 +77,9 @@ componentSetting (
 componentSetting (
     type: region
     name: interactiveReport
+    settings {
+        autoResetButton: false
+    }
 )
 
 componentSetting (

@@ -1,0 +1,43 @@
+list admin-utilities (
+    name: Admin - Utilities
+
+    entry manage-archived-projects (
+        label: Manage Archived Projects
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11300
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All archived &NOMENCLATURE_PROJECTS., with the ability to permanently delete
+        }
+    )
+
+    entry manage-duplicate-projects (
+        label: Manage Duplicate Projects
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11320
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. marked as duplicates, with the ability to permanently delete
+        }
+    )
+
+)
+

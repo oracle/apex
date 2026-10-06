@@ -1,0 +1,90 @@
+list report-directory (
+    name: report directory
+
+    entry potential-revenue-by-rep-title (
+        label: Potential Revenue by &REP_TITLE.
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 41
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 121
+            }
+        }
+        userDefinedAttributes {
+            1: Chart showing potential revenue by &REP_TITLE..
+        }
+    )
+
+    entry projected-close-dates (
+        label: Projected Close Dates
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 47
+            }
+        }
+        userDefinedAttributes {
+            1: Calendar of projected opportunity close dates.
+        }
+    )
+
+    entry revenue-by-rep-title (
+        label: Revenue by &REP_TITLE.
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+        userDefinedAttributes {
+            1: Chart showing revenue by &REP_TITLE..
+        }
+    )
+
+    entry tags (
+        label: Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 48
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Tags with click through to tag references.
+        }
+    )
+
+)
+

@@ -1,0 +1,23 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry about (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            2: icon-only
+        }
+    )
+
+)
+

@@ -7,7 +7,6 @@ page 25 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -28,10 +27,6 @@ page 25 (
             ul.barGraph li > span a{color:##405580}
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -110,6 +105,9 @@ page 25 (
         chartLayout {
             maxWidth: 600
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: end
@@ -261,7 +259,7 @@ page 25 (
                 <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>Without Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>
                 <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the 'Store A' chart series. Line type specifies the shape of the data point connectors on the chart.<p/>
                 <p>
-                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=dataLabels" target="_blank">Combination Chart: Data Labels</a>  examples.
+                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank" rel="noopener noreferrer external">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Combination Chart: Data Labels</a>  examples.
                 
                 ```
         }
@@ -294,7 +292,7 @@ page 25 (
                 <li>The 'Mixed Frequency' time axis type allows each data item to have a different time value. Since the time value of the data items within each group can vary, stacking is not possible.</li>
                 </ul>
                 <p/>
-                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example.
+                For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank" rel="noopener noreferrer external">Chart: Time Axis</a> example.
                 
                 ```
         }
@@ -327,7 +325,7 @@ page 25 (
                 <strong>Y-Axis Title</strong> - The axis-level Title attributes Font Family, Font Style, Font Size and Font Color have been set to style the y-axis title to use the font Times New Roman, the font style Italic, the font size 18px, and the font color red.<br/> 
                 
                 <p>
-                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=refObject" target="_blank">Combination Chart: Reference Object</a>  examples.
+                For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank" rel="noopener noreferrer external">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=refObject" target="_blank" rel="noopener noreferrer external">Combination Chart: Reference Object</a>  examples.
                 
                 ```
         }
@@ -391,6 +389,9 @@ page 25 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         animation {
             onDataChange: none
@@ -508,6 +509,9 @@ page 25 (
         chart {
             type: combination
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -515,7 +519,6 @@ page 25 (
             timeAxisType: mixedFrequency
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -621,6 +624,9 @@ page 25 (
         chart {
             type: combination
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -628,7 +634,6 @@ page 25 (
             timeAxisType: enabled
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -843,7 +848,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'curved'}});
+                jsCode: "apex.region(\"combo1\").widget().ojChart({styleDefaults:{lineType:'curved'}});"
             }
             affectedElements {
                 selectionType: region
@@ -871,7 +876,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'none'}});
+                jsCode: "apex.region(\"combo1\").widget().ojChart({styleDefaults:{lineType:'none'}});"
             }
             affectedElements {
                 selectionType: region
@@ -899,7 +904,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});
+                jsCode: "apex.region(\"combo1\").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});"
             }
             affectedElements {
                 selectionType: region
@@ -931,7 +936,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: $("#regTime_jet").ojChart({timeAxisType:'enabled'});
+                jsCode: "$(\"#regTime_jet\").ojChart({timeAxisType:'enabled'});"
             }
             affectedElements {
                 selectionType: region
@@ -963,7 +968,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: $("#regTime_jet").ojChart({timeAxisType:'skipGaps'});
+                jsCode: "$(\"#regTime_jet\").ojChart({timeAxisType:'skipGaps'});"
             }
             affectedElements {
                 selectionType: region
@@ -991,7 +996,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'stepped'}});
+                jsCode: "apex.region(\"combo1\").widget().ojChart({styleDefaults:{lineType:'stepped'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1019,7 +1024,7 @@ page 25 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("combo1").widget().ojChart({styleDefaults:{lineType:'straight'}});
+                jsCode: "apex.region(\"combo1\").widget().ojChart({styleDefaults:{lineType:'straight'}});"
             }
             affectedElements {
                 selectionType: region

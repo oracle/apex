@@ -1,0 +1,23 @@
+list new-in (
+    name: New in 20.2
+
+    entry pareto-chart-pg (
+        label: Pareto Chart, pg 20
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pareto Chart, based on a declaratively defined Combination Chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line.
+        }
+    )
+
+)
+

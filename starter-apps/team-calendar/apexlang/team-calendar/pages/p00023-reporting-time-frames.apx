@@ -16,12 +16,11 @@ page 23 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -123,7 +122,7 @@ page 23 (
                 group: @audit-info
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -146,7 +145,7 @@ page 23 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -164,7 +163,7 @@ page 23 (
                 group: @audit-info
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -187,7 +186,7 @@ page 23 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -208,7 +207,7 @@ page 23 (
                 formatMask: &APP_DATE_FORMAT.
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -224,7 +223,7 @@ page 23 (
                 sequence: 6
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -244,7 +243,7 @@ page 23 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -264,7 +263,7 @@ page 23 (
                 formatMask: &APP_DATE_FORMAT.
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I

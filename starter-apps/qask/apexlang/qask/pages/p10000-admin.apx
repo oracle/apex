@@ -7,14 +7,9 @@ page 10000 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -177,6 +172,9 @@ page 10000 (
                 #DEFAULT#
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

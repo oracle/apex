@@ -8,7 +8,6 @@ page 68 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -173,10 +172,6 @@ page 68 (
               font-size: 14px;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -386,9 +381,6 @@ page 68 (
                 t-Cards--animColorFill
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No products found
@@ -759,7 +751,7 @@ page 68 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -777,7 +769,7 @@ page 68 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -796,7 +788,7 @@ page 68 (
                 formatMask: &APP_DATE_TIME_FMT.
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -813,7 +805,7 @@ page 68 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -831,7 +823,7 @@ page 68 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -847,7 +839,7 @@ page 68 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -869,7 +861,7 @@ page 68 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -898,7 +890,7 @@ page 68 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -930,7 +922,7 @@ page 68 (
                 linkText: #OPPORTUNITIES#
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -946,7 +938,7 @@ page 68 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -965,7 +957,7 @@ page 68 (
                 sequence: 200
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: T
@@ -992,7 +984,7 @@ page 68 (
                 linkText: #PRODUCT_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -1008,7 +1000,7 @@ page 68 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -1024,7 +1016,7 @@ page 68 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1040,7 +1032,7 @@ page 68 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -1059,7 +1051,7 @@ page 68 (
                 formatMask: &APP_DATE_TIME_FMT.
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -1076,7 +1068,7 @@ page 68 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -1097,7 +1089,7 @@ page 68 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -1126,7 +1118,7 @@ page 68 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -1157,7 +1149,7 @@ page 68 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -1345,9 +1337,6 @@ page 68 (
                 t-Report--inline
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column CUSTOMERS (

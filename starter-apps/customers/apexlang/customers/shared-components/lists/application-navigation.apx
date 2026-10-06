@@ -1,0 +1,1144 @@
+list application-navigation (
+    name: Application Navigation
+
+    entry access-control (
+        label: Access Control
+        layout {
+            sequence: 220
+            parentEntry: @administration
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry acl-features (
+        label: ACL Features
+        layout {
+            sequence: 530
+            parentEntry: @access-control
+        }
+        isCurrent {
+            type: pages
+            pages: 123
+        }
+        link {
+            target: {
+                page: 123
+            }
+        }
+    )
+
+    entry activities-activities (
+        label: "Activities [&ACTIVITIES.]"
+        icon {
+            imageIconCssClasses: fa-newspaper-o
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                55
+                56
+                145
+            ]
+        }
+        link {
+            target: {
+                page: 55
+                clearCache: [
+                    RIR
+                    55
+                ]
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @activities
+        }
+    )
+
+    entry activity-calendar (
+        label: Activity Calendar
+        layout {
+            sequence: 180
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry activity-types (
+        label: Activity Types
+        layout {
+            sequence: 440
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 53
+                clearCache: [
+                    RIR
+                    53
+                ]
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @activities
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry all-customers (
+        label: All Customers
+        layout {
+            sequence: 200
+            parentEntry: @reports
+        }
+        isCurrent {
+            type: pages
+            pages: 93
+        }
+        link {
+            target: {
+                page: 93
+            }
+        }
+    )
+
+    entry application-settings (
+        label: Application Settings
+        layout {
+            sequence: 470
+            parentEntry: @configuration
+        }
+        link {
+            target: {
+                page: 28
+                clearCache: 28
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        layout {
+            sequence: 450
+            parentEntry: @configuration
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry categories (
+        label: Categories
+        layout {
+            sequence: 110
+            parentEntry: @customers-customers
+        }
+        link {
+            target: {
+                page: 32
+                action: resetPagination
+            }
+        }
+    )
+
+    entry categories-2 (
+        label: Categories
+        layout {
+            sequence: 290
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 3
+                clearCache: 3
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry code-tables (
+        label: Code Tables
+        layout {
+            sequence: 240
+            parentEntry: @administration
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry competitors (
+        label: Competitors
+        icon {
+            imageIconCssClasses: fa-emoji-cringe
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 116
+        }
+        link {
+            target: {
+                page: 116
+            }
+        }
+        security {
+            authorizationScheme: @view-competitors
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry configuration (
+        label: Configuration
+        layout {
+            sequence: 230
+            parentEntry: @administration
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry contact-types (
+        label: Contact Types
+        layout {
+            sequence: 330
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                8
+                9
+            ]
+        }
+        link {
+            target: {
+                page: 8
+                clearCache: 8
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry contacts-contacts (
+        label: "Contacts [&CONTACTS.]"
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                18
+                20
+                60
+                61
+                62
+                63
+                38
+            ]
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry countries (
+        label: Countries
+        layout {
+            sequence: 390
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 98
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @countries
+        }
+    )
+
+    entry customer-statuses (
+        label: Customer Statuses
+        layout {
+            sequence: 300
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                102
+                103
+            ]
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-status
+        }
+    )
+
+    entry customer-types (
+        label: Customer Types
+        layout {
+            sequence: 310
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                5
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 5
+                clearCache: 5
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry customer-use-cases (
+        label: Customer Use Cases
+        layout {
+            sequence: 320
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                104
+                105
+            ]
+        }
+        link {
+            target: {
+                page: 104
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-use-case
+        }
+    )
+
+    entry customers (
+        label: Customers
+        layout {
+            sequence: 160
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 1
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry customers-customers (
+        label: "Customers [&CUSTOMERS.]"
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                10
+                13
+                25
+                47
+                50
+                51
+                52
+                59
+                67
+                92
+                149
+                150
+                131
+            ]
+        }
+        link {
+            target: {
+                page: 59
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            10: 2,13,47,53,54,55,56,50,52,64,51,66,68,67,37,25,69,7,10,13,1
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry email-logs (
+        label: Email Logs
+        layout {
+            sequence: 550
+            parentEntry: @logging
+        }
+        link {
+            target: {
+                page: 121
+                clearCache: 121
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry error-logs (
+        label: Error Logs
+        layout {
+            sequence: 540
+            parentEntry: @logging
+        }
+        link {
+            target: {
+                page: 175
+                clearCache: 175
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        layout {
+            sequence: 260
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 119
+                clearCache: 119
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry geographies (
+        label: Geographies
+        layout {
+            sequence: 120
+            parentEntry: @customers-customers
+        }
+        link {
+            target: {
+                page: 85
+            }
+        }
+        config {
+            buildOption: @geography
+        }
+    )
+
+    entry geographies-2 (
+        label: Geographies
+        layout {
+            sequence: 380
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                48
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 48
+                clearCache: 48
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @geography
+        }
+    )
+
+    entry industries (
+        label: Industries
+        layout {
+            sequence: 400
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                27
+                30
+            ]
+        }
+        link {
+            target: {
+                page: 27
+                clearCache: 27
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry issue-statuses (
+        label: Issue Statuses
+        layout {
+            sequence: 410
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 132
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @issues
+        }
+    )
+
+    entry issues (
+        label: Issues
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 134
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select null
+                  from eba_cust_issues
+                ```
+        }
+        config {
+            buildOption: @issues
+        }
+    )
+
+    entry logging (
+        label: Logging
+        layout {
+            sequence: 250
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        layout {
+            sequence: 270
+            parentEntry: @administration
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                34
+                36
+            ]
+        }
+        link {
+            target: {
+                page: 34
+                clearCache: 34
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry partners (
+        label: Partners
+        icon {
+            imageIconCssClasses: fa-thumbs-o-up
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: 115
+        }
+        link {
+            target: {
+                page: 115
+            }
+        }
+        config {
+            buildOption: @partners
+        }
+    )
+
+    entry product-families (
+        label: Product Families
+        layout {
+            sequence: 350
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+                clearCache: [
+                    RIR
+                    112
+                ]
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry products (
+        label: Products
+        layout {
+            sequence: 140
+            parentEntry: @customers-customers
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry products-2 (
+        label: Products
+        layout {
+            sequence: 360
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                42
+                43
+            ]
+        }
+        link {
+            target: {
+                page: 42
+                clearCache: 42
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry products-products (
+        label: "Products [&PRODUCTS.]"
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                19
+                44
+            ]
+        }
+        link {
+            target: {
+                page: 44
+            }
+        }
+        config {
+            buildOption: @products-and-services
+        }
+    )
+
+    entry recent-updates (
+        label: Recent Updates
+        layout {
+            sequence: 170
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 29
+                action: resetPagination
+            }
+        }
+    )
+
+    entry referencability (
+        label: Referencability
+        layout {
+            sequence: 150
+            parentEntry: @products-products
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                100
+                122
+            ]
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            10: 33,31,59,15,76,100
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    entry reference-phases (
+        label: Reference Phases
+        layout {
+            sequence: 420
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 87
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    entry reference-statuses (
+        label: Reference Statuses
+        layout {
+            sequence: 370
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 94
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @product-referencability
+        }
+    )
+
+    entry reference-types (
+        label: Reference Types
+        layout {
+            sequence: 340
+            parentEntry: @code-tables
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                78
+                79
+            ]
+        }
+        link {
+            target: {
+                page: 78
+                clearCache: 78
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry referenceability (
+        label: Referenceability
+        layout {
+            sequence: 130
+            parentEntry: @customers-customers
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                86
+                91
+            ]
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+        config {
+            buildOption: @customer-referencability
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-file-text-o
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        config {
+            buildOption: @reports
+        }
+    )
+
+    entry sales-channels (
+        label: Sales Channels
+        layout {
+            sequence: 430
+            parentEntry: @code-tables
+        }
+        link {
+            target: {
+                page: 89
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry sample-data (
+        label: Sample Data
+        layout {
+            sequence: 480
+            parentEntry: @configuration
+        }
+        link {
+            target: {
+                page: 77
+                clearCache: 77
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry settings (
+        label: Settings
+        layout {
+            sequence: 510
+            parentEntry: @access-control
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                16
+                35
+            ]
+        }
+        link {
+            target: {
+                page: 35
+                clearCache: 35
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry tags (
+        label: Tags
+        layout {
+            sequence: 190
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 40
+                action: resetPagination
+            }
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        layout {
+            sequence: 490
+            parentEntry: @configuration
+        }
+        isCurrent {
+            type: pages
+            pages: 70
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        layout {
+            sequence: 210
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 124
+            }
+        }
+    )
+
+    entry upload-customers (
+        label: Upload Customers
+        layout {
+            sequence: 500
+            parentEntry: @configuration
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                125
+                126
+                127
+                128
+            ]
+        }
+        link {
+            target: {
+                page: 125
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry users (
+        label: Users
+        layout {
+            sequence: 520
+            parentEntry: @access-control
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                57
+                58
+            ]
+        }
+        link {
+            target: {
+                page: 57
+                clearCache: 57
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry welcome-text (
+        label: Welcome Text
+        layout {
+            sequence: 280
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 14
+                clearCache: 14
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

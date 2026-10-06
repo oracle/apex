@@ -1,0 +1,14 @@
+lov show-customer-views-checkbox (
+    name: SHOW CUSTOMER VIEWS CHECKBOX
+    source {
+        location: staticValues
+    }
+
+    entry show-customer-views (
+        sequence: 10
+        display: Show Customer Views
+        return: Y
+    )
+
+)
+

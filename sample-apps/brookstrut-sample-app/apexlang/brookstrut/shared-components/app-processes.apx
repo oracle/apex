@@ -1,6 +1,5 @@
 appProcess set-globals (
     name: set globals
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -17,7 +16,6 @@ appProcess set-globals (
 
 appProcess trim-all-page-items (
     name: Trim All Page Items
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

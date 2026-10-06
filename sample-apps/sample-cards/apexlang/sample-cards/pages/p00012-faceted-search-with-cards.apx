@@ -6,13 +6,8 @@ page 12 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -125,6 +120,7 @@ page 12 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -151,6 +147,7 @@ page 12 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -177,6 +174,7 @@ page 12 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -207,6 +205,7 @@ page 12 (
             }
             listEntries {
                 maxDisplayedEntries: 100
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false

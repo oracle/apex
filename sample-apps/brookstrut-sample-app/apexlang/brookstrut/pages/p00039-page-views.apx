@@ -8,12 +8,7 @@ page 39 (
         cssClasses: rw-pillar--sienna
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -97,7 +92,7 @@ page 39 (
                 formatMask: 999G999G999G999G990D000
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -118,7 +113,7 @@ page 39 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -136,7 +131,7 @@ page 39 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -152,7 +147,7 @@ page 39 (
                 sequence: 42
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -168,7 +163,7 @@ page 39 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -186,7 +181,7 @@ page 39 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -205,7 +200,7 @@ page 39 (
                 formatMask: DD-MON-YYYY HH24:MI:SS
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: S
@@ -224,7 +219,7 @@ page 39 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: T
@@ -240,7 +235,7 @@ page 39 (
                 sequence: 72
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U

@@ -1,16 +1,20 @@
-create or replace trigger SP_DEFAULT_PEOPLE_TAGS_biu
+create or replace trigger sp_default_people_tags_biu
     before insert or update
-    on SP_DEFAULT_PEOPLE_TAGS
+    on sp_default_people_tags
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+    --
     :new.tag := upper(:new.tag);
     :new.tag := replace(trim(:new.tag),' ','-');
     :new.tag := replace(trim(:new.tag),'_','-');
-end SP_DEFAULT_PEOPLE_TAGS_biu;
+end sp_default_people_tags_biu;
 /

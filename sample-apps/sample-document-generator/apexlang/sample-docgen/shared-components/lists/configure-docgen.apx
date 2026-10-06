@@ -1,0 +1,4 @@
+list configure-docgen (
+    name: Configure DocGen
+)
+

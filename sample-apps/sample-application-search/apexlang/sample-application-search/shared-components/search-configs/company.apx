@@ -1,0 +1,35 @@
+searchConfig company (
+    name: Company Search Configuration
+    source {
+        location: restSource
+        restSource: @Search_Company
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: NAME
+        subtitleColumn: ORIGIN_COUNTRY
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 105
+            items: {
+                P105_ID: &ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: imageUrl
+        imageUrl: &LOGO_PATH.
+    }
+
+    parameter (
+        name: @query
+        value {
+            type: staticValue
+            staticValue: Netflix
+        }
+    )
+
+)
+

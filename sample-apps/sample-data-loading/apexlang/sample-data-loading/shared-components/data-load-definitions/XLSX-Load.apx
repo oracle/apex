@@ -1,0 +1,114 @@
+dataLoadDefinition XLSX_Load (
+    name: XLSX Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: merge
+    }
+    advanced {
+        commitInterval: 200
+    }
+    dataProfile {
+        name: XLSX Load
+        format: xlsx
+    }
+    advanced {
+        encoding: utf-8
+        defaultXlsxSheetName: sheet1.xml
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            selector: COMM
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            selector: DEPTNO
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            selector: EMPNO
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            selector: ENAME
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            selector: HIREDATE
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            selector: JOB
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            selector: MGR
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selector: SAL
+        }
+    )
+
+)
+

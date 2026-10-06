@@ -1,0 +1,44 @@
+lov unified-task-list-lov-due (
+    name: UNIFIED_TASK_LIST.LOV.DUE
+    source {
+        location: staticValues
+    }
+
+    entry more-than-30-days (
+        sequence: 6
+        display: More than 30 days
+        return: 720|
+    )
+
+    entry next-24-hours (
+        sequence: 3
+        display: Next 24 hours
+        return: 1|24
+    )
+
+    entry next-30-days (
+        sequence: 5
+        display: Next 30 days
+        return: 168|720
+    )
+
+    entry next-7-days (
+        sequence: 4
+        display: Next 7 days
+        return: 24|168
+    )
+
+    entry next-hour (
+        sequence: 2
+        display: Next hour
+        return: 0|1
+    )
+
+    entry overdue (
+        sequence: 1
+        display: Overdue
+        return: |0
+    )
+
+)
+

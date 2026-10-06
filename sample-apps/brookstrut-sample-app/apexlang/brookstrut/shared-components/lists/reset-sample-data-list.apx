@@ -1,0 +1,157 @@
+list reset-sample-data-list (
+    name: reset sample data LIST
+
+    entry reset-data-to-2xl (
+        label: Reset Data to 2XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','XXL');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 50,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-3xl (
+        label: Reset Data to 3XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','XXXL');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 100,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-4xl (
+        label: Reset Data to 4XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','4XL');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 1,000,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-5xl (
+        label: Reset Data to 5XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','5XL');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 5,000,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-l (
+        label: Reset Data to L
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','L');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 5,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-m (
+        label: Reset Data to M
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','M');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 1,000 rows of sales history
+        }
+    )
+
+    entry reset-data-to-s (
+        label: Reset Data to S
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','S');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 500 rows of sales history
+        }
+    )
+
+    entry reset-data-to-xl (
+        label: Reset Data to XL
+        icon {
+            imageIconCssClasses: fa-cog
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: "javascript:$s('P40_SIZE','XL');apex.submit({showWait:true});"
+            }
+        }
+        userDefinedAttributes {
+            1: Truncate existing sales history data and generate 25,000 rows of sales history
+        }
+    )
+
+)
+

@@ -12,12 +12,11 @@ page 1401 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -97,6 +96,7 @@ page 1401 (
             showNullValuesAs: -
         }
         pagination {
+            type: showAll
             partialPageRefresh: false
         }
 

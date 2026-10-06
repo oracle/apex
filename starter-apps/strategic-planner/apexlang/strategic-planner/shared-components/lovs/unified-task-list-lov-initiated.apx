@@ -1,0 +1,38 @@
+lov unified-task-list-lov-initiated (
+    name: UNIFIED_TASK_LIST.LOV.INITIATED
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: Last hour
+        return: |1
+    )
+
+    entry lov_data-2 (
+        sequence: 2
+        display: Last 24 hours
+        return: 1|24
+    )
+
+    entry lov_data-3 (
+        sequence: 3
+        display: Last 7 days
+        return: 24|168
+    )
+
+    entry lov_data-4 (
+        sequence: 4
+        display: Last 30 days
+        return: 168|720
+    )
+
+    entry lov_data-5 (
+        sequence: 5
+        display: Older than 30 days
+        return: 720|
+    )
+
+)
+

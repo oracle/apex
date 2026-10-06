@@ -10,13 +10,8 @@ page 8 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region line-item-buttons (

@@ -1,0 +1,12 @@
+lov sp-areas-area (
+    name: SP_AREAS.AREA
+    source {
+        tableName: SP_AREAS
+    }
+    columnMapping {
+        return: ID
+        display: AREA
+        defaultSort: AREA
+    }
+)
+

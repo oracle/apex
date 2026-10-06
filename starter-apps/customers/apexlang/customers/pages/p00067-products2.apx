@@ -8,10 +8,11 @@ page 67 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -132,7 +133,7 @@ page 67 (
                 sequence: 293
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AK
@@ -167,7 +168,7 @@ page 67 (
                 linkAttributes: class="t-Button t-Button--danger t-Button--simple t-Button--small" title="Delete Product: #PRODUCT_NAME#"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -197,7 +198,7 @@ page 67 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -213,7 +214,7 @@ page 67 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AE
@@ -247,7 +248,7 @@ page 67 (
                 linkText: <img src="#IMAGE_PREFIX#menu/pencil16x16.gif" alt="">
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AH
@@ -278,7 +279,7 @@ page 67 (
                 sequence: 303
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AL
@@ -300,7 +301,7 @@ page 67 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -319,7 +320,7 @@ page 67 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AM
@@ -335,7 +336,7 @@ page 67 (
                 sequence: 323
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AN
@@ -351,7 +352,7 @@ page 67 (
                 sequence: 20
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -370,7 +371,7 @@ page 67 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -389,7 +390,7 @@ page 67 (
                 sequence: 273
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AI
@@ -414,7 +415,7 @@ page 67 (
                 sequence: 283
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AJ
@@ -439,7 +440,7 @@ page 67 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -458,7 +459,7 @@ page 67 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AF
@@ -477,7 +478,7 @@ page 67 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AG

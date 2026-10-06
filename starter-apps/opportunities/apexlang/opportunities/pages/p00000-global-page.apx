@@ -112,6 +112,9 @@ page 0 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -369,6 +372,9 @@ page 0 (
                 t-Comments--chat
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -604,6 +610,9 @@ page 0 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

@@ -10,13 +10,6 @@ page 93 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region contents (
         name: contents

@@ -1,0 +1,13 @@
+lov activity-types (
+    name: ACTIVITY TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name d, id r
+            from eba_cust_activity_types
+            order by lower(name)
+            ```
+    }
+)
+

@@ -1,0 +1,42 @@
+searchConfig store (
+    name: Store Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 106
+            items: {
+                P106_STORE_ID: &STORE_ID.
+            }
+            action: resetRegions
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag u-color-4-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

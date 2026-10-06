@@ -1,0 +1,104 @@
+lov lov-dataload-upload-opportunities (
+    name: LOV_DATALOAD_UPLOAD OPPORTUNITIES
+    source {
+        location: staticValues
+    }
+
+    entry account (
+        sequence: 20
+        display: Account
+        return: CUSTOMER_ID
+    )
+
+    entry account-standing (
+        sequence: 130
+        display: Account Standing
+        return: ACCOUNT_STANDING_ID
+    )
+
+    entry close-date (
+        sequence: 50
+        display: Close Date
+        return: DEAL_CLOSE_DATE
+    )
+
+    entry created (
+        sequence: 200
+        display: Created
+        return: CREATED
+    )
+
+    entry created-by (
+        sequence: 210
+        display: Created By
+        return: CREATED_BY
+    )
+
+    entry deal-amount (
+        sequence: 60
+        display: Deal Amount
+        return: DEAL_AMOUNT
+    )
+
+    entry location (
+        sequence: 30
+        display: Location
+        return: DEAL_CUSTOMER_LOCATION
+    )
+
+    entry opportunity-name (
+        sequence: 40
+        display: Opportunity Name
+        return: DEAL_NAME
+    )
+
+    entry pro-re-active (
+        sequence: 140
+        display: Pro / Re-Active
+        return: PRO_RE_ACTIVE
+    )
+
+    entry probability (
+        sequence: 100
+        display: Probability
+        return: DEAL_PROBABILITY
+    )
+
+    entry risk (
+        sequence: 90
+        display: Risk
+        return: RISK_ASSESSMENT_ID
+    )
+
+    entry row-key (
+        sequence: 10
+        display: Row Key
+        return: ROW_KEY
+    )
+
+    entry stage (
+        sequence: 70
+        display: Stage
+        return: DEAL_STAGE
+    )
+
+    entry summary (
+        sequence: 160
+        display: Summary
+        return: DEAL_SUMMARY
+    )
+
+    entry tags (
+        sequence: 150
+        display: Tags
+        return: TAGS
+    )
+
+    entry territory (
+        sequence: 110
+        display: Territory
+        return: TERRITORY_ID
+    )
+
+)
+

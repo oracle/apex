@@ -1,0 +1,94 @@
+list report-linking-examples (
+    name: Report Linking Examples
+
+    entry clearing-report-settings (
+        label: Clearing report settings
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+                action: clearRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry filtering-report-for-budgets-greater-than (
+        label: Filtering Report for budgets greater than 5000
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 18
+                items: {
+                    IRGT_BUDGET: 5000
+                }
+                clearCache: 18
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry invoking-a-saved-report (
+        label: Invoking a Saved Report
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 18
+                action: resetRegions
+                request: IR_status
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry resetting-pagination (
+        label: Resetting Pagination
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+    entry resetting-to-developer-defaults (
+        label: Resetting to Developer Defaults
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 18
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            2: reportIcon
+        }
+    )
+
+)
+

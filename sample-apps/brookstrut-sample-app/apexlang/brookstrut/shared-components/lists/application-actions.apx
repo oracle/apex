@@ -1,0 +1,154 @@
+list application-actions (
+    name: Application Actions
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Run reports to analyze sales history data.
+        }
+    )
+
+    entry analysis-reports (
+        label: Analysis Reports
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Run reports to analyze sales history data.
+        }
+    )
+
+    entry generate-transactions (
+        label: Generate Transactions
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Generate sale transactions
+        }
+    )
+
+    entry products (
+        label: Products
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 11
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Identify product items available for sale at one or more stores
+        }
+    )
+
+    entry regions (
+        label: Regions
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Each store is mapped to a geographic region
+        }
+    )
+
+    entry sales-dashboard (
+        label: Sales Dashboard
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Analysis dashboard of sales data.
+        }
+    )
+
+    entry sales-history (
+        label: Sales History
+        icon {
+            imageIconCssClasses: fa-credit-card
+        }
+        layout {
+            sequence: 56
+        }
+        link {
+            target: {
+                page: 51
+                clearCache: 51
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Identify product items available for sale at one or more stores
+        }
+    )
+
+    entry stores (
+        label: Stores
+        icon {
+            imageIconCssClasses: fa-shopping-bag
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Identify attributes, products sold, discounts and geographic region
+        }
+    )
+
+)
+

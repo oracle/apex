@@ -7,6 +7,7 @@ page 9998 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -22,8 +23,6 @@ page 9998 (
     security {
         authentication: public
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region account-locked (

@@ -1,0 +1,31 @@
+searchConfig oracle_text_search_and_vector_datatable (
+    name: ORACLE-TEXT-SEARCH-AND-VECTOR-DATATABLE
+    type: text
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+        oracleTextIndexColumn: COL1
+    }
+    orderBy {
+        orderByClause:
+            ```sql
+            VECTOR_DISTANCE(embedding_vector, 
+                apex_ai.get_vector_embeddings(
+                    p_value =>             :P33_SEARCH, 
+                    p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end), DOT) ASC
+            ```
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

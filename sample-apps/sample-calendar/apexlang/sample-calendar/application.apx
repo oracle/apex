@@ -1,6 +1,6 @@
 app SAMPLE-CALENDAR (
     name: Sample Calendar
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -46,11 +46,8 @@ app SAMPLE-CALENDAR (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 0D453848360D386985C4B2C8DC5F4FD47285B41C90A9749316FD215E7F0A4AB5
     }
     sessionManagement {
         rejoinSessions: publicSessions

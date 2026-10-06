@@ -7,7 +7,6 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -38,8 +37,6 @@ page 3 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region attributes (
@@ -132,7 +129,7 @@ page 3 (
                 sequence: 170
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -151,7 +148,7 @@ page 3 (
                 htmlExpression: <span style="white-space:nowrap">#ATTR_ALLOW_CHANGES#</span>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -170,7 +167,7 @@ page 3 (
                 htmlExpression: <span style="white-space:nowrap">#ATTR_CONTROL_TYPE#</span>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -186,7 +183,7 @@ page 3 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -202,7 +199,7 @@ page 3 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -218,7 +215,7 @@ page 3 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -234,7 +231,7 @@ page 3 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -250,7 +247,7 @@ page 3 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -266,7 +263,7 @@ page 3 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -282,7 +279,7 @@ page 3 (
                 sequence: 220
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -298,7 +295,7 @@ page 3 (
                 sequence: 210
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -317,7 +314,7 @@ page 3 (
                 htmlExpression: <tt>#ATTR_NAME#</tt>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -336,7 +333,7 @@ page 3 (
                 htmlExpression: <span style="white-space:nowrap">#ATTR_TITLE#</span>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -352,10 +349,10 @@ page 3 (
                 sequence: 40
             }
             columnFormatting {
-                htmlExpression: #ATTR_TYPE#{if ATTR_LEN/}(#ATTR_LEN#){endif/}
+                htmlExpression: "#ATTR_TYPE#{if ATTR_LEN/}(#ATTR_LEN#){endif/}"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -371,7 +368,7 @@ page 3 (
                 sequence: 200
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: T
@@ -389,7 +386,7 @@ page 3 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -416,7 +413,7 @@ page 3 (
                     ```
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -432,7 +429,7 @@ page 3 (
                 sequence: 180
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -918,7 +915,7 @@ page 3 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 htmlDomId: cardinality
@@ -935,7 +932,7 @@ page 3 (
                 sequence: 20
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -951,7 +948,7 @@ page 3 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -976,7 +973,7 @@ page 3 (
                     ```
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 htmlDomId: action
@@ -993,7 +990,7 @@ page 3 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C

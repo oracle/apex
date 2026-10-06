@@ -1,0 +1,41 @@
+list user-interface (
+    name: User Interface
+
+    entry service-terms (
+        label: Service Terms
+        icon {
+            imageIconCssClasses: fa-file-check
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10012
+            }
+        }
+        userDefinedAttributes {
+            1: Terms that Hosts must accept in order to use this platform
+        }
+    )
+
+    entry settings (
+        label: Settings
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10011
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the settings that govern this application
+        }
+    )
+
+)
+

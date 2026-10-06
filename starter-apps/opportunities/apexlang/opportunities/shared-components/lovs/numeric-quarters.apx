@@ -1,0 +1,32 @@
+lov numeric-quarters (
+    name: NUMERIC_QUARTERS
+    source {
+        location: staticValues
+    }
+
+    entry first-quarter (
+        sequence: 1
+        display: First Quarter
+        return: Q1
+    )
+
+    entry fourth-quarter (
+        sequence: 4
+        display: Fourth Quarter
+        return: Q4
+    )
+
+    entry second-quarter (
+        sequence: 2
+        display: Second Quarter
+        return: Q2
+    )
+
+    entry third-quarter (
+        sequence: 3
+        display: Third Quarter
+        return: Q3
+    )
+
+)
+

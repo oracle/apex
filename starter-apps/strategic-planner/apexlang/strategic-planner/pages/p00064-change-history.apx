@@ -7,13 +7,6 @@ page 64 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -110,6 +103,9 @@ page 64 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -157,7 +153,7 @@ page 64 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #FOCUS_AREA#
+                        P23_FOCUS_AREA: I#FOCUS_AREA#
                     }
                     clearCache: 23
                 }
@@ -198,8 +194,8 @@ page 64 (
                 target: {
                     page: 23
                     items: {
-                        P23_INITIATIVE: #INITIATIVE#
-                        P23_FOCUS_AREA: #FOCUS_AREA#
+                        P23_INITIATIVE: I#INITIATIVE#
+                        P23_FOCUS_AREA: I#FOCUS_AREA#
                     }
                 }
                 linkText: #INITIATIVE#
@@ -483,9 +479,6 @@ page 64 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

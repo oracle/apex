@@ -1,0 +1,75 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 12
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                5
+                8
+            ]
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry project-tracking (
+        label: Project Tracking
+        icon {
+            imageIconCssClasses: fa-toggle-right
+        }
+        layout {
+            sequence: 2
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                6
+                7
+                9
+                10
+            ]
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+

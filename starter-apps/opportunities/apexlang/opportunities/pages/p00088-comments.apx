@@ -15,14 +15,13 @@ page 88 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .t-Dialog-body {padding: 0; overflow: hidden;}
+        inline: ".t-Dialog-body {padding: 0; overflow: hidden;}"
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -105,7 +104,7 @@ page 88 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: K
@@ -121,7 +120,7 @@ page 88 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -139,7 +138,7 @@ page 88 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -164,7 +163,7 @@ page 88 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -187,7 +186,7 @@ page 88 (
                 sequence: 11
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -206,7 +205,7 @@ page 88 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C

@@ -1,0 +1,13 @@
+lov items (
+    name: ITEMS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select item_name d, id r
+            from   OOW_DEMO_items 
+            order by 1
+            ```
+    }
+)
+

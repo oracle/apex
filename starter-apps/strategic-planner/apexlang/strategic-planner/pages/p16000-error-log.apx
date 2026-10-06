@@ -9,13 +9,10 @@ page 16000 (
         cssClasses: rw-pillar--sienna
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: <p>This report shows all email queued to be sent and those already sent.</p>
@@ -56,6 +53,7 @@ page 16000 (
                        PACKAGE_NAME,
                        PROCEDURE_NAME,
                        ERROR,
+                       error_backtrace,
                        ARG1_NAME,
                        ARG1_VAL,
                        ARG2_NAME,
@@ -106,10 +104,10 @@ page 16000 (
                 heading: Arg1 Name
             }
             layout {
-                sequence: 42
+                sequence: 52
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y
@@ -122,10 +120,10 @@ page 16000 (
                 heading: Arg1 Val
             }
             layout {
-                sequence: 52
+                sequence: 62
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -138,10 +136,10 @@ page 16000 (
                 heading: Arg2 Name
             }
             layout {
-                sequence: 62
+                sequence: 72
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -154,10 +152,10 @@ page 16000 (
                 heading: Arg2 Val
             }
             layout {
-                sequence: 72
+                sequence: 82
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -170,10 +168,10 @@ page 16000 (
                 heading: Arg3 Name
             }
             layout {
-                sequence: 82
+                sequence: 92
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AC
@@ -186,10 +184,10 @@ page 16000 (
                 heading: Arg3 Val
             }
             layout {
-                sequence: 92
+                sequence: 102
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AD
@@ -202,10 +200,10 @@ page 16000 (
                 heading: Arg4 Name
             }
             layout {
-                sequence: 102
+                sequence: 112
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AE
@@ -218,10 +216,10 @@ page 16000 (
                 heading: Arg4 Val
             }
             layout {
-                sequence: 112
+                sequence: 122
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AF
@@ -234,10 +232,10 @@ page 16000 (
                 heading: Arg5 Name
             }
             layout {
-                sequence: 122
+                sequence: 132
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AG
@@ -250,10 +248,10 @@ page 16000 (
                 heading: Arg5 Val
             }
             layout {
-                sequence: 132
+                sequence: 142
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AH
@@ -266,13 +264,13 @@ page 16000 (
                 heading: Created
             }
             layout {
-                sequence: 142
+                sequence: 152
             }
             appearance {
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AI
@@ -285,10 +283,10 @@ page 16000 (
                 heading: Created By
             }
             layout {
-                sequence: 162
+                sequence: 172
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AK
@@ -301,10 +299,10 @@ page 16000 (
                 heading: Created Trunc
             }
             layout {
-                sequence: 152
+                sequence: 162
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AJ
@@ -320,10 +318,26 @@ page 16000 (
                 sequence: 32
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
+            }
+        )
+
+        column ERROR_BACKTRACE (
+            type: plainText
+            heading {
+                heading: Error Backtrace
+            }
+            layout {
+                sequence: 42
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AL
             }
         )
 
@@ -336,7 +350,7 @@ page 16000 (
                 sequence: 2
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -352,7 +366,7 @@ page 16000 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -368,7 +382,7 @@ page 16000 (
                 sequence: 22
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -389,20 +403,12 @@ page 16000 (
                 rowsPerPage: 20
             }
 
-            displayColumn ARG1_NAME (
-                sequence: 4
-            )
-
-            displayColumn ARG1_VAL (
+            displayColumn CREATED (
                 sequence: 5
             )
 
-            displayColumn CREATED (
-                sequence: 7
-            )
-
             displayColumn CREATED_BY (
-                sequence: 6
+                sequence: 4
             )
 
             displayColumn ERROR (

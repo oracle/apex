@@ -1,0 +1,387 @@
+list application-menu (
+    name: Application Menu
+
+    entry accounts-customers (
+        label: "Accounts [&CUSTOMERS.]"
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                94
+                98
+                105
+                107
+                127
+                130
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10
+                13
+                12
+                18
+                17
+                26
+                25
+                33
+                11
+                44
+                43
+                37
+                38
+                8
+                9
+                6
+                7
+                4
+                5
+                33
+                54
+                53
+                56
+                55
+                57
+                60
+                59
+                65
+                64
+                67
+                66
+                70
+                69
+                51
+                77
+                78
+                81
+                96
+                83
+                104
+                109
+                110
+                112
+                111
+                116
+                113
+                115
+                119
+                82
+                210
+                211
+                212
+                213
+                43
+                128
+                44
+                109
+                104
+                110
+                175
+                175
+                15
+                153
+                154
+                45
+                141
+                142
+                28
+                35
+                40
+                35
+                36
+                58
+                84
+                103
+                118
+                136
+                144
+            ]
+        }
+        link {
+            target: {
+                page: 33
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry by-competitor (
+        label: By Competitor
+        layout {
+            sequence: 130
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 134
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry by-product (
+        label: By Product
+        layout {
+            sequence: 140
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 135
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry by-rep-title-raw (
+        label: By &REP_TITLE_RAW.
+        layout {
+            sequence: 120
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+    )
+
+    entry by-territory (
+        label: By Territory
+        layout {
+            sequence: 150
+            parentEntry: @opportunities-deals
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    entry contacts-contacts (
+        label: "Contacts [&CONTACTS.]"
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 55
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                23
+                24
+            ]
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        config {
+            buildOption: @contacts
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                43
+                100
+                128
+                148
+            ]
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry leads-leads (
+        label: "Leads [&LEADS.]"
+        icon {
+            imageIconCssClasses: fa-crosshairs
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                29
+                133
+                138
+                19
+            ]
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        config {
+            buildOption: @leads
+        }
+    )
+
+    entry opportunities-deals (
+        label: "Opportunities [&DEALS.]"
+        icon {
+            imageIconCssClasses: fa-briefcase
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                80
+                85
+                86
+                87
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry products-products (
+        label: "Products [&PRODUCTS.]"
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                68
+                61
+            ]
+        }
+        link {
+            target: {
+                page: 68
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                14
+                20
+                39
+                46
+                47
+                48
+                49
+                62
+                90
+                91
+                121
+                129
+                131
+                132
+                139
+            ]
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry territories-territories (
+        label: "Territories [&TERRITORIES.]"
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                50
+                93
+                123
+                125
+            ]
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+

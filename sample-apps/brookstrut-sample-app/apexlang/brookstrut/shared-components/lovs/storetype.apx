@@ -1,0 +1,20 @@
+lov storetype (
+    name: STORETYPE
+    source {
+        location: staticValues
+    }
+
+    entry branch (
+        sequence: 1
+        display: Branch
+        return: Branch
+    )
+
+    entry flagship (
+        sequence: 2
+        display: Flagship
+        return: Flagship
+    )
+
+)
+

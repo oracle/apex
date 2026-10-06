@@ -8,7 +8,6 @@ page 23 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -171,10 +170,6 @@ page 23 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText:
             ```html
@@ -304,9 +299,6 @@ page 23 (
                 t-Cards--animColorFill
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No contacts found
@@ -632,7 +624,7 @@ page 23 (
                 linkText: #ACCOUNT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -650,7 +642,7 @@ page 23 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: V
@@ -668,7 +660,7 @@ page 23 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: W
@@ -684,7 +676,7 @@ page 23 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -700,7 +692,7 @@ page 23 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -716,7 +708,7 @@ page 23 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -732,7 +724,7 @@ page 23 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -748,7 +740,7 @@ page 23 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -764,7 +756,7 @@ page 23 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -791,7 +783,7 @@ page 23 (
                 linkText: #CONTACT_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -807,7 +799,7 @@ page 23 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -823,7 +815,7 @@ page 23 (
                 sequence: 300
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -839,7 +831,7 @@ page 23 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -858,7 +850,7 @@ page 23 (
                 formatMask: &APP_DATE_TIME_FMT.
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -875,7 +867,7 @@ page 23 (
                 sequence: 180
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -891,7 +883,7 @@ page 23 (
                 sequence: 200
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -910,7 +902,7 @@ page 23 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -932,7 +924,7 @@ page 23 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -961,7 +953,7 @@ page 23 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: U
@@ -977,7 +969,7 @@ page 23 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -993,7 +985,7 @@ page 23 (
                 sequence: 220
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -1009,7 +1001,7 @@ page 23 (
                 sequence: 210
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -1039,7 +1031,7 @@ page 23 (
                 linkText: #TERRITORY_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -1068,7 +1060,7 @@ page 23 (
                 formatMask: &APP_DATE_TIME_FMT.
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -1085,7 +1077,7 @@ page 23 (
                 sequence: 190
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1106,7 +1098,7 @@ page 23 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AA
@@ -1134,7 +1126,7 @@ page 23 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: X
@@ -1165,7 +1157,7 @@ page 23 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Z
@@ -1311,9 +1303,6 @@ page 23 (
                 t-Report--inline
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No contacts found

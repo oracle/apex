@@ -1,0 +1,59 @@
+list home-page-list (
+    name: Home Page List
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: Configure the AI provider, reset sample data, or change the application appearance.
+        }
+    )
+
+    entry custom-data (
+        label: Custom Data
+        icon {
+            imageIconCssClasses: fa-database-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: Experiment with vector search in APEX by uploading your own custom data.
+        }
+    )
+
+    entry movie-data (
+        label: Movie Data
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Explore vector search concepts with guided examples based on movies data.
+        }
+    )
+
+)
+

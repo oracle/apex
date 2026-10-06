@@ -6,16 +6,11 @@ page 2 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#exContent#MIN#.js
     }
     security {
         authorizationScheme: @access-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -117,9 +112,6 @@ page 2 (
                 #DEFAULT#
                 t-Comments--chat
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No Content

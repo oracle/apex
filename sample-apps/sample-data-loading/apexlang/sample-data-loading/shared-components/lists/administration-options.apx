@@ -1,0 +1,41 @@
+list administration-options (
+    name: Administration Options
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Reset the sample data provided in this application to the default.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-laptop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+

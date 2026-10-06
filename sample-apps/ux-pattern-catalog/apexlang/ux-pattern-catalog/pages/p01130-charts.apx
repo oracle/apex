@@ -6,9 +6,6 @@ page 1130 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -32,8 +29,6 @@ page 1130 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -276,6 +271,9 @@ page 1130 (
         chart {
             type: combination
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             fillGapsInChartData: false
         }
@@ -467,6 +465,9 @@ page 1130 (
         chart {
             type: donut
         }
+        performance {
+            lazyLoading: true
+        }
         value {
             formatScaling: none
         }
@@ -598,6 +599,9 @@ page 1130 (
                 
                 Use the same category order for every series, keep the number of series manageable, use a common scale, and provide a clear legend. Use grouped rather than stacked bars when comparing the same region or product line across groups.
                 ```
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -777,6 +781,9 @@ page 1130 (
                 
                 Use the same currency, scale, and period definition for both series. Keep Actual and Target visually distinct, represent unavailable actuals as missing or in progress, and include actual, target, and performance status in the tooltip.
                 ```
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             renderGapAsZero: false
@@ -958,6 +965,9 @@ page 1130 (
         chartAppearance {
             orientation: horizontal
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             sortOrder: valueDesc
         }
@@ -1069,6 +1079,9 @@ page 1130 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false
@@ -1198,6 +1211,9 @@ page 1130 (
         }
         chartLayout {
             height: 180
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false
@@ -1372,6 +1388,9 @@ page 1130 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         value {
             format: decimal
             decimalPlaces: 0
@@ -1489,6 +1508,9 @@ page 1130 (
         }
         chartLayout {
             height: 180
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false
@@ -1620,6 +1642,9 @@ page 1130 (
         }
         chartAppearance {
             stack: true
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -1802,6 +1827,9 @@ page 1130 (
         }
         chartLayout {
             height: 180
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: enabled

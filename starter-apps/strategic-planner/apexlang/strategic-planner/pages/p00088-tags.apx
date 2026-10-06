@@ -13,13 +13,6 @@ page 88 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region buttons (
         name: buttons
@@ -115,6 +108,9 @@ page 88 (
                 t-Report--noBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         heading {
             type: none

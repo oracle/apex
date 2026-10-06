@@ -179,10 +179,9 @@ plugin aclStatus (
     }
     information {
         version: 5.0.1
-        aboutUrl: http://apex.oracle.com/plugins
         helpText:
             ```
-            <p>ACL Status is designed for those applications that use the built-in Application Express authentication Access Control List (ACL), to control access to the application and features. The plug-in displays the current ACL status together with a count of Administrators, Contributors, and Readers.</p>
+            <p>ACL Status is designed for those applications that use the built-in authentication Access Control List (ACL), to control access to the application and features. The plug-in displays the current ACL status together with a count of Administrators, Contributors, and Readers.</p>
             <p>This plug-in is suitable for adding to the main Administration page to provide an overview of user security settings.</p>
             ```
     }

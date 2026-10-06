@@ -1,0 +1,116 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 14
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                7
+                10
+                11
+                12
+                13
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry files (
+        label: Files
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 3
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry projects (
+        label: Projects
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 2
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry sql-syntax (
+        label: SQL Syntax
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 4
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+)
+

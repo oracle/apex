@@ -16,13 +16,8 @@ page 28 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: Manage the domain of product families available within this application. Opportunities can identify one or more products, each potentially belonging to a product family. This facilitates opportunity tracking by product and product family. Click the <strong>Create Product Family</strong> button to create a new product family. Click on the name of Product Family in the report to edit its details.
@@ -79,7 +74,7 @@ page 28 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -96,7 +91,7 @@ page 28 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -112,7 +107,7 @@ page 28 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -142,7 +137,7 @@ page 28 (
                 linkAttributes: title="Edit #PRODUCT_FAMILY#"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -173,7 +168,7 @@ page 28 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -189,7 +184,7 @@ page 28 (
                 sequence: 80
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -208,7 +203,7 @@ page 28 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -227,7 +222,7 @@ page 28 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -244,7 +239,7 @@ page 28 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G

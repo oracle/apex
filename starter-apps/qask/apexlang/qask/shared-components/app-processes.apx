@@ -1,6 +1,5 @@
 appProcess check-email-from (
     name: Check Email From
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -31,7 +30,6 @@ appProcess check-email-from (
 
 appProcess check-service-terms (
     name: Check Service Terms
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -64,7 +62,6 @@ appProcess check-service-terms (
 
 appProcess close-old-sessions (
     name: close old sessions
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

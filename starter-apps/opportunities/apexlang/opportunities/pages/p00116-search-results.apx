@@ -8,7 +8,6 @@ page 116 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -81,10 +80,6 @@ page 116 (
               }
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -304,9 +299,6 @@ page 116 (
             template: @/search-results
             templateOptions: #DEFAULT#
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: No match found

@@ -1,0 +1,18 @@
+lov unified-task-list-lov-state (
+    name: UNIFIED_TASK_LIST.LOV.STATE
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select disp,
+                   val
+              from table ( apex_human_task.get_lov_state )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+

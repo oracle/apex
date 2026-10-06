@@ -1,0 +1,81 @@
+list home (
+    name: Home
+
+    entry advanced-features (
+        label: Advanced Features
+        icon {
+            imageIconCssClasses: fa-ellipsis-h-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            1: This section highlights advanced functionalities such as dynamic actions for triggering REST calls and robust error handling ...
+        }
+    )
+
+    entry combine-with-relational-data (
+        label:
+            ```html
+            Combine with Relational Data
+            
+            ```
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            1: Showcase how to merge and enriche external REST data with local Oracle Tables using ...
+        }
+    )
+
+    entry data-display-options (
+        label: Data Display Options
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            1: This section showcases various techniques for presenting REST data in Oracle APEX, including reports ...
+        }
+    )
+
+    entry rest-data-sources (
+        label: REST Data Sources
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: This section explores various methods for integrating RESTful services within Oracle APEX. It covers basic HTTP requests and...
+        }
+    )
+
+)
+

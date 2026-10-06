@@ -1,0 +1,96 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: a-Icon icon-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 118
+                items: {
+                    P118_APPLICATION_ID: &APP_ID.
+                    P118_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 118
+            }
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry help (
+        label: Help
+        icon {
+            imageIconCssClasses: a-Icon icon-help
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 1001
+                items: {
+                    P1001_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 1001
+            }
+        }
+    )
+
+    entry preferences (
+        label: Preferences
+        icon {
+            imageIconCssClasses: fa-heart
+        }
+        layout {
+            sequence: 40
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+    )
+
+    entry sign-out (
+        label: Sign Out
+        layout {
+            sequence: 50
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+

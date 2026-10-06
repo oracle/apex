@@ -1,0 +1,13 @@
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select project d, id r
+            from   eba_demo_chart_projects
+            order by 1
+            ```
+    }
+)
+

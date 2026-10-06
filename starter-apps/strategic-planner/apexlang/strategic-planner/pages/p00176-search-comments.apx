@@ -1,0 +1,488 @@
+page 176 (
+    name: Search Comments
+    alias: SEARCH-COMMENTS
+    title: Search Comments
+    pageGroup: @projects
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+
+    region comments (
+        name: " Comments"
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                       initials user_icon,
+                       created comment_date,
+                       '' user_name,
+                       '' attribute_1,
+                       '' attribute_2,
+                       '' attribute_3,
+                       '' attribute_4,
+                       --
+                       comment_nbr,
+                       body_html comment_text,
+                       decode(private_yn,'Yes',' Private Comment',null) private_comment_label,
+                       action actions,
+                       private_yn,
+                       body,
+                       just_project,
+                       author,
+                       '<a href="'||apex_util.prepare_url (
+                                            p_url => 'f?p='||:APP_ID||':176:'||:APP_SESSION||'::NO::P176_SEARCH:'||apex_escape.html(author),
+                                            p_checksum_type => '3')||'">'||apex_escape.html(author)||'</a>' author_link
+                from (
+                select 'Just Project Comments' just_project,
+                       c.comment_nbr,
+                       c.body_no_images body,
+                       c.body_html,
+                       nvl((select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id),'system') author,
+                       (select initials from sp_team_members tm where tm.id = c.author_id) initials,
+                       c.CREATED,
+                       to_char(c.created,'YYYY.MM') created_yyyyMM,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       case when lower(c.created_by) = lower(:app_user)
+                            then '<a href="'||apex_util.prepare_url (
+                                            p_url => 'f?p='||:APP_ID||':28:'||:APP_SESSION||'::NO:28:P28_ID:'||c.id,
+                                            p_checksum_type => '3')||'">edit</a>' 
+                            end action
+                  from SP_PROJECT_COMMENTS_V c,
+                       sp_projects p,
+                       sp_initiatives i,
+                       sp_areas a 
+                 where c.author_id is not null and
+                       p.id = c.project_id and
+                       p.initiative_id = i.id and
+                       i.area_id = a.id and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       p.ARCHIVED_YN = 'N' and 
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) ) and
+                       p.id = :P176_PROJECT_ID
+                union all
+                select null just_project,
+                       c.comment_nbr,
+                       c.body_no_images body,
+                       c.body_html,
+                       (select first_name||' '||last_name from sp_team_members tm where tm.id = c.author_id) author,
+                       (select initials from sp_team_members tm where tm.id = c.author_id) initials,
+                       c.CREATED,
+                       to_char(c.created,'YYYY.MM') created_yyyyMM,
+                       decode(nvl(c.private_yn,'N'),'N','No','Y','Yes','Unknown') private_yn,
+                       '<a href="'||apex_util.prepare_url (
+                                            p_url => 'f?p='||:APP_ID||':502:'||:APP_SESSION||'::NO:502:P502_PREV_PAGE,P502_PROJECT_ID,P502_TASK_ID:3,'||p.id||','||t.id,
+                                            p_checksum_type => '3')||'">View '||
+                           (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_type_id)||
+                           case when t.task_sub_type_id is not null then ': ' end ||
+                           (select apex_escape.html(task_type) from sp_task_types rt where rt.id = t.task_sub_type_id) ||
+                           case when t.task is not null then ' - '||apex_escape.html(t.task) end ||'</a>' action
+                  from SP_TASK_COMMENTS_V c,
+                       sp_tasks t,
+                       sp_projects p
+                 where c.author_id is not null and
+                       t.id = c.task_id and
+                       t.project_id = p.id and
+                       p.DUPLICATE_OF_PROJECT_ID is null and
+                       p.ARCHIVED_YN = 'N' and 
+                       (nvl(c.private_yn,'N') = 'N' or lower(c.created_by) = lower(:app_user) ) and
+                       p.id = :P176_PROJECT_ID
+                ) order by comment_date desc
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: COMMENTS
+            regionDisplaySelector: true
+        }
+        reportLayout {
+            numberOfRows: 100
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+                t-Comments--iconsRounded
+            ]
+        }
+        messages {
+            whenNoDataFound: No Comments
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Actions
+            }
+            layout {
+                sequence: 60
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+            }
+            layout {
+                sequence: 70
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+            }
+            layout {
+                sequence: 80
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+            }
+            layout {
+                sequence: 90
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHOR (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Author
+            }
+            layout {
+                sequence: 130
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column AUTHOR_LINK (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Author Link
+            }
+            layout {
+                sequence: 230
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column BODY (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Body
+            }
+            layout {
+                sequence: 200
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+            }
+            layout {
+                sequence: 20
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_NBR (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 210
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+            }
+            layout {
+                sequence: 50
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="is-markdownified">
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column JUST_PROJECT (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Just Project
+            }
+            layout {
+                sequence: 220
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 180
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_YN (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Private Yn
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: User Icon
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: User Name
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME# #AUTHOR_LINK#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    region facets (
+        name: Facets
+        type: facetedSearch
+        source {
+            filteredRegion: @comments
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P176_JUST_PROJECT (
+            type: checkboxGroup
+            label {
+                label: " "
+                showLabelForCurrentFacet: false
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                computeCounts: false
+                maxDisplayedEntries: 1
+                allowToExclude: false
+            }
+            actionsMenu {
+                filter: false
+            }
+            source {
+                databaseColumn: JUST_PROJECT
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from SP_TASK_COMMENTS_V
+                     where task_id in (select id from sp_tasks
+                                        where project_id = :P176_PROJECT_ID)
+                    ```
+            }
+        )
+
+        facet P176_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dbColumns: AUTHOR,BODY
+            }
+        )
+
+    )
+
+    pageItem P176_PROJECT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @facets
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    dynamicAction links-in-comments-in-new-tab (
+        name: links in comments in new tab
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+

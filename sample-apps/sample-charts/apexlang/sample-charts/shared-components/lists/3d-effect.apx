@@ -1,0 +1,41 @@
+list 3d-effect (
+    name: 3D Effect
+
+    entry funnel-chart-3d-effect-page (
+        label: Funnel Chart (3D Effect) - Page 22
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a 3D Funnel chart, by setting the threeDEffect attribute of the ojChart API via custom JavaScript code
+        }
+    )
+
+    entry pie-chart-master-detail-chart-links-page (
+        label: Pie Chart (Master Detail Chart Links) - Page 4
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to render a 3D Pie chart, by setting the threeDEffect attribute of the ojChart API via custom JavaScript code
+        }
+    )
+
+)
+

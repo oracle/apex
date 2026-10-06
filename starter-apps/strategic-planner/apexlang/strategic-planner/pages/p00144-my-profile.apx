@@ -13,13 +13,6 @@ page 144 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region buttons (
         name: Buttons
@@ -34,6 +27,25 @@ page 144 (
         }
         settings {
             outputAs: text
+        }
+    )
+
+    region home-page-display (
+        name: Home Page Display
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @my-profile
+            slot: subRegions
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
         }
     )
 
@@ -77,7 +89,7 @@ page 144 (
             displayExtraValues: false
         }
         layout {
-            sequence: 80
+            sequence: 90
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -121,7 +133,7 @@ page 144 (
             separator: ,
         }
         layout {
-            sequence: 100
+            sequence: 110
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -165,7 +177,6 @@ page 144 (
             region: @my-profile
             slot: regionBody
             alignment: left
-            startNewRow: false
         }
         appearance {
             template: @/optional-floating
@@ -246,6 +257,154 @@ page 144 (
         }
     )
 
+    pageItem P144_HP_MY_ACTIVITES_YN (
+        type: switch
+        label {
+            label: Include My Activities
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @my-profile
+            column: HP_MY_ACTIVITIES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Activities region will display on the home page (contains current and future activities).
+        }
+    )
+
+    pageItem P144_HP_MY_FAV_PROJECTS_YN (
+        type: switch
+        label {
+            label: Include My Favorite &NOMENCLATURE_PROJECTS.
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @my-profile
+            column: HP_MY_FAV_PROJECTS_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Favorite &NOMENCLATURE_PROJECTS. region will display on the home page (all &NOMENCLATURE_PROJECTS. you have favorited).
+        }
+    )
+
+    pageItem P144_HP_MY_INITIATIVES_YN (
+        type: switch
+        label {
+            label: Include My Initiatives
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @my-profile
+            column: HP_MY_INITIATIVES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My &NOMENCLATURE_INITIATIVES. region will display on the home page (you own the &NOMENCLATURE_INITIATIVE., own a &NOMENCLATURE_PROJECT. within, or are a &NOMENCLATURE_PROJECT. contributor within).
+        }
+    )
+
+    pageItem P144_HP_MY_OPEN_RELEASES_YN (
+        type: switch
+        label {
+            label: Include My Open Releases
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @my-profile
+            column: HP_MY_OPEN_RELEASES_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My Open Releases region will display on the home page (you own the Release, own a &NOMENCLATURE_PROJECT. within, own a milestone/review/task within a &NOMENCLATURE_PROJECT. within, or own a &NOMENCLATURE_PROJECT. activity within).
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    pageItem P144_HP_MY_PROJECTS_YN (
+        type: switch
+        label {
+            label: Include My &NOMENCLATURE_PROJECTS.
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @home-page-display
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @my-profile
+            column: HP_MY_PROJECTS_YN
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        help {
+            helpText: Identifies if My &NOMENCLATURE_PROJECTS. region will display on the home page (you own the &NOMENCLATURE_PROJECT. or have an active milestone, review or task on that &NOMENCLATURE_PROJECT.).
+        }
+    )
+
     pageItem P144_ID (
         type: hidden
         layout {
@@ -275,7 +434,7 @@ page 144 (
             trimSpaces: none
         }
         layout {
-            sequence: 50
+            sequence: 60
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -341,7 +500,7 @@ page 144 (
             alignment: left
         }
         layout {
-            sequence: 110
+            sequence: 140
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -379,7 +538,7 @@ page 144 (
             displayExtraValues: false
         }
         layout {
-            sequence: 70
+            sequence: 80
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -417,6 +576,11 @@ page 144 (
         display {
             displayAs: inlineDropzone
         }
+        storage {
+            mimeTypeColumn: PHOTO_MIMETYPE
+            filenameColumn: PHOTO_FILENAME
+            blobLastUpdatedColumn: PHOTO_LASTUPD
+        }
         cropping {
             allowCropping: true
             aspectRatio: square
@@ -426,7 +590,7 @@ page 144 (
             maxHeight: 256
         }
         layout {
-            sequence: 130
+            sequence: 150
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -453,7 +617,7 @@ page 144 (
             textCase: lower
         }
         layout {
-            sequence: 60
+            sequence: 70
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -503,7 +667,7 @@ page 144 (
             separator: ,
         }
         layout {
-            sequence: 90
+            sequence: 100
             region: @my-profile
             slot: regionBody
             alignment: left
@@ -523,6 +687,47 @@ page 144 (
         }
         security {
             restrictedChars: webSafe
+        }
+    )
+
+    pageItem P144_TIMEZONE (
+        type: selectOne
+        label {
+            label: Timezone
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @unique-timezones
+        }
+        layout {
+            sequence: 130
+            region: @my-profile
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        source {
+            formRegion: @my-profile
+            column: TIMEZONE
+            dataType: varchar2
+        }
+        security {
+            restrictedChars: webSafe
+        }
+        config {
+            buildOption: @team-calendar
         }
     )
 
@@ -769,11 +974,30 @@ page 144 (
         }
     )
 
+    computation p144-timezone (
+        itemName: P144_TIMEZONE
+        execution {
+            sequence: 30
+            point: afterHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: UTC
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P144_TIMEZONE
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
     process close-dialog (
         name: Close Dialog
         type: closeDialog
         execution {
-            sequence: 50
+            sequence: 40
         }
         advanced {
             executionMappingIdentifier: 4088913367044077691
@@ -809,6 +1033,52 @@ page 144 (
         }
         advanced {
             executionMappingIdentifier: 4088912980017077691
+        }
+    )
+
+    process set-homepage-display (
+        name: set homepage display
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select ':'||
+                           case when hp_my_activities_yn = 'Y' then 'ACT:' end ||
+                           case when hp_my_initiatives_yn = 'Y' then 'INIT:' end ||
+                           case when hp_my_projects_yn = 'Y' then 'PROJ:' end ||
+                           case when hp_my_fav_projects_yn = 'Y' then 'FAV:' end ||
+                           case when hp_my_open_releases_yn = 'Y' then 'REL:' end display
+                      from sp_team_members
+                     where id = :P144_ID
+                ) loop
+                    :HOME_PAGE_DISPLAY := c1.display;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 38593521089942791847
+        }
+    )
+
+    process set-timezone (
+        name: set timezone
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                APEX_UTIL.SET_SESSION_TIME_ZONE (  
+                    P_TIME_ZONE => :P144_TIMEZONE); 
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 33518814218531200432
         }
     )
 

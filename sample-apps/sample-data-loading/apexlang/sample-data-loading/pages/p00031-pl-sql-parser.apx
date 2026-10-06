@@ -6,16 +6,11 @@ page 31 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads: $("#parsed-data table.t-Report-report tr:first td").css( "font-weight","bold" );
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -80,9 +75,6 @@ page 31 (
                 t-Report--horizontalBorders
             ]
             showNullValuesAs: -
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column COLUMN_NAME (
@@ -154,7 +146,7 @@ page 31 (
                 ```html
                 <p>
                 The <strong>APEX_DATA_PARSER.PARSE</strong> table function allows to parse XML, JSON, XLSX or CSV files. File contents are returned as columns <strong>COL001</strong> to <strong>COL300</strong>. Since the parser is implemented as a table function, parsing is invoked using a SELECT statement, like selecting data from a table (see report source below). Developers can thus perform arbitrary processing logic on the parser results.</p>
-                <p>Typical CSV column separators like comma, colon or tab are detected automatically. For more information on APEX_DATA_PARSER.PARSE review the Application Express API Reference.</p>
+                <p>Typical CSV column separators like comma, colon or tab are detected automatically. For more information on APEX_DATA_PARSER.PARSE review the APEX API Reference.</p>
                 ```
         }
         layout {
@@ -265,6 +257,9 @@ page 31 (
                 t-Report--rowHighlight
                 t-Report--horizontalBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No data parsed. Please upload a file.

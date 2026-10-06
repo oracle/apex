@@ -12,12 +12,11 @@ page 1402 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -179,7 +178,7 @@ page 1402 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -195,7 +194,7 @@ page 1402 (
                 sequence: 20
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: B
@@ -214,7 +213,7 @@ page 1402 (
                 htmlExpression: <span class="fa #STATUS_ICON#"></span> #STATUS#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -230,7 +229,7 @@ page 1402 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -246,7 +245,7 @@ page 1402 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -399,7 +398,7 @@ page 1402 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -415,7 +414,7 @@ page 1402 (
                 sequence: 20
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: B
@@ -431,7 +430,7 @@ page 1402 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -447,7 +446,7 @@ page 1402 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A

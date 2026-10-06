@@ -1,0 +1,13 @@
+lov p13-eba-demo-da-emp-deptno (
+    name: P13_EBA_DEMO_DA_EMP_DEPTNO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select dname d, deptno r
+            from eba_demo_da_dept
+            order by 1
+            ```
+    }
+)
+

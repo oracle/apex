@@ -1,0 +1,20 @@
+lov data-load-option (
+    name: DATA_LOAD_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry copy-and-paste (
+        sequence: 20
+        display: Copy and Paste
+        return: PASTE
+    )
+
+    entry upload-file-comma-separated-csv-or-tab-delimited (
+        sequence: 10
+        display: Upload file, comma separated (*.csv) or tab delimited
+        return: UPLOAD
+    )
+
+)
+

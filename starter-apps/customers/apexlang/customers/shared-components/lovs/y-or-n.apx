@@ -1,0 +1,20 @@
+lov y-or-n (
+    name: Y_OR_N
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

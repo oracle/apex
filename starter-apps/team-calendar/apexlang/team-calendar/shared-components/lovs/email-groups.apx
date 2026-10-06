@@ -1,0 +1,13 @@
+lov email-groups (
+    name: EMAIL GROUPS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select group_name d, group_id r
+              from EBA_ca_email_groups
+             order by 1
+            ```
+    }
+)
+

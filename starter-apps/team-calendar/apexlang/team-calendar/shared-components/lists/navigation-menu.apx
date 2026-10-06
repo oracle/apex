@@ -1,0 +1,146 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                27
+                28
+                4
+                25
+                26
+                7
+                8
+                23
+                24
+                15
+                16
+                17
+                29
+                40
+                39
+                175
+                9
+                35
+                30
+                37
+                18
+                19
+                38
+                53
+                54
+                41
+                100
+                5
+                6
+                43
+                41
+                40
+                42
+                44
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 1
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                3
+                14
+                31
+                32
+                10
+                33
+                34
+                11
+                28
+                39
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 3
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry tags (
+        label: Tags
+        icon {
+            imageIconCssClasses: fa-tags
+        }
+        layout {
+            sequence: 4
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+

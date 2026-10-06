@@ -1,0 +1,14 @@
+lov type (
+    name: TYPE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select type d, id r
+            from   EBA_CUST_TYPE
+            where is_active = 'Y'
+            order by 1
+            ```
+    }
+)
+

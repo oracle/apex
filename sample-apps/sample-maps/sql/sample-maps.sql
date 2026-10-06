@@ -23,8 +23,8 @@ set define off verify off feedback off
 --------------------------------------------------------------------------------
 begin
 wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.0'
+ p_version_yyyy_mm_dd=>'2026.04.07'
+,p_release=>'26.2.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7970
 ,p_default_id_offset=>7801147223886292
@@ -69,8 +69,8 @@ prompt APPLICATION 7970 - Sample Maps
 --     Supporting Objects:  Included
 --       Install scripts:          4
 --       Validations:              2
---   Version:         26.1.0
---   Instance ID:     746015870406431
+--   Version:         26.2.0
+--   Instance ID:     745964864827421
 --
 
 prompt --application/delete_application
@@ -108,11 +108,12 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.2.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
 ,p_deep_linking=>'Y'
+,p_allow_bots=>'Y'
 ,p_pass_ecid=>'N'
 ,p_authorize_batch_job=>'N'
 ,p_rejoin_existing_sessions=>'N'
@@ -127,7 +128,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_03=>'<small>US States data from Data.gov "US Boundaries TIGER/Shapefiles", Federal government.</small>'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>96
-,p_version_scn=>'16140642'
+,p_version_scn=>'302363006'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -143,12 +144,12 @@ wwv_imp_workspace.create_flow(
 ,p_global_page_id=>0
 ,p_navigation_list_id=>wwv_flow_imp.id(1556122320110955579)
 ,p_navigation_list_position=>'SIDE'
-,p_navigation_list_template_id=>2469215554099805162
+,p_navigation_list_template_id=>2471166859590295591
 ,p_nav_list_template_options=>'#DEFAULT#:js-defaultCollapsed:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_css_file_urls=>'#APP_IMAGES#app-icon.css?version=#APP_VERSION#'
 ,p_nav_bar_type=>'LIST'
 ,p_nav_bar_list_id=>wwv_flow_imp.id(1556265479951955892)
-,p_nav_bar_list_template_id=>2849019392706229583
+,p_nav_bar_list_template_id=>2850970698196720012
 ,p_nav_bar_template_options=>'#DEFAULT#'
 );
 end;
@@ -2296,7 +2297,7 @@ wwv_flow_imp_shared.create_plugin(
 ,p_ajax_function=>'render_map_ajax'
 ,p_standard_attributes=>'SOURCE_SQL:AJAX_ITEMS_TO_SUBMIT:ESCAPE_OUTPUT'
 ,p_substitute_attributes=>true
-,p_version_scn=>'37167705139372'
+,p_version_scn=>'SH256:Lv3VAvWNxU0ekgmlQvKpKIP0W4Gq91XNf35b92b9WOU'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>',
 '	This plugin integrates Oracle Maps as a region into an APEX application. This plugins requires an running installation of Oracle&#39;s Fusion Middleware MapViewer in order to run properly. The Map Tile Layers and Features of Interest to be displayed'
@@ -2305,7 +2306,6 @@ wwv_flow_imp_shared.create_plugin(
 '	<br />',
 '	&nbsp;</p>'))
 ,p_version_identifier=>'21.1'
-,p_about_url=>'http://apex.oracle.com/plugins'
 ,p_files_version=>209
 );
 wwv_flow_imp_shared.create_plugin_attribute(
@@ -4213,7 +4213,8 @@ wwv_flow_imp_shared.create_plugin_setting(
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_IR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'actions_menu_structure', 'IG')).to_clob
+  'actions_menu_structure', 'IG',
+  'auto_ir_reset_button', 'N')).to_clob
 ,p_version_scn=>'37165931336884'
 );
 wwv_flow_imp_shared.create_plugin_setting(
@@ -10576,47 +10577,47 @@ wwv_flow_imp_shared.create_theme(
 ,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
 ,p_theme_internal_name=>'UNIVERSAL_THEME'
-,p_version_identifier=>'26.1'
+,p_version_identifier=>'26.2'
 ,p_navigation_type=>'L'
 ,p_nav_bar_type=>'LIST'
 ,p_is_locked=>false
-,p_current_theme_style_id=>2243014446517417
-,p_default_page_template=>4073832297226169690
-,p_default_dialog_template=>2101883943284197310
-,p_error_template=>2102634289808461002
-,p_printer_friendly_template=>4073832297226169690
-,p_login_template=>2102634289808461002
-,p_default_button_template=>4073839297780169708
-,p_default_region_template=>4073835273271169698
-,p_default_chart_template=>4073835273271169698
-,p_default_form_template=>4073835273271169698
-,p_default_reportr_template=>4073835273271169698
-,p_default_wizard_template=>4073835273271169698
-,p_default_menur_template=>2532939663579242476
-,p_default_listr_template=>4073835273271169698
-,p_default_irr_template=>2102002977963900996
-,p_default_report_template=>2540130677583398057
-,p_default_label_template=>1610598304472262251
-,p_default_menu_template=>4073839682315169711
-,p_default_list_template=>4073837480889169704
-,p_default_top_nav_list_temp=>2528231041045349458
-,p_default_side_nav_list_temp=>2469215554099805162
+,p_current_theme_style_id=>4194319937007846
+,p_default_page_template=>4075783602716660119
+,p_default_dialog_template=>2103835248774687739
+,p_error_template=>2104585595298951431
+,p_printer_friendly_template=>4075783602716660119
+,p_login_template=>2104585595298951431
+,p_default_button_template=>4075790603270660137
+,p_default_region_template=>4075786578761660127
+,p_default_chart_template=>4075786578761660127
+,p_default_form_template=>4075786578761660127
+,p_default_reportr_template=>4075786578761660127
+,p_default_wizard_template=>4075786578761660127
+,p_default_menur_template=>2534890969069732905
+,p_default_listr_template=>4075786578761660127
+,p_default_irr_template=>2103954283454391425
+,p_default_report_template=>2542081983073888486
+,p_default_label_template=>1612549609962752680
+,p_default_menu_template=>4075790987805660140
+,p_default_list_template=>4075788786379660133
+,p_default_top_nav_list_temp=>2530182346535839887
+,p_default_side_nav_list_temp=>2471166859590295591
 ,p_default_nav_list_position=>'SIDE'
-,p_default_dialogbtnr_template=>2127905476394690047
-,p_default_dialogr_template=>4502917002193490937
-,p_default_option_label=>1610598304472262251
-,p_default_required_label=>1610598484065263269
-,p_default_navbar_list_template=>2849019392706229583
-,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
+,p_default_dialogbtnr_template=>2129856781885180476
+,p_default_dialogr_template=>4504868307683981366
+,p_default_option_label=>1612549609962752680
+,p_default_required_label=>1612549789555753698
+,p_default_navbar_list_template=>2850970698196720012
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.2/')
 ,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
-,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_reference_id=>wwv_imp_util.get_subscription_id(4075791579648660165,2000,'universal-theme',8842.262)
 ,p_version_scn=>'SH256:0tTRVxBgSx9rvyH6RWoEQCTUwThKDlVIJ36xwiY4LKs'
-,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
+,p_version_scn_master=>'SH256:S3Fh7S4ZMPpy-ID1j0RgxJIrTUyM6ZXOJB4KD7haOtc'
 );
 end;
 /
@@ -10773,7 +10774,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Airport Data'
 ,p_static_id=>'airport-data'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
+,p_plug_template=>3374665444246510938
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_05'
@@ -10792,14 +10793,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(1556121768141955574)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'CURRENT_PAGE_NOT_IN_CONDITION'
 ,p_plug_display_when_condition=>'1,2'
 );
@@ -10808,7 +10809,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Only minimal data is installed'
 ,p_static_id=>'only-minimal-data-is-installed'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--warning'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>5
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10832,7 +10833,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'help_button'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--link:t-Button--iconLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'About This Page'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -10848,7 +10849,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'NEXT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RR,&APP_PAGE_ID.::'
@@ -10888,7 +10889,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'HOME'
 ,p_step_title=>'&APP_NAME. '
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'13'
@@ -10899,14 +10900,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airport-pages'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-Cards--featured force-fa-lg:t-Cards--displayIcons:t-Cards--4cols:t-Cards--iconsRounded:t-Cards--animColorFill'
-,p_plug_template=>2074200852440250129
+,p_plug_template=>2076152157930740558
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(786551742367713027)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2888245825625742894
+,p_list_template_id=>2890197131116233323
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -10914,7 +10915,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Info'
 ,p_static_id=>'info'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10929,7 +10930,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Map App Pages'
 ,p_static_id=>'map-app-pages'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2074200852440250129
+,p_plug_template=>2076152157930740558
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10993,7 +10994,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Map App Pages'
 ,p_static_id=>'map-app-pages-2'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2074200852440250129
+,p_plug_template=>2076152157930740558
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11058,7 +11059,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Sample Maps Application'
 ,p_static_id=>'sample-maps-application'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675494171183407654
+,p_plug_template=>2677445476673898083
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -11099,7 +11100,7 @@ wwv_flow_imp_page.create_page(
 'div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}',
 'div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
@@ -11125,7 +11126,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(2851432043099752530)
 ,p_name=>'&APP_NAME.'
 ,p_static_id=>'app-name'
-,p_template=>2675494171183407654
+,p_template=>2677445476673898083
 ,p_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_css_classes=>'t-HeroRegion--featured'
@@ -11144,10 +11145,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
 ,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
+,p_query_row_template=>2103943081508282569
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -11218,7 +11220,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Help Container'
 ,p_static_id=>'help-container'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -11254,7 +11256,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'&APP_NAME. - Airports Heat Map'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'17'
@@ -11266,7 +11268,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -11287,7 +11289,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'State'
 ,p_static_id=>'state'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11302,7 +11304,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'us-airports'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
+,p_plug_template=>3374665444246510938
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11391,7 +11393,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'All States'
 ,p_cHeight=>1
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--large'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -11431,7 +11433,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'AIRPORTS-MAP'
 ,p_step_title=>'&APP_NAME. - Airports Map'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'19'
@@ -11443,7 +11445,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -11465,7 +11467,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'custom-map-markers'
 ,p_region_name=>'custom-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
+,p_plug_template=>3374665444246510938
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11723,7 +11725,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'US-STATES-FLAT'
 ,p_step_title=>'&APP_NAME. - US States (flat)'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'19'
@@ -11735,7 +11737,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -11755,7 +11757,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'us-states'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11855,7 +11857,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'US-STATES-EXTRUDED'
 ,p_step_title=>'&APP_NAME. - US States (extruded)'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'19'
@@ -11867,7 +11869,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -11891,7 +11893,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Airports by State'
 ,p_static_id=>'airports-by-state'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1:t-ContentBlock--lightBG'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11966,7 +11968,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'water-area-by-state'
 ,p_region_name=>'water-map-region'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1:t-ContentBlock--lightBG'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12067,7 +12069,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'US-STATES-WITH-LINKS'
 ,p_step_title=>'&APP_NAME. - US States with Links'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'19'
@@ -12079,7 +12081,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -12100,7 +12102,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Airports by State'
 ,p_static_id=>'airports-by-state'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12178,7 +12180,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'US-STATES-AND-LARGE-AIRPORTS'
 ,p_step_title=>'&APP_NAME. - US States and Large Airports'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'19'
@@ -12190,7 +12192,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -12210,7 +12212,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'states-and-large-airports'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>3372714138756020509
+,p_plug_template=>3374665444246510938
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12381,7 +12383,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'AIRPORTS'
 ,p_step_title=>'&APP_NAME. - Airports Faceted Search'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2528119710305719084
+,p_step_template=>2530071015796209513
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'22'
@@ -12393,7 +12395,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -12411,7 +12413,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airports-map'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12644,7 +12646,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Facets'
 ,p_static_id=>'facets'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12659,7 +12661,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Search'
 ,p_static_id=>'search'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_02'
@@ -12825,7 +12827,7 @@ wwv_flow_imp_page.create_page(
 '    apex.event.trigger( $("#airport-map-region"), "refresh_and_center" );',
 '}'))
 ,p_inline_css=>'td[headers="LINK"] {text-align: center;}'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
@@ -12837,7 +12839,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -12854,7 +12856,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Airports'
 ,p_static_id=>'airports'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>6
@@ -13160,7 +13162,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'map'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -13352,7 +13354,7 @@ wwv_flow_imp_page.create_page(
 '        lMapRegion.call( "displayPopup", "infoWindow", lLayerId, pId.toString(), false );',
 '    }',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
@@ -13364,7 +13366,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>5
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -13385,7 +13387,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(784651791184144617)
 ,p_name=>'Selected Airports'
 ,p_static_id=>'selected-airports'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
@@ -13430,7 +13432,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_ajax_items_to_submit=>'P122_CIRCLE_GEOJSON,P122_LARGE_VISIBLE,P122_SMALL_VISIBLE'
 ,p_lazy_loading=>false
-,p_query_row_template=>1800766594693390537
+,p_query_row_template=>1802717900183880966
 ,p_query_num_rows=>8
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_no_data_found=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -13609,7 +13611,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Selected Airports IRR'
 ,p_static_id=>'selected-airports-irr'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>4
@@ -13789,7 +13791,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'us-airports'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14250,7 +14252,7 @@ wwv_flow_imp_page.create_page(
 '    }',
 '}'))
 ,p_inline_css=>'td[headers="LINK"] {text-align: center;}'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
@@ -14262,7 +14264,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -14283,7 +14285,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airports'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_region_attributes=>'style="height: 640px"'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -14552,7 +14554,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'map'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14674,7 +14676,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'No Report'
 ,p_static_id=>'no-report'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -14690,7 +14692,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(736070018834862215)
 ,p_name=>'Results'
 ,p_static_id=>'results'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
@@ -14741,7 +14743,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_ajax_items_to_submit=>'P123_BBOX,P123_LARGE_VISIBLE,P123_SMALL_VISIBLE'
 ,p_lazy_loading=>false
-,p_query_row_template=>1800766594693390537
+,p_query_row_template=>1802717900183880966
 ,p_query_num_rows=>8
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_no_data_found=>'No airports found.'
@@ -14820,7 +14822,7 @@ wwv_flow_imp_page.create_report_columns(
 ,p_column_alias=>'DESCRIPTION'
 ,p_column_display_sequence=>200
 ,p_column_heading=>'Description'
-,p_column_html_expression=>'#CITY#, #STATE_NAME#'
+,p_column_html_expression=>'#CITY#, #STATE_NAME#, (#ID#)'
 ,p_derived_column=>'N'
 ,p_include_in_export=>'Y'
 );
@@ -15159,7 +15161,7 @@ wwv_flow_imp_page.create_page(
 '.popup-left {',
 '    transform: translate(0, -10%) !important;',
 '}'))
-,p_step_template=>2528119710305719084
+,p_step_template=>2530071015796209513
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'18'
@@ -15171,7 +15173,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -15192,7 +15194,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airports'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_region_attributes=>'style="height: 640px"'
-,p_plug_template=>3372714138756020509
+,p_plug_template=>3374665444246510938
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15484,7 +15486,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filters'
 ,p_static_id=>'filters'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:t-Form--stretchInputs'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_02'
@@ -15500,7 +15502,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'map'
 ,p_region_name=>'airport-map-region'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15769,7 +15771,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>'STATIC2:Airport;AIRPORT,Heliport;HELIPORT,Seaplane Base;SEAPLANE BASE,Ultralight;ULTRALIGHT,Gliderport;GLIDERPORT,Balloonport;BALLOONPORT'
 ,p_cHeight=>1
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Nearest Neighbors will only return for the selected airport type.'
@@ -15795,7 +15797,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_NUMBER_FIELD'
 ,p_cSize=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Return only nearest neighbors with at least the specified amount of "commercial operations".'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15811,7 +15813,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_NUMBER_FIELD'
 ,p_cSize=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Specify the maximum distance to return nearest neighbors in.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15840,7 +15842,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_NUMBER_FIELD'
 ,p_cSize=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Specify the maximum amount of nearest neighbors to return.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15861,7 +15863,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- Pick an Airport or a Position on the Map -'
 ,p_cSize=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Pick an airport from the list to search nearest neighbors for. As an alternative, click any position on the map.'
@@ -16028,7 +16030,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'LEGACY-ORACLE-MAPS-PLUG-IN'
 ,p_step_title=>'&APP_NAME. - Legacy Oracle Maps Plug-In'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'11'
@@ -16040,7 +16042,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -16060,7 +16062,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'us-states-legacy-oracle-maps-plug-in'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16110,7 +16112,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'&APP_NAME. - Load Full Dataset'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'16'
@@ -16122,7 +16124,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'about_this_page'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-autoheight:js-popup-noOverlay:js-popup-callout:js-dialog-size480x320'
 ,p_region_attributes=>'data-parent-element="#help_button"'
-,p_plug_template=>1486845678744495616
+,p_plug_template=>1488796984234986045
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_04'
@@ -16143,7 +16145,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airports-data'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558969487082892432)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--success'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16163,7 +16165,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'airports-data-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558969487082892432)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--warning'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16183,13 +16185,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'file-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558967827460892415)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'<p>Download the <strong>states-full.json</strong> and <strong>airports-full.json</strong> files from <strong><a href="https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/" target="_blank">https://github.com/oracle/apex/tree/22.1/sample-a'
-||'pps/sample-maps/</a></strong> and upload here.</p>'
+,p_plug_source=>'<p>Download the <strong>states-full.json</strong> and <strong>airports-full.json</strong> files from <strong><a href="https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/" target="_blank" rel="noopener noreferrer external">https://github'
+||'.com/oracle/apex/tree/22.1/sample-apps/sample-maps/</a></strong> and upload here.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -16200,7 +16202,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'from-github'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558967827460892415)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16214,7 +16216,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Load Full Dataset'
 ,p_static_id=>'load-full-dataset'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:t-Form--stretchInputs'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16229,7 +16231,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'states-data'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558969437834892431)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--success'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16247,7 +16249,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'states-data-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(1558969437834892431)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--warning'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16264,7 +16266,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Status Airports'
 ,p_static_id=>'status-airports'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -16279,7 +16281,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Status States'
 ,p_static_id=>'status-states'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16296,7 +16298,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'load'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Load Dataset'
 ,p_button_position=>'NEXT'
@@ -16320,7 +16322,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_FILE'
 ,p_cSize=>30
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'allow_copy_paste', 'N',
@@ -16338,7 +16340,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -16356,7 +16358,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_lov=>'STATIC:Upload Files;FILE,Directly from GitHub;GITHUB'
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -16372,7 +16374,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_FILE'
 ,p_cSize=>30
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'allow_copy_paste', 'N',
@@ -16472,7 +16474,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2102634289808461002
+,p_step_template=>2104585595298951431
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'U'
@@ -16484,7 +16486,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'language-selector'
 ,p_parent_plug_id=>wwv_flow_imp.id(1556269668632956044)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16497,7 +16499,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Sample Maps'
 ,p_static_id=>'sample-maps'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675634334296186762
+,p_plug_template=>2677585639786677191
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16514,7 +16516,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'login'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Sign In'
 ,p_button_position=>'NEXT'
@@ -16532,7 +16534,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>40
 ,p_cMaxlength=>100
 ,p_label_alignment=>'RIGHT'
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-key'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -16553,7 +16555,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_when=>'apex_authentication.persistent_cookies_enabled'
 ,p_display_when2=>'PLSQL'
 ,p_display_when_type=>'EXPRESSION'
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
 ,p_lov_display_extra=>'NO'
@@ -16586,7 +16588,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>40
 ,p_cMaxlength=>100
 ,p_label_alignment=>'RIGHT'
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-user'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'

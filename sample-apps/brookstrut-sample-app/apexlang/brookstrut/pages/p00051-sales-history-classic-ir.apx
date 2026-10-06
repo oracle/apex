@@ -8,12 +8,7 @@ page 51 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -97,7 +92,7 @@ page 51 (
                       h.store_id = s.id and
                       p.ITEM_ID = h.PRODUCT_ID and
                       p.item_id = i.id
-
+                
                 ```
         }
         layout {
@@ -134,7 +129,7 @@ page 51 (
                 formatMask: DD-MON-YYYY HH24:MI:SS
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -151,7 +146,7 @@ page 51 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -172,7 +167,7 @@ page 51 (
                 formatMask: 999G999G999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -188,7 +183,7 @@ page 51 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -211,7 +206,7 @@ page 51 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -232,7 +227,7 @@ page 51 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -248,7 +243,7 @@ page 51 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -259,8 +254,8 @@ page 51 (
                     ```sql
                     select region_name d,
                            region_name r
-                    from #OWNER#.OOW_DEMO_REGIONS
-
+                    from #OWNER#.OOW_DEMO_REGIONS 
+                    
                     ```
             }
         )
@@ -279,7 +274,7 @@ page 51 (
                 formatMask: FML999G999G999G999G990D00
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -295,7 +290,7 @@ page 51 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -317,7 +312,7 @@ page 51 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -333,7 +328,7 @@ page 51 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -352,7 +347,7 @@ page 51 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -371,7 +366,7 @@ page 51 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -401,7 +396,7 @@ page 51 (
                 linkText: #TRANSACTION_ID#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H

@@ -1,0 +1,44 @@
+lov link-types (
+    name: LINK_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry excel-worksheet (
+        sequence: 1
+        display: Excel Worksheet
+        return: EXL
+    )
+
+    entry html-page (
+        sequence: 2
+        display: HTML Page
+        return: HTM
+    )
+
+    entry other (
+        sequence: 10
+        display: Other
+        return: OTH
+    )
+
+    entry pdf-document (
+        sequence: 3
+        display: PDF Document
+        return: PDF
+    )
+
+    entry text-document (
+        sequence: 4
+        display: Text Document
+        return: TXT
+    )
+
+    entry word-document (
+        sequence: 5
+        display: Word Document
+        return: DOC
+    )
+
+)
+

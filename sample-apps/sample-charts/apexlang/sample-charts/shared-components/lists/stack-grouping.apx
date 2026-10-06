@@ -1,0 +1,23 @@
+list stack-grouping (
+    name: Stack Grouping
+
+    entry bar-chart-stack-label-stack-category-page (
+        label: Bar Chart (Stack Label & Stack Category) - Page 9
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the new Stack Category and Stack Label attributes on a Bar chart, to render multiple stacks on a given chart and display the stack total value as a label above each stack.
+        }
+    )
+
+)
+

@@ -13,9 +13,6 @@ page 36 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -42,10 +39,6 @@ page 36 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region activity (
         name: Activity
@@ -57,10 +50,11 @@ page 36 (
                 ```sql
                 select ap.id, 
                        at.activity_type,
-                       ap.comments,
-                       to_char(ap.start_date,'DD-MON-YYYY')||' to '||to_char(ap.end_date,'DD-MON') TIMELINE,
+                       ap.activity,
+                       to_char(ap.start_date,'DD-Mon-YYYY')||' to '||to_char(ap.end_date,'DD-Mon') TIMELINE,
                        tm.first_name||' '||tm.last_name name,
-                       ap.updated
+                       ap.updated,
+                       decode(ap.private_yn,'Y','Private',null) private_label
                 from sp_activities ap,
                      sp_projects p,
                      sp_activity_types at,
@@ -69,15 +63,10 @@ page 36 (
                       p.id = :P36_ID and
                       ap.activity_type_id = at.id and
                       ap.team_member_id = tm.id and
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
                       --
-                      --
-                      --
-                      (  
-                         sysdate between ap.start_date and ap.end_date 
-                      )
+                      (sysdate between ap.start_date and ap.end_date)
                 order by ap.start_date, ap.updated desc
-                
-                
                 ```
             pageItemsToSubmit: P36_ID
         }
@@ -106,6 +95,9 @@ page 36 (
                 t-Report--noBorders
             ]
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: No Open Activity Found
         }
@@ -113,21 +105,21 @@ page 36 (
             type: none
         }
 
+        column ACTIVITY (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
         column ACTIVITY_TYPE (
             reportColumnQueryId: 2
             derivedColumn: N
             type: hidden
             layout {
                 sequence: 30
-            }
-        )
-
-        column COMMENTS (
-            reportColumnQueryId: 3
-            derivedColumn: N
-            type: hidden
-            layout {
-                sequence: 40
             }
         )
 
@@ -150,10 +142,19 @@ page 36 (
                 sequence: 20
             }
             columnFormatting {
-                htmlExpression: #NAME#: #ACTIVITY_TYPE#: #COMMENTS# - #TIMELINE#
+                htmlExpression: "{if PRIVATE_LABEL/}<strong class=\"u-danger-text\">#PRIVATE_LABEL#  </strong>{endif/}#NAME#: #ACTIVITY_TYPE#: #ACTIVITY# - #TIMELINE#"
             }
             sorting {
                 sortable: false
+            }
+        )
+
+        column PRIVATE_LABEL (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
             }
         )
 
@@ -162,7 +163,7 @@ page 36 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 50
+                sequence: 60
             }
         )
 
@@ -174,7 +175,7 @@ page 36 (
                 alignment: end
             }
             layout {
-                sequence: 60
+                sequence: 70
                 columnAlignment: end
             }
             appearance {
@@ -257,9 +258,6 @@ page 36 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None Found
@@ -440,6 +438,9 @@ page 36 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column AREA_INITIATIVE (
@@ -827,6 +828,9 @@ page 36 (
                 t-Report--noBorders
             ]
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: None Found
         }
@@ -950,6 +954,9 @@ page 36 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: None Found
@@ -1097,6 +1104,9 @@ page 36 (
                 t-Report--noBorders
             ]
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: None Found
         }
@@ -1218,9 +1228,6 @@ page 36 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None Found
@@ -1352,6 +1359,9 @@ page 36 (
                 t-Report--noBorders
             ]
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: None Found
         }
@@ -1393,14 +1403,15 @@ page 36 (
                        (select status from sp_task_statuses where id = r.status_id) status,
                        to_char(r.start_date,'DD-MON') || case when r.start_date is not null then ' - ' end ||
                        nvl(to_char(r.target_complete,'DD-MON'),'?') dates,
-                       t.display_seq ob
+                       r.display_sequence ob1,
+                       t.display_seq ob2
                   from sp_tasks r,
                        sp_task_types t
                  where project_id = :P36_ID
                    and nvl(r.task_sub_type_id,r.task_type_id) = t.id
                    and t.static_id not like 'MILESTONE%'
                    and t.static_id not like 'REVIEW%'
-                 order by r.target_complete nulls first, t.display_seq
+                 order by ob1 nulls last, ob2, r.target_complete nulls first
                 ```
             pageItemsToSubmit: P36_ID
         }
@@ -1425,9 +1436,6 @@ page 36 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None Found
@@ -1470,12 +1478,35 @@ page 36 (
             }
         )
 
-        column OB (
+        column OB1 (
             reportColumnQueryId: 7
             derivedColumn: N
-            type: hidden
+            heading {
+                heading: Ob1
+                alignment: end
+            }
             layout {
-                sequence: 130
+                sequence: 150
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column OB2 (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Ob2
+                alignment: end
+            }
+            layout {
+                sequence: 160
+                columnAlignment: end
+            }
+            sorting {
+                sortable: false
             }
         )
 

@@ -2,6 +2,7 @@ buildOption about-page (
     name: About Page
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     advanced {
         featureIdentifier: APPLICATION_ABOUT_PAGE
@@ -15,6 +16,7 @@ buildOption access-control (
     name: Access Control
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     advanced {
         featureIdentifier: APPLICATION_ACCESS_CONTROL
@@ -28,26 +30,57 @@ buildOption activity-planning (
     name: Activity Planning
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Allows a team member to plan activities; For example I am working on these activities (aka NOMENCLATURE_PROJECTS) for these dates.
     }
 )
 
-buildOption ai-project-summaries (
-    name: AI Project Summaries
+buildOption ai-chat (
+    name: AI Chat
+    comments {
+        comments: If enabled, users can ask questions on select pages where chat is included.  This currently includes All &NOMENCLATURE_PROJECTS. and for a specific &NOMENCLATURE_PROJECT..
+    }
+)
+
+buildOption ai-project-summaries-create (
+    name: AI Project Summaries - Create
     status {
-        defaultOnExport: exclude
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: If included, and an AI Service is identified (under Settings), summaries will be generated for &NOMENCLATURE_PROJECTS..
     }
 )
 
-buildOption ai-release-summaries (
-    name: AI Release Summaries
+buildOption ai-project-summaries-view (
+    name: AI Project Summaries - View
+    status {
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: If included, existing AI Summaries for &NOMENCLATURE_PROJECTS. can be viewed. Creation is handled by a separate build option.
+    }
+)
+
+buildOption ai-release-summaries-create (
+    name: AI Release Summaries - Create
+    status {
+        onUpgradeKeepStatus: true
+    }
     comments {
         comments: If included, and an AI Service is identified (under Settings), summaries can be generated for Releases.
+    }
+)
+
+buildOption ai-release-summaries-view (
+    name: AI Release Summaries - View
+    status {
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: If included, existing AI Summaries for Releases can be viewed. Creation is handled by a separate build option.
     }
 )
 
@@ -56,6 +89,7 @@ buildOption approvals (
     status {
         status: include
         defaultOnExport: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Encapsulates all the workflow for NOMENCLATURE_PROJECT approvals.
@@ -66,6 +100,7 @@ buildOption comment-tagging (
     name: Comment Tagging
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: If included, Screen Name will be available under NOMENCLATURE_USERS and NOMENCLATURE_PROJECT comments will be searched for screen names and if someone is 'tagged', they will receive an alert (if they have Comment Alerts enabled).
@@ -76,6 +111,7 @@ buildOption configure-application-features (
     name: Configure Application Features
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     advanced {
         featureIdentifier: APPLICATION_CONFIGURATION
@@ -89,6 +125,7 @@ buildOption email-configured (
     name: Email Configured
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: If email is not configured on your instance, use this to turn off the features that would send emails.
@@ -97,6 +134,9 @@ buildOption email-configured (
 
 buildOption feedback (
     name: Feedback
+    status {
+        onUpgradeKeepStatus: true
+    }
     advanced {
         featureIdentifier: APPLICATION_FEEDBACK
     }
@@ -109,6 +149,7 @@ buildOption groups (
     name: Groups
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Groups allow you to organize contributors.  You define a group, then add NOMENCLATURE_USERS to the group.  When viewing  NOMENCLATURE_USERS, you can filter by groups.  This reduces a large list to a smaller, more targeted, list.
@@ -119,9 +160,20 @@ buildOption include-project-active-toggle (
     name: Include Project Active Toggle
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Identifies a NOMENCLATURE_PROJECT as being actively worked or not.
+    }
+)
+
+buildOption ir-catalog (
+    name: AI Home Page Chat
+    status {
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Encapsulates Reports that can be used by AI off the Home page to assist a user in finding the proper page to answer their question.  This also controls viewing the Report Catalog under Administration.
     }
 )
 
@@ -129,6 +181,7 @@ buildOption kanban (
     name: Kanban
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Kanban Board, Cumulative Flow, Control Chart and Planning Board.
@@ -139,6 +192,7 @@ buildOption project-groups (
     name: Project Groups
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Allows grouping of NOMENCLATURE_PROJECTS across NOMENCLATURE_INITIATIVES.
@@ -149,6 +203,7 @@ buildOption releases (
     name: Releases
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Used to exclude the use of Releases.
@@ -159,6 +214,7 @@ buildOption reviews (
     name: Reviews
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: If disabled, Reviews will not be included within NOMENCLATURE_PROJECTS.
@@ -169,6 +225,7 @@ buildOption show-friendly-identifier (
     name: Show friendly identifier
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Each project gets a friendly identifier by default.  Friendly identifiers are alternative primary keys that are human readable. For example "AA01" is a friendly identifier.  This setting controls if the identifiers are displayed in the UI of the application.
@@ -179,9 +236,21 @@ buildOption subscriptions (
     name: Subscriptions
     status {
         status: include
+        onUpgradeKeepStatus: true
     }
     comments {
         comments: Allows enable/disable of Notification Subscriptions, sent via email.  This should be disabled if email is not configured on this instance.
+    }
+)
+
+buildOption team-calendar (
+    name: Team Calendar
+    status {
+        status: include
+        onUpgradeKeepStatus: true
+    }
+    comments {
+        comments: Allows users to track out of the office events to assist with availability.
     }
 )
 

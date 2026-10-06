@@ -12,12 +12,11 @@ page 6305 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -93,7 +92,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 20
+            sequence: 30
             slot: body
         }
         appearance {
@@ -168,7 +167,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 30
+            sequence: 40
             slot: body
         }
         appearance {
@@ -222,7 +221,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 40
+            sequence: 50
             slot: body
         }
         appearance {
@@ -330,7 +329,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 70
+            sequence: 80
             slot: body
         }
         appearance {
@@ -344,41 +343,38 @@ page 6305 (
     )
 
     region page_plug-5 (
-        name: 26.1
+        name: 26.2
         type: staticContent
         source {
             htmlCode:
                 ```html
                 <h3>Theme Updates</h3>
-                  <ul>
-                      <li>New <strong>Iris Theme Style</strong> - new default theme style providing a fresh baseline for applications.</li>
-                      <li>New <strong>Metric Card Template Component</strong> - purpose-built for dashboards and KPI metrics.</li>
-                      <li>New <strong>Actions Template Partial</strong> - add buttons to Interactive Reports.</li>
-                      <li>New <strong>Flex Container Template Component</strong> - more flexible region layouts in a declarative way.</li>
-                      <li>New <strong>Blank Page Template</strong> - lightweight option for building fully custom layouts.</li>
-                      <li><strong>Font APEX 2.5</strong> - updated icon library with 66 new icons and modifiers.</li>
-                      <li><strong>Component Grouping</strong> - Avatar, Timeline, Comments, and Media List now support grouped display.</li>
-                      <li><strong>Inbound/Outbound Comments</strong> - support for threaded comment styling within the Comments Template Component.</li>
-                      <li><strong>Tabs Container</strong> - region icons can now be rendered within tabs.</li>
-                      <li><strong>Button Component</strong> - added data-count support for badge-like indicators.</li>
-                      <li><strong>Right Sidebar</strong> - new JavaScript events exposed for runtime customization.</li>
-                      <li><strong>CSS Variables</strong> - expanded variable coverage across core components for greater themeability.</li>
-                      <li><strong>Utility Classes</strong> - additional helpers for overflow handling, tabular number formatting, and flexbox layout.</li>
-                      <li><strong>Page Templates</strong> - vertical alignment options for content regions.</li>
-                      <li><strong>Navigation Menu</strong> - option to remove default file icons when collapse mode is set to hidden.</li>
-                      <li><strong>Top and Bottom Drawers</strong> - new drawer template positions for flexible UI layouts.</li>
-                      <li><strong>Footer Slot in Drawers and Dialogs</strong> - additional template slot for placing actions or metadata.</li>
-                  </ul>
+                <ul>
+                    <li>New <strong>Subtle Color Utility</strong> - added a new modifier utility to create a low-emphasis background with matching color text.</li>
+                    <li><strong>Iris Theme Roller</strong> - expanded header and navigation options with Dark, Light, Pillar Dark, and Pillar Light styles.</li>
+                    <li><strong>Header Pillar Strip</strong> - added the ability to show or hide the Header Pillar Strip.</li>
+                    <li><strong>Iris Theme Style</strong> - updated default colors for headers, navigation, body content, title bars, active states, and pillar backgrounds.</li>
+                    <li><strong>Redwood Light</strong> - renamed to <strong>Redwood Light [Legacy]</strong>.</li>
+                    <li><strong>Utility CSS Framework Tokens</strong> - expanded use for spacing, sizing, typography, borders, radii, and shadows.</li>
+                    <li><strong>Logical CSS Properties</strong> - extended migration for improved RTL and writing-mode support.</li>
+                    <li><strong>Metric Card</strong> - improved responsiveness in narrow containers using container queries.</li>
+                    <li><strong>Component Styling</strong> - standardized styling and fallback behavior across alerts, buttons, forms, cards, reports, navigation, calendars, dialogs, and trees.</li>
+                    <li><strong>Processing Spinners</strong> - added a delayed reveal to reduce visual flicker.</li>
+                    <li><strong>Reduced Motion</strong> - processing spinners now respect <code>prefers-reduced-motion</code>.</li>
+                    <li><strong>Tree Navigation</strong> - improved RTL behavior for selected indicators.</li>
+                    <li><strong>FullCalendar</strong> - corrected RTL button corner handling.</li>
+                    <li><strong>Autocomplete</strong> - improved field sizing and focus styling in active Interactive Grid cells.</li>
+                </ul>
                 
-                  <h3>Bug Fixes</h3>
-                  <ul>
-                      <li>Fixed issue where the Badge Component rounded modifier did not apply border-radius correctly.</li>
-                      <li>Fixed issue where the Inline Drawers "Remove Body Padding" option did not apply as expected.</li>
-                      <li>Updated background color for selected nodes in the Tree Component.</li>
-                      <li>Corrected dark header inconsistencies in Redwood Light Theme.</li>
-                      <li>Fixed issue where Modal Pages briefly flashed a dark background before content load.</li>
-                      <li>Misc bug fixes and Redwood Light enhancements, including Dialog and Drawer fixes.</li>
-                  </ul>
+                <h3>Bug Fixes</h3>
+                <ul>
+                    <li>Fixed Tree Navigation active, selected-parent, toggle, border, and accent colors.</li>
+                    <li>Fixed Metric Card wrapping behavior.</li>
+                    <li>Corrected avatar-initial and Metric Card group-title font weights.</li>
+                    <li>Corrected Status List line-height defaults.</li>
+                    <li>Fixed subtle-color, active-background, shadow, border-width, and border-radius fallbacks.</li>
+                    <li>Improved body-title contrast and Header Pillar styling.</li>
+                </ul>
                 ```
         }
         layout {
@@ -423,6 +419,58 @@ page 6305 (
                     <li>Fixed layout issue when the navigation menu was open while the viewport is smaller than 420px.</li>
                     <li>Fixed issue with interactive grid filter chip styles.</li>
                 </ul>
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                js-headingLevel-2
+            ]
+        }
+    )
+
+    region page_plug-5_2 (
+        name: 26.1
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <h3>Theme Updates</h3>
+                  <ul>
+                      <li>New <strong>Iris Theme Style</strong> - new default theme style providing a fresh baseline for applications.</li>
+                      <li>New <strong>Metric Card Template Component</strong> - purpose-built for dashboards and KPI metrics.</li>
+                      <li>New <strong>Actions Template Partial</strong> - add buttons to Interactive Reports.</li>
+                      <li>New <strong>Flex Container Template Component</strong> - more flexible region layouts in a declarative way.</li>
+                      <li>New <strong>Blank Page Template</strong> - lightweight option for building fully custom layouts.</li>
+                      <li><strong>Font APEX 2.5</strong> - updated icon library with 66 new icons and modifiers.</li>
+                      <li><strong>Component Grouping</strong> - Avatar, Timeline, Comments, and Media List now support grouped display.</li>
+                      <li><strong>Inbound/Outbound Comments</strong> - support for threaded comment styling within the Comments Template Component.</li>
+                      <li><strong>Tabs Container</strong> - region icons can now be rendered within tabs.</li>
+                      <li><strong>Button Component</strong> - added data-count support for badge-like indicators.</li>
+                      <li><strong>Right Sidebar</strong> - new JavaScript events exposed for runtime customization.</li>
+                      <li><strong>CSS Variables</strong> - expanded variable coverage across core components for greater themeability.</li>
+                      <li><strong>Utility Classes</strong> - additional helpers for overflow handling, tabular number formatting, and flexbox layout.</li>
+                      <li><strong>Page Templates</strong> - vertical alignment options for content regions.</li>
+                      <li><strong>Navigation Menu</strong> - option to remove default file icons when collapse mode is set to hidden.</li>
+                      <li><strong>Top and Bottom Drawers</strong> - new drawer template positions for flexible UI layouts.</li>
+                      <li><strong>Footer Slot in Drawers and Dialogs</strong> - additional template slot for placing actions or metadata.</li>
+                  </ul>
+                
+                  <h3>Bug Fixes</h3>
+                  <ul>
+                      <li>Fixed issue where the Badge Component rounded modifier did not apply border-radius correctly.</li>
+                      <li>Fixed issue where the Inline Drawers "Remove Body Padding" option did not apply as expected.</li>
+                      <li>Updated background color for selected nodes in the Tree Component.</li>
+                      <li>Corrected dark header inconsistencies in Redwood Light Theme.</li>
+                      <li>Fixed issue where Modal Pages briefly flashed a dark background before content load.</li>
+                      <li>Misc bug fixes and Redwood Light enhancements, including Dialog and Drawer fixes.</li>
+                  </ul>
                 ```
         }
         layout {
@@ -483,7 +531,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 50
+            sequence: 60
             slot: body
         }
         appearance {
@@ -560,7 +608,7 @@ page 6305 (
                 ```
         }
         layout {
-            sequence: 60
+            sequence: 70
             slot: body
         }
         appearance {

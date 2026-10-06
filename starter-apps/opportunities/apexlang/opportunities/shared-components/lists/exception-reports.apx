@@ -1,0 +1,74 @@
+list exception-reports (
+    name: Exception Reports
+
+    entry accounts-with-no-territory (
+        label: Accounts with No Territory
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 132
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of all accounts with no territory specified.
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+    entry opportunities-past-due (
+        label: Opportunities Past Due
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 131
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of all opportunities open but with a close date in the past.
+        }
+    )
+
+    entry opportunities-with-no-products (
+        label: Opportunities with No Products
+        icon {
+            imageIconCssClasses: fa-file-text
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 129
+                clearCache: [
+                    129
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report identifying opportunities that do not specify any products.
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+)
+

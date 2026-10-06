@@ -1,0 +1,93 @@
+aiAgent all-projects-agent (
+    name: All Projects Agent
+    genAI {
+        systemPrompt:
+            ```
+            You are a data analyst, you will answer questions about projects and the area and initiative they belong to plus the owner and many other details listed within.
+            
+            The current user is &APP_USER_FIRST_LAST_NAME..
+            
+            The current date is &APP_SYSDATE..
+            
+            You can use the following tools:
+            
+            1) get_projects
+                - Optionally pass parameters to filter the list of projects.
+                - Call the tool again each time you need filter by different values.
+                - Never depend on the results from full list for detailed analysis, as it may be too large to process.
+                - Do not call this tool multiple times if you have already called it with the same values.
+            ```
+        welcomeMessage: What is your project related question?
+    }
+
+    tool get-projects (
+        name: get_projects
+        type: plugin/retrieveDataAdvanced
+        executionPoint: onDemand
+        description: Returns the list of projects
+        settings {
+            sqlQuery:
+                ```sql
+                select project,
+                       area || ' - ' || initiative area_initiative,
+                       nvl(release,'Not Targeted') release,
+                       nvl(focus_area,'None') focus_area,
+                       nvl(owner_name,'None') owner_name,
+                       priority, 
+                       pct_complete || '% ' percent_complete,
+                       project_size,
+                       status,
+                       nvl(to_char(target_complete,'DD-MON-YYYY'),'Not Specified') target_complete,
+                       nvl(contributor_names,'None Identified') contributors,
+                       nvl(reviews,'None Identified') reviews,
+                       nvl(milestones,'None Identified') milestones,
+                       nvl(approvals,'None Yet') approvals,
+                       last_updated_date
+                  from sp_project_details_v
+                 where nvl(:OWNER_NAME, owner_name) = owner_name
+                   and nvl(:PRIORITY, priority) =  priority
+                   and nvl(:RELEASE, release) = release
+                   and nvl(:PROJECT_SIZE, project_size) = project_size
+                   and nvl(:PERCENT_COMPLETE, pct_complete) = pct_complete
+                ```
+        }
+
+        parameter OWNER_NAME (
+            description: Optional filter for the exact owner name
+            validation {
+                required: false
+            }
+        )
+
+        parameter PERCENT_COMPLETE (
+            description: Optional filter for percent complete - a number between 0 and 100, in increments of 10, that corresponds to how complete the &NOMENCLATURE_PROJECT. is
+            validation {
+                required: false
+            }
+        )
+
+        parameter PRIORITY (
+            description: Optional filter for the priority of the &NOMENCLATURE_PROJECT. (P1-P5, where P1 is the highest)
+            validation {
+                required: false
+            }
+        )
+
+        parameter PROJECT_SIZE (
+            description: Optional filter for the size of &NOMENCLATURE_PROJECT., usually S through 2XL
+            validation {
+                required: false
+            }
+        )
+
+        parameter RELEASE (
+            description: Optional filter for the release the &NOMENCLATURE_PROJECT. is associated with (e.g. "OCI 22.1")
+            validation {
+                required: false
+            }
+        )
+
+    )
+
+)
+

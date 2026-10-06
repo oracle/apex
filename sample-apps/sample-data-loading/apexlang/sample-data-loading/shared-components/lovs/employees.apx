@@ -1,0 +1,13 @@
+lov employees (
+    name: EMPLOYEES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from   eba_demo_load_emp
+            order by 1
+            ```
+    }
+)
+

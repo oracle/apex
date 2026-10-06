@@ -1,0 +1,13 @@
+lov quarter (
+    name: QUARTER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME display_value, PERIOD_NAME return_value 
+            from EBA_SALES_SALES_PERIODS
+            order by first_day
+            ```
+    }
+)
+

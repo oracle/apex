@@ -1,0 +1,138 @@
+list string-functions (
+    name: String Functions
+
+    entry coalesce (
+        label: coalesce()
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'COALESCE'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: COALESCE
+                }
+            }
+        }
+    )
+
+    entry instr (
+        label: instr()
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'INSTR'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: INSTR
+                }
+            }
+        }
+    )
+
+    entry nvl (
+        label: nvl()
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'NVL'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: NVL
+                }
+            }
+        }
+    )
+
+    entry nvl-2 (
+        label: nvl2()
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'NVL2'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: NVL2
+                }
+            }
+        }
+    )
+
+    entry replace (
+        label: replace()
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'REPLACE'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: REPLACE
+                }
+            }
+        }
+    )
+
+    entry substr (
+        label: substr()
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'SUBSTR'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: SUBSTR
+                }
+            }
+        }
+    )
+
+    entry trim (
+        label: trim()
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: expression
+            plsqlExpression: :P27_FUNCTION = 'TRIM'
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: TRIM
+                }
+            }
+        }
+    )
+
+)
+

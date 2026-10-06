@@ -1,0 +1,20 @@
+lov answer-view-options (
+    name: ANSWER VIEW OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry detailed-answers (
+        sequence: 10
+        display: Detailed Answers
+        return: DA
+    )
+
+    entry summarized-answers (
+        sequence: 20
+        display: Summarized Answers
+        return: SA
+    )
+
+)
+

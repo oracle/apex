@@ -1,0 +1,315 @@
+jsonSource eba_demo_json_support_ticket (
+    name: EBA_DEMO_JSON_SUPPORT_TICKET
+    type: jsonCollectionTable
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_SUPPORT_TICKET
+    }
+    dataProfile {
+        name: support_ticket_json source
+    }
+
+    dataProfileColumn author (
+        columnName: AUTHOR
+        source {
+            sequence: 3
+            parentColumn: @comments
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: author
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn c-id (
+        columnName: C_ID
+        source {
+            sequence: 1
+            parentColumn: @data
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: _id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn comment-id (
+        columnName: COMMENT_ID
+        source {
+            sequence: 5
+            parentColumn: @comments
+            dataType: number
+        }
+        parsing {
+            pathExpression: comment_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn comments (
+        columnName: COMMENTS
+        source {
+            sequence: 13
+            parentColumn: @data
+            dataType: array
+        }
+        parsing {
+            pathExpression: comments
+        }
+        advanced {
+            sourceDataType: array
+            common: false
+        }
+    )
+
+    dataProfileColumn comments-pos (
+        columnName: COMMENTS_POS
+        source {
+            sequence: 7
+            parentColumn: @comments
+            lineNumber: true
+        }
+    )
+
+    dataProfileColumn concern-order-id (
+        columnName: CONCERN_ORDER_ID
+        source {
+            sequence: 10
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.order_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn concern-product-id (
+        columnName: CONCERN_PRODUCT_ID
+        source {
+            sequence: 12
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.product_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn concern-store-id (
+        columnName: CONCERN_STORE_ID
+        source {
+            sequence: 11
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: concern.store_id
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn created-at (
+        columnName: CREATED_AT
+        source {
+            sequence: 6
+            parentColumn: @comments
+            dataType: date
+        }
+        parsing {
+            pathExpression: created_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn created-at-2 (
+        columnName: CREATED_AT2
+        source {
+            sequence: 16
+            parentColumn: @data
+            dataType: date
+        }
+        parsing {
+            pathExpression: created_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 19
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: customer_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn data (
+        columnName: DATA
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: DATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn description (
+        columnName: DESCRIPTION
+        source {
+            sequence: 20
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: description
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn message (
+        columnName: MESSAGE
+        source {
+            sequence: 4
+            parentColumn: @comments
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: message
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn priority (
+        columnName: PRIORITY
+        source {
+            sequence: 14
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: priority
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn resolution (
+        columnName: RESOLUTION
+        source {
+            sequence: 17
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: resolution
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn status (
+        columnName: STATUS
+        source {
+            sequence: 9
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn ticket-id (
+        columnName: TICKET_ID
+        source {
+            sequence: 15
+            parentColumn: @data
+            dataType: number
+        }
+        parsing {
+            pathExpression: ticket_id
+        }
+        advanced {
+            sourceDataType: number
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 8
+            parentColumn: @data
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: title
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn updated-at (
+        columnName: UPDATED_AT
+        source {
+            sequence: 18
+            parentColumn: @data
+            dataType: date
+        }
+        parsing {
+            pathExpression: updated_at
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+)
+

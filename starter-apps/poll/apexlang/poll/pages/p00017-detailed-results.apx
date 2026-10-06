@@ -7,12 +7,11 @@ page 17 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -516,7 +515,7 @@ page 17 (
                 sequence: 43
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AH
@@ -536,7 +535,7 @@ page 17 (
                 sequence: 133
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AQ
@@ -556,7 +555,7 @@ page 17 (
                 sequence: 143
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AR
@@ -576,7 +575,7 @@ page 17 (
                 sequence: 153
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AS
@@ -596,7 +595,7 @@ page 17 (
                 sequence: 163
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AT
@@ -616,7 +615,7 @@ page 17 (
                 sequence: 173
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AU
@@ -636,7 +635,7 @@ page 17 (
                 sequence: 183
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AV
@@ -656,7 +655,7 @@ page 17 (
                 sequence: 193
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AW
@@ -676,7 +675,7 @@ page 17 (
                 sequence: 203
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AX
@@ -696,7 +695,7 @@ page 17 (
                 sequence: 213
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AY
@@ -716,7 +715,7 @@ page 17 (
                 sequence: 223
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AZ
@@ -736,7 +735,7 @@ page 17 (
                 sequence: 53
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AI
@@ -756,7 +755,7 @@ page 17 (
                 sequence: 233
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BA
@@ -776,7 +775,7 @@ page 17 (
                 sequence: 63
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AJ
@@ -796,7 +795,7 @@ page 17 (
                 sequence: 73
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AK
@@ -816,7 +815,7 @@ page 17 (
                 sequence: 83
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AL
@@ -836,7 +835,7 @@ page 17 (
                 sequence: 93
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AM
@@ -856,7 +855,7 @@ page 17 (
                 sequence: 103
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AN
@@ -876,7 +875,7 @@ page 17 (
                 sequence: 113
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AO
@@ -896,7 +895,7 @@ page 17 (
                 sequence: 123
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AP
@@ -917,7 +916,7 @@ page 17 (
                 sequence: 33
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AG
@@ -944,7 +943,7 @@ page 17 (
                 linkText: #RESPONDENT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -963,7 +962,7 @@ page 17 (
                 sequence: 243
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: BB
@@ -982,7 +981,7 @@ page 17 (
                 sequence: 29
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AC

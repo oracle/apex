@@ -7,13 +7,6 @@ page 99 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: "All &NOMENCLATURE_PROJECT. Milestones, Reviews and tasks that are overdue.  Including who each is assigned to, current status, and target completion. "
     }
@@ -181,6 +174,10 @@ page 99 (
         performance {
             maxRowsToProcess: 1000000
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Project Milestones, Reviews and tasks that are overdue.  Including who each is assigned to, current status, and target completion
+        }
         advanced {
             savedReportMappingIdentifier: 26347686983893493033
         }
@@ -194,7 +191,7 @@ page 99 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -210,7 +207,7 @@ page 99 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -226,7 +223,7 @@ page 99 (
                 sequence: 240
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -242,7 +239,7 @@ page 99 (
                 sequence: 210
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -258,7 +255,7 @@ page 99 (
                 sequence: 200
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -274,7 +271,7 @@ page 99 (
                 sequence: 230
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -293,7 +290,7 @@ page 99 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -309,7 +306,7 @@ page 99 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -325,7 +322,7 @@ page 99 (
                 sequence: 280
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AE
@@ -341,7 +338,7 @@ page 99 (
                 sequence: 270
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AD
@@ -357,7 +354,7 @@ page 99 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -373,7 +370,7 @@ page 99 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -399,7 +396,7 @@ page 99 (
                 linkText: #NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -415,7 +412,7 @@ page 99 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -442,7 +439,7 @@ page 99 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -458,7 +455,7 @@ page 99 (
                 sequence: 250
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AB
@@ -474,7 +471,7 @@ page 99 (
                 sequence: 190
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
@@ -490,7 +487,7 @@ page 99 (
                 sequence: 260
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AC
@@ -506,7 +503,7 @@ page 99 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -525,7 +522,7 @@ page 99 (
                 sequence: 170
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: S
@@ -541,7 +538,7 @@ page 99 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -557,7 +554,7 @@ page 99 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -576,7 +573,7 @@ page 99 (
                 formatMask: DD-Mon-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: T
@@ -592,7 +589,7 @@ page 99 (
                 sequence: 220
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Y
@@ -608,7 +605,7 @@ page 99 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -627,7 +624,7 @@ page 99 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -643,7 +640,7 @@ page 99 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I

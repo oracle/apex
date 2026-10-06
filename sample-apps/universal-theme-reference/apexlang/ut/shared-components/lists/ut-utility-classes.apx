@@ -1,0 +1,101 @@
+list ut-utility-classes (
+    name: UT - Utility Classes
+
+    entry color-and-status-modifiers (
+        label: Color and Status Modifiers
+        icon {
+            imageIconCssClasses: fa-eyedropper
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 6302
+            }
+        }
+        userDefinedAttributes {
+            1: These color and status modifier classes enable you to add color to custom components.
+            6: u-color-13
+        }
+    )
+
+    entry content-modifiers (
+        label: Content Modifiers
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6304
+            }
+        }
+        userDefinedAttributes {
+            1: These content modifiers enable you to control the appearance of text, headings, and paragraphs.
+            6: u-color-13
+        }
+    )
+
+    entry css-variables (
+        label: CSS Variables
+        icon {
+            imageIconCssClasses: fa-variable
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 6307
+            }
+        }
+        userDefinedAttributes {
+            1: Style references for your components.
+            6: u-color-13
+        }
+    )
+
+    entry layout-modifiers (
+        label: Layout Modifiers
+        icon {
+            imageIconCssClasses: fa-fit-to-size
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6303
+            }
+        }
+        userDefinedAttributes {
+            1: These CSS classes enable you to modify layout blocks by setting margins, paddings, and more.
+            6: u-color-13
+        }
+    )
+
+    entry responsive-classes (
+        label: Responsive Classes
+        icon {
+            imageIconCssClasses: fa-expand
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 300
+                request: responsive_design
+            }
+        }
+        userDefinedAttributes {
+            1: Classes with responsive behaviors for different screen sizes.
+            6: u-color-13
+        }
+    )
+
+)
+

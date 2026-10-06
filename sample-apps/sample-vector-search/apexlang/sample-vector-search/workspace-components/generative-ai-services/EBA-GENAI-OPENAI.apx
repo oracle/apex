@@ -9,6 +9,7 @@ genAIService EBA_GENAI_OPENAI (
     }
     advanced {
         modelName: gpt-4o
+        providerApi: responses
     }
 )
 

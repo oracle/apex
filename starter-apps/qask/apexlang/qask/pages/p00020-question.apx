@@ -6,9 +6,6 @@ page 20 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -75,7 +72,7 @@ page 20 (
     }
     security {
         authentication: public
-        formAutoComplete: false
+        pageAccessProtection: unrestricted
     }
 
     region answered (

@@ -1,0 +1,14 @@
+lov issue-statuses (
+    name: ISSUE STATUSES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_cust_issue_statuses
+             order by 1
+            ```
+    }
+)
+

@@ -1,0 +1,229 @@
+list report-use-cases (
+    name: Report Use Cases
+
+    entry bind-variables (
+        label: Bind Variables
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to filter an interactive report using a bind variable which derives its value from an Oracle APEX page item.
+        }
+    )
+
+    entry column-format-masks (
+        label: Column Format Masks
+        icon {
+            imageIconCssClasses: fa-columns
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: See various formatting options for dates, numbers, and percent bar charts which are available from within classic and interactive reports.  This example uses an interactive report but the format masks are common between interactive reports and classic reports.
+        }
+    )
+
+    entry custom-buttons (
+        label: Custom Buttons
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: An example of how to turn report cells into buttons via CSS.  This example uses an interactive report.
+        }
+    )
+
+    entry drill-down-to-interactive-grid (
+        label: Drill Down to Interactive Grid
+        icon {
+            imageIconCssClasses: fa-level-down
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 40
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Includes drill down links from one interactive grid to another.
+        }
+    )
+
+    entry drill-down-to-interactive-report (
+        label: Drill Down to Interactive Report
+        icon {
+            imageIconCssClasses: fa-level-down
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Includes drill down links from one interactive report to another.
+        }
+    )
+
+    entry filtering (
+        label: Filtering
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Filter classic report results using a left hand side-bar control region.  Uses bind variable references to properly constrain the report.
+        }
+    )
+
+    entry interactive-report-query-api (
+        label: Interactive Report Query API
+        icon {
+            imageIconCssClasses: fa-terminal
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: This example shows how to call an Oracle APEX runtime API to get the SQL statement that corresponds to the current user's interactive report filters and use this to drive a chart on another page.
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        icon {
+            imageIconCssClasses: fa-chain
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to link to an interactive grid, including syntax to clear settings, reset settings, call named reports, pass filters, etc.
+        }
+    )
+
+    entry linking-to-interactive-reports (
+        label: Linking to Interactive Reports
+        icon {
+            imageIconCssClasses: fa-chain
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to link to an interactive report, including syntax to clear settings, reset settings, call named reports, pass filters, etc.
+        }
+    )
+
+    entry non-tabular-templates (
+        label: Non-Tabular Templates
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+        userDefinedAttributes {
+            1: Classic reports are template based, Interactive Reports are not.  This example demonstrates the use of a classic report template.
+        }
+    )
+
+    entry report-highlighting (
+        label: Report Highlighting
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to use the built in row and column highlighting capabilities of Interactive Reports.
+        }
+    )
+
+    entry reporting-from-oracle-apex-collections (
+        label: Reporting from Oracle APEX Collections
+        icon {
+            imageIconCssClasses: fa-paste
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 38
+                clearCache: 38
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates the technique of building reports based upon Oracle APEX collections.  This allows for result sets to be manipulated and cached before being reporting on.
+        }
+    )
+
+)
+

@@ -6,9 +6,6 @@ page 1 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
@@ -41,239 +38,92 @@ page 1 (
               text-align: center !important;
             }
             
-            .hidden {
-               display : none;
-            }
             ```
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region all-endpoints (
         name: All Endpoints
-        type: staticContent
-        layout {
-            sequence: 20
-            parentRegion: @tabs
-            slot: tabs
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-    )
-
-    region background-progress (
-        name: Background Progress
-        type: staticContent
-        layout {
-            sequence: 40
-            parentRegion: @tabs
-            slot: tabs
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-    )
-
-    region business-object-attributes (
-        name: Business Object Attributes
         type: interactiveReport
         source {
             location: localDatabase
-            tableName: EBA_UTIL_FACAT_ENDPOINT_ATTRS
-            whereClause: BO_ENDPOINT_ID = :P1_SELECTED_BO_ID
-            pageItemsToSubmit: P1_SELECTED_BO_ID
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.ID,
+                       c.TITLE,
+                       c.ENDPOINT_URL,
+                       b.ENDPOINT_URL BASE_URL,
+                       c.RESOURCE_NAME
+                  from eba_util_farest_catalog c
+                  left outer join eba_util_farest_cat_baseurl b on b.id = c.baseurl_id
+                ```
         }
         layout {
             sequence: 20
-            parentRegion: @business-object-details-container
-            slot: subRegions
+            parentRegion: @tabs
+            slot: tabs
         }
         appearance {
-            template: @/blank-with-attributes
+            template: @/interactive-report
             templateOptions: #DEFAULT#
         }
         advanced {
             htmlDomId: all-endpoints-tab
         }
         pagination {
-            type: rowRangesXToYOfZ
-            displayPosition: topRight
+            type: rowRangesXToY
         }
         performance {
             maxRowsToProcess: 1000000
         }
         advanced {
-            savedReportMappingIdentifier: 6883534377574514
+            savedReportMappingIdentifier: 659743281263019509
         }
 
-        column ATTR_ALLOW_CHANGES (
+        column BASE_URL (
             type: plainText
             heading {
-                heading: Editable
+                heading: Base Url
             }
             layout {
-                sequence: 150
+                sequence: 50
             }
             source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: N
-            }
-        )
-
-        column ATTR_DESCRIPTION (
-            type: plainText
-            heading {
-                heading: Description
-            }
-            layout {
-                sequence: 80
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: G
-            }
-        )
-
-        column ATTR_IS_QUERYABLE (
-            type: plainText
-            heading {
-                heading: Queryable?
-            }
-            layout {
-                sequence: 120
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: K
-            }
-        )
-
-        column ATTR_IS_REQUIRED (
-            type: plainText
-            heading {
-                heading: Required?
-            }
-            layout {
-                sequence: 130
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: L
-            }
-        )
-
-        column ATTR_LEN (
-            type: plainText
-            heading {
-                heading: Length
-                alignment: end
-            }
-            layout {
-                sequence: 60
-                columnAlignment: end
-            }
-            source {
-                dataType: NUMBER
-            }
-            advanced {
-                endUserAlias: E
-            }
-        )
-
-        column ATTR_NAME (
-            type: plainText
-            heading {
-                heading: Name
-            }
-            layout {
-                sequence: 40
-            }
-            columnFormatting {
-                htmlExpression: <tt>#ATTR_NAME#</tt>
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: C
-            }
-        )
-
-        column ATTR_TITLE (
-            type: plainText
-            heading {
-                heading: Label
-            }
-            layout {
-                sequence: 70
-            }
-            source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
             }
         )
 
-        column ATTR_TYPE (
+        column ENDPOINT_URL (
             type: plainText
             heading {
-                heading: Type
-            }
-            layout {
-                sequence: 50
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: D
-            }
-        )
-
-        column BO_ENDPOINT_ID (
-            type: hidden
-            heading {
-                heading: Bo Endpoint Id
+                heading: Endpoint&nbsp;URL
+                alignment: center
             }
             layout {
                 sequence: 20
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <button type="button" title="Copy #RESOURCE_NAME# endpoint URL to clipboard" aria-label="Copy #RESOURCE_NAME# endpoint URL to clipboard" data-text="#ENDPOINT_URL#"
+                    class="t-Button t-Button--noLabel t-Button--icon">
+                        <span aria-hidden="true" class="t-Icon fa fa-clone"></span>
+                    </button>
+                    ```
             }
             source {
-                dataType: NUMBER
+                dataType: varchar2
             }
             advanced {
-                endUserAlias: B
-            }
-        )
-
-        column DATA_PROFILE_COLUMN_NAME (
-            type: plainText
-            heading {
-                heading: Data Profile Column Name
-            }
-            layout {
-                sequence: 30
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: S
+                htmlDomId: all-endpoint-url
+                endUserAlias: C
             }
         )
 
@@ -287,26 +137,42 @@ page 1 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
             }
         )
 
-        column POSITION (
+        column RESOURCE_NAME (
             type: plainText
             heading {
-                heading: Position
+                heading: Resource Name
             }
             layout {
-                sequence: 190
+                sequence: 30
             }
             source {
-                dataType: NUMBER
+                dataType: varchar2
             }
             advanced {
-                endUserAlias: R
+                endUserAlias: E
+            }
+        )
+
+        column TITLE (
+            type: plainText
+            heading {
+                heading: Title
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
             }
         )
 
@@ -314,417 +180,61 @@ page 1 (
             borderWidth: 0.5
             borderColor: #666666
         }
+        pageHeader {
+            pageHeaderText: All Endpoints
+        }
 
-        savedReport 86417 (
+        savedReport 6674043 (
             visibility: primaryDefault
             view {
-                rowsPerPage: 10
+                rowsPerPage: 100000
             }
 
-            displayColumn ATTR_ALLOW_CHANGES (
-                sequence: 8
-            )
-
-            displayColumn ATTR_DESCRIPTION (
-                sequence: 5
-            )
-
-            displayColumn ATTR_IS_QUERYABLE (
-                sequence: 6
-            )
-
-            displayColumn ATTR_IS_REQUIRED (
-                sequence: 7
-            )
-
-            displayColumn ATTR_LEN (
-                sequence: 3
-            )
-
-            displayColumn ATTR_NAME (
-                sequence: 1
-            )
-
-            displayColumn ATTR_TITLE (
+            displayColumn BASE_URL (
                 sequence: 4
             )
 
-            displayColumn ATTR_TYPE (
+            displayColumn ENDPOINT_URL (
+                sequence: 1
+            )
+
+            displayColumn RESOURCE_NAME (
                 sequence: 2
+            )
+
+            displayColumn TITLE (
+                sequence: 3
+            )
+
+            sort (
+                column: RESOURCE_NAME
+                sort {
+                    sequence: 1
+                }
+            )
+
+            controlBreak (
+                column: BASE_URL
+                layout {
+                    sequence: 1
+                }
             )
 
         )
 
     )
 
-    region business-object-details (
-        name: Business Object Details
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            tableName: EBA_UTIL_FACAT_ENDPOINTS
-            whereClause: ID = :P1_SELECTED_BO_ID
-            pageItemsToSubmit: P1_SELECTED_BO_ID
-        }
-        layout {
-            sequence: 10
-            parentRegion: @business-object-details-container
-            slot: subRegions
-        }
-        appearance {
-            template: @/blank-with-attributes-no-grid
-            templateOptions: #DEFAULT#
-        }
-        componentAppearance {
-            display: report
-        }
-        settings {
-            overline: &PATH.
-            title: &NAME.
-            description: &DESCRIPTION.
-        }
-        messages {
-            whenNoDataFound: Select a Business Object in the List or Tree
-            noDataFoundIcon: fa-building-o
-        }
-
-        column CATALOG_ID (
-            layout {
-                sequence: 20
-            }
-            source {
-                databaseColumn: CATALOG_ID
-                dataType: number
-            }
-        )
-
-        column DESCRIPTION (
-            layout {
-                sequence: 50
-            }
-            source {
-                databaseColumn: DESCRIPTION
-                dataType: varchar2
-            }
-        )
-
-        column ID (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ID
-                dataType: number
-                primaryKey: true
-            }
-        )
-
-        column NAME (
-            layout {
-                sequence: 40
-            }
-            source {
-                databaseColumn: NAME
-                dataType: varchar2
-            }
-        )
-
-        column PARENT_BO_ENDPOINT_ID (
-            layout {
-                sequence: 30
-            }
-            source {
-                databaseColumn: PARENT_BO_ENDPOINT_ID
-                dataType: number
-            }
-        )
-
-        column PATH (
-            layout {
-                sequence: 60
-            }
-            source {
-                databaseColumn: PATH
-                dataType: varchar2
-            }
-        )
-
-    )
-
-    region business-object-details-container (
-        name: Business Object Details Container
+    region background-progress (
+        name: Background Progress
         type: staticContent
         layout {
-            sequence: 30
-            parentRegion: @all-endpoints
-            slot: subRegions
-            startNewRow: false
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-    )
-
-    region business-object-search (
-        name: Business Object Search
-        type: smartFilters
-        source {
-            filteredRegion: @business-objects-list
-        }
-        layout {
-            sequence: 10
-            parentRegion: @business-objects-tab
-            slot: subRegions
-        }
-        appearance {
-            template: @/buttons-container
-            templateOptions: [
-                #DEFAULT#
-                t-ButtonRegion--noUI
-            ]
-        }
-        settings {
-            compactNosThreshold: 10000
-        }
-
-        filter P1_SEARCH (
-            type: search
-            label {
-                label: Search
-            }
-            layout {
-                sequence: 10
-            }
-        )
-
-    )
-
-    region business-objects-list (
-        name: Business Objects List
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery:
-                ```sql
-                select e.id,
-                       e.catalog_id,
-                       e.parent_bo_endpoint_id,
-                       e.name,
-                       e.description,
-                       e.path
-                  from eba_util_facat_endpoints e
-                  join eba_util_facat_catalogs c on e.catalog_id = c.id
-                 where c.release_id = :P1_RELEASE_ID
-                ```
-            pageItemsToSubmit: P1_RELEASE_ID
-        }
-        orderBy {
-            type: staticValue
-            orderByClause: NAME
-        }
-        layout {
-            sequence: 20
-            parentRegion: @business-objects-results
-            slot: tabs
-        }
-        appearance {
-            template: @/blank-with-attributes-no-grid
-            templateOptions: #DEFAULT#
-        }
-        accessibility {
-            landmarkType: region
-        }
-        componentAppearance {
-            display: report
-        }
-        settings {
-            title: &NAME.
-            description: &DESCRIPTION.
-        }
-        rowSelection {
-            type: singleSelection
-            currentSelectionPageItem: P1_SELECTED_BO_ID
-        }
-        messages {
-            whenNoDataFound: No business objects match your search
-            noDataFoundIcon: fa-building-o
-        }
-
-        column CATALOG_ID (
-            layout {
-                sequence: 20
-            }
-            source {
-                databaseColumn: CATALOG_ID
-                dataType: number
-            }
-        )
-
-        column DESCRIPTION (
-            layout {
-                sequence: 50
-            }
-            source {
-                databaseColumn: DESCRIPTION
-                dataType: varchar2
-            }
-        )
-
-        column ID (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ID
-                dataType: number
-                primaryKey: true
-            }
-        )
-
-        column NAME (
-            layout {
-                sequence: 40
-            }
-            source {
-                databaseColumn: NAME
-                dataType: varchar2
-            }
-        )
-
-        column PARENT_BO_ENDPOINT_ID (
-            layout {
-                sequence: 30
-            }
-            source {
-                databaseColumn: PARENT_BO_ENDPOINT_ID
-                dataType: number
-            }
-        )
-
-        column PATH (
-            layout {
-                sequence: 60
-            }
-            source {
-                databaseColumn: PATH
-                dataType: varchar2
-            }
-        )
-
-    )
-
-    region business-objects-results (
-        name: Business Objects Results
-        type: staticContent
-        layout {
-            sequence: 20
-            parentRegion: @business-objects-tab
-            slot: subRegions
-        }
-        appearance {
-            template: @/tabs-container
-            templateOptions: [
-                #DEFAULT#
-                t-TabsRegion-mod--simple
-            ]
-        }
-    )
-
-    region business-objects-tab (
-        name: Business Objects Tab
-        type: staticContent
-        layout {
-            sequence: 10
-            parentRegion: @all-endpoints
-            slot: subRegions
-            columnSpan: 4
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-    )
-
-    region business-objects-tree (
-        name: Business Objects Tree
-        type: tree
-        source {
-            location: localDatabase
-            type: functionBody
-            plsqlFunctionBody:
-                ```plsql
-                return apex_string.format(q'~
-                with x as (select e.id, nvl(e.parent_bo_endpoint_id, -1 * p.id) as parent_id, e.path
-                            from eba_util_facat_endpoints e
-                            join eba_util_facat_catalogs c on c.id = e.catalog_id
-                            join eba_util_facat_pillars  p on p.id = c.pillar_id
-                            where c.release_id = :P1_RELEASE_ID
-                            union all
-                            select -1 * id, null, name
-                            from eba_util_facat_pillars
-                            where name in (select distinct p.name
-                                            from eba_util_facat_endpoints e
-                                            join eba_util_facat_catalogs c on c.id = e.catalog_id
-                                            join eba_util_facat_pillars  p on p.id = c.pillar_id
-                                            where c.release_id = :P1_RELEASE_ID)
-                )
-                select  distinct id, 
-                        parent_id,
-                        case 
-                                when path like '/'||chr(37)
-                                then rtrim(regexp_substr(regexp_replace(path,'/\{[^}]+\}/child'), '/[^/]+/?$'),'/')
-                                else path
-                        end
-                        as business_object,
-                        upper(
-                            case 
-                                    when path like '/'||chr(37)
-                                    then rtrim(regexp_substr(regexp_replace(path,'/\{[^}]+\}/child'), '/[^/]+/?$'),'/')
-                                    else path
-                            end) as upper_business_object
-                from x
-                connect by prior parent_id = id
-                start with ( 
-                         parent_id is not null
-                    and  (
-                            :P1_SEARCH is null
-                            or (%s)
-                    )       
-                )
-                ~',
-                eba_util_farest_explorer.tokenized_row_search_predicate(
-                    p_search_facet_value => :P1_SEARCH,
-                    p_search_column_name => 'PATH',
-                    p_search_facet_name  => 'P1_SEARCH'));
-                ```
-            pageItemsToSubmit: [
-                P1_SEARCH
-                P1_RELEASE_ID
-            ]
-        }
-        layout {
-            sequence: 30
-            parentRegion: @business-objects-results
+            sequence: 70
+            parentRegion: @tabs
             slot: tabs
         }
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
-        }
-        advanced {
-            htmlDomId: bo-tree
-        }
-        settings {
-            nodeLabelColumn: BUSINESS_OBJECT
-            nodeValueColumn: ID
-            nodeIdColumn: ID
-            parentKeyColumn: PARENT_ID
-            orderSiblingsBy: UPPER_BUSINESS_OBJECT
-            defaultIconCssClass: icon-tree-folder
-            iconTypeCssClass: a-Icon
-            selectedNodePageItem: P1_SELECTED_BO_ID
         }
     )
 
@@ -797,7 +307,7 @@ page 1 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -816,7 +326,7 @@ page 1 (
                 htmlExpression: #APPLICATION_NAME# (#APPLICATION_ID#)
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -848,7 +358,7 @@ page 1 (
                     ```
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 htmlDomId: action
@@ -865,7 +375,7 @@ page 1 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -881,10 +391,10 @@ page 1 (
                 sequence: 40
             }
             columnFormatting {
-                htmlExpression: <div>{if DETAILS_URL/}<b><a href="#DETAILS_URL#" rel="noopener noreferrer">{endif/}#MODULE_STATIC_ID#{if DETAILS_URL/}</a></b>{endif/}</div>
+                htmlExpression: "<div>{if DETAILS_URL/}<b><a href=\"#DETAILS_URL#\" rel=\"noopener noreferrer\">{endif/}#MODULE_STATIC_ID#{if DETAILS_URL/}</a></b>{endif/}</div>"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -900,7 +410,7 @@ page 1 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -926,7 +436,7 @@ page 1 (
                     ```
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 htmlDomId: service-endpoint
@@ -1060,7 +570,7 @@ page 1 (
                 ```
         }
         layout {
-            sequence: 80
+            sequence: 100
             slot: body
         }
         appearance {
@@ -1094,14 +604,10 @@ page 1 (
                 ```sql
                 select
                         case bgp.process_name
+                             when 'On Refresh Catalog'   
+                             then 'All catalog endpoints'
                              when 'On Download Services' 
                              then 'Remaining in-use service descriptions'
-                             when 'Install Catalog in Background'
-                             then 'Installing catalog for release '
-                                  ||regexp_substr(bgp.context_value,'^[^:]+')
-                                  ||' '
-                                  ||regexp_substr(bgp.context_value,'[^:]+$',1,1)
-                                  ||' pillar'
                         end as refresh_task,
                         bgp.status_message,  
                         case when bgp.sofar is not null and bgp.totalwork is not null
@@ -1109,10 +615,11 @@ page 1 (
                         end progress,
                         round(bgp.sofar/bgp.totalwork*100) progress_bar
                 from apex_appl_page_bg_proc_status bgp
-                where bgp.process_name in ('Install Catalog in Background', 'On Download Services')
-                and bgp.status_code   in ( 'ENQUEUED','SCHEDULED', 'EXECUTING', 'FAILED')
-                and bgp.application_id = :APP_ID
-                and bgp.page_id in (1,2)
+                left join apex_application_page_proc pp on bgp.process_id = pp.process_id
+                where      pp.process_name   in ('On Download Services','On Refresh Catalog')
+                       and bgp.status_code   in ( 'ENQUEUED','SCHEDULED', 'EXECUTING')
+                       and pp.application_id = :APP_ID
+                       and pp.page_id        = 1
                 ```
         }
         layout {
@@ -1141,14 +648,11 @@ page 1 (
                 t-Report--hideNoPagination
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         performance {
             maxRowsToProcess: 500
         }
         messages {
-            whenNoDataFound: No background activity happening at the moment
+            whenNoDataFound: No background service description retrieval happening at the moment
         }
 
         column PROGRESS (
@@ -1190,7 +694,7 @@ page 1 (
                 sequence: 10
             }
             advanced {
-                cellWidth: 400
+                cellWidth: 150
             }
         )
 
@@ -1230,7 +734,7 @@ page 1 (
     pageItem P1_INGEST_APPLICATION_ID (
         type: hidden
         layout {
-            sequence: 20
+            sequence: 30
             slot: body
         }
         security {
@@ -1246,59 +750,6 @@ page 1 (
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P1_RELEASE_ID (
-        type: selectList
-        label {
-            label: Release Id
-            alignment: left
-        }
-        lov {
-            type: sqlQuery
-            sqlQuery:
-                ```sql
-                select 'Release '||name as name, id
-                from eba_util_facat_releases
-                union all
-                select '< No Catalog >', -1
-                from dual
-                where not exists (
-                    select null
-                      from eba_util_facat_endpoints
-                      fetch first row only)
-                order by name
-                ```
-            displayExtraValues: false
-            displayNullValue: false
-        }
-        layout {
-            sequence: 10
-            slot: beforeNavigationBar
-            alignment: left
-        }
-        appearance {
-            template: @/hidden
-            templateOptions: #DEFAULT#
-            height: 1
-        }
-        sessionState {
-            storage: user
-        }
-    )
-
-    pageItem P1_SELECTED_BO_ID (
-        type: hidden
-        settings {
-            valueProtected: false
-        }
-        layout {
-            sequence: 70
-            slot: body
-        }
-        sessionState {
-            storage: request
         }
     )
 
@@ -1369,7 +820,7 @@ page 1 (
         buttonName: Help
         label: Help
         layout {
-            sequence: 40
+            sequence: 70
             slot: beforeNavigationBar
         }
         appearance {
@@ -1385,12 +836,13 @@ page 1 (
         }
     )
 
-    button manage-catalogs (
-        buttonName: MANAGE_CATALOGS
-        label: Manage Catalogs
+    button refresh-catalog-endpoints (
+        buttonName: Refresh_Catalog_Endpoints
+        label: Refresh List
         layout {
-            sequence: 20
-            slot: beforeNavigationBar
+            sequence: 10
+            region: @all-endpoints
+            slot: rightOfInteractiveReportSearchBar
         }
         appearance {
             buttonTemplate: @/text-with-icon
@@ -1398,13 +850,30 @@ page 1 (
                 #DEFAULT#
                 t-Button--iconLeft
             ]
-            icon: fa-file-cabinet
+            icon: fa-refresh
         }
         behavior {
-            action: redirectThisApp
-            target: {
-                page: 2
-            }
+            action: definedByDynamicAction
+        }
+    )
+
+    button refresh-catalog-in-background (
+        buttonName: Refresh_Catalog_in_Background
+        label: Refresh Catalog In Background
+        layout {
+            sequence: 20
+            region: @all-endpoints
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-repeat
+        }
+        behavior {
             warnOnUnsavedChanges: doNotCheck
         }
     )
@@ -1480,64 +949,6 @@ page 1 (
 
     )
 
-    dynamicAction on-tree-selection-changed (
-        name: On Tree Selection Changed
-        execution {
-            sequence: 70
-        }
-        when {
-            event: region/tree/treeviewselectionchange
-            selectionType: region
-            region: @business-objects-tree
-        }
-
-        action assign-selected-bo-id (
-            name: Assign Selected BO ID
-            action: setValue
-            settings {
-                type: jsExpression
-                jsExpression: "apex.region(\"bo-tree\").call(\"getSelectedNodes\")[0]?.id"
-            }
-            affectedElements {
-                selectionType: items
-                items: P1_SELECTED_BO_ID
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-                stopExecutionOnError: false
-                waitForResult: false
-            }
-        )
-
-        action refresh-business-object-attributes (
-            name: Refresh Business Object Attributes
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-object-attributes
-            }
-            execution {
-                sequence: 50
-                fireOnInit: false
-            }
-        )
-
-        action refresh-business-object-details (
-            name: Refresh Business Object Details
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-object-details
-            }
-            execution {
-                sequence: 40
-                fireOnInit: false
-            }
-        )
-
-    )
-
     dynamicAction when-close-clicked (
         name: When Close Clicked
         execution {
@@ -1588,62 +999,22 @@ page 1 (
 
     )
 
-    dynamicAction when-list-selection-changed (
-        name: When List Selection Changed
+    dynamicAction when-refresh-catalog-endpoints-clicked (
+        name: When Refresh Catalog Endpoints Clicked
         execution {
-            sequence: 100
+            sequence: 40
         }
         when {
-            event: apexselectionchange
-            selectionType: region
-            region: @business-objects-list
-        }
-
-        action refresh-business-object-attributes (
-            name: Refresh Business Object Attributes
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-object-attributes
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-        action refresh-business-object-details (
-            name: Refresh Business Object Details
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-object-details
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction when-manage-catalogs-dialog-closed (
-        name: When Manage Catalogs Dialog Closed
-        execution {
-            sequence: 80
-        }
-        when {
-            event: apexafterclosecanceldialog
+            event: click
             selectionType: button
-            button: @manage-catalogs
+            button: @refresh-catalog-endpoints
         }
 
-        action refresh-hidden-classic-report (
-            name: Refresh Hidden Classic Report
+        action native-refresh (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @business-objects-tree
+                region: @all-endpoints
             }
             execution {
                 sequence: 10
@@ -1669,70 +1040,6 @@ page 1 (
             affectedElements {
                 selectionType: region
                 region: @endpoints-in-use
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction when-release-changed (
-        name: When Release Changed
-        execution {
-            sequence: 110
-        }
-        when {
-            selectionType: items
-            items: P1_RELEASE_ID
-        }
-
-        action refresh-list (
-            name: Refresh List
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-objects-list
-            }
-            execution {
-                sequence: 10
-                fireOnInit: false
-            }
-        )
-
-        action refresh-tree (
-            name: Refresh Tree
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-objects-tree
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction when-results-refreshed (
-        name: When Results Refreshed
-        execution {
-            sequence: 90
-        }
-        when {
-            event: region/facetedSearch/facetschange
-            selectionType: region
-            region: @business-object-search
-        }
-
-        action refresh-tree (
-            name: Refresh Tree
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @business-objects-tree
             }
             execution {
                 sequence: 10
@@ -1784,33 +1091,6 @@ page 1 (
             }
         )
 
-    )
-
-    computation p1-release-id (
-        itemName: P1_RELEASE_ID
-        execution {
-            sequence: 10
-            point: beforeHeader
-        }
-        computation {
-            sqlQuery:
-                ```sql
-                select id
-                from (
-                    select id, name
-                    from eba_util_facat_releases
-                    union all
-                    select -1, null
-                    from dual
-                    where not exists (
-                        select null
-                          from eba_util_facat_endpoints
-                          fetch first row only)
-                )
-                order by name
-                fetch first row only
-                ```
-        }
     )
 
     process call-refresh-catalog (
@@ -1931,6 +1211,9 @@ page 1 (
         }
         advanced {
             executionMappingIdentifier: 659744226653019519
+        }
+        serverSideCondition {
+            whenButtonPressed: @refresh-catalog-in-background
         }
     )
 

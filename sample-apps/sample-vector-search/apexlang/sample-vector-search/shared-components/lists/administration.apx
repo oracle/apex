@@ -1,0 +1,50 @@
+list administration (
+    name: Administration
+
+    entry application-theme-style (
+        label: Application Theme Style
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry reset-sample-data-tables (
+        label: Reset Sample Data Tables
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry set-ai-provider (
+        label: Set AI Provider
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+)
+

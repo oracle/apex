@@ -1,6 +1,6 @@
 app SAMPLE-FILE-UPLOAD-DOWNLOAD (
     name: Sample File Upload and Download
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -42,11 +42,8 @@ app SAMPLE-FILE-UPLOAD-DOWNLOAD (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 2EDFCEEF97914693074AD68ACB4B68B5F970399F2364CD39442C1110FE5064FD
     }
     sessionManagement {
         rejoinSessions: publicSessions

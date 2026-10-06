@@ -13,9 +13,6 @@ page 15 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -42,8 +39,6 @@ page 15 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -781,6 +776,9 @@ page 15 (
         chartLayout {
             height: 300
         }
+        performance {
+            lazyLoading: true
+        }
         legend {
             show: false
         }
@@ -899,9 +897,6 @@ page 15 (
                 t-BadgeList--stacked
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column PERCENT_CHANGE (

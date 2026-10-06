@@ -6,13 +6,8 @@ page 6 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -21,7 +16,7 @@ page 6 (
         source {
             htmlCode:
                 ```html
-                <p>Cards regions can be sourced by REST Data Sources.  This page uses a <a href="https://developers.google.com/youtube/v3/docs/playlists" title="Playlists Resource" target="_blank">Playlists</a> REST resource in a <a href="https://developers.google.com/youtube/v3/getting-started" title="YouTube Data API" target="_blank">YouTube Data API</a> to display the &PRODUCT_NAME. YouTube channel playlists.</p>
+                <p>Cards regions can be sourced by REST Data Sources.  This page uses a <a href="https://developers.google.com/youtube/v3/docs/playlists" title="Playlists Resource" target="_blank" rel="noopener noreferrer external">Playlists</a> REST resource in a <a href="https://developers.google.com/youtube/v3/getting-started" title="YouTube Data API" target="_blank" rel="noopener noreferrer external">YouTube Data API</a> to display the &PRODUCT_NAME. YouTube channel playlists.</p>
                 
                 <p>This page uses the <strong>Cards Media Advanced Formatting</strong> to add an HTML <code>&lt;iframe&gt;</code> tag which embeds a player inline. Embedding videos can add extra weight to your page.  Click <strong>View All Videos</strong> to see all of the videos in this playlist and view alternative ways of displaying Cards regions with video information.</p>
                 ```

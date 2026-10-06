@@ -1,0 +1,384 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry add-remove-class-error (
+        label: Add/Remove Class (Error)
+        layout {
+            sequence: 110
+            parentEntry: @style
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+            ]
+        }
+        link {
+            target: {
+                page: 6
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry add-remove-class-focus (
+        label: Add/Remove Class (Focus)
+        layout {
+            sequence: 120
+            parentEntry: @style
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                8
+                9
+            ]
+        }
+        link {
+            target: {
+                page: 8
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                26
+                23
+                24
+            ]
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry complex (
+        label: Complex
+        icon {
+            imageIconCssClasses: fa-cogs
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 18
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry debounce-and-throttle (
+        label: Debounce and Throttle
+        layout {
+            sequence: 210
+            parentEntry: @complex
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry delete-and-refresh (
+        label: Delete and Refresh
+        layout {
+            sequence: 70
+            parentEntry: @complex
+        }
+        link {
+            target: {
+                page: 18
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry disable-enable (
+        label: Disable/Enable
+        layout {
+            sequence: 90
+            parentEntry: @simple
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                3
+            ]
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry execute-pl-sql-code (
+        label: Execute PL/SQL Code
+        layout {
+            sequence: 140
+            parentEntry: @server-side
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry filter-and-refresh (
+        label: Filter and Refresh
+        layout {
+            sequence: 190
+            parentEntry: @server-side
+        }
+        link {
+            target: {
+                page: 19
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry hide-show (
+        label: Hide/Show
+        layout {
+            sequence: 100
+            parentEntry: @simple
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                5
+            ]
+        }
+        link {
+            target: {
+                page: 4
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                25
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry refresh (
+        label: Refresh
+        layout {
+            sequence: 180
+            parentEntry: @server-side
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry server-side (
+        label: Server Side
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry set-values-pl-sql (
+        label: Set Values (PL/SQL)
+        layout {
+            sequence: 160
+            parentEntry: @server-side
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                14
+                15
+            ]
+        }
+        link {
+            target: {
+                page: 14
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry set-values-sql (
+        label: Set Values (SQL)
+        layout {
+            sequence: 150
+            parentEntry: @server-side
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                12
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 12
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry shuttle-refresh (
+        label: Shuttle Refresh
+        layout {
+            sequence: 200
+            parentEntry: @server-side
+        }
+        link {
+            target: {
+                page: 20
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry simple (
+        label: Simple
+        icon {
+            imageIconCssClasses: fa-calculator
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry stripe-report (
+        label: Stripe Report
+        layout {
+            sequence: 130
+            parentEntry: @style
+        }
+        link {
+            target: {
+                page: 10
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry style (
+        label: Style
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 6
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+    entry timer (
+        label: Timer
+        layout {
+            sequence: 170
+            parentEntry: @server-side
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+    )
+
+)
+

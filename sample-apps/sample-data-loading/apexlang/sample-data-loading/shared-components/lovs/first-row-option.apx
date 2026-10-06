@@ -1,0 +1,14 @@
+lov first-row-option (
+    name: FIRST_ROW_OPTION
+    source {
+        location: staticValues
+    }
+
+    entry yes (
+        sequence: 10
+        display: Yes
+        return: Y
+    )
+
+)
+

@@ -1,5 +1,5 @@
 /*!
- Copyright (c) 2014, 2023, Oracle and/or its affiliates.
+ Copyright (c) 2014, 2025, Oracle and/or its affiliates.
  */
 :root {
   --a-base-font-weight-semibold: 600;
@@ -125,7 +125,7 @@
   --a-filedrop-progress-border-radius: 0.375rem;
   --a-filedrop-progress-bar-width: 3rem;
   --a-field-input-border-radius: 0.125rem;
-  --a-field-input-border-style: dashed;
+  --a-field-input-border-style: solid;
   --a-field-select-background-size: 2rem 1rem;
   --a-field-select-arrow-padding: 2rem;
   --a-gv-font-size: 0.75rem;
@@ -158,6 +158,8 @@
   --a-gv-nodata-message-icon-size: 2rem;
   --a-gv-nodata-message-icon-spacing: 0.75rem;
   --a-help-dialog-code-text-color: var(--ut-component-text-muted-color);
+  --a-kb-shortcut-background-color: rgba(0, 0, 0, 0.05);
+  --a-kb-shortcut-border-color: rgba(0, 0, 0, 0.075);
   --a-mdeditor-background-color: var(--a-field-input-background-color);
   --a-mdeditor-border-color: var(--a-field-input-border-color);
   --a-mdeditor-border-width: var(--a-field-input-border-width);
@@ -192,6 +194,8 @@
   --a-popuplov-chip-line-height: 0.75rem;
   --a-popuplov-chip-remove-font-size: 0.75rem;
   --a-popuplov-chip-background-color: rgba(0, 0, 0, 0.075);
+  --a-popuplov-chip-border-width: 1px;
+  --a-popuplov-chip-border-color: var(--a-chip-state-border-color, var(--a-chip-type-border-color, var(--a-chip-border-color, var(--a-field-input-border-color, rgba(0, 0, 0, 0.075)))));
   --a-rv-font-size: 0.75rem;
   --a-rv-line-height: 1rem;
   --a-rv-body-padding-y: 0.25rem;
@@ -264,11 +268,10 @@
   --a-chip-label-spacing: 0.25rem;
   --a-chip-border-radius: 0.125rem;
   --a-chip-border-width: var(--a-field-input-border-width);
-  --a-chip-border-color: transparent;
+  --a-chip-border-color: var(--a-field-input-border-color);
   --a-chip-hover-background-color: rgba(0, 0, 0, 0.025);
   --a-chip-active-background-color: rgba(0, 0, 0, 0.05);
   --a-chip-applied-background-color: rgba(0, 0, 0, 0.075);
-  --a-chip-applied-border-color: transparent;
   --a-chip-applied-hover-background-color: rgba(0, 0, 0, 0.1);
   --a-chip-remove-hover-background-color: rgba(0, 0, 0, 0.05);
   --a-chip-remove-active-background-color: rgba(0, 0, 0, 0.075);
@@ -277,6 +280,7 @@
   --a-chip-input-font-size: 0.75rem;
   --a-chip-input-line-height: 1rem;
   --a-combo-select-icon-size: 1rem;
+  --a-combo-select-item-selected-background-color: var(--ut-palette-primary-shade);
   --a-searchresults-gap: 1rem;
   --a-resultsitem-item-gap: 1rem;
   --a-resultsitem-padding-x: 1rem;
@@ -452,12 +456,19 @@
   --a-chat-user-secondary-icon-text-color: var(--ut-palette-danger-contrast);
   --a-chat-user-secondary-message-background-color: rgba(0, 0, 0, 0.05);
   --a-chat-user-secondary-text-color: var(--ut-body-text-color);
-  --a-chat-message-border-color: var(--ut-component-border-color);
-  --a-chat-send-button-hover-background-color: var(--a-button-state-background-color);
+  --a-chat-message-input-border-color: var(--ut-component-border-color);
+  --a-chat-input-button-hover-background-color: #e6e6e6;
+  --a-chat-input-button-focus-background-color: #e6e6e6;
   --a-chat-message-action-button-background-color: #fff;
-  --a-chat-message-action-button-state-background-color: #f8f8f8;
+  --a-chat-message-action-button-state-background-color: #f9f9f9;
   --a-chat-message-error-icon-color: var(--ut-palette-danger);
   --a-chat-transcript-outline-color: var(--ut-focus-outline-color, -webkit-focus-ring-color);
+  --a-chat-item-inline-status-text-color: var(--ut-component-text-muted-color);
+  --a-chat-view-more-button-background-color: var(--ut-body-background-color);
+  --a-chat-view-more-button-border-color: rgba(0, 0, 0, 0.5);
+  --a-chat-view-more-button-hover-background-color: #e6e6e6;
+  --a-chat-view-more-button-focus-background-color: #e6e6e6;
+  --a-chat-client-background-color: var(--ut-body-background-color);
   --fc-neutral-bg-color: rgba(0, 0, 0, 0.2);
   --fc-neutral-text-color: #000;
   --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.2);
@@ -468,25 +479,28 @@
   --a-diagram-element-shadow: rgba(0, 0, 0, 0.3) 0 6px 12px;
   --a-diagram-element-icon-color: #fff;
   --a-diagram-element-icon-background-color: #cccccc;
-  --a-diagram-element-diamond-text-color: var(--u-color-38-contrast);
-  --a-diagram-element-diamond-background-color: var(--u-color-38);
-  --a-diagram-element-rect-background-color: var(--u-color-31);
-  --a-diagram-element-rect-text-color: var(--u-color-31-contrast);
+  --a-diagram-element-diamond-icon-background-color: var(--u-color-38);
+  --a-diagram-element-rect-icon-background-color: var(--u-color-31);
   --a-diagram-element-terminator-text-color: #fff;
   --a-diagram-element-terminator-background-color: rgba(0, 0, 0, 0.95);
+  --a-diagram-element-container-icon-background-color: var(--u-color-27);
+  --a-diagram-element-container-button-background-color: var(--u-color-42);
+  --a-diagram-element-container-children-container-background-color: #e6e6e6;
+  --a-diagram-element-subcontainer-body-background-color: #cccccc;
+  --a-diagram-element-subcontainer-header-text-color: #000;
   --a-diagram-label-background-color: var(--u-color-45);
   --a-diagram-label-text-color: var(--u-color-45-contrast);
   --a-diagram-link-border-color: var(--u-color-44);
   --a-diagram-navigator-border-color: var(--ut-palette-primary);
   --a-diagram-navigator-background-color: var(--a-diagram-background);
   --a-diagram-cell-highlight: var(--ut-palette-success);
-  --a-diagram-route-terminated: var(--ut-palette-warning);
+  --a-diagram-route-terminated: var(--ut-palette-danger);
   --a-diagram-route-faulted: var(--ut-palette-danger);
   --a-diagram-route-active: var(--ut-palette-primary);
   --a-diagram-route-completed: var(--ut-palette-success);
   --a-diagram-route-default: var(--a-diagram-route-completed);
   --a-diagram-route-waiting: var(--ut-palette-info);
-  --a-diagram-route-suspended: var(--ut-palette-warning-shade);
+  --a-diagram-route-suspended: var(--ut-palette-warning);
   --a-cr-checkbox-background-color: #f9f9f9;
   --a-cr-checkbox-text-color: var(--a-palette-primary-contrast);
   --ut-alternate-heading-font-family: var(--a-base-font-family-serif);
@@ -508,6 +522,7 @@
   --ut-component-badge-background-color: rgba(0, 0, 0, 0.05);
   --ut-component-badge-text-color: var(--ut-component-text-default-color);
   --ut-component-badge-border-radius: 0.25rem;
+  --ut-component-pre-background-color: rgba(0, 0, 0, 0.05);
   --ut-shadow-sm: 0 0.125rem 0.25rem -0.125rem rgba(0, 0, 0, 0.1);
   --ut-shadow-md: 0 0.75rem 1.5rem -0.75rem rgba(0, 0, 0, 0.3);
   --ut-shadow-lg: 0 1.5rem 3rem -1.5rem rgba(0, 0, 0, 0.3);
@@ -739,6 +754,8 @@
 :root {
   --a-button-background-color: #ece9e7;
   --a-button-text-color: #000000;
+  --a-button-count-background-color: #403c39;
+  --a-button-count-text-color: #ffffff;
 }
 :root {
   --ut-field-label-text-color: #262626;
@@ -754,6 +771,7 @@
   --a-field-input-hover-background-color: #ffffff;
   --a-field-input-focus-background-color: #ffffff;
   --a-field-input-focus-border-color: #403c39;
+  --a-datepicker-footer-border-color: var(--ut-component-inner-border-color);
   --ut-field-input-focus-icon-color: #403c39;
   --ut-field-fl-input-focus-icon-background-color: #403c39;
   --ut-field-fl-input-focus-icon-color: #ffffff;
@@ -1631,7 +1649,7 @@ input:checked + .u-radio:after {
   border-color: transparent;
   background-color: transparent;
   box-shadow: none;
-  --a-button-text-color: #605e5c;
+  color: var(--ut-link-text-color, currentColor);
 }
 .t-MegaMenu {
   --a-menu-focused-background-color: transparent;
@@ -1675,10 +1693,6 @@ input:checked + .u-radio:after {
 }
 a-select {
   --a-chip-remove-padding: 0.0625rem;
-}
-:root {
-  --tm-color-button-default-hover-background: #f2f2f2;
-  --tm-color-button-on-background: #f2f2f2;
 }
 .t-TreeNav .a-TreeView-node--topLevel .a-TreeView-row.is-current,
 .t-TreeNav .a-TreeView-node--topLevel .a-TreeView-row.is-selected,
@@ -1732,7 +1746,7 @@ a-select {
 }
 .t-TreeNav--styleA .a-TreeView-node--topLevel .a-TreeView-row.is-current--top .a-TreeView-row.is-selected,
 .t-TreeNav--styleA .a-TreeView-node--topLevel ul .a-TreeView-row.is-selected {
-  background-color: var(--ut-body-nav-background-color);
+  background-color: var(--a-treeview-node-selected-background-color);
   color: var(--a-treeview-node-selected-text-color);
 }
 .t-TreeNav--styleA .a-TreeView-node--topLevel .a-TreeView-row.is-current--top,

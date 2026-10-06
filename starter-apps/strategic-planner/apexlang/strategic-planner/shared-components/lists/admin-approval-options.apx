@@ -1,0 +1,44 @@
+list admin-approval-options (
+    name: Admin - Approval Options
+    config {
+        buildOption: @approvals
+    }
+
+    entry approval-types (
+        label: Approval Types
+        icon {
+            imageIconCssClasses: fa-check
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4010
+            }
+        }
+        userDefinedAttributes {
+            1: Types of Approvals that can be associated with an &NOMENCLATURE_INITIATIVE. (and therefore able to be requested for a &NOMENCLATURE_PROJECT. within that &NOMENCLATURE_INITIATIVE.)
+        }
+    )
+
+    entry nomenclature-initiative-approval-types (
+        label: &NOMENCLATURE_INITIATIVE. Approval Types
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 4012
+            }
+        }
+        userDefinedAttributes {
+            1: The approval types associated with each &NOMENCLATURE_INITIATIVE. (and therefore able to be requested for a &NOMENCLATURE_PROJECT. within that &NOMENCLATURE_INITIATIVE.)
+        }
+    )
+
+)
+

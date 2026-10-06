@@ -1,0 +1,146 @@
+list sql-examples (
+    name: SQL Examples
+
+    entry case-statements (
+        label: CASE Statements
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 19
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Highlights the Oracle CASE statement which can be used to perform IF-THEN-ELSE logic in queries.
+        }
+    )
+
+    entry connect-by (
+        label: Connect By
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a hierarchy query using connect by and the sys connect by path.
+        }
+    )
+
+    entry group-by (
+        label: Group By
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 23
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: The GROUP BY clause allows a developer to use SQL aggregate functions (AVG, COUNT, MAX, MIN, STDDEV, SUM and VARIANCE).
+        }
+    )
+
+    entry inline-views (
+        label: Inline Views
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Inline views are commonly used to simplify complex queries by removing join operations.
+        }
+    )
+
+    entry pipelined-functions (
+        label: Pipelined Functions
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Pipelined functions provide the ability to reference the data returned by a PL/SQL process as a table in a SQL statement.
+        }
+    )
+
+    entry pivot (
+        label: Pivot
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: "Highlights the use of the PIVOT operator. This operator takes data in separate rows, aggregates it, and converts it into columns. "
+        }
+    )
+
+    entry regular-expressions (
+        label: Regular Expressions
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Regular expressions enable you to search for patterns in string data by using standardized syntax conventions.
+        }
+    )
+
+    entry soundex (
+        label: Soundex
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+        userDefinedAttributes {
+            1: This function lets you compare words that are spelled differently, but sound alike in English.
+        }
+    )
+
+    entry string-functions (
+        label: String Functions
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: SUBSTR
+                }
+                clearCache: 27
+            }
+        }
+        userDefinedAttributes {
+            1: Examples of substr, instr, nvl, nvl2, coalesce, replace, and trim SQL functions.
+        }
+    )
+
+)
+

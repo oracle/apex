@@ -1,0 +1,101 @@
+list badge-list-sample (
+    name: Badge List Sample
+
+    entry action-items (
+        label: Action Items
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 15
+        }
+    )
+
+    entry active-bugs (
+        label: Active Bugs
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 12
+        }
+    )
+
+    entry closed-bugs (
+        label: Closed Bugs
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 31
+        }
+    )
+
+    entry milestones (
+        label: Milestones
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 3
+        }
+    )
+
+    entry projects (
+        label: Projects
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 34
+        }
+    )
+
+    entry users (
+        label: Users
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 188
+        }
+    )
+
+)
+

@@ -1,0 +1,927 @@
+page 75 (
+    name: test - Focus Areas by Release
+    alias: TEST-FOCUS-AREAS-BY-RELEASE
+    title: test - Focus Areas by Release
+    pageGroup: @users
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            .no-item-ui {
+              --a-field-input-border-width: 0px;
+              --a-field-input-background-color: transparent;
+            }
+            
+            .overline {
+              color: var(--ut-region-text-color, var(--ut-component-text-default-color));
+            }
+            
+            .hide-report-total td[headers="FOCUS_AREA"] > strong {
+                display: none;
+            }
+            ```
+    }
+
+    region chart (
+        name: Chart
+        type: chart
+        source {
+            pageItemsToSubmit: P75_INITIATIVE_ID
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: * indicates the current Release
+        }
+        chartAppearance {
+            stack: true
+        }
+        chartLayout {
+            height: 400
+        }
+        performance {
+            lazyLoading: true
+        }
+        messages {
+            whenNoDataFound: No data found
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function(options) {
+                
+                    options.valueFormats.series = {
+                        tooltipLabel: "Focus Area"
+                    };
+                
+                    options.valueFormats.group = {
+                        tooltipLabel: "Release"
+                    };
+                
+                    options.valueFormats.value.tooltipLabel = "&NOMENCLATURE_PROJECT. Count";
+                
+                    return options;
+                }
+                ```
+        }
+
+        series data (
+            name: data
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select nvl(f.focus_area,'None Assigned') series,
+                           t.release|| case when t.id = :P75_CURRENT_ID 
+                                            then ' *'
+                                            end label,
+                           count(*) value
+                      from sp_projects p,
+                           sp_release_trains t,
+                           sp_initiative_focus_areas f
+                     where t.release_train = :P75_RELEASE
+                       and p.release_id = t.id
+                       and nvl(p.archived_yn,'N') = 'N'
+                       and p.duplicate_of_project_id is null
+                       and p.focus_area_id = f.id (+)
+                       and t.release_type = 'FULL'
+                       and t.id in (:P75_CURRENT_ID,:P75_N1_ID,:P75_P1_ID,:P75_P2_ID,:P75_P3_ID)
+                       and p.initiative_id = nvl(:P75_INITIATIVE_ID,p.initiative_id)
+                    group by t.id, t.release, f.focus_area
+                    order by t.release, f.focus_area nulls last
+                    ```
+                pageItemsToSubmit: [
+                    P75_RELEASE
+                    P75_INITIATIVE_ID
+                ]
+            }
+            columnMapping {
+                seriesName: SERIES
+                label: LABEL
+                value: VALUE
+            }
+        )
+
+        axis x (
+            name: x
+        )
+
+        axis y (
+            name: y
+            value {
+                format: decimal
+                decimalPlaces: 0
+                formatScaling: none
+            }
+        )
+
+    )
+
+    region classic (
+        name: Pivot Table
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select f.focus_area ob,
+                       f.focus_area,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P3_ID
+                           and focus_area_id = f.id
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p3_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P2_ID
+                           and focus_area_id = f.id
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p2_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P1_ID
+                           and focus_area_id = f.id
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p1_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_CURRENT_ID
+                           and focus_area_id = f.id
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) current_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_N1_ID
+                           and focus_area_id = f.id
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) next_cnt
+                  from sp_initiative_focus_areas f
+                 where f.id in (select focus_area_id 
+                                  from sp_projects
+                                 where nvl(archived_yn,'N') = 'N'
+                                   and duplicate_of_project_id is null
+                                   and release_id in (:P75_CURRENT_ID, :P75_N1_ID, :P75_P1_ID, :P75_P2_ID, :P75_P3_ID)
+                                   and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id))
+                union all
+                select null ob,
+                       'None Assigned' focus_area,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P3_ID
+                           and focus_area_id is null
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p3_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P2_ID
+                           and focus_area_id is null
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p2_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_P1_ID
+                           and focus_area_id is null
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) p1_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_CURRENT_ID
+                           and focus_area_id is null
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) current_cnt,
+                       (select count(*)
+                          from sp_projects
+                         where nvl(archived_yn,'N') = 'N'
+                           and duplicate_of_project_id is null
+                           and release_id = :P75_N1_ID
+                           and focus_area_id is null
+                           and initiative_id = nvl(:P75_INITIATIVE_ID,initiative_id)) next_cnt
+                  from dual
+                ```
+            pageItemsToSubmit: P75_INITIATIVE_ID
+        }
+        layout {
+            sequence: 50
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        headerAndFooter {
+            footerText: * indicates the current Release
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--altRowsDefault
+                t-Report--rowHighlight
+            ]
+            cssClasses: hide-report-total
+        }
+        pagination {
+            type: rowRangesXToYOfZWithPagination
+        }
+
+        column CURRENT_CNT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: &P66_CURRENT_NAME. *
+                alignment: end
+            }
+            layout {
+                sequence: 50
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P75_CURRENT_ID
+            }
+        )
+
+        column FOCUS_AREA (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Focus Area
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column NEXT_CNT (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: &P66_N1_NAME.
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P75_N1_ID
+            }
+        )
+
+        column OB (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 70
+            }
+        )
+
+        column P1_CNT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: &P66_P1_NAME.
+                alignment: end
+            }
+            layout {
+                sequence: 40
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P75_P1_ID
+            }
+        )
+
+        column P2_CNT (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: &P66_P2_NAME.
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P75_P2_ID
+            }
+        )
+
+        column P3_CNT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: &P66_P3_NAME.
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+            advanced {
+                computeSum: true
+            }
+            serverSideCondition {
+                type: itemIsNotNull
+                item: P75_P3_ID
+            }
+        )
+
+    )
+
+    region rds (
+        name: RDS
+        type: regionDisplaySelector
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            includeShowAll: false
+            rememberSelection: false
+        }
+    )
+
+    region select-release (
+        name: Select Release Train
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        headerAndFooter {
+            headerText: Select Release Train to show Focus Areas for current, next and previous 3 Releases.  Optionally, select an Initiative to limit Focus Areas to just one Initiative.
+        }
+    )
+
+    pageItem P75_CURRENT_ID (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_CURRENT_NAME (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_INITIATIVE_ID (
+        type: selectOne
+        label {
+            label: Initiative
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select initiative d, id r   
+                  from sp_initiatives i   
+                 where i.id in (select p.initiative_id
+                                  from sp_projects p,
+                                       sp_release_trains r
+                                 where p.release_id = r.id
+                                   and r.release_train = :P75_RELEASE
+                                   and nvl(p.archived_yn,'N') = 'N'
+                                   and p.duplicate_of_project_id is null)
+                 order by 1
+                ```
+        }
+        cascadingLov {
+            parentItems: P75_RELEASE
+        }
+        layout {
+            sequence: 30
+            region: @select-release
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+    )
+
+    pageItem P75_N1_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_N1_NAME (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P1_ID (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P1_NAME (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P2_ID (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P2_NAME (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P3_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_P3_NAME (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @select-release
+            slot: regionBody
+        }
+    )
+
+    pageItem P75_RELEASE (
+        type: selectList
+        label {
+            label: Release Train
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select unique release_train d, release_train r   
+                  from sp_release_trains r
+                 where release_type = 'FULL'
+                   and exists (select 1 from sp_projects
+                               where release_id = r.id
+                                 and nvl(archived_yn,'N') = 'N'
+                                 and duplicate_of_project_id is null)
+                  order by 1
+                ```
+            nullDisplayValue: -- Test Empty ---
+        }
+        layout {
+            sequence: 20
+            region: @select-release
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            slot: NEXT
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 75
+                clearCache: 66
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            slot: UP
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction when-change-initiative (
+        name: when change initiative
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P75_INITIATIVE_ID
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @chart
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh_1 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @classic
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction when-no-release-selected (
+        name: when no release selected
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P75_RELEASE
+        }
+        clientSideCondition {
+            type: itemIsNull
+            item: P75_RELEASE
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @chart
+            }
+            execution {
+                sequence: 30
+            }
+        )
+
+        action native-hide_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @classic
+            }
+            execution {
+                sequence: 40
+            }
+        )
+
+        action native-hide_1_1_1 (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @rds
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        action native-set-value (
+            action: setValue
+            settings {
+                suppressChangeEvent: true
+            }
+            affectedElements {
+                selectionType: items
+                items: P75_INITIATIVE_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @rds
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show_1 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @chart
+            }
+            execution {
+                sequence: 30
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show_2 (
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @classic
+            }
+            execution {
+                sequence: 20
+                fireWhenEventResultIs: false
+            }
+        )
+
+    )
+
+    dynamicAction when-select-release (
+        name: when select release
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P75_RELEASE
+        }
+        clientSideCondition {
+            type: itemIsNotNull
+            item: P75_RELEASE
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    :P75_CURRENT_ID   := null;
+                    :P75_CURRENT_NAME := null;
+                    
+                    :P75_N1_ID   := null;
+                    :P75_N1_NAME := null;
+                    
+                    :P75_P1_ID   := null;
+                    :P75_P1_NAME := null;
+                    :P75_P2_ID   := null;
+                    :P75_P2_NAME := null;
+                    :P75_P3_ID   := null;
+                    :P75_P3_NAME := null;
+                    
+                    :P75_INITIATIVE_ID := null;
+                    
+                    for c1 in (
+                        select id, release, release_target_date, release_open_date
+                          from sp_release_trains
+                         where release_type = 'FULL'
+                           and release_train = :P75_RELEASE
+                           and release_open_completed = 'Y'
+                           and release_completed = 'N'
+                        union all                       -- added to catch no currently open
+                        select null, null, null, null
+                          from dual
+                         order by release_target_date nulls last, release_open_date nulls last
+                    ) loop
+                        :P75_CURRENT_ID := c1.id;
+                        :P75_CURRENT_NAME := c1.release;
+                    
+                        for c2 in (
+                            select id, release
+                              from sp_release_trains
+                             where release_type = 'FULL'
+                               and release_train = :P75_RELEASE
+                               and release_completed = 'N'
+                               and (id != c1.id or c1.id is null)
+                               and nvl(c1.release_target_date,trunc(sysdate)) <= release_target_date
+                             order by release_target_date nulls last, release_open_date nulls last
+                        ) loop
+                            :P75_N1_ID := c2.id;
+                            :P75_N1_NAME := c2.release;
+                            exit;
+                        end loop;
+                    
+                        for c2 in (
+                            select rownum, id, release
+                              from (
+                              select id, release
+                                from sp_release_trains
+                               where release_type = 'FULL'
+                                 and release_train = :P75_RELEASE
+                                 and release_open_completed = 'Y'
+                                 and release_completed = 'Y'
+                                 and (id != c1.id or c1.id is null)
+                               order by release_target_date desc
+                              )
+                        ) loop
+                            if c2.rownum = 1 then
+                                :P75_P1_ID := c2.id;
+                                :P75_P1_NAME := c2.release;
+                            elsif c2.rownum = 2 then
+                                :P75_P2_ID := c2.id;
+                                :P75_P2_NAME := c2.release;
+                            elsif c2.rownum = 3 then
+                                :P75_P3_ID := c2.id;
+                                :P75_P3_NAME := c2.release;
+                            else exit;
+                            end if;
+                        end loop;
+                    
+                        exit;
+                    end loop;
+                    ```
+                itemsToSubmit: P75_RELEASE
+                itemsToReturn: [
+                    P75_CURRENT_ID
+                    P75_CURRENT_NAME
+                    P75_N1_ID
+                    P75_N1_NAME
+                    P75_P1_ID
+                    P75_P1_NAME
+                    P75_P2_ID
+                    P75_P2_NAME
+                    P75_P3_ID
+                    P75_P3_NAME
+                    P75_INITIATIVE_ID
+                ]
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @chart
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh_1 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @classic
+            }
+            execution {
+                sequence: 40
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

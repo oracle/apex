@@ -7,6 +7,7 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -69,7 +70,7 @@ page 1 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -82,7 +83,7 @@ page 1 (
         name: About this application
         type: staticContent
         source {
-            htmlCode: <p>This Oracle Application Express (APEX) Application demonstrates the built in tree component.  Trees can be rendered using SQL queries.</p>
+            htmlCode: <p>This Oracle APEX application demonstrates the built in tree component.  Trees can be rendered using SQL queries.</p>
         }
         layout {
             sequence: 10
@@ -91,25 +92,6 @@ page 1 (
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
-        }
-    )
-
-    region additional-communities-and-resources (
-        name: Additional Communities and Resources
-        type: plugin/sampleAppsFooter
-        layout {
-            sequence: 30
-            slot: body
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-        advanced {
-            regionDisplaySelector: true
-        }
-        serverSideCondition {
-            type: never
         }
     )
 

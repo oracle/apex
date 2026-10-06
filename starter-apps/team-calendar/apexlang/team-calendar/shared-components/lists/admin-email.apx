@@ -1,0 +1,112 @@
+list admin-email (
+    name: Admin Email
+
+    entry group-members (
+        label: Group Members
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all members of all groups.  Used for adding members and seeing which groups a person belongs to.
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry groups (
+        label: Groups
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Groups are reusable lists of people that you can email a set of events to.
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry send-email (
+        label: Send Email
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Send email of events to other app users.
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_from_email varchar2(255);
+                begin
+                    -- If the end-user's username is already an email address use it as the from address
+                    if regexp_like(:APP_USER, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$') then
+                        l_from_email := lower(:APP_USER);
+                    else
+                        -- otherwise populate the from address by querying the apex_workspace_apex_users view (where email is a required value)
+                        select
+                            lower(a.email)
+                        into
+                            l_from_email
+                        from
+                            eba_ca_users u,
+                            apex_workspace_apex_users a
+                        where
+                            lower(u.username) = lower(a.user_name)
+                        and
+                            lower(:APP_USER) = lower(a.user_name);
+                    end if;
+                    return regexp_like(l_from_email, '^[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~](\.?[-!#$%&''''*+/0-9=?A-Z^_a-z{|}~])*@(-?[a-zA-Z0-9+])+(\.(-?[a-zA-Z0-9+])*)+$');
+                end;
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

@@ -1,0 +1,57 @@
+list ut-sample-tabs-list (
+    name: UT - Sample Tabs List
+
+    entry tab (
+        label: Tab 1
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 1907
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:void(0);
+            }
+        }
+    )
+
+    entry tab-2 (
+        label: Tab 2
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:void(0);
+            }
+        }
+    )
+
+    entry tab-3 (
+        label: Tab 3
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: javascript:void(0);
+            }
+        }
+    )
+
+)
+

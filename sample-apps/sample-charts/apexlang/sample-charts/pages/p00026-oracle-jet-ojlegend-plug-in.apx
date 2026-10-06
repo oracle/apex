@@ -7,11 +7,10 @@ page 26 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -27,7 +26,7 @@ page 26 (
             htmlCode:
                 ```html
                 <p>
-                While we may not declaratively support all available <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank">Oracle JET Data Visualizations</a>, you can easily create a plug-in to integrate other Oracle JET components in to your application.  This page demonstrates the integration of an Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=legend&demo=default" target="_blank">Legend</a> component. Take a look at the <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=dataVisualizations&demo=filtering" target="_blank">Associated Views: Filtering</a> use case in the Oracle JET Cookbook, to see where the idea for this plug-in came from. Explore the <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank">Oracle JET Data Visualizations Cookbook</a> to see other visualizations you can integrate as plug-ins in your application.
+                While we may not declaratively support all available <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank" rel="noopener noreferrer external">Oracle JET Data Visualizations</a>, you can easily create a plug-in to integrate other Oracle JET components in to your application.  This page demonstrates the integration of an Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=legend&demo=default" target="_blank" rel="noopener noreferrer external">Legend</a> component. Take a look at the <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=dataVisualizations&demo=filtering" target="_blank" rel="noopener noreferrer external">Associated Views: Filtering</a> use case in the Oracle JET Cookbook, to see where the idea for this plug-in came from. Explore the <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank" rel="noopener noreferrer external">Oracle JET Data Visualizations Cookbook</a> to see other visualizations you can integrate as plug-ins in your application.
                 ```
         }
         layout {
@@ -78,14 +77,14 @@ page 26 (
         source {
             htmlCode:
                 ```html
-                This example demonstrates the use of an APEX plug-in based on the Oracle JET Legend, using the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojLegend.html" target="_blank">ojLegend API</a>.<p/><p/>
+                This example demonstrates the use of an APEX plug-in based on the Oracle JET Legend, using the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojLegend.html" target="_blank" rel="noopener noreferrer external">ojLegend API</a>.<p/><p/>
                 
                 <strong>Note that in order for this example to work, the charts must be rendering series with the same names, and those series names are then used to populate the Legend.</strong><p/><p/>
                 <strong>1.</strong> Create 3 separate chart regions, which all render series with the same name e.g Acme Store, Deli, Shop C and Store A.<p/>
                 <strong>2.</strong> Set the Legend 'Show' attribute to 'No' for each of the charts.<p/>
                 <strong>3.</strong> Create a new JET Legend plug-in region on the page, based on the jetLegend Plug-in. Navigate to Shared Components > Plug-ins > jetLegend, to inspect the plug-in.<p/>
                 <p>
-                For more information on the Legend visualization settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=legend&demo=default" target="_blank">Legend: Basic</a> example and <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojLegend.html" target="_blank" >ojLegend</a> API.  For more information on working with Plug-ins, refer to Chapter 19.2 <a href="https://docs.oracle.com/en/database/oracle/apex/22.2/htmdb/implementing-plug-ins.html" target="_blank">Implementing Plug-ins</a> in the &PRODUCT_NAME. 20.1 User's Guide.
+                For more information on the Legend visualization settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=legend&demo=default" target="_blank" rel="noopener noreferrer external">Legend: Basic</a> example and <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojLegend.html" target="_blank" rel="noopener noreferrer external">ojLegend</a> API.  For more information on working with Plug-ins, refer to Chapter 19.2 <a href="https://docs.oracle.com/en/database/oracle/apex/22.2/htmdb/implementing-plug-ins.html" target="_blank" rel="noopener noreferrer external">Implementing Plug-ins</a> in the &PRODUCT_NAME. 20.1 User's Guide.
                 
                 
                 ```
@@ -187,6 +186,9 @@ page 26 (
         chartLayout {
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         value {
             format: currency
             decimalPlaces: 0
@@ -243,6 +245,9 @@ page 26 (
         }
         chartLayout {
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: mixedFrequency
@@ -403,6 +408,9 @@ page 26 (
         }
         chartLayout {
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false

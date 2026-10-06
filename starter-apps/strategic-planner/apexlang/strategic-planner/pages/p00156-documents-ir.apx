@@ -7,15 +7,8 @@ page 156 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
-        helpText: All Documents with this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.
+        helpText: All Documents within this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.  Additional attributes include whether or not they were deemed Important and the filesize, file extension and any tags associated.
     }
 
     region breadcrumb (
@@ -97,6 +90,10 @@ page 156 (
         performance {
             maxRowsToProcess: 1000000
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Documents within this application along with what object they are associated with (e.g. Initiative, Project) and by whom and when they were added.
+        }
         advanced {
             savedReportMappingIdentifier: 23673309697946282933
         }
@@ -110,7 +107,7 @@ page 156 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -129,7 +126,7 @@ page 156 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -145,7 +142,7 @@ page 156 (
                 sequence: 170
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             advanced {
                 endUserAlias: O
@@ -161,7 +158,7 @@ page 156 (
                 sequence: 200
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -184,7 +181,7 @@ page 156 (
                 linkText: #DOCUMENT_FILENAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -212,7 +209,7 @@ page 156 (
                 charSetColumn: DOCUMENT_CHARSET
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -239,7 +236,7 @@ page 156 (
                 sequence: 190
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: P
@@ -255,7 +252,7 @@ page 156 (
                 sequence: 180
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -271,7 +268,7 @@ page 156 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -287,10 +284,13 @@ page 156 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
+            }
+            genAI {
+                columnContext: Type of object this document is associated with (e.g. Initiative, Project)
             }
             help {
                 helpText: Type of object this document is associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT., ...)
@@ -311,7 +311,7 @@ page 156 (
                 formatMask: FILESIZE
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -327,7 +327,7 @@ page 156 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -343,10 +343,13 @@ page 156 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
+            }
+            genAI {
+                columnContext: Yes if document was flagged as important
             }
         )
 
@@ -359,7 +362,7 @@ page 156 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -375,10 +378,16 @@ page 156 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
+            }
+            genAI {
+                columnContext: Name of the object that this document is associated with (e.g. name of the project or name of the release)
+            }
+            help {
+                helpText: Name of the object that this document is associated with (e.g. name of the &NOMENCLATURE_PROJECT. or name of the &NOMENCLATURE_INITIATIVE.)
             }
         )
 
@@ -391,7 +400,7 @@ page 156 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -407,7 +416,7 @@ page 156 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -426,7 +435,7 @@ page 156 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F

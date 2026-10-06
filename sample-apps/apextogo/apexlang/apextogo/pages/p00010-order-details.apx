@@ -6,13 +6,8 @@ page 10 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region actions (
@@ -69,6 +64,9 @@ page 10 (
                 #DEFAULT#
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ORDER_DATETIME (
@@ -343,6 +341,9 @@ page 10 (
                 t-AVPList--fixedLabelSmall
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column TOTAL (

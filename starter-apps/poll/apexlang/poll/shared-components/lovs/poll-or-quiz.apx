@@ -1,0 +1,20 @@
+lov poll-or-quiz (
+    name: POLL OR QUIZ
+    source {
+        location: staticValues
+    }
+
+    entry poll (
+        sequence: 1
+        display: Poll
+        return: P
+    )
+
+    entry quiz (
+        sequence: 2
+        display: Quiz
+        return: Q
+    )
+
+)
+

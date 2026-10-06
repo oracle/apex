@@ -1,0 +1,38 @@
+lov session-types (
+    name: SESSION_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry break (
+        sequence: 4
+        display: Break
+        return: BREAK
+    )
+
+    entry business (
+        sequence: 1
+        display: Business
+        return: BUSINESS
+    )
+
+    entry general-session (
+        sequence: 3
+        display: General Session
+        return: GENERAL
+    )
+
+    entry hands-on-session (
+        sequence: 5
+        display: Hands On Session
+        return: Hands On
+    )
+
+    entry technical (
+        sequence: 2
+        display: Technical
+        return: TECHNICAL
+    )
+
+)
+

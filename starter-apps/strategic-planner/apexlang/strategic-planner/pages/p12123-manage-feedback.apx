@@ -9,7 +9,6 @@ page 12123 (
         cssClasses: rw-pillar--sienna
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -23,8 +22,6 @@ page 12123 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -136,7 +133,7 @@ page 12123 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: C
@@ -152,7 +149,7 @@ page 12123 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -168,7 +165,7 @@ page 12123 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -184,7 +181,7 @@ page 12123 (
                 sequence: 0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -200,7 +197,7 @@ page 12123 (
                 sequence: 13
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -216,7 +213,7 @@ page 12123 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -238,7 +235,7 @@ page 12123 (
                 htmlExpression: <span class="fa #RATING_ICON#" aria-hidden="true" title="#RATING#"></span>
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             columnFilter {
                 type: defaultBasedOnColumnType
@@ -257,7 +254,7 @@ page 12123 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -273,7 +270,7 @@ page 12123 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -292,7 +289,7 @@ page 12123 (
                 sequence: 8
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             columnFilter {
                 type: defaultBasedOnColumnType
@@ -314,7 +311,7 @@ page 12123 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: K
@@ -330,7 +327,7 @@ page 12123 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -346,7 +343,7 @@ page 12123 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J

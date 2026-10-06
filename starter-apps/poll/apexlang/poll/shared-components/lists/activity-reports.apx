@@ -1,0 +1,174 @@
+list activity-reports (
+    name: Activity Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 42
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar of page view activity summarized by user by day.
+            2: calendarIcon
+        }
+    )
+
+    entry all-respondents (
+        label: All Respondents
+        icon {
+            imageIconCssClasses: fa-table-user
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 84
+            }
+        }
+        userDefinedAttributes {
+            1: View all respondents across all Polls.
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 175
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: &P4_APP_ERROR_LOG_CNT.
+        }
+    )
+
+    entry application-log (
+        label: Application Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 61
+                clearCache: RIR
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of various administrative actions.
+            2: &P4_APP_LOG_CNT.
+        }
+    )
+
+    entry application-page-views (
+        label: Application Page Views
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Report of individual page view, reporting the page, elapsed server generation time, user, date and other information.
+            2: reportIcon
+        }
+    )
+
+    entry application-user-log (
+        label: Application User Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 60
+                clearCache: RIR
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all users created via self-service requests.
+            2: &P4_APP_USER_LOG_CNT.
+        }
+    )
+
+    entry respondent-details (
+        label: Respondent Details
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 86
+                clearCache: [
+                    86
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Displays polls taken and those invited to take but not taken for a selected respondent.
+            2: reportIcon
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Report of page views summarized by user by day.
+            2: reportIcon
+        }
+    )
+
+)
+

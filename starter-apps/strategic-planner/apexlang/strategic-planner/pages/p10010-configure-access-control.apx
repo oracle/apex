@@ -11,13 +11,9 @@ page 10010 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
         pageAccessProtection: noArgumentsSupported
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -83,9 +79,6 @@ page 10010 (
         appearance {
             template: @/optional
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: functionBody

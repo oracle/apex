@@ -1,0 +1,43 @@
+list ut-javascript-utilities (
+    name: UT - JavaScript Utilities
+
+    entry javascript-apis (
+        label: Javascript APIs
+        icon {
+            imageIconCssClasses: fa-code-fork
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 6201
+            }
+        }
+        userDefinedAttributes {
+            1: Extend Universal Theme with the following widget APIs
+            6: u-color-13
+        }
+    )
+
+    entry javascript-events (
+        label: JavaScript Events
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6200
+            }
+        }
+        userDefinedAttributes {
+            1: Listen and respond to these documented events in Universal Theme
+            6: u-color-13
+        }
+    )
+
+)
+

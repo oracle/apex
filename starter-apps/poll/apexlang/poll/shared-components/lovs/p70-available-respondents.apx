@@ -1,0 +1,14 @@
+lov p70-available-respondents (
+    name: P70 AVAILABLE RESPONDENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select nvl(name,email) || ' (' || lower(email) || ')' d, id r
+            from   EBA_QPOLL_RESPONDENTS
+            where id not in (select respondent_id from EBA_QPOLL_RESP_COMM_REF where community_id = :P70_COMMUNITY_ID_TO)
+            order by lower(nvl(name,email))
+            ```
+    }
+)
+

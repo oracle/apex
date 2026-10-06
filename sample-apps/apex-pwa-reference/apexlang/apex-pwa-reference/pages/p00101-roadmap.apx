@@ -6,12 +6,9 @@ page 101 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region apex (
@@ -75,6 +72,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -263,6 +263,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -477,6 +480,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -704,6 +710,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -957,6 +966,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (
@@ -1257,6 +1269,9 @@ page 101 (
                 t-MediaList--stack
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ICON_CLASS (

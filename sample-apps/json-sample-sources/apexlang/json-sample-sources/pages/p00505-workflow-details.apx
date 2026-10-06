@@ -11,13 +11,8 @@ page 505 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -832,6 +827,7 @@ page 505 (
         }
         settings {
             workflowId: P505_WORKFLOW_ID
+            enableExport: false
         }
     )
 

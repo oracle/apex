@@ -1,6 +1,6 @@
 app OPPORTUNITIES (
     name: Opportunities
-    version: 26.1.0
+    version: 26.2.0
     group: @starter-apps
     logo {
         type: text
@@ -49,11 +49,8 @@ app OPPORTUNITIES (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 40468B10AECAD957E04758D38A5A131344A0F095B504A0F77A07286C45405C0B
     }
     sessionManagement {
         rejoinSessions: publicSessions

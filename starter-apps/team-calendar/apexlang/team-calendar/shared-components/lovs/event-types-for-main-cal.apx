@@ -1,0 +1,18 @@
+lov event-types-for-main-cal (
+    name: EVENT TYPES FOR MAIN CAL
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select type_name || decode(:EXTERNAL_INTERNAL_BO, 'Include', decode(internal_yn, 'Y', ' (Internal Only)', null), null) d, type_id r
+              from EBA_ca_event_types
+            where (:EXTERNAL_INTERNAL_BO = 'Exclude'
+                   or (   nvl(internal_yn, 'N') = 'N'
+                       or upper(:APP_USER) in (select upper(username) from eba_ca_users)
+                      )
+                  )
+             order by type_name
+            ```
+    }
+)
+

@@ -1,0 +1,41 @@
+list sql-json-functions (
+    name: SQL/JSON Functions
+
+    entry json-table (
+        label: JSON_TABLE
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+        userDefinedAttributes {
+            1: Converts JSON data into relational rows and columns for easy querying.
+        }
+    )
+
+    entry json-transform (
+        label: JSON_TRANSFORM
+        icon {
+            imageIconCssClasses: fa-file-edit
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to update and manipulate JSON documents directly in SQL.
+        }
+    )
+
+)
+

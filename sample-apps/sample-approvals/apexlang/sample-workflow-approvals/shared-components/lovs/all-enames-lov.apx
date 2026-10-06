@@ -1,0 +1,12 @@
+lov all-enames-lov (
+    name: ALL_ENAMES_LOV
+    source {
+        tableName: EBA_DEMO_APPR_EMP
+    }
+    columnMapping {
+        return: ENAME
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+

@@ -27,8 +27,8 @@ set define off verify off feedback off
 --------------------------------------------------------------------------------
 begin
 wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.0'
+ p_version_yyyy_mm_dd=>'2026.04.07'
+,p_release=>'26.2.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7090
 ,p_default_id_offset=>1550216302176697
@@ -81,8 +81,8 @@ prompt APPLICATION 7090 - Team Calendar
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:         44
---   Version:         26.1.0
---   Instance ID:     746074654651817
+--   Version:         26.2.0
+--   Instance ID:     745964864827421
 --
 
 prompt --application/delete_application
@@ -131,11 +131,12 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.2.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'S'
 ,p_deep_linking=>'Y'
+,p_allow_bots=>'Y'
 ,p_runtime_api_usage=>'T'
 ,p_pass_ecid=>'N'
 ,p_security_scheme=>wwv_flow_imp.id(3255013754194135948)
@@ -156,7 +157,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_05=>'Team Calendar'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
-,p_version_scn=>'123332700'
+,p_version_scn=>'309385847'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -175,13 +176,13 @@ wwv_imp_workspace.create_flow(
 ,p_global_page_id=>0
 ,p_navigation_list_id=>wwv_flow_imp.id(1751311778290221472)
 ,p_navigation_list_position=>'SIDE'
-,p_navigation_list_template_id=>2469215554099805162
+,p_navigation_list_template_id=>2471166859590295591
 ,p_nav_list_template_options=>'#DEFAULT#:js-defaultCollapsed:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_css_file_urls=>'#IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css'
 ,p_include_legacy_javascript=>'PRE18:18'
 ,p_nav_bar_type=>'LIST'
 ,p_nav_bar_list_id=>wwv_flow_imp.id(1216934067826559341)
-,p_nav_bar_list_template_id=>2849019392706229583
+,p_nav_bar_list_template_id=>2850970698196720012
 );
 end;
 /
@@ -359,12 +360,12 @@ wwv_flow_imp_shared.create_plugin(
 ,p_render_function=>'acl_status'
 ,p_standard_attributes=>'SOURCE_SQL'
 ,p_substitute_attributes=>true
+,p_version_scn=>'SH256:tbhWqjG_H_CTBDe5AT7FQ_hizPyJMyLwbfs3NReL250'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>ACL Status is designed for those applications that use the built-in Application Express authentication Access Control List (ACL), to control access to the application and features. The plug-in displays the current ACL status together with a count '
-||'of Administrators, Contributors, and Readers.</p>',
+'<p>ACL Status is designed for those applications that use the built-in authentication Access Control List (ACL), to control access to the application and features. The plug-in displays the current ACL status together with a count of Administrators, C'
+||'ontributors, and Readers.</p>',
 '<p>This plug-in is suitable for adding to the main Administration page to provide an overview of user security settings.</p>'))
 ,p_version_identifier=>'5.0.1'
-,p_about_url=>'http://apex.oracle.com/plugins'
 ,p_files_version=>2461161212222
 );
 wwv_flow_imp_shared.create_plugin_attribute(
@@ -523,11 +524,11 @@ wwv_flow_imp_shared.create_plugin(
 ,p_api_version=>1
 ,p_render_function=>'render'
 ,p_substitute_attributes=>true
+,p_version_scn=>'SH256:W-3UKKTizVz2SB6LILEU6JCfH1jt8e3_PHJOVPGJR_0'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>ACL Warning is designed for those applications that use the built-in Application Express authentication Access Control List (ACL), to control access to the application and features. The plug-in displays a warning when ACL is disabled.</p>',
+'<p>ACL Warning is designed for those applications that use the built-in authentication Access Control List (ACL), to control access to the application and features. The plug-in displays a warning when ACL is disabled.</p>',
 '<p>This plug-in is suitable for adding to the Home page to provide warnings when ACL is not enabled, allowing every user to act as an Administrator.</p>'))
 ,p_version_identifier=>'5.0.1'
-,p_about_url=>'http://apex.oracle.com/plugins'
 ,p_files_version=>2461161212223
 );
 wwv_flow_imp_shared.create_plugin_attribute(
@@ -664,11 +665,11 @@ wwv_flow_imp_shared.create_plugin(
 ,p_api_version=>1
 ,p_render_function=>'auth_admin'
 ,p_substitute_attributes=>true
+,p_version_scn=>'SH256:wjlKiN-UDM4E56m3wW8tINFqVn5DhYImwbV2Mu2o-jk'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Authorization Administration displays the current authentication scheme together with a count of public pages, pages requiring authentication, and pages with an authorization defined.</p>',
 '<p>This plug-in is suitable for adding to the main Administration page to provide an overview of high level security settings.</p>'))
 ,p_version_identifier=>'5.0.1'
-,p_about_url=>'http://apex.oracle.com/plugins'
 ,p_files_version=>2461161212223
 );
 wwv_flow_imp_shared.create_plugin_attribute(
@@ -2250,7 +2251,8 @@ wwv_flow_imp_shared.create_plugin_setting(
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_IR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'actions_menu_structure', 'IG')).to_clob
+  'actions_menu_structure', 'IG',
+  'auto_ir_reset_button', 'N')).to_clob
 ,p_version_scn=>'37166093807280'
 );
 wwv_flow_imp_shared.create_plugin_setting(
@@ -4758,44 +4760,47 @@ wwv_flow_imp_shared.create_theme(
 ,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
 ,p_theme_internal_name=>'UNIVERSAL_THEME'
-,p_version_identifier=>'26.1'
+,p_version_identifier=>'26.2'
 ,p_navigation_type=>'L'
 ,p_nav_bar_type=>'LIST'
 ,p_is_locked=>false
-,p_current_theme_style_id=>2243014446517417
-,p_default_page_template=>4073832297226169690
-,p_default_dialog_template=>2101883943284197310
-,p_error_template=>2102634289808461002
-,p_printer_friendly_template=>4073832297226169690
-,p_login_template=>2102634289808461002
-,p_default_button_template=>4073839297780169708
-,p_default_region_template=>4073835273271169698
-,p_default_chart_template=>4073835273271169698
-,p_default_form_template=>4073835273271169698
-,p_default_reportr_template=>4073835273271169698
-,p_default_wizard_template=>4073835273271169698
-,p_default_menur_template=>2532939663579242476
-,p_default_listr_template=>4073835273271169698
-,p_default_irr_template=>2102002977963900996
-,p_default_report_template=>2540130677583398057
-,p_default_menu_template=>4073839682315169711
-,p_default_list_template=>4073837480889169704
-,p_default_top_nav_list_temp=>2528231041045349458
-,p_default_side_nav_list_temp=>2469215554099805162
+,p_current_theme_style_id=>4194319937007846
+,p_default_page_template=>4075783602716660119
+,p_default_dialog_template=>2103835248774687739
+,p_error_template=>2104585595298951431
+,p_printer_friendly_template=>4075783602716660119
+,p_login_template=>2104585595298951431
+,p_default_button_template=>4075790603270660137
+,p_default_region_template=>4075786578761660127
+,p_default_chart_template=>4075786578761660127
+,p_default_form_template=>4075786578761660127
+,p_default_reportr_template=>4075786578761660127
+,p_default_wizard_template=>4075786578761660127
+,p_default_menur_template=>2534890969069732905
+,p_default_listr_template=>4075786578761660127
+,p_default_irr_template=>2103954283454391425
+,p_default_report_template=>2542081983073888486
+,p_default_label_template=>1612549609962752680
+,p_default_menu_template=>4075790987805660140
+,p_default_list_template=>4075788786379660133
+,p_default_top_nav_list_temp=>2530182346535839887
+,p_default_side_nav_list_temp=>2471166859590295591
 ,p_default_nav_list_position=>'SIDE'
-,p_default_dialogbtnr_template=>2127905476394690047
-,p_default_dialogr_template=>4502917002193490937
-,p_default_navbar_list_template=>2849019392706229583
-,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
+,p_default_dialogbtnr_template=>2129856781885180476
+,p_default_dialogr_template=>4504868307683981366
+,p_default_option_label=>1612549609962752680
+,p_default_required_label=>1612549789555753698
+,p_default_navbar_list_template=>2850970698196720012
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.2/')
 ,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
-,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_reference_id=>wwv_imp_util.get_subscription_id(4075791579648660165,2000,'universal-theme',8842.262)
 ,p_version_scn=>'SH256:qp4N_JhPqTcmHIg-CkVZd3lQyweCE8LWatUuPZNb4HU'
-,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
+,p_version_scn_master=>'SH256:S3Fh7S4ZMPpy-ID1j0RgxJIrTUyM6ZXOJB4KD7haOtc'
 );
 end;
 /
@@ -5304,7 +5309,7 @@ wwv_flow_imp_page.create_page(
 '.t-Badge.apex-cal-silver { background-color: #BDC3C7; border-color: #BDC3C7; color: #404040; }',
 '.t-Badge.apex-cal-white { background-color: #F0F0F0; border-color: #F0F0F0; color: #404040; }',
 '.t-Badge.apex-cal-yellow { background-color: #F1C40F; border-color: #F1C40F; color: #404040; }'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -5323,7 +5328,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'ACL Warning'
 ,p_static_id=>'acl-warning'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--defaultIcons:t-Alert--warning:t-Alert--horizontal'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5340,7 +5345,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'&APPLICATION_TITLE.'
 ,p_static_id=>'application-title'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675494171183407654
+,p_plug_template=>2677445476673898083
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -5368,7 +5373,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Calendars'
 ,p_static_id=>'calendars'
 ,p_parent_plug_id=>wwv_flow_imp.id(1865442063424994133)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>80
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -5409,10 +5414,11 @@ wwv_flow_imp_page.create_report_region(
 ' order by ob, d'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -5435,7 +5441,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Contact Email'
 ,p_static_id=>'contact-email'
 ,p_parent_plug_id=>wwv_flow_imp.id(1865442063424994133)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>90
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlight'
@@ -5452,10 +5458,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'EXISTS'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -5479,7 +5486,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_static_id=>'event-types'
 ,p_region_name=>'event-types-report'
 ,p_parent_plug_id=>wwv_flow_imp.id(1865442063424994133)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>70
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--showIcon:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlight'
@@ -5514,10 +5521,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'EXISTS'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -5541,7 +5549,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'events-calendar'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -5667,7 +5675,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'events-calendar'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -5781,7 +5789,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filters'
 ,p_static_id=>'filters'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-useLocalStorage:is-expanded:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5816,9 +5824,10 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'EXISTS'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>28842.25179278697457413
+,p_query_row_template=>1951305490519271.25179278697457413
 ,p_query_num_rows=>100
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -5878,7 +5887,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'timezone'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>60
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -5898,7 +5907,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Event'
 ,p_button_position=>'NEXT'
@@ -5914,7 +5923,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'filter'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI:t-Button--iconRight:t-Button--gapLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Update Filters'
 ,p_button_position=>'RIGHT_OF_TITLE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.:::'
@@ -6118,7 +6127,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940477613660378872)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'By default this page shows all upcoming events. From this page you can edit any existing event by clicking the <strong>Edit</strong> icon (pencil) next to the event. Click the <strong>Add Event</strong> button to add a new event. Click the <strong>De'
@@ -6131,7 +6140,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--showBreadcrumb:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -6139,14 +6148,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(8412760768882197703)
 ,p_plug_name=>'Events'
 ,p_static_id=>'events'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -6544,7 +6553,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'hidden Items'
 ,p_static_id=>'hidden-items'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -6572,9 +6581,10 @@ wwv_flow_imp_page.create_report_region(
 ' order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>28842.25179278697457413
+,p_query_row_template=>1951305490519271.25179278697457413
 ,p_query_num_rows=>100
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -6634,7 +6644,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'timezone'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -6654,7 +6664,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Event'
 ,p_button_position=>'CREATE'
@@ -6670,7 +6680,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete-multiple'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--danger:t-Button--simple:t-Button--iconRight:t-Button--pillStart'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Delete Multiple Events'
 ,p_button_position=>'CREATE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.:13::'
@@ -6685,7 +6695,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.,RIR::'
@@ -6749,7 +6759,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940477613660378872)
-,p_step_template=>1999837786206682705
+,p_step_template=>2001789091697173134
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'This is the event details page. Click the <strong>Cancel</strong> button to leave this page. Click the <strong>iCalendar</strong> button to save this event as an .ics file. Click the <strong>Print</strong> button to print this page. Click the <strong'
@@ -6763,7 +6773,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'add-attachment'
 ,p_region_name=>'add_file_modal'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-size600x400'
-,p_plug_template=>2674150083631647148
+,p_plug_template=>2676101389122137577
 ,p_plug_display_sequence=>90
 ,p_plug_display_point=>'REGION_POSITION_04'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6778,7 +6788,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'add-update'
 ,p_region_name=>'ADDNOTEM'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-size600x400:t-Form--stretchInputs'
-,p_plug_template=>2674150083631647148
+,p_plug_template=>2676101389122137577
 ,p_plug_display_sequence=>80
 ,p_plug_display_point=>'REGION_POSITION_04'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6791,7 +6801,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(3256327670091544201)
 ,p_name=>'Attachments'
 ,p_static_id=>'attachments'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hiddenOverflow'
@@ -6845,11 +6855,12 @@ wwv_flow_imp_page.create_report_region(
 'order by created desc'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>5000
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
 ,p_query_no_data_found=>'No attachments found'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>5000
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -6958,20 +6969,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>100
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1717310800957423940)
 ,p_name=>'Details'
 ,p_static_id=>'details'
-,p_template=>4502917002193490937
+,p_template=>4504868307683981366
 ,p_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#'
@@ -7006,10 +7017,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_ajax_items_to_submit=>'P3_EVENT_ID'
 ,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
+,p_query_row_template=>2103943081508282569
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -7295,7 +7307,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'edit-links'
 ,p_region_name=>'edit_link_modal'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-size600x400:t-Form--stretchInputs:t-Form--labelsAbove'
-,p_plug_template=>2674150083631647148
+,p_plug_template=>2676101389122137577
 ,p_plug_display_sequence=>100
 ,p_plug_display_point=>'REGION_POSITION_04'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7309,7 +7321,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event'
 ,p_static_id=>'event'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'REGION_POSITION_02'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7325,14 +7337,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'event-actions'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:t-LinksList--showIcons:t-LinksList--actions'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>130
 ,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(2195493963991682142)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>4073837480889169704
+,p_list_template_id=>4075788786379660133
 ,p_plug_display_condition_type=>'VAL_OF_ITEM_IN_COND_EQ_COND2'
 ,p_plug_display_when_condition=>'P3_UPDATEABLE'
 ,p_plug_display_when_cond2=>'Y'
@@ -7341,7 +7353,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(7969249830367436210)
 ,p_name=>'Links'
 ,p_static_id=>'links'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hiddenOverflow'
@@ -7372,11 +7384,12 @@ wwv_flow_imp_page.create_report_region(
 'order by 1'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
 ,p_query_no_data_found=>'No links found'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -7428,7 +7441,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'No Edit Actions'
 ,p_static_id=>'no-edit-actions'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>140
 ,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7460,7 +7473,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(3256247265607994083)
 ,p_name=>'Updates'
 ,p_static_id=>'updates'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hiddenOverflow'
@@ -7538,12 +7551,13 @@ wwv_flow_imp_page.create_report_region(
 'order by 11 desc'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2614645152475874618
+,p_query_row_template=>2616596457966365047
 ,p_query_headings_type=>'QUERY_COLUMNS'
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' '
 ,p_query_no_data_found=>'No updates found'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>50
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -7691,7 +7705,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'add-file'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Attachment'
 ,p_button_position=>'CREATE'
@@ -7704,7 +7718,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'add-note'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Update'
 ,p_button_position=>'CREATE'
@@ -7718,7 +7732,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'javascript:closeModal();'
@@ -7732,7 +7746,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'javascript:closeModal();'
@@ -7746,7 +7760,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&P3_PREV_PAGE.:&SESSION.::&DEBUG.:::'
@@ -7760,7 +7774,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_show_as_disabled=>false
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'javascript:closeModal();'
@@ -7773,7 +7787,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'edit-event'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Edit Event'
 ,p_button_position=>'EDIT'
@@ -7791,7 +7805,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'edit-link'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -7804,7 +7818,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'goupdates'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'View Updates'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:34:&SESSION.:::34:P34_ID:&P3_EVENT_ID.'
@@ -7818,7 +7832,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'icalendar'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'iCalendar'
 ,p_button_position=>'HELP'
 );
@@ -7830,7 +7844,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'pop-add-links'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Add Links'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:openModal(''edit_link_modal'');'
@@ -7861,7 +7875,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'pop-add-note'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Add Note'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:33:&SESSION.::&DEBUG.:RP,33:P33_EVENT_ID:&P3_EVENT_ID.'
@@ -7879,7 +7893,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'pop-edit-links'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Edit Links'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:openModal(''edit_link_modal'');'
@@ -7910,7 +7924,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'popattachment'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Add Attachment'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:32:&SESSION.::&DEBUG.:RP,32:P32_EVENT_ID:&P3_EVENT_ID.'
@@ -7928,7 +7942,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'print'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Print'
 ,p_button_position=>'CHANGE'
 ,p_button_redirect_url=>'javascript: window.print();'
@@ -7941,7 +7955,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'view-attachments'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'View Attachments'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:31:&SESSION.:::31:P31_ID:&P3_EVENT_ID.'
@@ -7978,7 +7992,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_read_only_when_type=>'ALWAYS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Name of the event.'
@@ -7999,7 +8013,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_FILE'
 ,p_cSize=>64
 ,p_cMaxlength=>4000
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'allow_copy_paste', 'N',
@@ -8017,7 +8031,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>80
 ,p_cMaxlength=>4000
 ,p_cHeight=>5
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
@@ -8035,7 +8049,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>4000
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_restricted_characters=>'WEB_SAFE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8054,7 +8068,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Name of 1st link.  If not provided, the URL will be displayed.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8073,7 +8087,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Name of 2nd link.  If not provided, the URL will be displayed.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8092,7 +8106,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Name of 3rd link.  If not provided, the URL will be displayed.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8112,7 +8126,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'URL for 1st link.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8132,7 +8146,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'URL for 2nd link.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8152,7 +8166,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'URL for 3rd link.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -8173,7 +8187,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>32767
 ,p_cHeight=>5
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
@@ -8534,7 +8548,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -8546,7 +8560,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Notifications'
 ,p_static_id=>'notifications'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -8749,7 +8763,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Notification'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -8763,7 +8777,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.::'
@@ -8866,7 +8880,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -8877,7 +8891,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -8892,7 +8906,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filter Options'
 ,p_static_id=>'filter-options'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--noBorder:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -8908,7 +8922,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'BELOW_BOX'
 ,p_button_alignment=>'LEFT'
@@ -8922,7 +8936,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Reset All'
 ,p_button_position=>'CREATE'
 );
@@ -8934,7 +8948,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'submit'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Set'
 ,p_button_position=>'CREATE'
@@ -8949,7 +8963,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_named_lov=>'CALENDARS WITH DEFAULT'
 ,p_grid_label_column_span=>0
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_required_patch=>wwv_flow_imp.id(1857191596806388379)
@@ -8968,7 +8982,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov=>'STATIC2:All;0'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_required_patch=>wwv_flow_imp.id(1857191596806388379)
@@ -8993,7 +9007,7 @@ wwv_flow_imp_page.create_page_item(
 'select ''x'' from',
 'eba_ca_events where contact_email is not null;'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_security_scheme=>wwv_flow_imp.id(3255014080085135948)
@@ -9011,7 +9025,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov=>'STATIC2:All;0'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Use to limit the results to events with the Event Types selected.'
@@ -9030,7 +9044,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_named_lov=>'EVENT TYPES FOR MAIN CAL'
 ,p_grid_label_column_span=>0
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -9352,7 +9366,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -9364,7 +9378,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event Types'
 ,p_static_id=>'event-types'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -9618,7 +9632,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Event Type'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -9632,7 +9646,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-report'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:7:&SESSION.::&DEBUG.:7,RIR::'
@@ -9736,7 +9750,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -9749,7 +9763,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -9764,7 +9778,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event Type Details'
 ,p_static_id=>'event-type-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -9788,7 +9802,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Recommended Colors'
 ,p_static_id=>'recommended-colors'
 ,p_region_template_options=>'#DEFAULT#:is-expanded:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -9829,7 +9843,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -9842,7 +9856,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Event Type'
 ,p_button_position=>'NEXT'
@@ -9858,7 +9872,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'NEXT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -9874,7 +9888,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -9911,7 +9925,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- Select Color Preference -'
 ,p_cHeight=>1
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -9945,7 +9959,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov=>'STATIC2:External;N,Internal Only;Y'
 ,p_cHeight=>1
 ,p_begin_on_new_line=>'N'
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_required_patch=>wwv_flow_imp.id(1631739938122003976)
@@ -9978,7 +9992,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>48
 ,p_cMaxlength=>60
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -10112,7 +10126,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -10126,7 +10140,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'activity-calendar'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>21
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -10172,7 +10186,7 @@ wwv_flow_imp_page.create_page(
 'var groupCal = groupCal || {};',
 '',
 'groupCal.defaultDuration = 1;'))
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -10185,7 +10199,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'audit-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(8940468097198355042)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10201,7 +10215,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -10216,7 +10230,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event'
 ,p_static_id=>'event'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10229,7 +10243,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Links'
 ,p_static_id=>'links'
 ,p_region_template_options=>'#DEFAULT#:js-useLocalStorage:is-expanded:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10243,7 +10257,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'recurrence'
 ,p_parent_plug_id=>wwv_flow_imp.id(8940468097198355042)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10260,7 +10274,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
@@ -10273,7 +10287,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Event'
 ,p_button_position=>'NEXT'
@@ -10289,7 +10303,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'CLOSE'
 ,p_button_execute_validations=>'N'
@@ -10307,7 +10321,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete-2'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -10327,7 +10341,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -10393,7 +10407,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- Default Calendar -'
 ,p_cHeight=>1
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10411,7 +10425,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Person to contact for more information.'
@@ -10431,7 +10445,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Person to contact for more information.'
@@ -10449,7 +10463,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Created By:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who created the record.'
@@ -10467,7 +10481,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Created:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was created.'
@@ -10512,7 +10526,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_ajax_items_to_submit=>'P10_DURATION'
 ,p_ajax_optimize_refresh=>'Y'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'End time of the event.'
@@ -10530,7 +10544,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>15
 ,p_cMaxlength=>30
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Select the event date.'
@@ -10564,7 +10578,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Description of the event.'
@@ -10596,7 +10610,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Name of the event.'
@@ -10616,7 +10630,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'START TIME SELECTOR'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'Start time of the event.'
@@ -10631,7 +10645,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Last Updated By:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who last updated the record.'
@@ -10649,7 +10663,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Last Updated:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was last updated.'
@@ -10669,7 +10683,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Name of 1st link.  If not provided, the URL will be displayed.'
@@ -10689,7 +10703,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Name of 2nd link.  If not provided, the URL will be displayed.'
@@ -10709,7 +10723,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Name of 3rd link.  If not provided, the URL will be displayed.'
@@ -10730,7 +10744,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_protection_level=>'S'
 ,p_help_text=>'URL for 1st link.'
@@ -10751,7 +10765,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_protection_level=>'S'
 ,p_help_text=>'URL for 2nd link.'
@@ -10772,7 +10786,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_protection_level=>'S'
 ,p_help_text=>'URL for 3rd link.'
@@ -10792,7 +10806,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Location of the event.'
@@ -10816,7 +10830,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_null_text=>'- Select Color Preference -'
 ,p_cHeight=>1
 ,p_grid_label_column_span=>3
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10834,7 +10848,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>48
 ,p_cMaxlength=>60
 ,p_grid_label_column_span=>3
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'If desired type is not in the select list, you can enter an event type here and it will be created.'
@@ -10856,7 +10870,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov=>'STATIC2:External;N,Internal Only;Y'
 ,p_cHeight=>1
 ,p_grid_label_column_span=>3
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10893,7 +10907,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>15
 ,p_cMaxlength=>30
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Date on which the recurrence will end.'
@@ -10914,7 +10928,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_named_lov=>'CHECKBOX'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10934,7 +10948,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'RECUR FREQUENCY'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10962,7 +10976,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_named_lov=>'CHECKBOX'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -10988,7 +11002,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_cSize=>64
 ,p_cMaxlength=>4000
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -11017,7 +11031,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- Select Type -'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -11722,7 +11736,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -11735,7 +11749,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Associated Events'
 ,p_static_id=>'associated-events'
 ,p_parent_plug_id=>wwv_flow_imp.id(7408898026309877951)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>50
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight:t-Report--inline'
@@ -11765,7 +11779,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_footer=>'* selected event'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -11814,21 +11828,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(7408907999559889192)
 ,p_plug_name=>'Remove Event(s)'
 ,p_static_id=>'remove-event-s'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -11845,7 +11859,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'scope'
 ,p_parent_plug_id=>wwv_flow_imp.id(7408898026309877951)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11862,7 +11876,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Update Event(s)'
 ,p_static_id=>'update-event-s'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -11881,7 +11895,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
@@ -11894,7 +11908,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--danger:t-Button--simple'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'DELETE'
@@ -11911,7 +11925,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -11950,7 +11964,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'UPD_REQUEST_AFO'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Identify which events you want this delete to affect.'
@@ -11979,7 +11993,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'UPD_REQUEST_AFO'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Identify which events you want this update to affect.'
@@ -12101,7 +12115,7 @@ wwv_flow_imp_page.create_page(
 '.t-Badge.apex-cal-silver { background-color: #BDC3C7; border-color: #BDC3C7; color: #404040; }',
 '.t-Badge.apex-cal-white { background-color: #F0F0F0; border-color: #F0F0F0; color: #404040; }',
 '.t-Badge.apex-cal-yellow { background-color: #F1C40F; border-color: #F1C40F; color: #404040; }'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'This is the timeline of future events page. It shows all upcoming events that match your current filter settings. To change your filter values, click the <strong>Update Filters</strong> button, make your changes and then click the <strong>Set</strong'
@@ -12114,7 +12128,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -12122,14 +12136,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(3539595572744402377)
 ,p_name=>'Calendars'
 ,p_static_id=>'calendars'
 ,p_parent_plug_id=>wwv_flow_imp.id(3711843340132522341)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>80
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -12170,10 +12184,11 @@ wwv_flow_imp_page.create_report_region(
 ' order by ob, d'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -12196,7 +12211,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Contact Email'
 ,p_static_id=>'contact-email'
 ,p_parent_plug_id=>wwv_flow_imp.id(3711843340132522341)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>90
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlight'
@@ -12213,10 +12228,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'EXISTS'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -12239,7 +12255,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Event Types'
 ,p_static_id=>'event-types'
 ,p_parent_plug_id=>wwv_flow_imp.id(3711843340132522341)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>70
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlight'
@@ -12273,10 +12289,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'EXISTS'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_query_row_count_max=>500
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
@@ -12299,7 +12316,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filters'
 ,p_static_id=>'filters'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-expanded:t-Region--noUI:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12328,9 +12345,10 @@ wwv_flow_imp_page.create_report_region(
 ' order by nvl(DISPLAY_SEQUENCE,0),NOTIFICATION_NAME'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>28842.25179278697457413
+,p_query_row_template=>1951305490519271.25179278697457413
 ,p_query_num_rows=>100
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -12390,7 +12408,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'timeline-of-future-events'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -12667,7 +12685,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'timezone'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -12687,7 +12705,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Event'
 ,p_button_position=>'CREATE'
@@ -12703,7 +12721,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'filter'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--noUI:t-Button--iconRight:t-Button--gapLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Update Filters'
 ,p_button_position=>'RIGHT_OF_TITLE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:5:&SESSION.::&DEBUG.:::'
@@ -12874,7 +12892,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2528119710305719084
+,p_step_template=>2530071015796209513
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -12888,21 +12906,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(7434847413136918365)
 ,p_plug_name=>'Directions'
 ,p_static_id=>'directions'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -12921,7 +12939,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(7434846423995918353)
 ,p_name=>'Events to be Deleted'
 ,p_static_id=>'events-to-be-deleted'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>30
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -13020,7 +13038,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_header=>'<p/>'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_no_data_found=>'No events found.'
@@ -13124,7 +13142,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filter'
 ,p_static_id=>'filter'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hiddenOverflow:t-Region--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'REGION_POSITION_02'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13141,7 +13159,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP::'
@@ -13154,7 +13172,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Delete Events Listed Below'
 ,p_button_position=>'CREATE'
@@ -13169,7 +13187,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'P13_CLEAR'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Clear'
 ,p_button_position=>'CLOSE'
 ,p_request_source=>'CLEAR'
@@ -13184,7 +13202,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'P13_GO'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Go'
 ,p_button_position=>'HELP'
@@ -13223,7 +13241,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- All -'
 ,p_cHeight=>1
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_required_patch=>wwv_flow_imp.id(1857191596806388379)
@@ -13242,7 +13260,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>16
 ,p_cMaxlength=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'If entered, Events after this date will not be included.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -13265,7 +13283,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- All -'
 ,p_cHeight=>1
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'If selected, only events of this type will be included.'
@@ -13283,7 +13301,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>16
 ,p_cMaxlength=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'If entered, Events before this date will not be included.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -13310,7 +13328,7 @@ wwv_flow_imp_page.create_page_item(
 'select 1',
 '  from EBA_ca_timeframes'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'Select Reporting Timeframe to restrict the report.'
@@ -13445,7 +13463,7 @@ wwv_flow_imp_page.create_page(
 'div.helpContainer div.helpSide ul.vapList {',
 'padding-top: 8px;}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'This is the main help content for the entire app.'
@@ -13458,7 +13476,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(3224038864192463719)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13472,7 +13490,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(2068273827425610133)
 ,p_name=>'&APPLICATION_TITLE.'
 ,p_static_id=>'application-title'
-,p_template=>2675494171183407654
+,p_template=>2677445476673898083
 ,p_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_css_classes=>'t-HeroRegion--featured'
@@ -13491,10 +13509,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
 ,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
+,p_query_row_template=>2103943081508282569
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -13539,14 +13558,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -13556,7 +13575,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(3224038864192463719)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13573,7 +13592,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(3224038864192463719)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13588,7 +13607,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Help Container'
 ,p_static_id=>'help-container'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -13604,7 +13623,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(3224038864192463719)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13634,7 +13653,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2528119710305719084
+,p_step_template=>2530071015796209513
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -13655,14 +13674,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(8026929850809464207)
@@ -13670,7 +13689,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'email-details'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hiddenOverflow:t-Region--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_region_attributes=>'style="width: 99%; min-width: 99%"'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13683,7 +13702,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Email Functionality Disabled'
 ,p_static_id=>'email-functionality-disabled'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--danger'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13700,7 +13719,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(8014162132081286906)
 ,p_name=>'Events to be Included'
 ,p_static_id=>'events-to-be-included'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>30
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hiddenOverflow'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight:t-Report--inline:t-Report--hideNoPagination'
@@ -13760,7 +13779,7 @@ wwv_flow_imp_page.create_report_region(
 ' order by e.event_date_time'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_no_data_found=>'No events found.'
@@ -13853,7 +13872,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filter'
 ,p_static_id=>'filter'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hiddenOverflow:t-Region--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_plug_display_point=>'REGION_POSITION_02'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13870,7 +13889,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:RP::'
@@ -13884,7 +13903,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'members'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--small:t-Button--primary:t-Button--simple'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'View Members'
 ,p_button_redirect_url=>'f?p=&APP_ID.:20:&SESSION.::&DEBUG.:RP:P20_GROUP_ID:&P15_GROUP_ID.'
 ,p_button_condition_type=>'NEVER'
@@ -13917,7 +13936,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'P15_CLEAR'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Clear'
 ,p_button_position=>'CLOSE'
 ,p_request_source=>'CLEAR'
@@ -13932,7 +13951,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'P15_GO'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Go'
 ,p_button_position=>'HELP'
@@ -13947,7 +13966,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'send-email'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Send Email'
 ,p_button_position=>'CREATE'
@@ -13984,7 +14003,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>16
 ,p_cMaxlength=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'If entered, Events after this date will not be included.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -14007,7 +14026,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_lov_null_text=>'- All -'
 ,p_cHeight=>1
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'If selected, only events of this type will be included.'
@@ -14028,7 +14047,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_when2=>'PLSQL'
 ,p_display_when_type=>'EXPRESSION'
 ,p_read_only_when_type=>'ALWAYS'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Who the email will be sent from.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -14051,7 +14070,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cHeight=>1
 ,p_colspan=>7
 ,p_display_when_type=>'NEVER'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'The email group that the email will be sent to.  The can be in addition to email addresses identified in the ''To'' or instead of.'
@@ -14084,7 +14103,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXTAREA'
 ,p_cSize=>90
 ,p_cHeight=>4
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Enter the body of your email.  A table including the selected events will be included below the text.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -14104,7 +14123,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>16
 ,p_cMaxlength=>30
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'If entered, Events before this date will not be included.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -14126,7 +14145,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>4000
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'The subject line for the email.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -14151,7 +14170,7 @@ wwv_flow_imp_page.create_page_item(
 'select 1',
 '  from EBA_ca_timeframes'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_help_text=>'Select Reporting Timeframe to restrict the report.'
@@ -14186,7 +14205,7 @@ wwv_flow_imp_page.create_page_item(
 'where',
 '    lower(u.username) = lower(a.user_name);'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'Addresses to email.  Multiple addresses can be selected.'
@@ -14586,7 +14605,7 @@ wwv_flow_imp_page.create_page(
 '    parent.location.reload();',
 '}'))
 ,p_javascript_code_onload=>'window.onunload = refreshParent;'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -14598,7 +14617,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Groups'
 ,p_static_id=>'groups'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -14773,7 +14792,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Group'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -14787,7 +14806,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.,RIR::'
@@ -14891,7 +14910,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -14904,7 +14923,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Audit Information'
 ,p_static_id=>'audit-information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -14919,7 +14938,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -14934,7 +14953,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Group Details'
 ,p_static_id=>'group-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -14950,7 +14969,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:16:&SESSION.::&DEBUG.:::'
@@ -14963,7 +14982,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Group'
 ,p_button_position=>'NEXT'
@@ -14979,7 +14998,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -14996,7 +15015,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -15014,7 +15033,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'CREATED_BY'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who created the record.'
@@ -15034,7 +15053,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'CREATED_ON'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was created.'
@@ -15070,7 +15089,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Name of Group.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15089,7 +15108,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'LAST_UPDATED_BY'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who last updated the record.'
@@ -15109,7 +15128,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'LAST_UPDATED_ON'
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was last updated.'
@@ -15211,7 +15230,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -15224,14 +15243,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -15239,7 +15258,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Group Members'
 ,p_static_id=>'group-members'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -15425,7 +15444,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Member'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -15439,7 +15458,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create-multiple'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Add Multiple Members'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:21:&SESSION.::&DEBUG.:21::'
@@ -15452,7 +15471,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP::'
@@ -15508,7 +15527,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -15521,7 +15540,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -15536,7 +15555,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Group Member Details'
 ,p_static_id=>'group-member-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -15552,7 +15571,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -15565,7 +15584,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Member'
 ,p_button_position=>'NEXT'
@@ -15581,7 +15600,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -15598,7 +15617,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -15619,7 +15638,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'The email address of the member.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15641,7 +15660,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'EMAIL GROUPS'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_help_text=>'The group you are adding the member to.'
@@ -15773,7 +15792,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -15784,7 +15803,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Button bar'
 ,p_static_id=>'button-bar'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15797,7 +15816,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(2436506583425603753)
 ,p_name=>'Group Members'
 ,p_static_id=>'group-members'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>20
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight:t-Report--inline'
@@ -15810,7 +15829,7 @@ wwv_flow_imp_page.create_report_region(
 ' order by 1'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -15842,7 +15861,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'close'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Close'
 ,p_button_position=>'NEXT'
 ,p_button_execute_validations=>'N'
@@ -15861,7 +15880,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_lov_display_null=>'YES'
 ,p_cHeight=>1
 ,p_read_only_when_type=>'ALWAYS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -15902,7 +15921,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_dialog_chained=>'N'
@@ -15919,7 +15938,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Add Multiple Members'
 ,p_static_id=>'add-multiple-members'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -15933,14 +15952,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -15948,7 +15967,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -15966,7 +15985,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_execute_validations=>'N'
@@ -15980,7 +15999,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'next'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Next'
 ,p_button_position=>'NEXT'
@@ -16016,7 +16035,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'EMAIL GROUPS'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -16044,7 +16063,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>75
 ,p_cMaxlength=>32767
 ,p_cHeight=>14
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Enter or copy and paste email addresses separated by commas, semicolons, or new lines. Note that if you copy and paste email addresses from email messages, extraneous text will be filtered out.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -16131,7 +16150,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_dialog_chained=>'N'
@@ -16149,14 +16168,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -16164,7 +16183,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -16178,7 +16197,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(8033318532621304748)
 ,p_name=>'Invalid Data'
 ,p_static_id=>'invalid-data'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>20
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight:t-Report--inline'
@@ -16191,7 +16210,7 @@ wwv_flow_imp_page.create_report_region(
 ' order by c001'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -16228,7 +16247,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(8033317850498300461)
 ,p_name=>'Valid Emails'
 ,p_static_id=>'valid-emails'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>10
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -16241,7 +16260,7 @@ wwv_flow_imp_page.create_report_region(
 ' order by 1'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>50
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -16272,7 +16291,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_execute_validations=>'N'
@@ -16286,7 +16305,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'finish'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Members'
 ,p_button_position=>'NEXT'
@@ -16304,7 +16323,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'previous'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Previous'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'javascript:history.back();'
@@ -16323,7 +16342,7 @@ wwv_flow_imp_page.create_page_item(
 ' where group_id = :P21_GROUP_ID'))
 ,p_source_type=>'QUERY'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'Group the Members will be added to.'
@@ -16413,7 +16432,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -16425,7 +16444,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Reporting Time Frames'
 ,p_static_id=>'reporting-time-frames'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -16637,7 +16656,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Time Frame'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -16651,7 +16670,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP::'
@@ -16755,7 +16774,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_height=>'600'
@@ -16769,7 +16788,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Audit Information'
 ,p_static_id=>'audit-information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16784,7 +16803,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -16799,7 +16818,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Reporting Time Frame Details'
 ,p_static_id=>'reporting-time-frame-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16815,7 +16834,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -16828,7 +16847,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Time Frame'
 ,p_button_position=>'NEXT'
@@ -16844,7 +16863,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -16861,7 +16880,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -16880,7 +16899,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_grid_label_column_span=>3
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who created the record.'
@@ -16901,7 +16920,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_grid_label_column_span=>3
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was created.'
@@ -16926,7 +16945,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>20
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'End Date of Reporting Timeframe.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -16948,7 +16967,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_grid_label_column_span=>3
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The user who last updated the record.'
@@ -16969,7 +16988,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_grid_label_column_span=>3
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_help_text=>'The date on which the record was last updated.'
@@ -16993,7 +17012,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>20
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Start Date of Reporting Timeframe.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -17030,7 +17049,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Name of Reporting Timeframe.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -17131,7 +17150,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -17147,7 +17166,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>1
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17160,7 +17179,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -17175,7 +17194,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Notification'
 ,p_static_id=>'notification'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17189,7 +17208,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'notification-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(3256171548310265698)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17206,7 +17225,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:4:&SESSION.::&DEBUG.:::'
@@ -17219,7 +17238,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Notification'
 ,p_button_position=>'NEXT'
@@ -17235,7 +17254,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -17252,7 +17271,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -17273,7 +17292,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DATE_PICKER_APEX'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
@@ -17296,7 +17315,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>8
 ,p_cMaxlength=>4000
 ,p_begin_on_new_line=>'N'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -17318,7 +17337,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>255
 ,p_begin_on_new_line=>'N'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
@@ -17354,7 +17373,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>80
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
@@ -17375,7 +17394,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>80
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -17397,7 +17416,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'NOTIFICATION TYPE'
 ,p_cHeight=>1
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -17669,7 +17688,7 @@ wwv_flow_imp_page.create_page(
 '  margin-bottom: 0;',
 '}',
 ''))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -17695,14 +17714,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1527468853526261999)
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3255018960042162716)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 ,p_plug_required_role=>wwv_flow_imp.id(3255013570915135948)
 );
 wwv_flow_imp_page.create_page_plug(
@@ -17710,7 +17729,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Access Control Settings'
 ,p_static_id=>'access-control-settings'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -17726,7 +17745,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'acl-info'
 ,p_parent_plug_id=>wwv_flow_imp.id(1527468853526261999)
 ,p_region_template_options=>'#DEFAULT#:t-Alert--colorBG:t-Alert--horizontal:t-Alert--noIcon:t-Alert--warning:t-Alert--accessibleHeading:margin-top-sm:margin-bottom-sm:margin-left-sm:margin-right-sm'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17782,7 +17801,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'activity-reporting'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -17790,7 +17809,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3334177763374933970)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(3255017750513162711)
@@ -17798,20 +17817,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'administration'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3255020276713162718)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1733242549650955150)
 ,p_plug_name=>'Authentication and Authorization'
 ,p_static_id=>'authentication-and-authorization'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -17831,7 +17850,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -17839,7 +17858,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1247079462824127823)
@@ -17847,7 +17866,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'confirm-enabling-access-control'
 ,p_region_name=>'confirmEnableACL'
 ,p_region_template_options=>'#DEFAULT#:js-dialog-size600x400'
-,p_plug_template=>2674150083631647148
+,p_plug_template=>2676101389122137577
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'REGION_POSITION_04'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17863,7 +17882,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'email'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -17871,7 +17890,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(8026075336789797962)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 ,p_plug_display_condition_type=>'FUNCTION_BODY'
 ,p_plug_display_when_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'declare',
@@ -17906,7 +17925,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'hidden-items'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_region_attributes=>' style="width:49%; float:left; margin-right: 1%;"'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>3
 ,p_plug_display_point=>'BODY_3'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17920,7 +17939,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Multiple Calendar Users'
 ,p_static_id=>'multiple-calendar-users'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -18038,7 +18057,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'User Counts'
 ,p_static_id=>'user-counts'
 ,p_parent_plug_id=>wwv_flow_imp.id(1527468853526261999)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>30
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--stacked:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-BadgeList--large:t-BadgeList--fixed:t-BadgeList--circular'
@@ -18053,10 +18072,11 @@ wwv_flow_imp_page.create_report_region(
 'order by 1'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2106120299521025145
+,p_query_row_template=>2108071605011515574
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -18106,7 +18126,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'javascript:closeModal();'
@@ -18120,7 +18140,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'enable-access-control'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Enable Access Control'
 ,p_button_position=>'CREATE'
@@ -18181,7 +18201,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -18192,7 +18212,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Access Control Configuration'
 ,p_static_id=>'access-control-configuration'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -18205,7 +18225,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -18223,7 +18243,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -18236,7 +18256,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -18262,7 +18282,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_language=>'PLSQL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'ACCESS CONTROL SCOPE1'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'YES'
 ,p_inline_help_text=>'This option determines the role of users that are not defined in the Access Control List (ACL).  A user with <strong>Reader</strong> role can only read application data. A user with <strong>Contributor</strong> role can read <strong>and write</strong'
@@ -18274,7 +18294,6 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(132999400625202353)
 ,p_name=>'P27_AC_ENABLED'
-,p_is_required=>true
 ,p_item_sequence=>10
 ,p_item_plug_id=>wwv_flow_imp.id(2662899855410930535)
 ,p_use_cache_before_default=>'NO'
@@ -18283,7 +18302,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'FUNCTION_BODY'
 ,p_source_language=>'PLSQL'
 ,p_display_as=>'NATIVE_YES_NO'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_inline_help_text=>'Choose <strong>No</strong> if all users are defined in the access control list. Choose <strong>Yes</strong> if authenticated users not in the access control list may also use this application.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -18306,7 +18325,6 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(133000225649202356)
 ,p_name=>'P27_USERNAME_FORMAT'
-,p_is_required=>true
 ,p_item_sequence=>30
 ,p_item_plug_id=>wwv_flow_imp.id(2662899855410930535)
 ,p_use_cache_before_default=>'NO'
@@ -18320,7 +18338,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'FUNCTION_BODY'
 ,p_source_language=>'PLSQL'
 ,p_display_as=>'NATIVE_YES_NO'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_inline_help_text=>'This option determines whether to use email addresses as the username format for users in the Access Control List (ACL).  This is useful when using Single Sign-On or LDAP authentication.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -18600,7 +18618,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'Customize your application preferences from the list of preferences provided below.'
@@ -18612,14 +18630,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(2470776046931684968)
@@ -18627,13 +18645,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'preferences'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(2470777579533684973)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_computation(
  p_id=>wwv_flow_imp.id(2470777291637684971)
@@ -18664,7 +18682,7 @@ wwv_flow_imp_page.create_page(
 '    parent.location.reload();',
 '}'))
 ,p_javascript_code_onload=>'window.onunload = refreshParent;'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -18678,7 +18696,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Users'
 ,p_static_id=>'users'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -18819,7 +18837,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'bulk-add-users'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Add Multiple Users'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:53:&SESSION.::&DEBUG.:53,54::'
@@ -18832,7 +18850,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add User'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -18846,7 +18864,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&APP_PAGE_ID.:&SESSION.::&DEBUG.:RP,&APP_PAGE_ID.,RIR::'
@@ -18983,7 +19001,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317190569944929231)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -18996,7 +19014,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -19012,7 +19030,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'form-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(3256355968523722730)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -19026,7 +19044,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'User Details'
 ,p_static_id=>'user-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -19042,7 +19060,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -19055,7 +19073,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add User'
 ,p_button_position=>'NEXT'
@@ -19071,7 +19089,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create-again'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Add and Add Another'
 ,p_button_position=>'NEXT'
 ,p_button_condition=>'P30_ID'
@@ -19085,7 +19103,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -19102,7 +19120,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -19123,7 +19141,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'ACCESS_LEVEL'
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -19133,7 +19151,6 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(3256357953461722777)
 ,p_name=>'P30_ACCOUNT_LOCKED'
-,p_is_required=>true
 ,p_item_sequence=>50
 ,p_item_plug_id=>wwv_flow_imp.id(3256355968523722730)
 ,p_use_cache_before_default=>'NO'
@@ -19144,7 +19161,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_begin_on_new_line=>'N'
 ,p_display_when=>'P30_ID'
 ,p_display_when_type=>'ITEM_IS_NOT_NULL'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'use_defaults', 'Y')).to_clob
@@ -19190,7 +19207,7 @@ wwv_flow_imp_page.create_page_item(
 '                where :P30_ID = id',
 '                  and instr('':''||restricted_to||'':'', '':''||c.calendar_id||'':'') > 0)'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_required_patch=>wwv_flow_imp.id(1857191596806388379)
@@ -19215,7 +19232,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -19362,7 +19379,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317197580595951218)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'This page shows a report of the file attachments that have been added to this event. Click the pencil icon to edit attributes of an existing attachment. Click the <strong>Add Attachment</strong> button to add an attachment. Click the <strong>Cancel</'
@@ -19375,7 +19392,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Attachments'
 ,p_static_id=>'attachments'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -19587,21 +19604,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bc'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(3256398771500520906)
 ,p_plug_name=>'Button Bar'
 ,p_static_id=>'button-bar'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -19617,7 +19634,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'attach-file'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Attachment'
 ,p_button_position=>'NEXT'
@@ -19635,7 +19652,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-report'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:31:&SESSION.::&DEBUG.:RP,RIR::'
@@ -19672,7 +19689,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_named_lov=>'EVENTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -19764,7 +19781,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317197580595951218)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -19776,7 +19793,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Attachment'
 ,p_static_id=>'attachment'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -19789,7 +19806,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -19807,7 +19824,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -19820,7 +19837,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Attachment'
 ,p_button_position=>'NEXT'
@@ -19836,7 +19853,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -19853,7 +19870,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -19872,7 +19889,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_named_lov=>'EVENTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -19894,7 +19911,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_display_when=>'P32_ID'
 ,p_display_when_type=>'ITEM_IS_NOT_NULL'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -19916,7 +19933,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_FILE'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'allow_copy_paste', 'N',
@@ -19942,7 +19959,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
@@ -19962,7 +19979,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_display_when=>'P32_ID'
 ,p_display_when_type=>'ITEM_IS_NOT_NULL'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -19996,7 +20013,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>4000
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'N',
@@ -20095,7 +20112,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317197580595951218)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255014080085135948)
 ,p_protection_level=>'C'
@@ -20107,7 +20124,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -20122,7 +20139,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event Update'
 ,p_static_id=>'event-update'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20138,7 +20155,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -20151,7 +20168,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Create Event'
 ,p_button_position=>'NEXT'
@@ -20167,7 +20184,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -20184,7 +20201,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -20203,7 +20220,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_named_lov=>'EVENTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -20239,7 +20256,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>32767
 ,p_cHeight=>4
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'auto_height', 'N',
@@ -20336,7 +20353,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317197580595951218)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -20350,7 +20367,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Button Bar'
 ,p_static_id=>'button-bar'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20364,20 +20381,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'event-updates'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(3257097378875266417)
 ,p_name=>'Updates'
 ,p_static_id=>'updates'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>20
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Comments--chat'
@@ -20430,7 +20447,7 @@ wwv_flow_imp_page.create_report_region(
 'order by 11 desc'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2614645152475874618
+,p_query_row_template=>2616596457966365047
 ,p_query_headings_type=>'QUERY_COLUMNS'
 ,p_query_num_rows=>5000
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
@@ -20583,7 +20600,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'add-update'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Update'
 ,p_button_position=>'NEXT'
@@ -20598,7 +20615,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
 ,p_named_lov=>'EVENTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -20676,7 +20693,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -20689,7 +20706,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Application Page Security'
 ,p_static_id=>'application-page-security'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -20824,7 +20841,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-report'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:35:&SESSION.::&DEBUG.:RP,35,RIR::'
@@ -20843,7 +20860,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317191659339935599)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'View all tags that have been created in the app. Click a tag to perform a search for the pages appended with that tag.'
@@ -20855,7 +20872,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20863,14 +20880,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(3257112573954399852)
 ,p_plug_name=>'Tags'
 ,p_static_id=>'tags'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20892,7 +20909,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'timezone'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20919,7 +20936,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -20932,7 +20949,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_item_display_point=>'ABOVE'
@@ -20946,7 +20963,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Rename Application'
 ,p_static_id=>'rename-application'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20962,7 +20979,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CREATE'
 ,p_warn_on_unsaved_changes=>null
@@ -20975,7 +20992,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -21009,7 +21026,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_restricted_characters=>'WEB_SAFE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -21032,7 +21049,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>255
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_restricted_characters=>'WEB_SAFE'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -21109,7 +21126,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317190569944929231)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -21122,14 +21139,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1437840866832714783)
@@ -21137,7 +21154,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'username-format-preference'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--warning:t-Alert--horizontal'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'BODY_3'
 ,p_plug_item_display_point=>'BELOW'
@@ -21155,7 +21172,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
@@ -21168,7 +21185,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -21194,7 +21211,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_language=>'PLSQL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'USERNAME_FORMAT'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -21233,7 +21250,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -21245,7 +21262,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Build Options'
 ,p_static_id=>'build-options'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -21402,7 +21419,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'apply-changes'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -21415,7 +21432,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-report'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:40:&SESSION.::&DEBUG.:RP,9,RIR::'
@@ -21480,7 +21497,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -21522,7 +21539,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Configure Appearance'
 ,p_static_id=>'configure-appearance'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info:t-Form--large'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -21540,7 +21557,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CREATE'
 ,p_warn_on_unsaved_changes=>null
@@ -21553,7 +21570,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -21605,7 +21622,7 @@ wwv_flow_imp_page.create_page_item(
 'and s.application_id = :app_id',
 'and t.ui_type_name   = ''DESKTOP'''))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_css_classes=>'margin-top-lg'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
@@ -21632,7 +21649,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov=>'STATIC:Allow End Users to choose Theme Style;Yes'
 ,p_grid_label_column_span=>3
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_inline_help_text=>'If checked, end users may choose their own Theme Style using the Customize link.'
@@ -21736,7 +21753,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -21749,7 +21766,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Calendars'
 ,p_static_id=>'calendars'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -21976,7 +21993,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Calendar'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
@@ -21990,7 +22007,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-report'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:42:&SESSION.::&DEBUG.:7,RIR::'
@@ -22057,7 +22074,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -22072,7 +22089,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Button Region'
 ,p_static_id=>'button-region'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22087,7 +22104,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'manage-sample-data'
 ,p_region_css_classes=>'t-Alert--accessibleHeading'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--warning'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22105,7 +22122,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_warn_on_unsaved_changes=>null
@@ -22118,7 +22135,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'load-sample-data'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Load Sample Data'
 ,p_button_position=>'CREATE'
 ,p_button_condition=>'return not eba_ca_sample_data.is_loaded();'
@@ -22133,7 +22150,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'remove-sample-data'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--danger:t-Button--simple'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Remove Sample Data'
 ,p_button_position=>'CREATE'
 ,p_button_condition=>'return eba_ca_sample_data.is_loaded();'
@@ -22148,7 +22165,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-data'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Reset Data'
 ,p_button_position=>'NEXT'
@@ -22247,7 +22264,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -22264,7 +22281,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'REGION_POSITION_03'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22278,7 +22295,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Calendar Details'
 ,p_static_id=>'calendar-details'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22290,7 +22307,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(17819121569764783703)
 ,p_name=>'Contributors'
 ,p_static_id=>'contributors'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>50
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'t-Report--stretch:t-Report--altRowsDefault:t-Report--inline:t-Report--rowHighlightOff'
@@ -22313,7 +22330,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_display_condition_type=>'ITEM_IS_NOT_NULL'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -22357,7 +22374,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1865443391323994146)
 ,p_name=>'Readers (for this Private Calendar)'
 ,p_static_id=>'readers-for-this-private-calendar'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>60
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_component_template_options=>'t-Report--stretch:t-Report--altRowsDefault:t-Report--inline:t-Report--rowHighlightOff'
@@ -22378,7 +22395,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_ajax_items_to_submit=>'P44_PUBLIC_VIEW_YN'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
@@ -22417,7 +22434,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -22430,7 +22447,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Calendar'
 ,p_button_position=>'CREATE'
@@ -22446,7 +22463,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -22462,7 +22479,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -22496,7 +22513,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>48
 ,p_cMaxlength=>60
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Full name of Calendar.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22518,7 +22535,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>60
 ,p_cMaxlength=>4000
 ,p_cHeight=>4
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Description of the Calendar.  Only displayed on the Calendars report (to Adminstrators).'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22539,7 +22556,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'DB_COLUMN'
 ,p_display_as=>'NATIVE_YES_NO'
 ,p_begin_on_new_line=>'N'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'If not active, events will still display but new events cannot be associated with the calendar.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22559,7 +22576,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_when=>'eba_ca_fw.get_preference_value(''ACCESS_CONTROL_ENABLED'') = ''Y'''
 ,p_display_when2=>'PLSQL'
 ,p_display_when_type=>'EXPRESSION'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Define whether all users can view the events on this calendar or only selected users.</p>',
@@ -22580,7 +22597,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>10
 ,p_cMaxlength=>10
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>'Short name for Calendar.  Used as prefix when Events are displayed.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22748,7 +22765,7 @@ wwv_flow_imp_page.create_page(
 'padding: 8px;',
 'color: #707070;',
 '}'))
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_dialog_chained=>'N'
@@ -22761,7 +22778,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -22777,7 +22794,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'hidden-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(2166469596612427438)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>5
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22791,7 +22808,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Wizard'
 ,p_static_id=>'wizard'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>100
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22805,7 +22822,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'wizard-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(2166469596612427438)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22822,7 +22839,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -22836,7 +22853,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'next'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconRight:t-Button--gapLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Next'
 ,p_button_position=>'NEXT'
@@ -22863,7 +22880,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>80
 ,p_cMaxlength=>4000
 ,p_cHeight=>10
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_inline_help_text=>'Enter usernames separated by commas, semicolons, or whitespace. Existing or duplicate usernames will automatically be ignored.'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22899,7 +22916,7 @@ wwv_flow_imp_page.create_page_item(
 '                where :P30_ID = id',
 '                  and instr('':''||restricted_to||'':'', '':''||c.calendar_id||'':'') > 0)'))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -22923,7 +22940,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'ACCESS_LEVEL'
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#:t-Form-fieldContainer--stretchInputs:t-Form-fieldContainer--radioButtonGroup'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -23178,7 +23195,7 @@ wwv_flow_imp_page.create_page(
 '    background-color: #F8F8F8;',
 '    color: #404040;',
 '}'))
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -23190,7 +23207,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Bulk Load Users - Step 2'
 ,p_static_id=>'bulk-load-users-step'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23203,7 +23220,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -23218,7 +23235,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Exceptions'
 ,p_static_id=>'exceptions'
 ,p_parent_plug_id=>wwv_flow_imp.id(1437873752675810463)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>100
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hiddenOverflow'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -23232,11 +23249,12 @@ wwv_flow_imp_page.create_report_region(
 'order by 1'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>10000
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>' - '
 ,p_query_no_data_found=>'No invalid new users found'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -23280,7 +23298,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23309,7 +23327,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'no-valid-users-exist-page-info'
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23330,7 +23348,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1437873752675810463)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hiddenOverflow'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -23353,7 +23371,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'infoTextRegion'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23381,7 +23399,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'EDIT'
 ,p_warn_on_unsaved_changes=>null
@@ -23395,7 +23413,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'finish'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add Users'
 ,p_button_position=>'NEXT'
@@ -23413,7 +23431,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'previous'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Previous'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'javascript:history.back();'
@@ -23567,7 +23585,7 @@ wwv_flow_imp_page.create_page(
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
 ,p_javascript_code=>'var htmldb_delete_message=''"DELETE_CONFIRM_MSG"'';'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -23579,7 +23597,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -23595,7 +23613,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'form-items'
 ,p_parent_plug_id=>wwv_flow_imp.id(7014381953852259016)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -23609,7 +23627,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noBorder:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
@@ -23627,7 +23645,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'User Details'
 ,p_static_id=>'user-details'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23643,7 +23661,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -23656,7 +23674,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Add User'
 ,p_button_position=>'CREATE'
@@ -23671,7 +23689,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'create-again'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Add and Add Another'
 ,p_button_position=>'CREATE'
 ,p_button_condition=>'P92_SEQUENCE'
@@ -23685,7 +23703,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'delete'
 ,p_button_action=>'REDIRECT_URL'
 ,p_button_template_options=>'#DEFAULT#:t-Button--simple:t-Button--danger'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Delete'
 ,p_button_position=>'EDIT'
 ,p_button_redirect_url=>'javascript:apex.confirm(htmldb_delete_message,''DELETE'');'
@@ -23702,7 +23720,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--gapLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'EDIT'
@@ -23732,7 +23750,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_read_only_when=>':P92_SEQUENCE is not null and lower(:APP_USER) = lower(:P92_USERNAME)'
 ,p_read_only_when2=>'PLSQL'
 ,p_read_only_when_type=>'EXPRESSION'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_restricted_characters=>'WEB_SAFE'
@@ -23766,7 +23784,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_read_only_when=>':P92_SEQUENCE is not null and lower(:APP_USER) = lower(:P92_USERNAME)'
 ,p_read_only_when2=>'PLSQL'
 ,p_read_only_when_type=>'EXPRESSION'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_restricted_characters=>'WEB_SAFE'
 ,p_help_text=>'The username assigned by this user.'
@@ -23937,7 +23955,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940477613660378872)
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
@@ -23955,21 +23973,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8940448701738354891)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(7980573845894546559)
 ,p_plug_name=>'Preference'
 ,p_static_id=>'preference'
 ,p_region_template_options=>'t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23985,7 +24003,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'apply-changes'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'NEXT'
@@ -23998,7 +24016,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'close'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'NEXT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
@@ -24023,7 +24041,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_named_lov=>'STD TIME ZONES'
 ,p_cHeight=>1
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_protection_level=>'S'
@@ -24077,7 +24095,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(1317198960771964416)
-,p_step_template=>2102634289808461002
+,p_step_template=>2104585595298951431
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -24089,7 +24107,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'p101-app-name'
 ,p_region_name=>'group_calendar'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675634334296186762
+,p_plug_template=>2677585639786677191
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -24106,7 +24124,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'login'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Sign In'
 ,p_button_position=>'NEXT'
@@ -24138,7 +24156,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_PASSWORD'
 ,p_cSize=>64
 ,p_cMaxlength=>100
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-key'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -24158,7 +24176,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>100
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-user'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -24262,7 +24280,7 @@ wwv_flow_imp_page.create_page(
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
 ,p_group_id=>wwv_flow_imp.id(8940478416777379715)
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#:ui-dialog--stretch:t-Dialog--noPadding'
 ,p_required_role=>wwv_flow_imp.id(3255013570915135948)
 ,p_protection_level=>'C'
@@ -24275,7 +24293,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Errors'
 ,p_static_id=>'errors'
 ,p_region_template_options=>'#DEFAULT#:t-IRR-region--noBorders'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -24550,7 +24568,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:175:&SESSION.::&DEBUG.:RP,RIR::'
@@ -24589,7 +24607,7 @@ wwv_flow_imp_page.create_page(
 '  font-weight: 400;',
 '}',
 '.apex-item-yes-no {white-space:pre;}'))
-,p_step_template=>2980551703278319811
+,p_step_template=>2982503008768810240
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
@@ -24601,7 +24619,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-1'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -24619,7 +24637,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'acl-level'
 ,p_parent_plug_id=>wwv_flow_imp.id(3140474725931014566)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -24635,7 +24653,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-4'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -24655,7 +24673,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'buttons'
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -24669,7 +24687,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Feature Configuration'
 ,p_static_id=>'feature-configuration'
 ,p_parent_plug_id=>wwv_flow_imp.id(3140474986868014568)
-,p_template=>4502917002193490937
+,p_template=>4504868307683981366
 ,p_display_sequence=>10
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:t-Report--stretch:t-Report--staticRowColors:t-Report--rowHighlightOff:t-Report--horizontalBorders'
@@ -24704,10 +24722,11 @@ wwv_flow_imp_page.create_report_region(
 '    2 asc'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>500
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -24783,7 +24802,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'first-time-setup-completed'
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -24802,7 +24821,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'introduction-wizard'
 ,p_region_css_classes=>'step-container'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -24821,7 +24840,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-3'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -24840,7 +24859,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'step-container'
 ,p_icon_css_classes=>'fa-number-2'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -24857,7 +24876,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Users'
 ,p_static_id=>'users-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(3140478273900014601)
-,p_template=>4502917002193490937
+,p_template=>4504868307683981366
 ,p_display_sequence=>10
 ,p_region_sub_css_classes=>'users-table'
 ,p_region_template_options=>'#DEFAULT#'
@@ -24902,9 +24921,10 @@ wwv_flow_imp_page.create_report_region(
 'order by n001 desc, c001'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2976458789255810118
+,p_query_row_template=>2978410094746300547
 ,p_query_num_rows=>500
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -24995,7 +25015,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(3140474679467014565)
 ,p_icon_css_classes=>'app-group-calendar'
 ,p_region_template_options=>'t-HeroRegion--noPadding'
-,p_plug_template=>2675494171183407654
+,p_plug_template=>2677445476673898083
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -25014,7 +25034,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'add-user'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--iconLeft'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_image_alt=>'Add User'
 ,p_button_position=>'NEXT'
 ,p_button_redirect_url=>'f?p=&APP_ID.:92:&SESSION.::&DEBUG.:RP,92::'
@@ -25029,7 +25049,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'complete'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--iconRight'
-,p_button_template_id=>2084305881903810008
+,p_button_template_id=>2086257187394300437
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Complete Setup'
 ,p_button_position=>'CHANGE'
@@ -25047,7 +25067,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'ok'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Continue'
 ,p_button_position=>'CREATE'
@@ -25075,7 +25095,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_named_lov=>'ACCESS CONTROL SCOPE'
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -25093,7 +25113,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_RADIOGROUP'
 ,p_lov=>'STATIC2:Yes - Load Sample Data;Y,No - Do Not Load Sample Data;N'
 ,p_grid_label_column_span=>0
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -25117,7 +25137,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_when=>'instr(:APP_USER,''@'') > 0'
 ,p_display_when2=>'PLSQL'
 ,p_display_when_type=>'EXPRESSION'
-,p_field_template=>3033038003750078790
+,p_field_template=>3034989309240569219
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'YES'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -25301,7 +25321,7 @@ wwv_flow_imp_page.create_page(
 ,p_page_mode=>'MODAL'
 ,p_step_title=>'Help'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>2101883943284197310
+,p_step_template=>2103835248774687739
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'10'
@@ -25311,7 +25331,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'About this Page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -25346,7 +25366,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Buttons'
 ,p_static_id=>'buttons'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--slimPadding'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_03'
@@ -25364,7 +25384,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'about-this-app'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--small:t-Button--link'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Learn More about &APP_TITLE.'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:HELP:&SESSION.::&DEBUG.:RP::'
@@ -25463,119 +25483,6 @@ wwv_flow_imp_shared.create_install(
 ,p_required_names_available=>'EBA_CA_ACCESS_LEVELS:EBA_CA_ADMINS:EBA_CA_COLOR_PREFS:EBA_CA_EMAIL_GROUP_MBRS:EBA_CA_EMAIL_GROUPS:EBA_CA_ERROR_LOOKUP:EBA_CA_EVENT_TYPES:EBA_CA_EVENTS:EBA_CA_FILES:EBA_CA_HISTORY:EBA_CA_NOTES:EBA_CA_NOTIFICATIONS:EBA_CA_PREFERENCES:EBA_CA_SERIES:EBA_'
 ||'CA_TAGS:EBA_CA_TAGS_TYPE_SUM:EBA_CA_TAGS_SUM:EBA_CA_TIMEFRAMES:EBA_CA_TZ_PREF:EBA_CA_USERS:EBA_CA_API:EBA_CA:EBA_CA_SEQ:EBA_CA_FW'
 ,p_deinstall_message=>'This operation will completely remove this application from your workspace.'
-);
-end;
-/
-prompt --application/deployment/install/upgrade_adding_multi_calendar_mode
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_calendars ('||wwv_flow.LF||
-'   calendar_id      number         not null,'||wwv_flow.LF||
-'   short_name       var';
-wwv_flow_imp.g_varchar2_table(2) := 'char2(10)   not null,'||wwv_flow.LF||
-'   calendar_name    varchar2(60)   not null,'||wwv_flow.LF||
-'   public_view_yn   varchar2(1)  ';
-wwv_flow_imp.g_varchar2_table(3) := '  default ''Y'','||wwv_flow.LF||
-'   description      varchar2(4000),'||wwv_flow.LF||
-'   is_active_yn     varchar2(1)    default ''Y'','||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(4) := '  --'||wwv_flow.LF||
-'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
-'   created_by       varchar2(255)  not ';
-wwv_flow_imp.g_varchar2_table(5) := 'null,'||wwv_flow.LF||
-'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter tab';
-wwv_flow_imp.g_varchar2_table(6) := 'le eba_ca_calendars'||wwv_flow.LF||
-'   add constraint eba_ca_calendars_pk primary key (calendar_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'alter tab';
-wwv_flow_imp.g_varchar2_table(7) := 'le eba_ca_calendars'||wwv_flow.LF||
-'   add constraint eba_ca_calendars_uk1 unique (short_name)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_';
-wwv_flow_imp.g_varchar2_table(8) := 'calendars'||wwv_flow.LF||
-'   add constraint eba_ca_calendars_uk2 unique (calendar_name)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_calenda';
-wwv_flow_imp.g_varchar2_table(9) := 'rs'||wwv_flow.LF||
-'   add constraint eba_ca_calendar_cc1 '||wwv_flow.LF||
-'   check ( public_view_yn in (''Y'',''N'') )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba';
-wwv_flow_imp.g_varchar2_table(10) := '_ca_calendars'||wwv_flow.LF||
-'   add constraint eba_ca_calendar_cc2 '||wwv_flow.LF||
-'   check ( is_active_yn in (''Y'',''N'') )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(11) := '   '||wwv_flow.LF||
-'create or replace trigger eba_ca_calendars_biu'||wwv_flow.LF||
-'  before insert or update on eba_ca_calendars    ';
-wwv_flow_imp.g_varchar2_table(12) := '           '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :new.calendar_id is null '||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(13) := 'then :new.calendar_id := eba_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;';
-wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   :NEW.LAST_UPDATED_ON := CURRENT_TIM';
-wwv_flow_imp.g_varchar2_table(15) := 'ESTAMP;'||wwv_flow.LF||
-'   :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'alter trigger eba_ca_calend';
-wwv_flow_imp.g_varchar2_table(16) := 'ars_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- Add constraint error messages'||wwv_flow.LF||
-'insert into eba_ca_error_lookup (constraint_name,';
-wwv_flow_imp.g_varchar2_table(17) := ' message, language_code) values (''EBA_CA_CALENDAR_UK1'', ''Calendar Short Name must be unique.'', ''en'')';
-wwv_flow_imp.g_varchar2_table(18) := ';'||wwv_flow.LF||
-'insert into eba_ca_error_lookup (constraint_name, message, language_code) values (''EBA_CA_CALENDAR';
-wwv_flow_imp.g_varchar2_table(19) := '_UK2'', ''Calendar Name must be unique.'', ''en'');'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- Update Events table'||wwv_flow.LF||
-'alter table eba_ca_events add';
-wwv_flow_imp.g_varchar2_table(20) := ' (calendar_id number)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events add constraint eba_ca_events_fk3'||wwv_flow.LF||
-'   foreign key (c';
-wwv_flow_imp.g_varchar2_table(21) := 'alendar_id)'||wwv_flow.LF||
-'   references eba_ca_calendars (calendar_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create index eba_ca_events_i3'||wwv_flow.LF||
-'   on eba_c';
-wwv_flow_imp.g_varchar2_table(22) := 'a_events (calendar_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- comma separated list of calendar_ids, for contributor (access_level_id ';
-wwv_flow_imp.g_varchar2_table(23) := '2)'||wwv_flow.LF||
-'alter table eba_ca_users add (restricted_to varchar2(4000)); '||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1856500086473604486)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Adding Multi-Calendar Mode'
-,p_sequence=>35
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'NOT_EXISTS'
-,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select null',
-'from user_tables',
-'where table_name = ''EBA_CA_CALENDARS'';'))
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -26096,594 +26003,6 @@ wwv_flow_imp_shared.create_install_script(
 );
 end;
 /
-prompt --application/deployment/install/upgrade_framework_body
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE OR REPLACE PACKAGE BODY "EBA_CA_FW" as'||wwv_flow.LF||
-'    function conv_txt_html ('||wwv_flow.LF||
-'        p_txt_message in ';
-wwv_flow_imp.g_varchar2_table(2) := 'varchar2 )'||wwv_flow.LF||
-'        return varchar2'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l_html_message   varchar2(32767) default p_txt_mes';
-wwv_flow_imp.g_varchar2_table(3) := 'sage;'||wwv_flow.LF||
-'        l_temp_url varchar2(32767) := null;'||wwv_flow.LF||
-'        l_length number;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        l_html_';
-wwv_flow_imp.g_varchar2_table(4) := 'message := replace(l_html_message, chr(10), ''<br />'');'||wwv_flow.LF||
-'        l_html_message := replace(l_html_mess';
-wwv_flow_imp.g_varchar2_table(5) := 'age, chr(13), null);'||wwv_flow.LF||
-'        return l_html_message;'||wwv_flow.LF||
-'    end conv_txt_html;'||wwv_flow.LF||
-'    function conv_urls_li';
-wwv_flow_imp.g_varchar2_table(6) := 'nks ('||wwv_flow.LF||
-'        p_string in varchar2 )'||wwv_flow.LF||
-'        return varchar2'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l_string   varchar2(3276';
-wwv_flow_imp.g_varchar2_table(7) := '7) default p_string;'||wwv_flow.LF||
-'        l_endofUrl varchar2(4000) default chr(10) || chr(13) || chr(9) || '' )<>';
-wwv_flow_imp.g_varchar2_table(8) := ''';'||wwv_flow.LF||
-'        l_url         varchar2(4000);'||wwv_flow.LF||
-'        l_current_pos number := 1;'||wwv_flow.LF||
-'        n             nu';
-wwv_flow_imp.g_varchar2_table(9) := 'mber := 1;'||wwv_flow.LF||
-'        m             number := 1;'||wwv_flow.LF||
-'        p             number := 1;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        l';
-wwv_flow_imp.g_varchar2_table(10) := '_string := p_string || '' '';'||wwv_flow.LF||
-'        for i in 1 .. 1000 loop'||wwv_flow.LF||
-'            n := instr( lower(l_string),';
-wwv_flow_imp.g_varchar2_table(11) := ' ''http://'', l_current_pos );'||wwv_flow.LF||
-'            m := instr( lower(l_string), ''https://'', l_current_pos );'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(12) := '           p := instr( lower(l_string), ''ftp://'', l_current_pos   );'||wwv_flow.LF||
-'            -- set n to positio';
-wwv_flow_imp.g_varchar2_table(13) := 'n of first link'||wwv_flow.LF||
-'            if m > 0 and (n = 0 or m < n) and (p = 0 or m < p) then'||wwv_flow.LF||
-'               n';
-wwv_flow_imp.g_varchar2_table(14) := ' := m;'||wwv_flow.LF||
-'            elsif p > 0 and (n = 0 or p < n) then'||wwv_flow.LF||
-'               n := p;'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(15) := '            exit when n = 0 or length(l_string) > 32000;'||wwv_flow.LF||
-'            for j in 0 .. length( l_string ';
-wwv_flow_imp.g_varchar2_table(16) := ') - n loop'||wwv_flow.LF||
-'                if ( instr( l_endofUrl, substr( l_string, n+j, 1 ) ) > 0 ) then'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(17) := '          l_url := rtrim( substr( l_string, n, j ), ''.''||chr(32)||chr(10) );'||wwv_flow.LF||
-'                   l_ur';
-wwv_flow_imp.g_varchar2_table(18) := 'l := ''<a href="'' || l_url || ''">'' || l_url || ''</a>'';'||wwv_flow.LF||
-'                   l_string := substr( l_strin';
-wwv_flow_imp.g_varchar2_table(19) := 'g, 1, n-1 ) || l_url || substr( l_string, n+j );'||wwv_flow.LF||
-'                   l_current_pos := n + length(l_ur';
-wwv_flow_imp.g_varchar2_table(20) := 'l);'||wwv_flow.LF||
-'                   exit;'||wwv_flow.LF||
-'                end if;'||wwv_flow.LF||
-'            end loop;'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(21) := ' return l_string;'||wwv_flow.LF||
-'    end conv_urls_links;'||wwv_flow.LF||
-'    function tags_cleaner ('||wwv_flow.LF||
-'        p_tags  in varchar2,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(22) := '        p_case  in varchar2 default ''U'' )'||wwv_flow.LF||
-'        return varchar2'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        type tags is table ';
-wwv_flow_imp.g_varchar2_table(23) := 'of varchar2(255) index by varchar2(255);'||wwv_flow.LF||
-'        l_tags_a        tags;'||wwv_flow.LF||
-'        l_tag           varch';
-wwv_flow_imp.g_varchar2_table(24) := 'ar2(255);'||wwv_flow.LF||
-'        l_tags          apex_application_global.vc_arr2;'||wwv_flow.LF||
-'        l_tags_string   varchar2(';
-wwv_flow_imp.g_varchar2_table(25) := '32767);'||wwv_flow.LF||
-'        i               integer;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        l_tags := apex_util.string_to_table(p_tag';
-wwv_flow_imp.g_varchar2_table(26) := 's,'','');'||wwv_flow.LF||
-'        for i in 1..l_tags.count loop'||wwv_flow.LF||
-'            --remove all whitespace, including tabs, s';
-wwv_flow_imp.g_varchar2_table(27) := 'paces, line feeds and carraige returns with a single space'||wwv_flow.LF||
-'            l_tag := substr(trim(regexp_r';
-wwv_flow_imp.g_varchar2_table(28) := 'eplace(l_tags(i),''[[:space:]]{1,}'','' '')),1,255);'||wwv_flow.LF||
-'            if l_tag is not null and l_tag != '' '' t';
-wwv_flow_imp.g_varchar2_table(29) := 'hen'||wwv_flow.LF||
-'                if p_case = ''U'' then'||wwv_flow.LF||
-'                    l_tag := upper(l_tag);'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(30) := 'elsif p_case = ''L'' then'||wwv_flow.LF||
-'                    l_tag := lower(l_tag);'||wwv_flow.LF||
-'                end if;'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(31) := '       --add it to the associative array, if it is a duplicate, it will just be replaced'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(32) := '     l_tags_a(l_tag) := l_tag;'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'        l_tag := null;'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(33) := 'l_tag := l_tags_a.first;'||wwv_flow.LF||
-'        while l_tag is not null loop'||wwv_flow.LF||
-'            l_tags_string := l_tags_st';
-wwv_flow_imp.g_varchar2_table(34) := 'ring||l_tag;'||wwv_flow.LF||
-'            if l_tag != l_tags_a.last then'||wwv_flow.LF||
-'                l_tags_string := l_tags_stri';
-wwv_flow_imp.g_varchar2_table(35) := 'ng || '', '';'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'            l_tag := l_tags_a.next(l_tag);'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(36) := ' return substr(l_tags_string, 1, 4000);'||wwv_flow.LF||
-'    end tags_cleaner;'||wwv_flow.LF||
-'    procedure tag_sync ('||wwv_flow.LF||
-'        p_new';
-wwv_flow_imp.g_varchar2_table(37) := '_tags          in varchar2,'||wwv_flow.LF||
-'        p_old_tags          in varchar2,'||wwv_flow.LF||
-'        p_content_type      in ';
-wwv_flow_imp.g_varchar2_table(38) := 'varchar2,'||wwv_flow.LF||
-'        p_content_id        in number )'||wwv_flow.LF||
-'    as'||wwv_flow.LF||
-'        type tags is table of varchar2(255)';
-wwv_flow_imp.g_varchar2_table(39) := ' index by varchar2(255);'||wwv_flow.LF||
-'        l_new_tags_a    tags;'||wwv_flow.LF||
-'        l_old_tags_a    tags;'||wwv_flow.LF||
-'        l_new_t';
-wwv_flow_imp.g_varchar2_table(40) := 'ags      apex_application_global.vc_arr2;'||wwv_flow.LF||
-'        l_old_tags      apex_application_global.vc_arr2;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(41) := '       l_merge_tags    apex_application_global.vc_arr2;'||wwv_flow.LF||
-'        l_dummy_tag     varchar2(255);'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(42) := '   i               integer;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        l_old_tags := apex_util.string_to_table(p_old_tags,'', ';
-wwv_flow_imp.g_varchar2_table(43) := ''');'||wwv_flow.LF||
-'        l_new_tags := apex_util.string_to_table(p_new_tags,'', '');'||wwv_flow.LF||
-'        if l_old_tags.count > ';
-wwv_flow_imp.g_varchar2_table(44) := '0 then --do inserts and deletes'||wwv_flow.LF||
-'            --build the associative arrays'||wwv_flow.LF||
-'            for i in 1..l';
-wwv_flow_imp.g_varchar2_table(45) := '_old_tags.count loop'||wwv_flow.LF||
-'                l_old_tags_a(l_old_tags(i)) := l_old_tags(i);'||wwv_flow.LF||
-'            end l';
-wwv_flow_imp.g_varchar2_table(46) := 'oop;'||wwv_flow.LF||
-'            for i in 1..l_new_tags.count loop'||wwv_flow.LF||
-'                l_new_tags_a(l_new_tags(i)) := l_';
-wwv_flow_imp.g_varchar2_table(47) := 'new_tags(i);'||wwv_flow.LF||
-'            end loop;'||wwv_flow.LF||
-'            --do the inserts'||wwv_flow.LF||
-'            for i in 1..l_new_tags.c';
-wwv_flow_imp.g_varchar2_table(48) := 'ount loop'||wwv_flow.LF||
-'                begin'||wwv_flow.LF||
-'                    l_dummy_tag := l_old_tags_a(l_new_tags(i));'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(49) := '            exception when no_data_found then'||wwv_flow.LF||
-'                    insert into eba_ca_tags (tag, cont';
-wwv_flow_imp.g_varchar2_table(50) := 'ent_id, content_type )'||wwv_flow.LF||
-'                    values (l_new_tags(i), p_content_id, p_content_type );'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(51) := '                  l_merge_tags(l_merge_tags.count + 1) := l_new_tags(i);'||wwv_flow.LF||
-'                end;'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(52) := '      end loop;'||wwv_flow.LF||
-'            --do the deletes'||wwv_flow.LF||
-'            for i in 1..l_old_tags.count loop'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(53) := '       begin'||wwv_flow.LF||
-'                    l_dummy_tag := l_new_tags_a(l_old_tags(i));'||wwv_flow.LF||
-'                excepti';
-wwv_flow_imp.g_varchar2_table(54) := 'on when no_data_found then'||wwv_flow.LF||
-'                    delete from eba_ca_tags where content_id = p_content_';
-wwv_flow_imp.g_varchar2_table(55) := 'id and tag = l_old_tags(i);'||wwv_flow.LF||
-'                    l_merge_tags(l_merge_tags.count + 1) := l_old_tags(i';
-wwv_flow_imp.g_varchar2_table(56) := ');'||wwv_flow.LF||
-'                end;'||wwv_flow.LF||
-'            end loop;'||wwv_flow.LF||
-'        else --just do inserts'||wwv_flow.LF||
-'            for i in 1.';
-wwv_flow_imp.g_varchar2_table(57) := '.l_new_tags.count loop'||wwv_flow.LF||
-'                insert into eba_ca_tags (tag, content_id, content_type )'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(58) := '            values (l_new_tags(i), p_content_id, p_content_type );'||wwv_flow.LF||
-'                l_merge_tags(l_me';
-wwv_flow_imp.g_varchar2_table(59) := 'rge_tags.count + 1) := l_new_tags(i);'||wwv_flow.LF||
-'            end loop;'||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'        for i in 1..l_me';
-wwv_flow_imp.g_varchar2_table(60) := 'rge_tags.count loop'||wwv_flow.LF||
-'            merge into eba_ca_tags_type_sum s'||wwv_flow.LF||
-'            using (select count(*)';
-wwv_flow_imp.g_varchar2_table(61) := ' tag_count'||wwv_flow.LF||
-'                     from eba_ca_tags'||wwv_flow.LF||
-'                    where tag = l_merge_tags(i) and';
-wwv_flow_imp.g_varchar2_table(62) := ' content_type = p_content_type ) t'||wwv_flow.LF||
-'            on (s.tag = l_merge_tags(i) and s.content_type = p_co';
-wwv_flow_imp.g_varchar2_table(63) := 'ntent_type )'||wwv_flow.LF||
-'            when not matched then insert (tag, content_type, tag_count)'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(64) := '                   values (l_merge_tags(i), p_content_type, t.tag_count)'||wwv_flow.LF||
-'            when matched th';
-wwv_flow_imp.g_varchar2_table(65) := 'en update set s.tag_count = t.tag_count;'||wwv_flow.LF||
-'            merge into eba_ca_tags_sum s'||wwv_flow.LF||
-'            using ';
-wwv_flow_imp.g_varchar2_table(66) := '(select sum(tag_count) tag_count'||wwv_flow.LF||
-'                     from eba_ca_tags_type_sum'||wwv_flow.LF||
-'                    ';
-wwv_flow_imp.g_varchar2_table(67) := 'where tag = l_merge_tags(i) ) t'||wwv_flow.LF||
-'            on (s.tag = l_merge_tags(i) )'||wwv_flow.LF||
-'            when not match';
-wwv_flow_imp.g_varchar2_table(68) := 'ed then insert (tag, tag_count)'||wwv_flow.LF||
-'                                  values (l_merge_tags(i), t.tag_cou';
-wwv_flow_imp.g_varchar2_table(69) := 'nt)'||wwv_flow.LF||
-'            when matched then update set s.tag_count = t.tag_count;'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'    end ta';
-wwv_flow_imp.g_varchar2_table(70) := 'g_sync;'||wwv_flow.LF||
-'    function selective_escape ('||wwv_flow.LF||
-'        p_text  in varchar2,'||wwv_flow.LF||
-'        p_tags  in varchar2 def';
-wwv_flow_imp.g_varchar2_table(71) := 'ault ''<h2>,</h2>,<p>,</p>,<b>,</b>,<li>,</li>,<ul>,</ul>,<br />,<i>,</i>,<h3>,</h3>'''||wwv_flow.LF||
-'        ) retur';
-wwv_flow_imp.g_varchar2_table(72) := 'n varchar2'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        t apex_application_global.vc_arr2;'||wwv_flow.LF||
-'        x varchar2(32767) := p_text;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(73) := '  begin'||wwv_flow.LF||
-'        t := apex_util.string_to_table(p_tags, '','');'||wwv_flow.LF||
-'        for i in 1..t.count loop'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(74) := '      x := replace(x,t(i),''Aa''||i||''aA'');'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'        x := apex_escape.html(x);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(75) := '  for i in 1..t.count loop'||wwv_flow.LF||
-'            x := replace(x,''Aa''||i||''aA'',t(i));'||wwv_flow.LF||
-'        end loop;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(76) := ' return x;'||wwv_flow.LF||
-'    end selective_escape;'||wwv_flow.LF||
-'    function get_preference_value ('||wwv_flow.LF||
-'        p_preference_name v';
-wwv_flow_imp.g_varchar2_table(77) := 'archar2 )'||wwv_flow.LF||
-'        return varchar2'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l_preference_value varchar2(255);'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(78) := ' select preference_value'||wwv_flow.LF||
-'            into l_preference_value'||wwv_flow.LF||
-'        from eba_ca_preferences'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(79) := ' where preference_name = p_preference_name;'||wwv_flow.LF||
-'        return l_preference_value;'||wwv_flow.LF||
-'    exception'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(80) := ' when no_data_found then'||wwv_flow.LF||
-'            return ''Preference does not exist'';'||wwv_flow.LF||
-'    end get_preference_valu';
-wwv_flow_imp.g_varchar2_table(81) := 'e;'||wwv_flow.LF||
-'    procedure set_preference_value ('||wwv_flow.LF||
-'        p_preference_name  varchar2, '||wwv_flow.LF||
-'        p_preference_v';
-wwv_flow_imp.g_varchar2_table(82) := 'alue varchar2 )'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        merge into eba_ca_preferences dest'||wwv_flow.LF||
-'        using ( select u';
-wwv_flow_imp.g_varchar2_table(83) := 'pper(p_preference_name) preference_name,'||wwv_flow.LF||
-'                    p_preference_value preference_value'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(84) := '             from dual ) src'||wwv_flow.LF||
-'        on ( upper(dest.preference_name) = src.preference_name )'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(85) := '  when matched then'||wwv_flow.LF||
-'            update set dest.preference_value = src.preference_value'||wwv_flow.LF||
-'        when';
-wwv_flow_imp.g_varchar2_table(86) := ' not matched then'||wwv_flow.LF||
-'            insert (dest.preference_name, dest.preference_value)'||wwv_flow.LF||
-'            value';
-wwv_flow_imp.g_varchar2_table(87) := 's (src.preference_name, src.preference_value);'||wwv_flow.LF||
-'    end set_preference_value;'||wwv_flow.LF||
-'    function compress_i';
-wwv_flow_imp.g_varchar2_table(88) := 'nt ('||wwv_flow.LF||
-'        n in integer )'||wwv_flow.LF||
-'        return varchar2'||wwv_flow.LF||
-'    as'||wwv_flow.LF||
-'        ret varchar2(30);'||wwv_flow.LF||
-'        quotien';
-wwv_flow_imp.g_varchar2_table(89) := 't integer;'||wwv_flow.LF||
-'        remainder integer;'||wwv_flow.LF||
-'        digit char(1);'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        ret := '''';'||wwv_flow.LF||
-'        qu';
-wwv_flow_imp.g_varchar2_table(90) := 'otient := n;'||wwv_flow.LF||
-'        while quotient > 0'||wwv_flow.LF||
-'        loop'||wwv_flow.LF||
-'            remainder := mod(quotient, 10 + 26)';
-wwv_flow_imp.g_varchar2_table(91) := ';'||wwv_flow.LF||
-'            quotient := floor(quotient  / (10 + 26));'||wwv_flow.LF||
-'            if remainder < 26 then'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(92) := '       digit := chr(ascii(''A'') + remainder);'||wwv_flow.LF||
-'            else'||wwv_flow.LF||
-'                digit := chr(ascii(''0''';
-wwv_flow_imp.g_varchar2_table(93) := ') + remainder - 26);'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'            ret := digit || ret;'||wwv_flow.LF||
-'        end loop ;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(94) := ' if length(ret) < 5 then'||wwv_flow.LF||
-'            ret := lpad(ret, 4, ''A'');'||wwv_flow.LF||
-'        end if ;'||wwv_flow.LF||
-'        return upper';
-wwv_flow_imp.g_varchar2_table(95) := '(ret);'||wwv_flow.LF||
-'    end compress_int;'||wwv_flow.LF||
-'    procedure add_error_log ( '||wwv_flow.LF||
-'        p_error in apex_error.t_error )'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(96) := '    is'||wwv_flow.LF||
-'    pragma autonomous_transaction;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        -- Remove old errors'||wwv_flow.LF||
-'        delete from';
-wwv_flow_imp.g_varchar2_table(97) := ' eba_ca_errors where err_time <= current_timestamp - 21;'||wwv_flow.LF||
-'        -- Log the error.'||wwv_flow.LF||
-'        insert in';
-wwv_flow_imp.g_varchar2_table(98) := 'to eba_ca_errors ('||wwv_flow.LF||
-'            app_id,'||wwv_flow.LF||
-'            app_page_id,'||wwv_flow.LF||
-'            app_user,'||wwv_flow.LF||
-'            us';
-wwv_flow_imp.g_varchar2_table(99) := 'er_agent,'||wwv_flow.LF||
-'            ip_address,'||wwv_flow.LF||
-'            ip_address2,'||wwv_flow.LF||
-'            message,'||wwv_flow.LF||
-'            page_ite';
-wwv_flow_imp.g_varchar2_table(100) := 'm_name,'||wwv_flow.LF||
-'            region_id,'||wwv_flow.LF||
-'            column_alias,'||wwv_flow.LF||
-'            row_num,'||wwv_flow.LF||
-'            apex_error';
-wwv_flow_imp.g_varchar2_table(101) := '_code,'||wwv_flow.LF||
-'            ora_sqlcode,'||wwv_flow.LF||
-'            ora_sqlerrm,'||wwv_flow.LF||
-'            error_backtrace )'||wwv_flow.LF||
-'        selec';
-wwv_flow_imp.g_varchar2_table(102) := 't v(''APP_ID''),'||wwv_flow.LF||
-'            v(''APP_PAGE_ID''),'||wwv_flow.LF||
-'            v(''APP_USER''),'||wwv_flow.LF||
-'            owa_util.get_cgi';
-wwv_flow_imp.g_varchar2_table(103) := '_env(''HTTP_USER_AGENT''),'||wwv_flow.LF||
-'            owa_util.get_cgi_env(''REMOTE_ADDR''),'||wwv_flow.LF||
-'            sys_context(''U';
-wwv_flow_imp.g_varchar2_table(104) := 'SERENV'', ''IP_ADDRESS''),'||wwv_flow.LF||
-'            substr(p_error.message,0,4000),'||wwv_flow.LF||
-'            p_error.page_item_na';
-wwv_flow_imp.g_varchar2_table(105) := 'me,'||wwv_flow.LF||
-'            p_error.region_id,'||wwv_flow.LF||
-'            p_error.column_alias,'||wwv_flow.LF||
-'            p_error.row_num,'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(106) := '          p_error.apex_error_code,'||wwv_flow.LF||
-'            p_error.ora_sqlcode,'||wwv_flow.LF||
-'            substr(p_error.ora_s';
-wwv_flow_imp.g_varchar2_table(107) := 'qlerrm,0,4000),'||wwv_flow.LF||
-'            substr(p_error.error_backtrace,0,4000)'||wwv_flow.LF||
-'        from dual;'||wwv_flow.LF||
-'        commit';
-wwv_flow_imp.g_varchar2_table(108) := ';'||wwv_flow.LF||
-'    end add_error_log;'||wwv_flow.LF||
-'    function apex_error_handling ('||wwv_flow.LF||
-'        p_error in apex_error.t_error )'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(109) := '        return apex_error.t_error_result'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l_result          apex_error.t_error_result;';
-wwv_flow_imp.g_varchar2_table(110) := ''||wwv_flow.LF||
-'        l_constraint_name varchar2(255);'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        l_result := apex_error.init_error_result';
-wwv_flow_imp.g_varchar2_table(111) := ' ('||wwv_flow.LF||
-'                        p_error => p_error );'||wwv_flow.LF||
-'        -- If it is an internal error raised by APE';
-wwv_flow_imp.g_varchar2_table(112) := 'X, like an invalid statement or'||wwv_flow.LF||
-'        -- code which can not be executed, the error text might cont';
-wwv_flow_imp.g_varchar2_table(113) := 'ain security sensitive'||wwv_flow.LF||
-'        -- information. To avoid this security problem we can rewrite the err';
-wwv_flow_imp.g_varchar2_table(114) := 'or to'||wwv_flow.LF||
-'        -- a generic error message and log the original error message for further'||wwv_flow.LF||
-'        -- i';
-wwv_flow_imp.g_varchar2_table(115) := 'nvestigation by the help desk.'||wwv_flow.LF||
-'        if p_error.is_internal_error then'||wwv_flow.LF||
-'            -- mask all err';
-wwv_flow_imp.g_varchar2_table(116) := 'ors that are not common runtime errors (Access Denied'||wwv_flow.LF||
-'            -- errors raised by application / ';
-wwv_flow_imp.g_varchar2_table(117) := 'page authorization and all errors'||wwv_flow.LF||
-'            -- regarding session and session state)'||wwv_flow.LF||
-'            if';
-wwv_flow_imp.g_varchar2_table(118) := ' not p_error.is_common_runtime_error then'||wwv_flow.LF||
-'                add_error_log( p_error );'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(119) := '-- Change the message to the generic error message which doesn''t expose'||wwv_flow.LF||
-'                -- any sensi';
-wwv_flow_imp.g_varchar2_table(120) := 'tive information.'||wwv_flow.LF||
-'                l_result.message         := ''An unexpected internal application er';
-wwv_flow_imp.g_varchar2_table(121) := 'ror has occurred.'';'||wwv_flow.LF||
-'                l_result.additional_info := null;'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'        el';
-wwv_flow_imp.g_varchar2_table(122) := 'se'||wwv_flow.LF||
-'            -- Always show the error as inline error'||wwv_flow.LF||
-'            -- Note: If you have created man';
-wwv_flow_imp.g_varchar2_table(123) := 'ual tabular forms (using the package'||wwv_flow.LF||
-'            --       apex_item/htmldb_item in the SQL statement';
-wwv_flow_imp.g_varchar2_table(124) := ') you should still'||wwv_flow.LF||
-'            --       use "On error page" on that pages to avoid loosing entered d';
-wwv_flow_imp.g_varchar2_table(125) := 'ata'||wwv_flow.LF||
-'            l_result.display_location := case'||wwv_flow.LF||
-'                                           when l_';
-wwv_flow_imp.g_varchar2_table(126) := 'result.display_location = apex_error.c_on_error_page then apex_error.c_inline_in_notification'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(127) := '                                     else l_result.display_location'||wwv_flow.LF||
-'                                ';
-wwv_flow_imp.g_varchar2_table(128) := '         end;'||wwv_flow.LF||
-'            -- If it''s a constraint violation like'||wwv_flow.LF||
-'            --'||wwv_flow.LF||
-'            --   -) ';
-wwv_flow_imp.g_varchar2_table(129) := 'ORA-00001: unique constraint violated'||wwv_flow.LF||
-'            --   -) ORA-02091: transaction rolled back (-> can';
-wwv_flow_imp.g_varchar2_table(130) := ' hide a deferred constraint)'||wwv_flow.LF||
-'            --   -) ORA-02290: check constraint violated'||wwv_flow.LF||
-'            --';
-wwv_flow_imp.g_varchar2_table(131) := '   -) ORA-02291: integrity constraint violated - parent key not found'||wwv_flow.LF||
-'            --   -) ORA-02292:';
-wwv_flow_imp.g_varchar2_table(132) := ' integrity constraint violated - child record found'||wwv_flow.LF||
-'            --'||wwv_flow.LF||
-'            -- we try to get a fr';
-wwv_flow_imp.g_varchar2_table(133) := 'iendly error message from our constraint lookup configuration.'||wwv_flow.LF||
-'            -- If we don''t find the c';
-wwv_flow_imp.g_varchar2_table(134) := 'onstraint in our lookup table we fallback to'||wwv_flow.LF||
-'            -- the original ORA error message.'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(135) := '    if p_error.ora_sqlcode in (-1, -2091, -2290, -2291, -2292) then'||wwv_flow.LF||
-'                l_constraint_nam';
-wwv_flow_imp.g_varchar2_table(136) := 'e := apex_error.extract_constraint_name ('||wwv_flow.LF||
-'                                         p_error => p_erro';
-wwv_flow_imp.g_varchar2_table(137) := 'r );'||wwv_flow.LF||
-'                begin'||wwv_flow.LF||
-'                    select message'||wwv_flow.LF||
-'                      into l_result.me';
-wwv_flow_imp.g_varchar2_table(138) := 'ssage'||wwv_flow.LF||
-'                      from eba_ca_error_lookup'||wwv_flow.LF||
-'                     where constraint_name = l_';
-wwv_flow_imp.g_varchar2_table(139) := 'constraint_name;'||wwv_flow.LF||
-'                exception when no_data_found then null; -- not every constraint has';
-wwv_flow_imp.g_varchar2_table(140) := ' to be in our lookup table'||wwv_flow.LF||
-'                end;'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'            -- If an ORA error h';
-wwv_flow_imp.g_varchar2_table(141) := 'as been raised, for example a raise_application_error(-20xxx, ''...'')'||wwv_flow.LF||
-'            -- in a table trigg';
-wwv_flow_imp.g_varchar2_table(142) := 'er or in a PL/SQL package called by a process and we'||wwv_flow.LF||
-'            -- haven''t found the error in our l';
-wwv_flow_imp.g_varchar2_table(143) := 'ookup table, then we just want to see'||wwv_flow.LF||
-'            -- the actual error text and not the full error st';
-wwv_flow_imp.g_varchar2_table(144) := 'ack with all the ORA error numbers.'||wwv_flow.LF||
-'            if p_error.ora_sqlcode is not null and l_result.mess';
-wwv_flow_imp.g_varchar2_table(145) := 'age = p_error.message then'||wwv_flow.LF||
-'                l_result.message := apex_error.get_first_ora_error_text (';
-wwv_flow_imp.g_varchar2_table(146) := ''||wwv_flow.LF||
-'                                        p_error => p_error );'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'            -- If';
-wwv_flow_imp.g_varchar2_table(147) := ' no associated page item/tabular form column has been set, we can use'||wwv_flow.LF||
-'            -- apex_error.auto';
-wwv_flow_imp.g_varchar2_table(148) := '_set_associated_item to automatically guess the affected'||wwv_flow.LF||
-'            -- error field by examine the O';
-wwv_flow_imp.g_varchar2_table(149) := 'RA error for constraint names or column names.'||wwv_flow.LF||
-'            if l_result.page_item_name is null and l_';
-wwv_flow_imp.g_varchar2_table(150) := 'result.column_alias is null then'||wwv_flow.LF||
-'                apex_error.auto_set_associated_item ('||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(151) := '       p_error        => p_error,'||wwv_flow.LF||
-'                    p_error_result => l_result );'||wwv_flow.LF||
-'            end ';
-wwv_flow_imp.g_varchar2_table(152) := 'if;'||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'        return l_result;'||wwv_flow.LF||
-'    end apex_error_handling;'||wwv_flow.LF||
-'end eba_ca_fw;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show erro';
-wwv_flow_imp.g_varchar2_table(153) := 'rs';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1326986348855207156)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Framework Body'
-,p_sequence=>10
-,p_script_type=>'UPGRADE'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_framework_package
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create or replace'||wwv_flow.LF||
-'package eba_ca_fw as'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function conv_txt_html ('||wwv_flow.LF||
-'        p_txt_message in varcha';
-wwv_flow_imp.g_varchar2_table(2) := 'r2 )'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function conv_urls_links ('||wwv_flow.LF||
-'        p_string in varchar2 )'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(3) := ' return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function tags_cleaner ('||wwv_flow.LF||
-'        p_tags  in varchar2,'||wwv_flow.LF||
-'        p_case  in varch';
-wwv_flow_imp.g_varchar2_table(4) := 'ar2 default ''U'' )'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    procedure tag_sync ('||wwv_flow.LF||
-'        p_new_tags          in ';
-wwv_flow_imp.g_varchar2_table(5) := 'varchar2,'||wwv_flow.LF||
-'        p_old_tags          in varchar2,'||wwv_flow.LF||
-'        p_content_type      in varchar2,'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(6) := 'p_content_id        in number );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function selective_escape ('||wwv_flow.LF||
-'        p_text  in varchar2,'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(7) := '   p_tags  in varchar2 default ''<h2>,</h2>,<p>,</p>,<b>,</b>,<li>,</li>,<ul>,</ul>,<br />,<i>,</i>,<';
-wwv_flow_imp.g_varchar2_table(8) := 'h3>,</h3>'' )'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function get_preference_value ('||wwv_flow.LF||
-'        p_preference_name';
-wwv_flow_imp.g_varchar2_table(9) := ' in varchar2 )'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    procedure set_preference_value ('||wwv_flow.LF||
-'        p_preference_n';
-wwv_flow_imp.g_varchar2_table(10) := 'ame  in varchar2, '||wwv_flow.LF||
-'        p_preference_value in varchar2 );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function compress_int ('||wwv_flow.LF||
-'        n ';
-wwv_flow_imp.g_varchar2_table(11) := 'in integer )'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function apex_error_handling ('||wwv_flow.LF||
-'        p_error in apex_er';
-wwv_flow_imp.g_varchar2_table(12) := 'ror.t_error )'||wwv_flow.LF||
-'        return apex_error.t_error_result;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'end eba_ca_fw;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1449117849657139110)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Framework Package'
-,p_sequence=>5
-,p_script_type=>'UPGRADE'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
 prompt --application/deployment/install/install_framework_spec
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -26759,79 +26078,6 @@ wwv_flow_imp_shared.create_install_object(
 ,p_object_owner=>'#OWNER#'
 ,p_object_type=>'PACKAGE'
 ,p_object_name=>'EBA_CA_FW'
-);
-end;
-/
-prompt --application/deployment/install/upgrade_more_event_colors
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'alter table EBA_CA_COLOR_PREFS add constraint'||wwv_flow.LF||
-'   EBA_CA_COLOR_PREFS_UK unique (COLOR_NAME)'||wwv_flow.LF||
-'/ '||wwv_flow.LF||
-''||wwv_flow.LF||
-'inser';
-wwv_flow_imp.g_varchar2_table(2) := 't into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (6,''Black'',  ''#303030'', ''#30';
-wwv_flow_imp.g_varchar2_table(3) := '3030'');'||wwv_flow.LF||
-'insert into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (7,''Darkblue'', ';
-wwv_flow_imp.g_varchar2_table(4) := ' ''#1F5F97'', ''#1F5F97'');'||wwv_flow.LF||
-'insert into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values';
-wwv_flow_imp.g_varchar2_table(5) := ' (8,''Bluesky'',  ''#6BB9F0'', ''#6BB9F0'');'||wwv_flow.LF||
-'insert into EBA_CA_color_prefs (id, color_name, bg_color, tex';
-wwv_flow_imp.g_varchar2_table(6) := 't_color) values (9,''Brown'',  ''#D88935'', ''#D88935'');'||wwv_flow.LF||
-'insert into EBA_CA_color_prefs (id, color_name, ';
-wwv_flow_imp.g_varchar2_table(7) := 'bg_color, text_color) values (10,''Cyan'',  ''#1ABC9C'', ''#1ABC9C'');'||wwv_flow.LF||
-'insert into EBA_CA_color_prefs (id,';
-wwv_flow_imp.g_varchar2_table(8) := ' color_name, bg_color, text_color) values (11,''Lime'',  ''#28A346'', ''#28A346'');'||wwv_flow.LF||
-'insert into EBA_CA_col';
-wwv_flow_imp.g_varchar2_table(9) := 'or_prefs (id, color_name, bg_color, text_color) values (12,''Silver'',  ''#BDC3C7'', ''#BDC3C7'');'||wwv_flow.LF||
-'insert ';
-wwv_flow_imp.g_varchar2_table(10) := 'into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (13,''Yellow'',  ''#F1C40F'', ''#F1';
-wwv_flow_imp.g_varchar2_table(11) := 'C40F'');'||wwv_flow.LF||
-'commit;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(2564607310498110518)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'More Event Colors'
-,p_sequence=>50
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'FUNCTION_BODY'
-,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'declare',
-'    l_cnt    pls_integer;',
-'    l_retval boolean := true;',
-'begin',
-'    select count(*)',
-'      into l_cnt',
-'      from eba_ca_color_prefs',
-'     where color_name in (''Black'', ''Darkblue'', ''Bluesky'', ''Brown'', ''Cyan'', ''Lime'', ''Silver'', ''Yellow'');',
-'',
-'    if l_cnt > 0 then',
-'        l_retval := false;',
-'    end if;',
-'',
-'    return l_retval;',
-'end;'))
-,p_condition2=>'PLSQL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_remove_help_table
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'drop table eba_ca_help_page;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1449117455760131473)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Remove Help Table'
-,p_sequence=>30
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'EXISTS'
-,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select table_name',
-'from user_tables',
-'where table_name = ''EBA_CA_HELP_PAGE'''))
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
 /
@@ -27125,287 +26371,6 @@ wwv_flow_imp_shared.create_install_object(
 );
 end;
 /
-prompt --application/deployment/install/upgrade_sample_data_package
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create or replace package eba_ca_sample_data as'||wwv_flow.LF||
-'    procedure load;'||wwv_flow.LF||
-'    procedure remove;'||wwv_flow.LF||
-'    functi';
-wwv_flow_imp.g_varchar2_table(2) := 'on is_loaded return boolean;'||wwv_flow.LF||
-'end eba_ca_sample_data;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace package body eba_ca_sample';
-wwv_flow_imp.g_varchar2_table(3) := '_data as'||wwv_flow.LF||
-'    procedure load is'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        merge into eba_ca_event_types dest using ('||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(4) := '    select 1 type_id, ''External Meeting'' type_name, ''#00FF00'' display_color, ''#00FF00'' border_color,';
-wwv_flow_imp.g_varchar2_table(5) := ' ''Y'' is_active_yn, ''N'' internal_yn, 2 color_pref_id from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            sele';
-wwv_flow_imp.g_varchar2_table(6) := 'ct 2 type_id, ''Team Meeting'' type_name, ''#FF0000'' display_color, ''#FF0000'' border_color,  ''Y'' is_act';
-wwv_flow_imp.g_varchar2_table(7) := 'ive_yn, ''Y'' internal_yn, 1 color_pref_id from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            select 3 type_i';
-wwv_flow_imp.g_varchar2_table(8) := 'd, ''Recurring Meeting'' type_name, ''#F1C40F'' display_color, ''#F1C40F'' border_color,  ''Y'' is_active_yn';
-wwv_flow_imp.g_varchar2_table(9) := ', ''Y'' internal_yn, 13 color_pref_id from dual'||wwv_flow.LF||
-'            ) src'||wwv_flow.LF||
-'        on (dest.type_id = src.type_';
-wwv_flow_imp.g_varchar2_table(10) := 'id)'||wwv_flow.LF||
-'        when not matched then'||wwv_flow.LF||
-'            insert ( type_id, type_name, display_color, border_col';
-wwv_flow_imp.g_varchar2_table(11) := 'or, is_active_yn, color_pref_id )'||wwv_flow.LF||
-'            values ( src.type_id, src.type_name, src.display_color';
-wwv_flow_imp.g_varchar2_table(12) := ', src.border_color, src.is_active_yn, src.color_pref_id );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        merge into eba_ca_series dest us';
-wwv_flow_imp.g_varchar2_table(13) := 'ing ('||wwv_flow.LF||
-'            select 1 series_id, trunc(current_timestamp+1,''HH'') start_date, trunc(current_time';
-wwv_flow_imp.g_varchar2_table(14) := 'stamp+50,''HH'') end_date, 8 recur_freq from dual'||wwv_flow.LF||
-'            ) src'||wwv_flow.LF||
-'        on (dest.series_id = src.s';
-wwv_flow_imp.g_varchar2_table(15) := 'eries_id)'||wwv_flow.LF||
-'        when not matched then'||wwv_flow.LF||
-'            insert ( series_id, start_date, end_date, recur_';
-wwv_flow_imp.g_varchar2_table(16) := 'freq )'||wwv_flow.LF||
-'            values ( src.series_id, src.start_date, src.end_date, src.recur_freq );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(17) := 'merge into eba_ca_events dest using ('||wwv_flow.LF||
-'            select 1 event_id,'||wwv_flow.LF||
-'                ''All Hands Meet';
-wwv_flow_imp.g_varchar2_table(18) := 'ing'' event_name,'||wwv_flow.LF||
-'                2 type_id,'||wwv_flow.LF||
-'                trunc(current_timestamp+5,''HH'') event_da';
-wwv_flow_imp.g_varchar2_table(19) := 'te_time,'||wwv_flow.LF||
-'                2 duration,'||wwv_flow.LF||
-'                ''Mandatory event'' event_desc,'||wwv_flow.LF||
-'                ''';
-wwv_flow_imp.g_varchar2_table(20) := 'Larry'' contact_person,'||wwv_flow.LF||
-'                ''Y'' display_time,'||wwv_flow.LF||
-'                ''HQ Conference Room 1'' loca';
-wwv_flow_imp.g_varchar2_table(21) := 'tion,'||wwv_flow.LF||
-'                ''Acme'' link_name_1,'||wwv_flow.LF||
-'                ''http://acme.com'' link_url_1,'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(22) := '    null series_id'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            select 2,'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(23) := ' ''Sales Event'','||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                trunc(current_timestamp+7,''DD''),'||wwv_flow.LF||
-'                ';
-wwv_flow_imp.g_varchar2_table(24) := '24,'||wwv_flow.LF||
-'                ''An all-day event.'','||wwv_flow.LF||
-'                ''Moe'','||wwv_flow.LF||
-'                ''N'','||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(25) := ' ''Pasadena, CA'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                null'||wwv_flow.LF||
-'            from d';
-wwv_flow_imp.g_varchar2_table(26) := 'ual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            select 3,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'             ';
-wwv_flow_imp.g_varchar2_table(27) := '   3,'||wwv_flow.LF||
-'                trunc(current_timestamp+1,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pi';
-wwv_flow_imp.g_varchar2_table(28) := 'peline and discuss wins/losses.'','||wwv_flow.LF||
-'                ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''D';
-wwv_flow_imp.g_varchar2_table(29) := 'enver, CO'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(30) := '        union all'||wwv_flow.LF||
-'            select 4,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(31) := '              trunc(current_timestamp+8,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline a';
-wwv_flow_imp.g_varchar2_table(32) := 'nd discuss wins/losses.'','||wwv_flow.LF||
-'                ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, C';
-wwv_flow_imp.g_varchar2_table(33) := 'O'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(34) := 'union all'||wwv_flow.LF||
-'            select 5,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(35) := '      trunc(current_timestamp+15,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and disc';
-wwv_flow_imp.g_varchar2_table(36) := 'uss wins/losses.'','||wwv_flow.LF||
-'                ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(37) := '             null,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union a';
-wwv_flow_imp.g_varchar2_table(38) := 'll'||wwv_flow.LF||
-'            select 6,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'                t';
-wwv_flow_imp.g_varchar2_table(39) := 'runc(current_timestamp+22,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and discuss win';
-wwv_flow_imp.g_varchar2_table(40) := 's/losses.'','||wwv_flow.LF||
-'                ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(41) := '      null,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(42) := '        select 7,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'                trunc(cu';
-wwv_flow_imp.g_varchar2_table(43) := 'rrent_timestamp+29,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and discuss wins/losse';
-wwv_flow_imp.g_varchar2_table(44) := 's.'','||wwv_flow.LF||
-'                ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'                n';
-wwv_flow_imp.g_varchar2_table(45) := 'ull,'||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'           ';
-wwv_flow_imp.g_varchar2_table(46) := ' select 8,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'                trunc(current_t';
-wwv_flow_imp.g_varchar2_table(47) := 'imestamp+36,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(48) := '              ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(49) := '              null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            select';
-wwv_flow_imp.g_varchar2_table(50) := ' 9,'||wwv_flow.LF||
-'                ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'                trunc(current_timestam';
-wwv_flow_imp.g_varchar2_table(51) := 'p+43,''HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(52) := '       ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(53) := '       null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            union all'||wwv_flow.LF||
-'            select 10,'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(54) := '              ''Weekly Sales Update'','||wwv_flow.LF||
-'                3,'||wwv_flow.LF||
-'                trunc(current_timestamp+50,''';
-wwv_flow_imp.g_varchar2_table(55) := 'HH''),'||wwv_flow.LF||
-'                1,'||wwv_flow.LF||
-'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(56) := ' ''Carolyn'','||wwv_flow.LF||
-'                ''Y'','||wwv_flow.LF||
-'                ''Denver, CO'','||wwv_flow.LF||
-'                null,'||wwv_flow.LF||
-'               ';
-wwv_flow_imp.g_varchar2_table(57) := ' null,'||wwv_flow.LF||
-'                1'||wwv_flow.LF||
-'            from dual'||wwv_flow.LF||
-'            ) src'||wwv_flow.LF||
-'        on (dest.event_id = src.eve';
-wwv_flow_imp.g_varchar2_table(58) := 'nt_id)'||wwv_flow.LF||
-'        when not matched then'||wwv_flow.LF||
-'            insert (event_id, event_name, type_id, event_date_t';
-wwv_flow_imp.g_varchar2_table(59) := 'ime,'||wwv_flow.LF||
-'                duration, event_desc, contact_person, display_time,'||wwv_flow.LF||
-'                location, l';
-wwv_flow_imp.g_varchar2_table(60) := 'ink_name_1, link_url_1 )'||wwv_flow.LF||
-'            values (src.event_id, src.event_name, src.type_id, src.event_da';
-wwv_flow_imp.g_varchar2_table(61) := 'te_time,'||wwv_flow.LF||
-'                src.duration, src.event_desc, src.contact_person, src.display_time,'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(62) := '         src.location, src.link_name_1, src.link_url_1 );'||wwv_flow.LF||
-'    end load;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    procedure remove is'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(63) := ' begin'||wwv_flow.LF||
-'        delete from eba_ca_events where event_id < 100;'||wwv_flow.LF||
-'        delete from eba_ca_event_type';
-wwv_flow_imp.g_varchar2_table(64) := 's where type_id < 100 and type_id not in (select distinct type_id from eba_ca_events);'||wwv_flow.LF||
-'        delet';
-wwv_flow_imp.g_varchar2_table(65) := 'e from eba_ca_series where series_id < 100 and series_id not in (select distinct series_id from eba_';
-wwv_flow_imp.g_varchar2_table(66) := 'ca_events);'||wwv_flow.LF||
-'    end remove;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    function is_loaded return boolean is'||wwv_flow.LF||
-'        l_cnt number := 0;'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(67) := ' begin'||wwv_flow.LF||
-'        select count(*) into l_cnt from eba_ca_events where event_id < 100;'||wwv_flow.LF||
-'        if l_cnt ';
-wwv_flow_imp.g_varchar2_table(68) := '> 0 then return true; end if;'||wwv_flow.LF||
-'        select count(*) into l_cnt from eba_ca_event_types where type_';
-wwv_flow_imp.g_varchar2_table(69) := 'id < 100 and type_id not in (select distinct type_id from eba_ca_events);'||wwv_flow.LF||
-'        if l_cnt > 0 then ';
-wwv_flow_imp.g_varchar2_table(70) := 'return true; end if;'||wwv_flow.LF||
-'        return false;'||wwv_flow.LF||
-'    end is_loaded;'||wwv_flow.LF||
-'end eba_ca_sample_data;'||wwv_flow.LF||
-'/';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1996279992070876996)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Sample Data Package'
-,p_sequence=>40
-,p_script_type=>'UPGRADE'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
 prompt --application/deployment/install/install_set_first_run_preference
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -27423,28 +26388,6 @@ wwv_flow_imp_shared.create_install_script(
 );
 end;
 /
-prompt --application/deployment/install/upgrade_set_first_run_preference
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'begin'||wwv_flow.LF||
-'    eba_ca_fw.set_preference_value( p_preference_name => ''FIRST_RUN'', p_preference_value => ''N';
-wwv_flow_imp.g_varchar2_table(2) := 'O'' );'||wwv_flow.LF||
-'end;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1168354336626808582)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Set First Run Preference'
-,p_sequence=>60
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'NOT_EXISTS'
-,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select null',
-'  from eba_ca_preferences',
-' where preference_name = ''FIRST_RUN'';'))
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
 prompt --application/deployment/install/install_set_plscope_settings
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -27455,1204 +26398,6 @@ wwv_flow_imp_shared.create_install_script(
 ,p_name=>'Set plscope_settings'
 ,p_sequence=>1
 ,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_timestamp_fix_bugid_31352674
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '-- This script fixes BUG 31352674, replacing all columns of type TIMESTAMP(6) WITH LOCAL TIME ZONE t';
-wwv_flow_imp.g_varchar2_table(2) := 'o TIMESTAMP WITH TIME ZONE'||wwv_flow.LF||
-'-- it also updates all application triggers where columns where updated w';
-wwv_flow_imp.g_varchar2_table(3) := 'ith LOCALTIMESTAMP to CURRENT_TIMESTAMP'||wwv_flow.LF||
-'-- '||wwv_flow.LF||
-'-- This upgrade script will only run if there are tables';
-wwv_flow_imp.g_varchar2_table(4) := ' that start with ''EBA_CA%'' with columns of data type'||wwv_flow.LF||
-'-- TIMESTAMP(6) WITH LOCAL TIME ZONE'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- 1 Disa';
-wwv_flow_imp.g_varchar2_table(5) := 'ble all triggers.'||wwv_flow.LF||
-'alter trigger "BI_EBA_CA_ERRORS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_COLOR_PREFS"';
-wwv_flow_imp.g_varchar2_table(6) := ' DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_EVENT_TYPES_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_HISTORY" DIS';
-wwv_flow_imp.g_varchar2_table(7) := 'ABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_SERIES_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_TAGS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alte';
-wwv_flow_imp.g_varchar2_table(8) := 'r trigger "EBA_CA_CALENDARS_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "AD_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigge';
-wwv_flow_imp.g_varchar2_table(9) := 'r "EBA_CA_EVENTS_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BD_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "AU_EBA_C';
-wwv_flow_imp.g_varchar2_table(10) := 'A_EVENTS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "AI_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_NOTES" DI';
-wwv_flow_imp.g_varchar2_table(11) := 'SABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_FILES" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_EMAIL_GROUPS_BIU" DISABLE';
-wwv_flow_imp.g_varchar2_table(12) := ';'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_EMAIL_GROUP_MBRS_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_TIMEFRAMES_BIU" DIS';
-wwv_flow_imp.g_varchar2_table(13) := 'ABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'--TABLE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
-'--alter trigger "EBA_CA_ADMINS_BIU" DISA';
-wwv_flow_imp.g_varchar2_table(14) := 'BLE;'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-'alter trigger "EBA_CA_NOTE_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_TZ_PREF" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'al';
-wwv_flow_imp.g_varchar2_table(15) := 'ter trigger "EBA_CA_USERS_BD" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "EBA_CA_USERS_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger "';
-wwv_flow_imp.g_varchar2_table(16) := 'EBA_CA_PREFERENCES_BIU" DISABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- 2 Add temporary timestamp columns'||wwv_flow.LF||
-'alter table EBA_CA_ERRORS a';
-wwv_flow_imp.g_varchar2_table(17) := 'dd (ERR_TIME1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_COLOR_PREFS add (CREATED1 timestamp wit';
-wwv_flow_imp.g_varchar2_table(18) := 'h time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENT_TYPES add (CREATED_ON1 tim';
-wwv_flow_imp.g_varchar2_table(19) := 'estamp with time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_HISTORY add (C';
-wwv_flow_imp.g_varchar2_table(20) := 'HANGE_DATE1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_SERIES add (START_DATE1 timestamp with ti';
-wwv_flow_imp.g_varchar2_table(21) := 'me zone,END_DATE1 timestamp with time zone,CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 tim';
-wwv_flow_imp.g_varchar2_table(22) := 'estamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TAGS add (CREATED1 timestamp with time zone,UPDATED1 tim';
-wwv_flow_imp.g_varchar2_table(23) := 'estamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_CALENDARS add (CREATED_ON1 timestamp with time zone,LAST';
-wwv_flow_imp.g_varchar2_table(24) := '_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENTS add (EVENT_DATE_TIME1 timestamp w';
-wwv_flow_imp.g_varchar2_table(25) := 'ith time zone,CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alte';
-wwv_flow_imp.g_varchar2_table(26) := 'r table EBA_CA_NOTES add (CREATED1 timestamp with time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alt';
-wwv_flow_imp.g_varchar2_table(27) := 'er table EBA_CA_FILES add (CREATED1 timestamp with time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'al';
-wwv_flow_imp.g_varchar2_table(28) := 'ter table EBA_CA_EMAIL_GROUPS add (CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 timestamp w';
-wwv_flow_imp.g_varchar2_table(29) := 'ith time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUP_MBRS add (CREATED_ON1 timestamp with time zone,LAST_';
-wwv_flow_imp.g_varchar2_table(30) := 'UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TIMEFRAMES add (CREATED_ON1 timestamp wit';
-wwv_flow_imp.g_varchar2_table(31) := 'h time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'--TABLE and TRIGGER NO LONGER EXISTS AT THI';
-wwv_flow_imp.g_varchar2_table(32) := 'S POINT.'||wwv_flow.LF||
-'--alter table EBA_CA_ADMINS add (CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 time';
-wwv_flow_imp.g_varchar2_table(33) := 'stamp with time zone)'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-'alter table EBA_CA_NOTIFICATIONS add (DISPLAY_FROM1 timestamp with time zo';
-wwv_flow_imp.g_varchar2_table(34) := 'ne,DISPLAY_UNTIL1 timestamp with time zone,CREATED1 timestamp with time zone,UPDATED1 timestamp with';
-wwv_flow_imp.g_varchar2_table(35) := ' time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TZ_PREF add (CREATED1 timestamp with time zone,UPDATED1 timestamp w';
-wwv_flow_imp.g_varchar2_table(36) := 'ith time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_USERS add (CREATED1 timestamp with time zone,UPDATED1 timestamp ';
-wwv_flow_imp.g_varchar2_table(37) := 'with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_PREFERENCES add (CREATED_ON1 timestamp with time zone,UPDATED_O';
-wwv_flow_imp.g_varchar2_table(38) := 'N1 timestamp with time zone)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- Copy original column values into temporary column values'||wwv_flow.LF||
-'update E';
-wwv_flow_imp.g_varchar2_table(39) := 'BA_CA_ERRORS set ERR_TIME1 = ERR_TIME;'||wwv_flow.LF||
-'update EBA_CA_COLOR_PREFS set CREATED1 = CREATED,UPDATED1 = U';
-wwv_flow_imp.g_varchar2_table(40) := 'PDATED;'||wwv_flow.LF||
-'update EBA_CA_EVENT_TYPES set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'u';
-wwv_flow_imp.g_varchar2_table(41) := 'pdate EBA_CA_HISTORY set CHANGE_DATE1 = CHANGE_DATE;'||wwv_flow.LF||
-'update EBA_CA_SERIES set START_DATE1 = START_DA';
-wwv_flow_imp.g_varchar2_table(42) := 'TE,END_DATE1 = END_DATE,CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'update EBA_CA_T';
-wwv_flow_imp.g_varchar2_table(43) := 'AGS set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
-'update EBA_CA_CALENDARS set CREATED_ON1 = CREATED_ON,';
-wwv_flow_imp.g_varchar2_table(44) := 'LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'update EBA_CA_EVENTS set EVENT_DATE_TIME1 = EVENT_DATE_TIME,CREA';
-wwv_flow_imp.g_varchar2_table(45) := 'TED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'update EBA_CA_NOTES set CREATED1 = CREATED,';
-wwv_flow_imp.g_varchar2_table(46) := 'UPDATED1 = UPDATED;'||wwv_flow.LF||
-'update EBA_CA_FILES set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
-'update EBA_CA_EMA';
-wwv_flow_imp.g_varchar2_table(47) := 'IL_GROUPS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'update EBA_CA_EMAIL_GROUP';
-wwv_flow_imp.g_varchar2_table(48) := '_MBRS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'update EBA_CA_TIMEFRAMES set ';
-wwv_flow_imp.g_varchar2_table(49) := 'CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
-'--TABLE and TRIGGER NO LONGER EXISTS AT';
-wwv_flow_imp.g_varchar2_table(50) := ' THIS POINT.'||wwv_flow.LF||
-'--update EBA_CA_ADMINS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;';
-wwv_flow_imp.g_varchar2_table(51) := ''||wwv_flow.LF||
-'update EBA_CA_NOTIFICATIONS set DISPLAY_FROM1 = DISPLAY_FROM,DISPLAY_UNTIL1 = DISPLAY_UNTIL,CREATED';
-wwv_flow_imp.g_varchar2_table(52) := '1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
-'update EBA_CA_TZ_PREF set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
-'upd';
-wwv_flow_imp.g_varchar2_table(53) := 'ate EBA_CA_USERS set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
-'update EBA_CA_PREFERENCES set CREATED_ON';
-wwv_flow_imp.g_varchar2_table(54) := '1 = CREATED_ON,UPDATED_ON1 = UPDATED_ON;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- 3 Drop original timestamp with local time zone columns'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(55) := 'alter table EBA_CA_ERRORS drop (ERR_TIME)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_COLOR_PREFS drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(56) := 'alter table EBA_CA_EVENT_TYPES drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_HISTORY drop (';
-wwv_flow_imp.g_varchar2_table(57) := 'CHANGE_DATE)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_SERIES drop (START_DATE,END_DATE,CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alt';
-wwv_flow_imp.g_varchar2_table(58) := 'er table EBA_CA_TAGS drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_CALENDARS drop (CREATED_ON,LAST_UPD';
-wwv_flow_imp.g_varchar2_table(59) := 'ATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENTS drop (EVENT_DATE_TIME,CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table';
-wwv_flow_imp.g_varchar2_table(60) := ' EBA_CA_NOTES drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_FILES drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table';
-wwv_flow_imp.g_varchar2_table(61) := ' EBA_CA_EMAIL_GROUPS drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUP_MBRS drop (C';
-wwv_flow_imp.g_varchar2_table(62) := 'REATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TIMEFRAMES drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'--TAB';
-wwv_flow_imp.g_varchar2_table(63) := 'LE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
-'--alter table EBA_CA_ADMINS drop (CREATED_ON,LAST_UPD';
-wwv_flow_imp.g_varchar2_table(64) := 'ATED_ON)'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-'alter table EBA_CA_NOTIFICATIONS drop (DISPLAY_FROM,DISPLAY_UNTIL,CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'al';
-wwv_flow_imp.g_varchar2_table(65) := 'ter table EBA_CA_TZ_PREF drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_USERS drop (CREATED,UPDATED)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(66) := 'alter table EBA_CA_PREFERENCES drop (CREATED_ON,UPDATED_ON)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- 4 Rename temporary columns back to';
-wwv_flow_imp.g_varchar2_table(67) := ' original column names'||wwv_flow.LF||
-'alter table EBA_CA_ERRORS rename column ERR_TIME1 to ERR_TIME'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table E';
-wwv_flow_imp.g_varchar2_table(68) := 'BA_CA_COLOR_PREFS rename column CREATED1 to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_COLOR_PREFS rename column U';
-wwv_flow_imp.g_varchar2_table(69) := 'PDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENT_TYPES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter ';
-wwv_flow_imp.g_varchar2_table(70) := 'table EBA_CA_EVENT_TYPES rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_HIST';
-wwv_flow_imp.g_varchar2_table(71) := 'ORY rename column CHANGE_DATE1 to CHANGE_DATE'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_SERIES rename column START_DATE1 ';
-wwv_flow_imp.g_varchar2_table(72) := 'to START_DATE'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_SERIES rename column END_DATE1 to END_DATE'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_S';
-wwv_flow_imp.g_varchar2_table(73) := 'ERIES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_SERIES rename column LAST_UPDATED';
-wwv_flow_imp.g_varchar2_table(74) := '_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TAGS rename column CREATED1 to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EB';
-wwv_flow_imp.g_varchar2_table(75) := 'A_CA_TAGS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_CALENDARS rename column CREATED_ON1';
-wwv_flow_imp.g_varchar2_table(76) := ' to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_CALENDARS rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'al';
-wwv_flow_imp.g_varchar2_table(77) := 'ter table EBA_CA_EVENTS rename column EVENT_DATE_TIME1 to EVENT_DATE_TIME'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENT';
-wwv_flow_imp.g_varchar2_table(78) := 'S rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EVENTS rename column LAST_UPDATED_ON1';
-wwv_flow_imp.g_varchar2_table(79) := ' to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_NOTES rename column CREATED1 to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_C';
-wwv_flow_imp.g_varchar2_table(80) := 'A_NOTES rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_FILES rename column CREATED1 to CREAT';
-wwv_flow_imp.g_varchar2_table(81) := 'ED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_FILES rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUPS re';
-wwv_flow_imp.g_varchar2_table(82) := 'name column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUPS rename column LAST_UPDATED_O';
-wwv_flow_imp.g_varchar2_table(83) := 'N1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUP_MBRS rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(84) := '/'||wwv_flow.LF||
-'alter table EBA_CA_EMAIL_GROUP_MBRS rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter tabl';
-wwv_flow_imp.g_varchar2_table(85) := 'e EBA_CA_TIMEFRAMES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TIMEFRAMES rename c';
-wwv_flow_imp.g_varchar2_table(86) := 'olumn LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'----TABLE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
-'--';
-wwv_flow_imp.g_varchar2_table(87) := 'alter table EBA_CA_ADMINS rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-'--alter table EBA_CA_ADMINS re';
-wwv_flow_imp.g_varchar2_table(88) := 'name column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-'alter table EBA_CA_NOTIFICATIONS rename column D';
-wwv_flow_imp.g_varchar2_table(89) := 'ISPLAY_FROM1 to DISPLAY_FROM'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_NOTIFICATIONS rename column DISPLAY_UNTIL1 to DISP';
-wwv_flow_imp.g_varchar2_table(90) := 'LAY_UNTIL'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_NOTIFICATIONS rename column CREATED1 to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_';
-wwv_flow_imp.g_varchar2_table(91) := 'NOTIFICATIONS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TZ_PREF rename column CREATED1 ';
-wwv_flow_imp.g_varchar2_table(92) := 'to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_TZ_PREF rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_USERS';
-wwv_flow_imp.g_varchar2_table(93) := ' rename column CREATED1 to CREATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_USERS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'al';
-wwv_flow_imp.g_varchar2_table(94) := 'ter table EBA_CA_PREFERENCES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_CA_PREFERENCE';
-wwv_flow_imp.g_varchar2_table(95) := 'S rename column UPDATED_ON1 to UPDATED_ON'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- 6 Re-create, enable Triggers and set columns with cu';
-wwv_flow_imp.g_varchar2_table(96) := 'rrent_timestamp instead of localtimestamp'||wwv_flow.LF||
-'create or replace TRIGGER BI_EBA_CA_ERRORS'||wwv_flow.LF||
-'    before inse';
-wwv_flow_imp.g_varchar2_table(97) := 'rt or update on EBA_CA_ERRORS'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if :new.id is null then'||wwv_flow.LF||
-'        select to_n';
-wwv_flow_imp.g_varchar2_table(98) := 'umber(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alt';
-wwv_flow_imp.g_varchar2_table(99) := 'er trigger "BI_EBA_CA_ERRORS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER BIU_EBA_CA_COLOR_PREFS'||wwv_flow.LF||
-'before ins';
-wwv_flow_imp.g_varchar2_table(100) := 'ert or update on EBA_CA_COLOR_PREFS'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if inserting and :new.id is null then';
-wwv_flow_imp.g_varchar2_table(101) := ''||wwv_flow.LF||
-'        select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
-'        into :new.id'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(102) := '  from dual;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if inserting then'||wwv_flow.LF||
-'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(103) := '       :new.created := current_timestamp;'||wwv_flow.LF||
-'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(104) := '  :new.updated := current_timestamp;'||wwv_flow.LF||
-'        :new.row_version_number := 1;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if updati';
-wwv_flow_imp.g_varchar2_table(105) := 'ng then'||wwv_flow.LF||
-'        :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'        :new.updated_';
-wwv_flow_imp.g_varchar2_table(106) := 'by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.updated    := current_timestamp;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if :new';
-wwv_flow_imp.g_varchar2_table(107) := '.display_sequence is null then'||wwv_flow.LF||
-'       :new.display_sequence := 10;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger';
-wwv_flow_imp.g_varchar2_table(108) := ' "BIU_EBA_CA_COLOR_PREFS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_EVENT_TYPES_BIU'||wwv_flow.LF||
-'  before inser';
-wwv_flow_imp.g_varchar2_table(109) := 't or update on EBA_CA_EVENT_TYPES               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(110) := 'if :new.type_id is null '||wwv_flow.LF||
-'        then :new.type_id := eba_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :new.cre';
-wwv_flow_imp.g_varchar2_table(111) := 'ated_on := current_timestamp;'||wwv_flow.LF||
-'     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if upda';
-wwv_flow_imp.g_varchar2_table(112) := 'ting then'||wwv_flow.LF||
-'      :new.last_updated_on := current_timestamp;'||wwv_flow.LF||
-'      :new.last_updated_by := nvl(v(''APP_';
-wwv_flow_imp.g_varchar2_table(113) := 'USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'   if :new.is_active_yn is null then'||wwv_flow.LF||
-'       if :new.type_name is null then';
-wwv_flow_imp.g_varchar2_table(114) := ''||wwv_flow.LF||
-'          :new.is_active_yn := ''N'';'||wwv_flow.LF||
-'       else'||wwv_flow.LF||
-'          :new.is_active_yn := ''Y'';'||wwv_flow.LF||
-'       end if;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(115) := '   end if;'||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_EVENT_TYPES_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER BIU_';
-wwv_flow_imp.g_varchar2_table(116) := 'EBA_CA_HISTORY '||wwv_flow.LF||
-'   before insert or update on EBA_CA_HISTORY'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   if :new.ID is ';
-wwv_flow_imp.g_varchar2_table(117) := 'null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dua';
-wwv_flow_imp.g_varchar2_table(118) := 'l;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.change_date := current_timestamp;'||wwv_flow.LF||
-'       :new.changed';
-wwv_flow_imp.g_varchar2_table(119) := '_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number := 1;'||wwv_flow.LF||
-'   elsif updating then'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(120) := ' :new.row_version_number := :new.row_version_number + 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "BIU_EBA_C';
-wwv_flow_imp.g_varchar2_table(121) := 'A_HISTORY" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_SERIES_BIU'||wwv_flow.LF||
-'  before insert or update on EBA_C';
-wwv_flow_imp.g_varchar2_table(122) := 'A_SERIES               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :new.series_id is null';
-wwv_flow_imp.g_varchar2_table(123) := ' '||wwv_flow.LF||
-'        then :new.series_id := eba_ca_api.gen_id;'||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :new.created_on := current_tim';
-wwv_flow_imp.g_varchar2_table(124) := 'estamp;'||wwv_flow.LF||
-'     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :new.l';
-wwv_flow_imp.g_varchar2_table(125) := 'ast_updated_on := current_timestamp;'||wwv_flow.LF||
-'      :new.last_updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end i';
-wwv_flow_imp.g_varchar2_table(126) := 'f; '||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_SERIES_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER BIU_EBA_CA_TAGS'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(127) := '  before insert or update on EBA_CA_TAGS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'   begin'||wwv_flow.LF||
-'      if inserting then'||wwv_flow.LF||
-'         i';
-wwv_flow_imp.g_varchar2_table(128) := 'f :new.id is null then'||wwv_flow.LF||
-'           select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(129) := '         into :new.id'||wwv_flow.LF||
-'           from dual;'||wwv_flow.LF||
-'         end if;'||wwv_flow.LF||
-'         :new.created := current_timest';
-wwv_flow_imp.g_varchar2_table(130) := 'amp;'||wwv_flow.LF||
-'         :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'      end if;'||wwv_flow.LF||
-'      if updating then'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(131) := '    :new.updated := current_timestamp;'||wwv_flow.LF||
-'         :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'      en';
-wwv_flow_imp.g_varchar2_table(132) := 'd if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_TAGS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_CALENDARS_';
-wwv_flow_imp.g_varchar2_table(133) := 'BIU'||wwv_flow.LF||
-'  before insert or update on EBA_CA_CALENDARS               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inse';
-wwv_flow_imp.g_varchar2_table(134) := 'rting then'||wwv_flow.LF||
-'     if :new.calendar_id is null '||wwv_flow.LF||
-'        then :new.calendar_id := eba_ca_api.gen_id; '||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(135) := '   end if;'||wwv_flow.LF||
-'     :new.created_on := current_timestamp;'||wwv_flow.LF||
-'     :new.created_by := nvl(v(''APP_USER''),USER';
-wwv_flow_imp.g_varchar2_table(136) := ');'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :new.last_updated_on := current_timestamp;'||wwv_flow.LF||
-'      :new.last_u';
-wwv_flow_imp.g_varchar2_table(137) := 'pdated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_CALENDARS_BIU" ENAB';
-wwv_flow_imp.g_varchar2_table(138) := 'LE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER AD_EBA_CA_EVENTS'||wwv_flow.LF||
-'   after delete on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'b';
-wwv_flow_imp.g_varchar2_table(139) := 'egin'||wwv_flow.LF||
-'   insert into eba_ca_history ('||wwv_flow.LF||
-'       table_name, component_rowkey, COMPONENT_ID, column_name,';
-wwv_flow_imp.g_varchar2_table(140) := ' old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :old.row_key, :old.event_id, ''DELETE'',null,''Removed ';
-wwv_flow_imp.g_varchar2_table(141) := 'event ''||:old.EVENT_NAME);'||wwv_flow.LF||
-'end AD_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "AD_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'crea';
-wwv_flow_imp.g_varchar2_table(142) := 'te or replace TRIGGER EBA_CA_EVENTS_BIU'||wwv_flow.LF||
-'  before insert or update on EBA_CA_EVENTS               '||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(143) := 'for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW.event_id is null '||wwv_flow.LF||
-'        then :NEW.event_i';
-wwv_flow_imp.g_varchar2_table(144) := 'd := EBA_ca_api.gen_id;'||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'     :NEW.CREATED_BY';
-wwv_flow_imp.g_varchar2_table(145) := ' := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'     :new.row_version_number := 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(146) := ' :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(147) := '     :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'   if :new.row_key i';
-wwv_flow_imp.g_varchar2_table(148) := 's null then'||wwv_flow.LF||
-'       select eba_ca_fw.compress_int(eba_ca_seq.nextval) into :new.row_key from dual;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(149) := ' end if;'||wwv_flow.LF||
-'   eba_ca_fw.tag_sync('||wwv_flow.LF||
-'         p_new_tags      => :new.tags,'||wwv_flow.LF||
-'         p_old_tags      => :';
-wwv_flow_imp.g_varchar2_table(150) := 'old.tags,'||wwv_flow.LF||
-'         p_content_type  => ''EVENT'','||wwv_flow.LF||
-'         p_content_id    => :new.event_id );'||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(151) := ''||wwv_flow.LF||
-'alter trigger "EBA_CA_EVENTS_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER BD_EBA_CA_EVENTS'||wwv_flow.LF||
-'    before ';
-wwv_flow_imp.g_varchar2_table(152) := 'delete on EBA_CA_EVENTS'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    eba_ca_fw.tag_sync('||wwv_flow.LF||
-'        p_new_tags      => nu';
-wwv_flow_imp.g_varchar2_table(153) := 'll,'||wwv_flow.LF||
-'        p_old_tags      => :old.tags,'||wwv_flow.LF||
-'        p_content_type  => ''EVENT'','||wwv_flow.LF||
-'        p_content_id  ';
-wwv_flow_imp.g_varchar2_table(154) := '  => :old.event_id );'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "BD_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER ';
-wwv_flow_imp.g_varchar2_table(155) := 'AU_EBA_CA_EVENTS'||wwv_flow.LF||
-'   after update on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'declare'||wwv_flow.LF||
-'   ov varchar2(4000) := nu';
-wwv_flow_imp.g_varchar2_table(156) := 'll;'||wwv_flow.LF||
-'   nv varchar2(4000) := null;'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   -- FK'||wwv_flow.LF||
-'   if updating and :old.TYPE_ID != :new.TYPE_ID the';
-wwv_flow_imp.g_varchar2_table(157) := 'n'||wwv_flow.LF||
-'      ov := null; nv := null;'||wwv_flow.LF||
-'      for c1 in (select type_name from eba_ca_event_types t where t.';
-wwv_flow_imp.g_varchar2_table(158) := 'type_id = :old.TYPE_ID) loop'||wwv_flow.LF||
-'          ov := c1.type_name;'||wwv_flow.LF||
-'      end loop;'||wwv_flow.LF||
-'      for c1 in (select t';
-wwv_flow_imp.g_varchar2_table(159) := 'ype_name from eba_ca_event_types t where t.type_id = :new.TYPE_ID) loop'||wwv_flow.LF||
-'          nv := c1.type_name';
-wwv_flow_imp.g_varchar2_table(160) := ';'||wwv_flow.LF||
-'      end loop;   '||wwv_flow.LF||
-'      insert into eba_ca_history (table_name, component_rowkey, component_id, c';
-wwv_flow_imp.g_varchar2_table(161) := 'olumn_name, old_value, new_value) values'||wwv_flow.LF||
-'          (''EVENTS'',:new.row_key, :new.event_id, ''TYPE_ID'',';
-wwv_flow_imp.g_varchar2_table(162) := 'ov,nv);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   if nvl(:old.SERIES_ID,''0'') != nvl(:new.SERIES_ID,''0'') then'||wwv_flow.LF||
-'       insert';
-wwv_flow_imp.g_varchar2_table(163) := ' into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value)';
-wwv_flow_imp.g_varchar2_table(164) := ' values'||wwv_flow.LF||
-'       (''EVENTS'',:new.row_key, :new.event_id, ''SERIES_ID'',:old.SERIES_ID,:new.SERIES_ID);'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(165) := ' end if;'||wwv_flow.LF||
-'   if nvl(:old.EVENT_NAME,''0'') != nvl(:new.EVENT_NAME,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_h';
-wwv_flow_imp.g_varchar2_table(166) := 'istory (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(167) := ' (''EVENTS'',:new.row_key, :new.event_id, ''EVENT_NAME'',:old.EVENT_NAME,:new.EVENT_NAME);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(168) := ' if nvl(:old.DURATION,''0'') != nvl(:new.DURATION,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_n';
-wwv_flow_imp.g_varchar2_table(169) := 'ame, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :ne';
-wwv_flow_imp.g_varchar2_table(170) := 'w.row_key, :new.event_id, ''DURATION'',:old.DURATION,:new.DURATION);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.EVENT_D';
-wwv_flow_imp.g_varchar2_table(171) := 'ESC,''0'') != nvl(:new.EVENT_DESC,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_r';
-wwv_flow_imp.g_varchar2_table(172) := 'owkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.';
-wwv_flow_imp.g_varchar2_table(173) := 'event_id, ''EVENT_DESC'',:old.EVENT_DESC,:new.EVENT_DESC);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.CONTACT_PERSON,''0';
-wwv_flow_imp.g_varchar2_table(174) := ''') != nvl(:new.CONTACT_PERSON,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_row';
-wwv_flow_imp.g_varchar2_table(175) := 'key, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.ev';
-wwv_flow_imp.g_varchar2_table(176) := 'ent_id, ''CONTACT_PERSON'',:old.CONTACT_PERSON,:new.CONTACT_PERSON);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.CONTACT';
-wwv_flow_imp.g_varchar2_table(177) := '_EMAIL,''0'') != nvl(:new.CONTACT_EMAIL,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, compo';
-wwv_flow_imp.g_varchar2_table(178) := 'nent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key,';
-wwv_flow_imp.g_varchar2_table(179) := ' :new.event_id, ''CONTACT_EMAIL'',:old.CONTACT_EMAIL,:new.CONTACT_EMAIL);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.DI';
-wwv_flow_imp.g_varchar2_table(180) := 'SPLAY_TIME,''0'') != nvl(:new.DISPLAY_TIME,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, co';
-wwv_flow_imp.g_varchar2_table(181) := 'mponent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_k';
-wwv_flow_imp.g_varchar2_table(182) := 'ey, :new.event_id, ''DISPLAY_TIME'',:old.DISPLAY_TIME,:new.DISPLAY_TIME);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LO';
-wwv_flow_imp.g_varchar2_table(183) := 'CATION,''0'') != nvl(:new.LOCATION,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_';
-wwv_flow_imp.g_varchar2_table(184) := 'rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new';
-wwv_flow_imp.g_varchar2_table(185) := '.event_id, ''LOCATION'',:old.LOCATION,:new.LOCATION);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_1,''0'') != nv';
-wwv_flow_imp.g_varchar2_table(186) := 'l(:new.LINK_NAME_1,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPON';
-wwv_flow_imp.g_varchar2_table(187) := 'ENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LI';
-wwv_flow_imp.g_varchar2_table(188) := 'NK_NAME_1'',:old.LINK_NAME_1,:new.LINK_NAME_1);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_1,''0'') != nvl(:new';
-wwv_flow_imp.g_varchar2_table(189) := '.LINK_URL_1,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID,';
-wwv_flow_imp.g_varchar2_table(190) := ' column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_';
-wwv_flow_imp.g_varchar2_table(191) := '1'',:old.LINK_URL_1,:new.LINK_URL_1);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_2,''0'') != nvl(:new.LINK_NAM';
-wwv_flow_imp.g_varchar2_table(192) := 'E_2,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_';
-wwv_flow_imp.g_varchar2_table(193) := 'name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_2'',:old';
-wwv_flow_imp.g_varchar2_table(194) := '.LINK_NAME_2,:new.LINK_NAME_2);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_2,''0'') != nvl(:new.LINK_URL_2,''0''';
-wwv_flow_imp.g_varchar2_table(195) := ') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, o';
-wwv_flow_imp.g_varchar2_table(196) := 'ld_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_2'',:old.LINK_UR';
-wwv_flow_imp.g_varchar2_table(197) := 'L_2,:new.LINK_URL_2);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_3,''0'') != nvl(:new.LINK_NAME_3,''0'') then'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(198) := '      insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value';
-wwv_flow_imp.g_varchar2_table(199) := ', new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_3'',:old.LINK_NAME_3,:n';
-wwv_flow_imp.g_varchar2_table(200) := 'ew.LINK_NAME_3);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_3,''0'') != nvl(:new.LINK_URL_3,''0'') then'||wwv_flow.LF||
-'       i';
-wwv_flow_imp.g_varchar2_table(201) := 'nsert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_v';
-wwv_flow_imp.g_varchar2_table(202) := 'alue) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_3'',:old.LINK_URL_3,:new.LINK_U';
-wwv_flow_imp.g_varchar2_table(203) := 'RL_3);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_4,''0'') != nvl(:new.LINK_NAME_4,''0'') then'||wwv_flow.LF||
-'       insert in';
-wwv_flow_imp.g_varchar2_table(204) := 'to eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) va';
-wwv_flow_imp.g_varchar2_table(205) := 'lues'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_4'',:old.LINK_NAME_4,:new.LINK_NAME_4)';
-wwv_flow_imp.g_varchar2_table(206) := ';'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_4,''0'') != nvl(:new.LINK_URL_4,''0'') then'||wwv_flow.LF||
-'       insert into eba_';
-wwv_flow_imp.g_varchar2_table(207) := 'ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(208) := '     (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_4'',:old.LINK_URL_4,:new.LINK_URL_4);'||wwv_flow.LF||
-'   end i';
-wwv_flow_imp.g_varchar2_table(209) := 'f;'||wwv_flow.LF||
-'   if nvl(:old.TAGS,''0'') != nvl(:new.TAGS,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name';
-wwv_flow_imp.g_varchar2_table(210) := ', component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.r';
-wwv_flow_imp.g_varchar2_table(211) := 'ow_key, :new.event_id, ''TAGS'',:old.TAGS,:new.TAGS);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   -- timestamp columns'||wwv_flow.LF||
-'   if (:old.E';
-wwv_flow_imp.g_varchar2_table(212) := 'VENT_DATE_TIME is null and :new.EVENT_DATE_TIME is not null) or '||wwv_flow.LF||
-'      (:old.EVENT_DATE_TIME is not ';
-wwv_flow_imp.g_varchar2_table(213) := 'null and :new.EVENT_DATE_TIME is null) or '||wwv_flow.LF||
-'      (:old.EVENT_DATE_TIME != :new.EVENT_DATE_TIME) then';
-wwv_flow_imp.g_varchar2_table(214) := ''||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_val';
-wwv_flow_imp.g_varchar2_table(215) := 'ue, new_value) values'||wwv_flow.LF||
-'          (''EVENTS'', :new.row_key, :new.event_id, ''EVENT_DATE_TIME'',:old.EVENT';
-wwv_flow_imp.g_varchar2_table(216) := '_DATE_TIME,:new.EVENT_DATE_TIME);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end AU_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "AU_EBA_CA_EVENT';
-wwv_flow_imp.g_varchar2_table(217) := 'S" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER AI_EBA_CA_EVENTS'||wwv_flow.LF||
-'   after insert on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for eac';
-wwv_flow_imp.g_varchar2_table(218) := 'h row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   insert into eba_ca_history ('||wwv_flow.LF||
-'       table_name, component_rowkey, component_id, colum';
-wwv_flow_imp.g_varchar2_table(219) := 'n_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'',:new.row_key, :new.event_id, ''Event Name '',nul';
-wwv_flow_imp.g_varchar2_table(220) := 'l,:new.EVENT_NAME);'||wwv_flow.LF||
-'end AI_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "AI_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or r';
-wwv_flow_imp.g_varchar2_table(221) := 'eplace TRIGGER BIU_EBA_CA_NOTES '||wwv_flow.LF||
-'   before insert or update on EBA_CA_NOTES'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(222) := ' if :new.ID is null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :';
-wwv_flow_imp.g_varchar2_table(223) := 'new.id from dual;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.created := current_timestamp;'||wwv_flow.LF||
-'       :';
-wwv_flow_imp.g_varchar2_table(224) := 'new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.u';
-wwv_flow_imp.g_varchar2_table(225) := 'pdated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number := 1;'||wwv_flow.LF||
-'   elsif updating then'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(226) := '       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting or ';
-wwv_flow_imp.g_varchar2_table(227) := 'updating then'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.updated_by := nvl(wwv_flow.g_use';
-wwv_flow_imp.g_varchar2_table(228) := 'r,user);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_NOTES" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER BI';
-wwv_flow_imp.g_varchar2_table(229) := 'U_EBA_CA_FILES '||wwv_flow.LF||
-'   before insert or update on EBA_CA_FILES'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'  if :new.ID is nul';
-wwv_flow_imp.g_varchar2_table(230) := 'l then'||wwv_flow.LF||
-'    select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(231) := ' end if;'||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'    :new.created := current_timestamp;'||wwv_flow.LF||
-'    :new.created_by := nvl(wwv_f';
-wwv_flow_imp.g_varchar2_table(232) := 'low.g_user,user);'||wwv_flow.LF||
-'    :new.updated := current_timestamp;'||wwv_flow.LF||
-'    :new.updated_by := nvl(wwv_flow.g_user,';
-wwv_flow_imp.g_varchar2_table(233) := 'user);'||wwv_flow.LF||
-'    :new.row_version_number := 1;'||wwv_flow.LF||
-'  elsif updating then'||wwv_flow.LF||
-'    :new.row_version_number := nvl(:o';
-wwv_flow_imp.g_varchar2_table(234) := 'ld.row_version_number,1) + 1;'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'  if (inserting or updating) and nvl(dbms_lob.getlength(:new';
-wwv_flow_imp.g_varchar2_table(235) := '.file_blob),0) > 15728640 then'||wwv_flow.LF||
-'    raise_application_error(-20000, ''The size of the uploaded file wa';
-wwv_flow_imp.g_varchar2_table(236) := 's over 15MB. Please upload a smaller file.'');'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'  if inserting or updating then'||wwv_flow.LF||
-'    :new.upd';
-wwv_flow_imp.g_varchar2_table(237) := 'ated := current_timestamp;'||wwv_flow.LF||
-'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter';
-wwv_flow_imp.g_varchar2_table(238) := ' trigger "BIU_EBA_CA_FILES" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_EMAIL_GROUPS_BIU'||wwv_flow.LF||
-'  before in';
-wwv_flow_imp.g_varchar2_table(239) := 'sert or update on EBA_CA_EMAIL_GROUPS               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(240) := '    if :NEW.group_id is null '||wwv_flow.LF||
-'        then :NEW.group_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :N';
-wwv_flow_imp.g_varchar2_table(241) := 'EW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   i';
-wwv_flow_imp.g_varchar2_table(242) := 'f updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v';
-wwv_flow_imp.g_varchar2_table(243) := '(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_EMAIL_GROUPS_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create o';
-wwv_flow_imp.g_varchar2_table(244) := 'r replace TRIGGER EBA_CA_EMAIL_GROUP_MBRS_BIU'||wwv_flow.LF||
-'  before insert or update on EBA_CA_EMAIL_GROUP_MBRS  ';
-wwv_flow_imp.g_varchar2_table(245) := '            '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW.mbr_id is null '||wwv_flow.LF||
-'        then';
-wwv_flow_imp.g_varchar2_table(246) := ' :NEW.mbr_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'     :NE';
-wwv_flow_imp.g_varchar2_table(247) := 'W.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON :';
-wwv_flow_imp.g_varchar2_table(248) := '= current_timestamp;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alt';
-wwv_flow_imp.g_varchar2_table(249) := 'er trigger "EBA_CA_EMAIL_GROUP_MBRS_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_TIMEFRAMES_BIU'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(250) := '  before insert or update on EBA_CA_TIMEFRAMES               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserti';
-wwv_flow_imp.g_varchar2_table(251) := 'ng then'||wwv_flow.LF||
-'     if :NEW.tf_id is null '||wwv_flow.LF||
-'        then :NEW.tf_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(252) := ' :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(253) := '  if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nv';
-wwv_flow_imp.g_varchar2_table(254) := 'l(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_TIMEFRAMES_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'--TABLE';
-wwv_flow_imp.g_varchar2_table(255) := ' and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
-'--create or replace TRIGGER EBA_CA_ADMINS_BIU'||wwv_flow.LF||
-'--  befor';
-wwv_flow_imp.g_varchar2_table(256) := 'e insert or update on EBA_CA_ADMINS               '||wwv_flow.LF||
-'--  for each row  '||wwv_flow.LF||
-'--begin   '||wwv_flow.LF||
-'--  if inserting th';
-wwv_flow_imp.g_varchar2_table(257) := 'en'||wwv_flow.LF||
-'--     if :NEW.admin_id is null '||wwv_flow.LF||
-'--        then :NEW.admin_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'--     end i';
-wwv_flow_imp.g_varchar2_table(258) := 'f;'||wwv_flow.LF||
-'--     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'--     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'-';
-wwv_flow_imp.g_varchar2_table(259) := '-   end if;'||wwv_flow.LF||
-'--   if updating then'||wwv_flow.LF||
-'--      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
-'--      :NEW.LA';
-wwv_flow_imp.g_varchar2_table(260) := 'ST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'--   end if; '||wwv_flow.LF||
-'--end;'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'--alter trigger "EBA_CA_ADMINS_B';
-wwv_flow_imp.g_varchar2_table(261) := 'IU" ENABLE;'||wwv_flow.LF||
-'--/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_NOTE_BIU'||wwv_flow.LF||
-'before insert or update on EBA_CA_NOTIFIC';
-wwv_flow_imp.g_varchar2_table(262) := 'ATIONS'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if inserting and :new.id is null then'||wwv_flow.LF||
-'        select to_number(sys';
-wwv_flow_imp.g_varchar2_table(263) := '_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
-'        into :new.id'||wwv_flow.LF||
-'        from dual;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(264) := 'if inserting then'||wwv_flow.LF||
-'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.created := curren';
-wwv_flow_imp.g_varchar2_table(265) := 't_timestamp;'||wwv_flow.LF||
-'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.updated := current_tim';
-wwv_flow_imp.g_varchar2_table(266) := 'estamp;'||wwv_flow.LF||
-'        :new.row_version_number := 1;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if updating then'||wwv_flow.LF||
-'        :new.row_vers';
-wwv_flow_imp.g_varchar2_table(267) := 'ion_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'        :new.updated_by := nvl(v(''APP_USER''),USER)';
-wwv_flow_imp.g_varchar2_table(268) := ';'||wwv_flow.LF||
-'        :new.updated    := current_timestamp;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if :new.notification_type is null th';
-wwv_flow_imp.g_varchar2_table(269) := 'en'||wwv_flow.LF||
-'       :new.notification_type := ''MANUAL'';'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if :new.display_sequence is null then'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(270) := '       :new.display_sequence := 10;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_NOTE_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'c';
-wwv_flow_imp.g_varchar2_table(271) := 'reate or replace TRIGGER BIU_EBA_CA_TZ_PREF'||wwv_flow.LF||
-'   before insert or update on EBA_CA_TZ_PREF'||wwv_flow.LF||
-'   for each';
-wwv_flow_imp.g_varchar2_table(272) := ' row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   if :new.ID is null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-wwv_flow_imp.g_varchar2_table(273) := 'XXXX'') into :new.id from dual;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.created := current_timest';
-wwv_flow_imp.g_varchar2_table(274) := 'amp;'||wwv_flow.LF||
-'       :new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(275) := '       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number := 1;'||wwv_flow.LF||
-'   elsif u';
-wwv_flow_imp.g_varchar2_table(276) := 'pdating then'||wwv_flow.LF||
-'       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if ';
-wwv_flow_imp.g_varchar2_table(277) := 'inserting or updating then'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.updated_by := nvl(w';
-wwv_flow_imp.g_varchar2_table(278) := 'wv_flow.g_user,user);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if :new.TIMEZONE_PREFERENCE is null then'||wwv_flow.LF||
-'       :new.timezone_pr';
-wwv_flow_imp.g_varchar2_table(279) := 'eference := ''UTC'';'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "BIU_EBA_CA_TZ_PREF" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replac';
-wwv_flow_imp.g_varchar2_table(280) := 'e TRIGGER EBA_CA_USERS_BD'||wwv_flow.LF||
-'    before delete on EBA_CA_USERS'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'declare'||wwv_flow.LF||
-'    pragma auto';
-wwv_flow_imp.g_varchar2_table(281) := 'nomous_transaction;'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    -- Disallow deletes to a user''s own record unless last one.'||wwv_flow.LF||
-'    if v(''';
-wwv_flow_imp.g_varchar2_table(282) := 'APP_USER'') = upper(:old.username) then'||wwv_flow.LF||
-'       for c1 in ('||wwv_flow.LF||
-'          select count(*) cnt'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(283) := 'from eba_ca_users'||wwv_flow.LF||
-'           where id != :old.id )'||wwv_flow.LF||
-'       loop'||wwv_flow.LF||
-'          if c1.cnt > 0 then'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(284) := '     raise_application_error(-20002, ''Delete disallowed, you cannot delete your own access control d';
-wwv_flow_imp.g_varchar2_table(285) := 'etails.'');'||wwv_flow.LF||
-'          end if;'||wwv_flow.LF||
-'       end loop;'||wwv_flow.LF||
-'    end if;    '||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_USERS_BD';
-wwv_flow_imp.g_varchar2_table(286) := '" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace TRIGGER EBA_CA_USERS_BIU'||wwv_flow.LF||
-'    before insert or update on EBA_CA_USERS'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(287) := '    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if inserting then'||wwv_flow.LF||
-'        if :new.id is null then'||wwv_flow.LF||
-'            :new.id := ';
-wwv_flow_imp.g_varchar2_table(288) := 'eba_ca.gen_id();'||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'        :new.created_by         := nvl(v(''APP_USER''), USER);'||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(289) := '  :new.created            := current_timestamp;'||wwv_flow.LF||
-'        :new.row_version        := 1;'||wwv_flow.LF||
-'        if :ne';
-wwv_flow_imp.g_varchar2_table(290) := 'w.account_locked is null then'||wwv_flow.LF||
-'            :new.account_locked := ''N'';    '||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'    end if';
-wwv_flow_imp.g_varchar2_table(291) := ';'||wwv_flow.LF||
-'    if updating then'||wwv_flow.LF||
-'            :new.updated_by         := nvl(v(''APP_USER''), USER);'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(292) := ':new.updated            := current_timestamp;'||wwv_flow.LF||
-'            :new.row_version        := nvl(:old.row_ve';
-wwv_flow_imp.g_varchar2_table(293) := 'rsion,1) + 1;                                '||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    -- Always store username as upper case';
-wwv_flow_imp.g_varchar2_table(294) := ''||wwv_flow.LF||
-'    :new.username := upper(:new.username);'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_USERS_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'crea';
-wwv_flow_imp.g_varchar2_table(295) := 'te or replace TRIGGER EBA_CA_PREFERENCES_BIU'||wwv_flow.LF||
-'before insert or update on EBA_CA_PREFERENCES'||wwv_flow.LF||
-'    for e';
-wwv_flow_imp.g_varchar2_table(296) := 'ach row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if inserting and :new.id is null then'||wwv_flow.LF||
-'        :new.id := eba_ca.gen_id();'||wwv_flow.LF||
-'    end ';
-wwv_flow_imp.g_varchar2_table(297) := 'if;'||wwv_flow.LF||
-'    if inserting then'||wwv_flow.LF||
-'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.created_o';
-wwv_flow_imp.g_varchar2_table(298) := 'n := current_timestamp;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if updating then'||wwv_flow.LF||
-'        :new.updated_by := nvl(v(''APP_USER''';
-wwv_flow_imp.g_varchar2_table(299) := '),USER);'||wwv_flow.LF||
-'        :new.updated_on := current_timestamp;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    :new.preference_name := upper';
-wwv_flow_imp.g_varchar2_table(300) := '(:new.preference_name);'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger "EBA_CA_PREFERENCES_BIU" ENABLE;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(409358566007575955)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'TIMESTAMP Fix (BUGID: 31352674)'
-,p_sequence=>120
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'EXISTS'
-,p_condition=>'select null from all_tab_cols where table_name like ''EBA_CA_%'' and data_type = ''TIMESTAMP(6) WITH LOCAL TIME ZONE'''
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_update_event_types
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'alter table eba_ca_event_types'||wwv_flow.LF||
-'  add (INTERNAL_YN VARCHAR2(1));'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1631728847678874687)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Update event types'
-,p_sequence=>70
-,p_script_type=>'UPGRADE'
-,p_condition_type=>'NOT_EXISTS'
-,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select column_name',
-'from user_tab_columns',
-'where table_name = ''EBA_CA_EVENT_TYPES''',
-'    and column_name = ''INTERNAL_YN'''))
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_username_format_preference
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'begin'||wwv_flow.LF||
-'    insert into eba_ca_preferences (id, preference_name, preference_value) values (3, ''USERNAM';
-wwv_flow_imp.g_varchar2_table(2) := 'E_FORMAT'', ''EMAIL'');'||wwv_flow.LF||
-'exception'||wwv_flow.LF||
-'    when others then'||wwv_flow.LF||
-'        null;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1437838149912697084)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'Username Format Preference'
-,p_sequence=>20
-,p_script_type=>'UPGRADE'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
@@ -29288,220 +27033,6 @@ wwv_flow_imp_shared.create_install_script(
 ,p_name=>'eba_ca body'
 ,p_sequence=>380
 ,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/upgrade_eba_ca_package
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create or replace package eba_ca is '||wwv_flow.LF||
-'    -----------------------------------------------------------';
-wwv_flow_imp.g_varchar2_table(2) := '--------------'||wwv_flow.LF||
-'    -- Generates a unique Identifier'||wwv_flow.LF||
-'    --------------------------------------------';
-wwv_flow_imp.g_varchar2_table(3) := '-----------------------------'||wwv_flow.LF||
-'    function gen_id return number;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    ------------------------------';
-wwv_flow_imp.g_varchar2_table(4) := '-------------------------------------------'||wwv_flow.LF||
-'    -- Gets the current user''s authorization level. Can ';
-wwv_flow_imp.g_varchar2_table(5) := 'depend on the following:'||wwv_flow.LF||
-'    --  * If access control is currently disabled, returns highest level of';
-wwv_flow_imp.g_varchar2_table(6) := ' 3.'||wwv_flow.LF||
-'    --  * If access control is enabled, but user is not in list, returns 0'||wwv_flow.LF||
-'    --  * If access c';
-wwv_flow_imp.g_varchar2_table(7) := 'ontrol is enabled and user is in list, returns their'||wwv_flow.LF||
-'    --    access level.'||wwv_flow.LF||
-'    -------------------';
-wwv_flow_imp.g_varchar2_table(8) := '------------------------------------------------------'||wwv_flow.LF||
-'    function get_authorization_level ('||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(9) := '  p_username             varchar2)'||wwv_flow.LF||
-'        return number;'||wwv_flow.LF||
-'    --------------------------------------';
-wwv_flow_imp.g_varchar2_table(10) := '-----------------------------------'||wwv_flow.LF||
-'    -- Returns all of the restricted calendars for the given use';
-wwv_flow_imp.g_varchar2_table(11) := 'r          --'||wwv_flow.LF||
-'    -------------------------------------------------------------------------'||wwv_flow.LF||
-'    func';
-wwv_flow_imp.g_varchar2_table(12) := 'tion decode_restrictions ('||wwv_flow.LF||
-'        p_user_id             number)'||wwv_flow.LF||
-'        return varchar2;'||wwv_flow.LF||
-'end eba_ca';
-wwv_flow_imp.g_varchar2_table(13) := ' ;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace package body eba_ca as '||wwv_flow.LF||
-''||wwv_flow.LF||
-'    -----------------------------------------------';
-wwv_flow_imp.g_varchar2_table(14) := '--------------------------'||wwv_flow.LF||
-'    -- Generates a unique Identifier'||wwv_flow.LF||
-'    --------------------------------';
-wwv_flow_imp.g_varchar2_table(15) := '-----------------------------------------'||wwv_flow.LF||
-'    function gen_id'||wwv_flow.LF||
-'        return number'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l';
-wwv_flow_imp.g_varchar2_table(16) := '_id  number;'||wwv_flow.LF||
-'    begin        '||wwv_flow.LF||
-'        select to_number(sys_guid(), ''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-wwv_flow_imp.g_varchar2_table(17) := 'X'')'||wwv_flow.LF||
-'          into l_id'||wwv_flow.LF||
-'          from dual;'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'        return l_id;'||wwv_flow.LF||
-'    end gen_id;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'    --------';
-wwv_flow_imp.g_varchar2_table(18) := '-----------------------------------------------------------------'||wwv_flow.LF||
-'    -- Gets the current user''s aut';
-wwv_flow_imp.g_varchar2_table(19) := 'horization level. Depends on the following:'||wwv_flow.LF||
-'    --  * If access control is currently disabled, retur';
-wwv_flow_imp.g_varchar2_table(20) := 'ns highest level of 3.'||wwv_flow.LF||
-'    --  * If access control is enabled, but user is not in list, returns 0'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(21) := '  --  * If access control is enabled and user is in list, returns their'||wwv_flow.LF||
-'    --    access level.'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(22) := '-------------------------------------------------------------------------'||wwv_flow.LF||
-'    function get_authoriza';
-wwv_flow_imp.g_varchar2_table(23) := 'tion_level ('||wwv_flow.LF||
-'        p_username             varchar2)'||wwv_flow.LF||
-'        return number'||wwv_flow.LF||
-'    is'||wwv_flow.LF||
-'        l_access_';
-wwv_flow_imp.g_varchar2_table(24) := 'level_id       eba_ca_users.access_level_id%type := 0;  -- default to lowest privilege.'||wwv_flow.LF||
-'        l_ac';
-wwv_flow_imp.g_varchar2_table(25) := 'count_locked        eba_ca_users.account_locked%type;'||wwv_flow.LF||
-'    begin'||wwv_flow.LF||
-'        -- If access control is disa';
-wwv_flow_imp.g_varchar2_table(26) := 'bled, default to highest privilege'||wwv_flow.LF||
-'        if eba_ca_fw.get_preference_value(''ACCESS_CONTROL_ENABLED';
-wwv_flow_imp.g_varchar2_table(27) := ''') = ''N'' then'||wwv_flow.LF||
-'            return 3;'||wwv_flow.LF||
-'        else'||wwv_flow.LF||
-'            -- Query for user''s access level, throw';
-wwv_flow_imp.g_varchar2_table(28) := 's no_data_found if no user'||wwv_flow.LF||
-'            select access_level_id,'||wwv_flow.LF||
-'                   account_locked'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(29) := '           into l_access_level_id,'||wwv_flow.LF||
-'                   l_account_locked'||wwv_flow.LF||
-'              from eba_ca_use';
-wwv_flow_imp.g_varchar2_table(30) := 'rs'||wwv_flow.LF||
-'             where username = p_username;'||wwv_flow.LF||
-'            -- Check if user''s account is locked, retur';
-wwv_flow_imp.g_varchar2_table(31) := 'n 0 (no privilege), otherwise stick'||wwv_flow.LF||
-'            -- with their level.'||wwv_flow.LF||
-'            if l_account_locked';
-wwv_flow_imp.g_varchar2_table(32) := ' = ''Y'' then'||wwv_flow.LF||
-'                return 0;'||wwv_flow.LF||
-'            end if;'||wwv_flow.LF||
-'            -- Overwrite user access level';
-wwv_flow_imp.g_varchar2_table(33) := ' 1 with access level 2 if access control scope is PUBLIC_CONTRIBUTE'||wwv_flow.LF||
-'            if l_access_level_id';
-wwv_flow_imp.g_varchar2_table(34) := ' = 1 and eba_ca_fw.get_preference_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_CONTRIBUTE'' then'||wwv_flow.LF||
-'         ';
-wwv_flow_imp.g_varchar2_table(35) := '       return 2;'||wwv_flow.LF||
-'            end if;            '||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'        return l_access_level_id;'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(36) := '   exception'||wwv_flow.LF||
-'        when no_data_found then'||wwv_flow.LF||
-'            -- If no user exists with passed username, ';
-wwv_flow_imp.g_varchar2_table(37) := 'do a final check if reader access is set to any authenticated user'||wwv_flow.LF||
-'            if eba_ca_fw.get_pref';
-wwv_flow_imp.g_varchar2_table(38) := 'erence_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_CONTRIBUTE'' then'||wwv_flow.LF||
-'                return 2;'||wwv_flow.LF||
-'          ';
-wwv_flow_imp.g_varchar2_table(39) := '  elsif eba_ca_fw.get_preference_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_READONLY'' then'||wwv_flow.LF||
-'            ';
-wwv_flow_imp.g_varchar2_table(40) := '    return 1;'||wwv_flow.LF||
-'            else'||wwv_flow.LF||
-'                return 0;'||wwv_flow.LF||
-'            end if;           '||wwv_flow.LF||
-'    end get_';
-wwv_flow_imp.g_varchar2_table(41) := 'authorization_level;'||wwv_flow.LF||
-'    -------------------------------------------------------------------------'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(42) := '   -- Returns all of the restricted calendars for the given user          --'||wwv_flow.LF||
-'    -------------------';
-wwv_flow_imp.g_varchar2_table(43) := '------------------------------------------------------'||wwv_flow.LF||
-'    function decode_restrictions ('||wwv_flow.LF||
-'        p_';
-wwv_flow_imp.g_varchar2_table(44) := 'user_id             number)'||wwv_flow.LF||
-'        return varchar2 is'||wwv_flow.LF||
-'      l_restricted_to varchar2(4000);'||wwv_flow.LF||
-'      l';
-wwv_flow_imp.g_varchar2_table(45) := '_calendar_id   number;'||wwv_flow.LF||
-'      l_calendar_name varchar2(4000);'||wwv_flow.LF||
-'      l_return        varchar2(4000);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(46) := '   begin'||wwv_flow.LF||
-'null;'||wwv_flow.LF||
-'/*'||wwv_flow.LF||
-'      select restricted_to'||wwv_flow.LF||
-'      into l_restricted_to'||wwv_flow.LF||
-'      from eba_ca_users'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(47) := '  where id = p_user_id;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      if l_restricted_to is null then'||wwv_flow.LF||
-'        return null;'||wwv_flow.LF||
-'      end if;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(48) := '    '||wwv_flow.LF||
-'      while l_restricted_to is not null loop'||wwv_flow.LF||
-'        l_calendar_id := decode(instr(l_restricted';
-wwv_flow_imp.g_varchar2_table(49) := '_to, '':''), 0, l_restricted_to, substr(l_restricted_to, 1, instr(l_restricted_to, '':'') - 1));'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(50) := ' begin'||wwv_flow.LF||
-'          select short_name || '' ('' || decode(public_view_yn, ''Y'', null, ''Private'') || '')'''||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(51) := '        into l_calendar_name'||wwv_flow.LF||
-'          from eba_ca_calendars'||wwv_flow.LF||
-'          where calendar_id = l_calenda';
-wwv_flow_imp.g_varchar2_table(52) := 'r_id;'||wwv_flow.LF||
-'        exception'||wwv_flow.LF||
-'          when no_data_found then'||wwv_flow.LF||
-'            l_calendar_name := l_calendar_';
-wwv_flow_imp.g_varchar2_table(53) := 'id;'||wwv_flow.LF||
-'        end;'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        if l_return is null then'||wwv_flow.LF||
-'          l_return := l_calendar_name;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(54) := '      elsif length(l_return) + length(l_calendar_name) + 2 > 3900 then'||wwv_flow.LF||
-'          l_return := l_retur';
-wwv_flow_imp.g_varchar2_table(55) := 'n || ''; ...'';'||wwv_flow.LF||
-'          exit;'||wwv_flow.LF||
-'        else'||wwv_flow.LF||
-'          l_return := l_return || ''; '' || l_calendar_name';
-wwv_flow_imp.g_varchar2_table(56) := ';'||wwv_flow.LF||
-'        end if;'||wwv_flow.LF||
-'        '||wwv_flow.LF||
-'        l_restricted_to := substr(l_restricted_to, instr(l_restricted_to,';
-wwv_flow_imp.g_varchar2_table(57) := ' '':'') + 1);'||wwv_flow.LF||
-'      end loop;'||wwv_flow.LF||
-'      '||wwv_flow.LF||
-'      return l_return;'||wwv_flow.LF||
-'    exception'||wwv_flow.LF||
-'      when no_data_found the';
-wwv_flow_imp.g_varchar2_table(58) := 'n'||wwv_flow.LF||
-'        return null;'||wwv_flow.LF||
-'*/'||wwv_flow.LF||
-'    end decode_restrictions;'||wwv_flow.LF||
-'end eba_ca;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(1877304485343029439)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'eba_ca package'
-,p_sequence=>110
-,p_script_type=>'UPGRADE'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;
@@ -32028,6 +29559,3802 @@ wwv_flow_imp_shared.create_install_object(
 );
 end;
 /
+prompt --application/deployment/install/install_error_log
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_errors ('||wwv_flow.LF||
+'    id                 number not null'||wwv_flow.LF||
+'                       constrain';
+wwv_flow_imp.g_varchar2_table(2) := 't eba_ca_errors_pk'||wwv_flow.LF||
+'                       primary key,'||wwv_flow.LF||
+'    err_time           timestamp with time zo';
+wwv_flow_imp.g_varchar2_table(3) := 'ne'||wwv_flow.LF||
+'                       default current_timestamp'||wwv_flow.LF||
+'                       not null,'||wwv_flow.LF||
+'    app_id     ';
+wwv_flow_imp.g_varchar2_table(4) := '        number,'||wwv_flow.LF||
+'    app_page_id        number,'||wwv_flow.LF||
+'    app_user           varchar2(512),'||wwv_flow.LF||
+'    user_agent ';
+wwv_flow_imp.g_varchar2_table(5) := '        varchar2(4000),'||wwv_flow.LF||
+'    ip_address         varchar2(512), -- As reported by owa_util.get_cgi_env';
+wwv_flow_imp.g_varchar2_table(6) := ''||wwv_flow.LF||
+'    ip_address2       varchar2(512), -- As reported by sys_context'||wwv_flow.LF||
+'    -- From APEX_ERROR.T_ERROR:'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(7) := '    message           varchar2(4000), /* Displayed error message */'||wwv_flow.LF||
+'    page_item_name    varchar2(2';
+wwv_flow_imp.g_varchar2_table(8) := '55),  /* Associated page item name */'||wwv_flow.LF||
+'    region_id         number,         /* Associated tabular fo';
+wwv_flow_imp.g_varchar2_table(9) := 'rm region id of the primary application */'||wwv_flow.LF||
+'    column_alias      varchar2(255),  /* Associated tabul';
+wwv_flow_imp.g_varchar2_table(10) := 'ar form column alias */'||wwv_flow.LF||
+'    row_num           number,         /* Associated tabular form row */'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(11) := 'apex_error_code   varchar2(255),  /* Contains the system message code if it''''s an error raised by AP';
+wwv_flow_imp.g_varchar2_table(12) := 'EX */'||wwv_flow.LF||
+'    ora_sqlcode       number,         /* SQLCODE on exception stack which triggered the error,';
+wwv_flow_imp.g_varchar2_table(13) := ' NULL if the error was not raised by an ORA error */'||wwv_flow.LF||
+'    ora_sqlerrm       varchar2(4000), /* SQLERR';
+wwv_flow_imp.g_varchar2_table(14) := 'M which triggered the error, NULL if the error was not raised by an ORA error */'||wwv_flow.LF||
+'    error_backtrace';
+wwv_flow_imp.g_varchar2_table(15) := '   varchar2(4000)  /* Output of dbms_utility.format_error_backtrace or dbms_utility.format_call_stac';
+wwv_flow_imp.g_varchar2_table(16) := 'k */'||wwv_flow.LF||
+'    -- END APEX_ERROR.T_ERROR'||wwv_flow.LF||
+');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create index eba_ca_errors_i1 on eba_ca_errors( err_time );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(17) := 'create or replace trigger bi_eba_ca_errors'||wwv_flow.LF||
+'    before insert or update on eba_ca_errors'||wwv_flow.LF||
+'    for each';
+wwv_flow_imp.g_varchar2_table(18) := ' row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if :new.id is null then'||wwv_flow.LF||
+'        select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXX';
+wwv_flow_imp.g_varchar2_table(19) := 'XXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3304017160028307576)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'error log'
+,p_sequence=>5
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_event_groups
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_email_groups ('||wwv_flow.LF||
+'   group_id    number         not null,'||wwv_flow.LF||
+'   group_name  varchar2(2';
+wwv_flow_imp.g_varchar2_table(2) := '55)  not null,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
+'   created_by       var';
+wwv_flow_imp.g_varchar2_table(3) := 'char2(255)  not null,'||wwv_flow.LF||
+'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'   last_updated_by  varchar2(255';
+wwv_flow_imp.g_varchar2_table(4) := ') )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_email_groups'||wwv_flow.LF||
+'   add constraint EBA_ca_email_groups_pk primary key (group_id';
+wwv_flow_imp.g_varchar2_table(5) := ')'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_email_groups'||wwv_flow.LF||
+'   add constraint EBA_ca_email_groups_uk unique (group_name)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'c';
+wwv_flow_imp.g_varchar2_table(6) := 'reate or replace trigger EBA_ca_email_groups_biu'||wwv_flow.LF||
+'  before insert or update on EBA_ca_email_groups   ';
+wwv_flow_imp.g_varchar2_table(7) := '            '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW.group_id is null '||wwv_flow.LF||
+'        th';
+wwv_flow_imp.g_varchar2_table(8) := 'en :NEW.group_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(9) := ' :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED';
+wwv_flow_imp.g_varchar2_table(10) := '_ON := current_timestamp;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/';
+wwv_flow_imp.g_varchar2_table(11) := ''||wwv_flow.LF||
+'alter trigger EBA_ca_email_groups_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254470663595755329)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'event groups'
+,p_sequence=>215
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_event_notes
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE EBA_CA_NOTES '||wwv_flow.LF||
+'   ( '||wwv_flow.LF||
+'    ID                     NUMBER constraint EBA_CA_notes_pk primar';
+wwv_flow_imp.g_varchar2_table(2) := 'y key, '||wwv_flow.LF||
+'    ROW_VERSION_NUMBER     NUMBER not null, '||wwv_flow.LF||
+'    EVENT_ID               NUMBER constraint eb';
+wwv_flow_imp.g_varchar2_table(3) := 'a_ca_notes_fk'||wwv_flow.LF||
+'                           references eba_ca_events (event_id)'||wwv_flow.LF||
+'                       ';
+wwv_flow_imp.g_varchar2_table(4) := '    on delete cascade, '||wwv_flow.LF||
+'    NOTE                   CLOB, '||wwv_flow.LF||
+'    tags                     VARCHAR2(4000';
+wwv_flow_imp.g_varchar2_table(5) := ' BYTE), '||wwv_flow.LF||
+'    CREATED                timestamp with time zone, '||wwv_flow.LF||
+'    CREATED_BY             VARCHAR2(2';
+wwv_flow_imp.g_varchar2_table(6) := '55 BYTE), '||wwv_flow.LF||
+'    UPDATED                timestamp with time zone, '||wwv_flow.LF||
+'    UPDATED_BY             VARCHAR2';
+wwv_flow_imp.g_varchar2_table(7) := '(255 BYTE)'||wwv_flow.LF||
+'   ) ;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create index EBA_CA_NOTES_i1 on EBA_CA_NOTES(event_id);'||wwv_flow.LF||
+''||wwv_flow.LF||
+'CREATE OR REPLACE TRIGGE';
+wwv_flow_imp.g_varchar2_table(8) := 'R BIU_EBA_CA_NOTES '||wwv_flow.LF||
+'   before insert or update on EBA_CA_NOTES'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   if :new.ID i';
+wwv_flow_imp.g_varchar2_table(9) := 's null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from d';
+wwv_flow_imp.g_varchar2_table(10) := 'ual;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.created := current_timestamp;'||wwv_flow.LF||
+'       :new.created_b';
+wwv_flow_imp.g_varchar2_table(11) := 'y := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.updated_by := ';
+wwv_flow_imp.g_varchar2_table(12) := 'nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number := 1;'||wwv_flow.LF||
+'   elsif updating then'||wwv_flow.LF||
+'       :new.r';
+wwv_flow_imp.g_varchar2_table(13) := 'ow_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting or updating then';
+wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'   e';
+wwv_flow_imp.g_varchar2_table(15) := 'nd if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'ALTER TRIGGER BIU_EBA_CA_NOTES ENABLE;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256239174218968160)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'event notes'
+,p_sequence=>211
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_event_types
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_event_types ('||wwv_flow.LF||
+'   type_id          number         not null,'||wwv_flow.LF||
+'   type_name        v';
+wwv_flow_imp.g_varchar2_table(2) := 'archar2(60)   not null,'||wwv_flow.LF||
+'   display_color    varchar2(60),'||wwv_flow.LF||
+'   border_color     varchar2(30),'||wwv_flow.LF||
+'   text_';
+wwv_flow_imp.g_varchar2_table(3) := 'color       varchar2(30),'||wwv_flow.LF||
+'   internal_yn      varchar2(1),'||wwv_flow.LF||
+'   is_active_yn     varchar2(1),'||wwv_flow.LF||
+'   color';
+wwv_flow_imp.g_varchar2_table(4) := '_pref_id    number'||wwv_flow.LF||
+'                    constraint eba_ca_et_cp_ck'||wwv_flow.LF||
+'                    references eba';
+wwv_flow_imp.g_varchar2_table(5) := '_ca_color_prefs (id),'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
+'   created_by   ';
+wwv_flow_imp.g_varchar2_table(6) := '    varchar2(255)  not null,'||wwv_flow.LF||
+'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'   last_updated_by  varch';
+wwv_flow_imp.g_varchar2_table(7) := 'ar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- Add index on foreign key columns'||wwv_flow.LF||
+'create index eba_ca_event_types_cp_idx on eba_ca_e';
+wwv_flow_imp.g_varchar2_table(8) := 'vent_types(color_pref_id);'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter table eba_ca_event_types'||wwv_flow.LF||
+'   add constraint eba_ca_event_types_pk p';
+wwv_flow_imp.g_varchar2_table(9) := 'rimary key (type_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'alter table eba_ca_event_types'||wwv_flow.LF||
+'   add constraint eba_ca_event_types_uk u';
+wwv_flow_imp.g_varchar2_table(10) := 'nique (type_name)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'create or replace trigger eba_ca_event_types_biu'||wwv_flow.LF||
+'  before insert or up';
+wwv_flow_imp.g_varchar2_table(11) := 'date on eba_ca_event_types               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW';
+wwv_flow_imp.g_varchar2_table(12) := '.type_id is null '||wwv_flow.LF||
+'        then :NEW.type_id := eba_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON';
+wwv_flow_imp.g_varchar2_table(13) := ' := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if updating t';
+wwv_flow_imp.g_varchar2_table(14) := 'hen'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER'')';
+wwv_flow_imp.g_varchar2_table(15) := ',USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'   if :new.is_active_yn is null then'||wwv_flow.LF||
+'       if :new.type_name is null then'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(16) := '     :new.is_active_yn := ''N'';'||wwv_flow.LF||
+'       else'||wwv_flow.LF||
+'          :new.is_active_yn := ''Y'';'||wwv_flow.LF||
+'       end if;'||wwv_flow.LF||
+'   end';
+wwv_flow_imp.g_varchar2_table(17) := ' if;'||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+' '||wwv_flow.LF||
+'alter trigger eba_ca_event_types_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'commit;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(7407365910380559032)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'event types'
+,p_sequence=>200
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_events
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_events ('||wwv_flow.LF||
+'   event_id            number         not null,'||wwv_flow.LF||
+'   row_version_number  ';
+wwv_flow_imp.g_varchar2_table(2) := 'integer,'||wwv_flow.LF||
+'   row_key             varchar2(30),'||wwv_flow.LF||
+'   event_name          varchar2(255)  not null,'||wwv_flow.LF||
+'   typ';
+wwv_flow_imp.g_varchar2_table(3) := 'e_id             number,'||wwv_flow.LF||
+'   calendar_id         number,'||wwv_flow.LF||
+'   event_date_time     timestamp with time z';
+wwv_flow_imp.g_varchar2_table(4) := 'one  not null,'||wwv_flow.LF||
+'   duration            number         not null,'||wwv_flow.LF||
+'   event_desc          varchar2(4000)';
+wwv_flow_imp.g_varchar2_table(5) := ','||wwv_flow.LF||
+'   contact_person      varchar2(255),'||wwv_flow.LF||
+'   contact_email       varchar2(255),'||wwv_flow.LF||
+'   display_time       ';
+wwv_flow_imp.g_varchar2_table(6) := ' varchar2(1)    not null,'||wwv_flow.LF||
+'   location            varchar2(255),'||wwv_flow.LF||
+'   link_name_1         varchar2(255)';
+wwv_flow_imp.g_varchar2_table(7) := ','||wwv_flow.LF||
+'   link_url_1          varchar2(4000),'||wwv_flow.LF||
+'   link_name_2         varchar2(255),'||wwv_flow.LF||
+'   link_url_2        ';
+wwv_flow_imp.g_varchar2_table(8) := '  varchar2(4000),'||wwv_flow.LF||
+'   link_name_3         varchar2(255),'||wwv_flow.LF||
+'   link_url_3          varchar2(4000),'||wwv_flow.LF||
+'   li';
+wwv_flow_imp.g_varchar2_table(9) := 'nk_name_4         varchar2(255),'||wwv_flow.LF||
+'   link_url_4          varchar2(4000),'||wwv_flow.LF||
+'   tags                varch';
+wwv_flow_imp.g_varchar2_table(10) := 'ar2(4000),'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   series_id        number,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   created_on       timestamp with time zone  not';
+wwv_flow_imp.g_varchar2_table(11) := ' null,'||wwv_flow.LF||
+'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
+'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(12) := ' last_updated_by  varchar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events '||wwv_flow.LF||
+'   add constraint eba_ca_events_pk pr';
+wwv_flow_imp.g_varchar2_table(13) := 'imary key (event_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events '||wwv_flow.LF||
+'   add constraint eba_ca_event_fk1 '||wwv_flow.LF||
+'   foreign key';
+wwv_flow_imp.g_varchar2_table(14) := ' (type_id)'||wwv_flow.LF||
+'   references eba_ca_event_types (type_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create index eba_ca_events_i1 '||wwv_flow.LF||
+'   on eba_ca_';
+wwv_flow_imp.g_varchar2_table(15) := 'events (type_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events '||wwv_flow.LF||
+'   add constraint eba_ca_event_fk2 '||wwv_flow.LF||
+'   foreign key (se';
+wwv_flow_imp.g_varchar2_table(16) := 'ries_id)'||wwv_flow.LF||
+'   references eba_ca_series (series_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create index eba_ca_events_i2'||wwv_flow.LF||
+'   on eba_ca_events';
+wwv_flow_imp.g_varchar2_table(17) := ' (series_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events '||wwv_flow.LF||
+'   add constraint eba_ca_event_fk3 '||wwv_flow.LF||
+'   foreign key (calend';
+wwv_flow_imp.g_varchar2_table(18) := 'ar_id)'||wwv_flow.LF||
+'   references eba_ca_calendars (calendar_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create index eba_ca_events_i3'||wwv_flow.LF||
+'   on eba_ca_eve';
+wwv_flow_imp.g_varchar2_table(19) := 'nts (calendar_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events '||wwv_flow.LF||
+'   add constraint eba_ca_event_cc1 '||wwv_flow.LF||
+'   check ( displa';
+wwv_flow_imp.g_varchar2_table(20) := 'y_time in (''Y'',''N'') )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254470457362753502)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'events'
+,p_sequence=>210
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_events_history_trigger
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace trigger ad_EBA_CA_EVENTS'||wwv_flow.LF||
+'   after delete on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(2) := ' insert into eba_ca_history ('||wwv_flow.LF||
+'       table_name, component_rowkey, COMPONENT_ID, column_name, old_va';
+wwv_flow_imp.g_varchar2_table(3) := 'lue, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :old.row_key, :old.event_id, ''DELETE'',null,''Removed event ''';
+wwv_flow_imp.g_varchar2_table(4) := '||:old.EVENT_NAME);'||wwv_flow.LF||
+'end ad_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace trigger ai_EBA_CA_EVENTS';
+wwv_flow_imp.g_varchar2_table(5) := ''||wwv_flow.LF||
+'   after insert on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   insert into eba_ca_history ('||wwv_flow.LF||
+'       table';
+wwv_flow_imp.g_varchar2_table(6) := '_name, component_rowkey, component_id, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'',:n';
+wwv_flow_imp.g_varchar2_table(7) := 'ew.row_key, :new.event_id, ''Event Name '',null,:new.EVENT_NAME);'||wwv_flow.LF||
+'end ai_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(8) := ''||wwv_flow.LF||
+'create or replace trigger au_EBA_CA_EVENTS'||wwv_flow.LF||
+'   after update on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'declare';
+wwv_flow_imp.g_varchar2_table(9) := ''||wwv_flow.LF||
+'   ov varchar2(4000) := null;'||wwv_flow.LF||
+'   nv varchar2(4000) := null;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   -- FK'||wwv_flow.LF||
+'   if updating and :old.';
+wwv_flow_imp.g_varchar2_table(10) := 'TYPE_ID != :new.TYPE_ID then'||wwv_flow.LF||
+'      ov := null; nv := null;'||wwv_flow.LF||
+'      for c1 in (select type_name from eb';
+wwv_flow_imp.g_varchar2_table(11) := 'a_ca_event_types t where t.type_id = :old.TYPE_ID) loop'||wwv_flow.LF||
+'          ov := c1.type_name;'||wwv_flow.LF||
+'      end loop';
+wwv_flow_imp.g_varchar2_table(12) := ';'||wwv_flow.LF||
+'      for c1 in (select type_name from eba_ca_event_types t where t.type_id = :new.TYPE_ID) loop'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(13) := '         nv := c1.type_name;'||wwv_flow.LF||
+'      end loop;   '||wwv_flow.LF||
+'      insert into eba_ca_history (table_name, compon';
+wwv_flow_imp.g_varchar2_table(14) := 'ent_rowkey, component_id, column_name, old_value, new_value) values'||wwv_flow.LF||
+'          (''EVENTS'',:new.row_key';
+wwv_flow_imp.g_varchar2_table(15) := ', :new.event_id, ''TYPE_ID'',ov,nv);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   if nvl(:old.SERIES_ID,''0'') != nvl(:new.SERIES';
+wwv_flow_imp.g_varchar2_table(16) := '_ID,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_';
+wwv_flow_imp.g_varchar2_table(17) := 'name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'',:new.row_key, :new.event_id, ''SERIES_ID'',:old.SE';
+wwv_flow_imp.g_varchar2_table(18) := 'RIES_ID,:new.SERIES_ID);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.EVENT_NAME,''0'') != nvl(:new.EVENT_NAME,''0'') then'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(19) := '       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_valu';
+wwv_flow_imp.g_varchar2_table(20) := 'e, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'',:new.row_key, :new.event_id, ''EVENT_NAME'',:old.EVENT_NAME,:new';
+wwv_flow_imp.g_varchar2_table(21) := '.EVENT_NAME);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.DURATION,''0'') != nvl(:new.DURATION,''0'') then'||wwv_flow.LF||
+'       insert i';
+wwv_flow_imp.g_varchar2_table(22) := 'nto eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) v';
+wwv_flow_imp.g_varchar2_table(23) := 'alues'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''DURATION'',:old.DURATION,:new.DURATION);'||wwv_flow.LF||
+'   end';
+wwv_flow_imp.g_varchar2_table(24) := ' if;'||wwv_flow.LF||
+'   if nvl(:old.EVENT_DESC,''0'') != nvl(:new.EVENT_DESC,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_histo';
+wwv_flow_imp.g_varchar2_table(25) := 'ry (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''E';
+wwv_flow_imp.g_varchar2_table(26) := 'VENTS'', :new.row_key, :new.event_id, ''EVENT_DESC'',:old.EVENT_DESC,:new.EVENT_DESC);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if';
+wwv_flow_imp.g_varchar2_table(27) := ' nvl(:old.CONTACT_PERSON,''0'') != nvl(:new.CONTACT_PERSON,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history';
+wwv_flow_imp.g_varchar2_table(28) := ' (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVE';
+wwv_flow_imp.g_varchar2_table(29) := 'NTS'', :new.row_key, :new.event_id, ''CONTACT_PERSON'',:old.CONTACT_PERSON,:new.CONTACT_PERSON);'||wwv_flow.LF||
+'   end';
+wwv_flow_imp.g_varchar2_table(30) := ' if;'||wwv_flow.LF||
+'   if nvl(:old.CONTACT_EMAIL,''0'') != nvl(:new.CONTACT_EMAIL,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca';
+wwv_flow_imp.g_varchar2_table(31) := '_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(32) := '   (''EVENTS'', :new.row_key, :new.event_id, ''CONTACT_EMAIL'',:old.CONTACT_EMAIL,:new.CONTACT_EMAIL);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(33) := '  end if;'||wwv_flow.LF||
+'   if nvl(:old.DISPLAY_TIME,''0'') != nvl(:new.DISPLAY_TIME,''0'') then'||wwv_flow.LF||
+'       insert into eba';
+wwv_flow_imp.g_varchar2_table(34) := '_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(35) := '      (''EVENTS'', :new.row_key, :new.event_id, ''DISPLAY_TIME'',:old.DISPLAY_TIME,:new.DISPLAY_TIME);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(36) := '  end if;'||wwv_flow.LF||
+'   if nvl(:old.LOCATION,''0'') != nvl(:new.LOCATION,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_hist';
+wwv_flow_imp.g_varchar2_table(37) := 'ory (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''';
+wwv_flow_imp.g_varchar2_table(38) := 'EVENTS'', :new.row_key, :new.event_id, ''LOCATION'',:old.LOCATION,:new.LOCATION);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(';
+wwv_flow_imp.g_varchar2_table(39) := ':old.LINK_NAME_1,''0'') != nvl(:new.LINK_NAME_1,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_nam';
+wwv_flow_imp.g_varchar2_table(40) := 'e, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.';
+wwv_flow_imp.g_varchar2_table(41) := 'row_key, :new.event_id, ''LINK_NAME_1'',:old.LINK_NAME_1,:new.LINK_NAME_1);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.';
+wwv_flow_imp.g_varchar2_table(42) := 'LINK_URL_1,''0'') != nvl(:new.LINK_URL_1,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, comp';
+wwv_flow_imp.g_varchar2_table(43) := 'onent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key';
+wwv_flow_imp.g_varchar2_table(44) := ', :new.event_id, ''LINK_URL_1'',:old.LINK_URL_1,:new.LINK_URL_1);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_';
+wwv_flow_imp.g_varchar2_table(45) := '2,''0'') != nvl(:new.LINK_NAME_2,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_ro';
+wwv_flow_imp.g_varchar2_table(46) := 'wkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.e';
+wwv_flow_imp.g_varchar2_table(47) := 'vent_id, ''LINK_NAME_2'',:old.LINK_NAME_2,:new.LINK_NAME_2);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_2,''0'')';
+wwv_flow_imp.g_varchar2_table(48) := ' != nvl(:new.LINK_URL_2,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, C';
+wwv_flow_imp.g_varchar2_table(49) := 'OMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id';
+wwv_flow_imp.g_varchar2_table(50) := ', ''LINK_URL_2'',:old.LINK_URL_2,:new.LINK_URL_2);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_3,''0'') != nvl(:';
+wwv_flow_imp.g_varchar2_table(51) := 'new.LINK_NAME_3,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT';
+wwv_flow_imp.g_varchar2_table(52) := '_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_';
+wwv_flow_imp.g_varchar2_table(53) := 'NAME_3'',:old.LINK_NAME_3,:new.LINK_NAME_3);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_3,''0'') != nvl(:new.LI';
+wwv_flow_imp.g_varchar2_table(54) := 'NK_URL_3,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, co';
+wwv_flow_imp.g_varchar2_table(55) := 'lumn_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_3'',';
+wwv_flow_imp.g_varchar2_table(56) := ':old.LINK_URL_3,:new.LINK_URL_3);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_4,''0'') != nvl(:new.LINK_NAME_4';
+wwv_flow_imp.g_varchar2_table(57) := ',''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_nam';
+wwv_flow_imp.g_varchar2_table(58) := 'e, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_4'',:old.LI';
+wwv_flow_imp.g_varchar2_table(59) := 'NK_NAME_4,:new.LINK_NAME_4);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_4,''0'') != nvl(:new.LINK_URL_4,''0'') t';
+wwv_flow_imp.g_varchar2_table(60) := 'hen'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_';
+wwv_flow_imp.g_varchar2_table(61) := 'value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_4'',:old.LINK_URL_4';
+wwv_flow_imp.g_varchar2_table(62) := ',:new.LINK_URL_4);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.TAGS,''0'') != nvl(:new.TAGS,''0'') then'||wwv_flow.LF||
+'       insert into';
+wwv_flow_imp.g_varchar2_table(63) := ' eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) valu';
+wwv_flow_imp.g_varchar2_table(64) := 'es'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''TAGS'',:old.TAGS,:new.TAGS);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   -- time';
+wwv_flow_imp.g_varchar2_table(65) := 'stamp columns'||wwv_flow.LF||
+'   if (:old.EVENT_DATE_TIME is null and :new.EVENT_DATE_TIME is not null) or '||wwv_flow.LF||
+'      (:';
+wwv_flow_imp.g_varchar2_table(66) := 'old.EVENT_DATE_TIME is not null and :new.EVENT_DATE_TIME is null) or '||wwv_flow.LF||
+'      (:old.EVENT_DATE_TIME !=';
+wwv_flow_imp.g_varchar2_table(67) := ' :new.EVENT_DATE_TIME) then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONE';
+wwv_flow_imp.g_varchar2_table(68) := 'NT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'          (''EVENTS'', :new.row_key, :new.event_id, ''';
+wwv_flow_imp.g_varchar2_table(69) := 'EVENT_DATE_TIME'',:old.EVENT_DATE_TIME,:new.EVENT_DATE_TIME);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end au_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show';
+wwv_flow_imp.g_varchar2_table(70) := ' errors';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3257086958997215777)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'events history trigger'
+,p_sequence=>410
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_events_triggers
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace trigger EBA_ca_events_biu'||wwv_flow.LF||
+'  before insert or update on EBA_ca_events              ';
+wwv_flow_imp.g_varchar2_table(2) := ' '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW.event_id is null '||wwv_flow.LF||
+'        then :NEW.eve';
+wwv_flow_imp.g_varchar2_table(3) := 'nt_id := EBA_ca_api.gen_id;'||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'     :NEW.CREATE';
+wwv_flow_imp.g_varchar2_table(4) := 'D_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'     :new.row_version_number := 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(5) := '      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USE';
+wwv_flow_imp.g_varchar2_table(6) := 'R);'||wwv_flow.LF||
+'      :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if :new.row';
+wwv_flow_imp.g_varchar2_table(7) := '_key is null then'||wwv_flow.LF||
+'       select eba_ca_fw.compress_int(eba_ca_seq.nextval) into :new.row_key from du';
+wwv_flow_imp.g_varchar2_table(8) := 'al;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   eba_ca_fw.tag_sync('||wwv_flow.LF||
+'         p_new_tags      => :new.tags,'||wwv_flow.LF||
+'         p_old_tags   ';
+wwv_flow_imp.g_varchar2_table(9) := '   => :old.tags,'||wwv_flow.LF||
+'         p_content_type  => ''EVENT'','||wwv_flow.LF||
+'         p_content_id    => :new.event_id );'||wwv_flow.LF||
+'e';
+wwv_flow_imp.g_varchar2_table(10) := 'nd; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors    '||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger EBA_ca_events_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'create or replace trigger';
+wwv_flow_imp.g_varchar2_table(11) := ' BD_EBA_ca_events'||wwv_flow.LF||
+'    before delete on EBA_ca_events'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    eba_ca_fw.tag_sync('||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(12) := '        p_new_tags      => null,'||wwv_flow.LF||
+'        p_old_tags      => :old.tags,'||wwv_flow.LF||
+'        p_content_type  => ''E';
+wwv_flow_imp.g_varchar2_table(13) := 'VENT'','||wwv_flow.LF||
+'        p_content_id    => :old.event_id );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'alter trigger BD_EBA_ca_';
+wwv_flow_imp.g_varchar2_table(14) := 'events enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256461178157079401)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'events triggers'
+,p_sequence=>400
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_events_seq
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create sequence eba_ca_seq;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256459857462054443)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'events_seq'
+,p_sequence=>202
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_files
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_FILES '||wwv_flow.LF||
+'   (   '||wwv_flow.LF||
+'    ID                   NUMBER constraint eba_ca_FILES_PK primar';
+wwv_flow_imp.g_varchar2_table(2) := 'y key, '||wwv_flow.LF||
+'    ROW_VERSION_NUMBER   NUMBER, '||wwv_flow.LF||
+'    EVENT_ID             NUMBER references eba_ca_events (';
+wwv_flow_imp.g_varchar2_table(3) := 'event_id) on delete cascade, '||wwv_flow.LF||
+'    FILENAME             VARCHAR2(4000 BYTE), '||wwv_flow.LF||
+'    FILE_MIMETYPE      ';
+wwv_flow_imp.g_varchar2_table(4) := '  VARCHAR2(512 BYTE), '||wwv_flow.LF||
+'    FILE_CHARSET         VARCHAR2(512 BYTE), '||wwv_flow.LF||
+'    FILE_BLOB            BLOB, ';
+wwv_flow_imp.g_varchar2_table(5) := ''||wwv_flow.LF||
+'    FILE_COMMENTS        VARCHAR2(4000 BYTE), '||wwv_flow.LF||
+'    TAGS                 VARCHAR2(4000 BYTE), '||wwv_flow.LF||
+'    C';
+wwv_flow_imp.g_varchar2_table(6) := 'REATED              timestamp with time zone, '||wwv_flow.LF||
+'    CREATED_BY           VARCHAR2(255 BYTE), '||wwv_flow.LF||
+'    UPD';
+wwv_flow_imp.g_varchar2_table(7) := 'ATED              timestamp with time zone, '||wwv_flow.LF||
+'    UPDATED_BY           VARCHAR2(255 BYTE)'||wwv_flow.LF||
+'   )  ;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'cr';
+wwv_flow_imp.g_varchar2_table(8) := 'eate index eba_ca_FILES_i1 on eba_ca_FILES(event_id);'||wwv_flow.LF||
+''||wwv_flow.LF||
+'CREATE OR REPLACE TRIGGER BIU_eba_ca_FILES '||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(9) := '  before insert or update on eba_ca_files'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'  if :new.ID is null then'||wwv_flow.LF||
+'    select';
+wwv_flow_imp.g_varchar2_table(10) := ' to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'  if ins';
+wwv_flow_imp.g_varchar2_table(11) := 'erting then'||wwv_flow.LF||
+'    :new.created := current_timestamp;'||wwv_flow.LF||
+'    :new.created_by := nvl(wwv_flow.g_user,user);';
+wwv_flow_imp.g_varchar2_table(12) := ''||wwv_flow.LF||
+'    :new.updated := current_timestamp;'||wwv_flow.LF||
+'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'    :new.r';
+wwv_flow_imp.g_varchar2_table(13) := 'ow_version_number := 1;'||wwv_flow.LF||
+'  elsif updating then'||wwv_flow.LF||
+'    :new.row_version_number := nvl(:old.row_version_nu';
+wwv_flow_imp.g_varchar2_table(14) := 'mber,1) + 1;'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'  if (inserting or updating) and nvl(dbms_lob.getlength(:new.file_blob),0) > ';
+wwv_flow_imp.g_varchar2_table(15) := '15728640 then'||wwv_flow.LF||
+'    raise_application_error(-20000, ''The size of the uploaded file was over 15MB. Plea';
+wwv_flow_imp.g_varchar2_table(16) := 'se upload a smaller file.'');'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'  if inserting or updating then'||wwv_flow.LF||
+'    :new.updated := current_t';
+wwv_flow_imp.g_varchar2_table(17) := 'imestamp;'||wwv_flow.LF||
+'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+''||wwv_flow.LF||
+'ALTER TRIG';
+wwv_flow_imp.g_varchar2_table(18) := 'GER BIU_eba_ca_FILES ENABLE;'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256259467405174322)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'files'
+,p_sequence=>212
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_group_members
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_email_group_mbrs ('||wwv_flow.LF||
+'   mbr_id         number         not null,'||wwv_flow.LF||
+'   group_id       ';
+wwv_flow_imp.g_varchar2_table(2) := 'number         not null,'||wwv_flow.LF||
+'   email_address  varchar2(255)  not null,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   created_on       timest';
+wwv_flow_imp.g_varchar2_table(3) := 'amp with time zone  not null,'||wwv_flow.LF||
+'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
+'   last_updated_on  times';
+wwv_flow_imp.g_varchar2_table(4) := 'tamp with time zone,'||wwv_flow.LF||
+'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_email_group_mbrs'||wwv_flow.LF||
+'   ad';
+wwv_flow_imp.g_varchar2_table(5) := 'd constraint EBA_ca_email_group_mbrs_pk primary key (mbr_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_email_group_mbrs'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(6) := '  add constraint EBA_ca_email_group_mbrs_uk unique (group_id, email_address)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_em';
+wwv_flow_imp.g_varchar2_table(7) := 'ail_group_mbrs '||wwv_flow.LF||
+'   add constraint EBA_ca_email_group_mbrs_fk1 '||wwv_flow.LF||
+'   foreign key (group_id)'||wwv_flow.LF||
+'   referenc';
+wwv_flow_imp.g_varchar2_table(8) := 'es EBA_ca_email_groups (group_id)'||wwv_flow.LF||
+'   on delete cascade'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create index EBA_ca_email_group_mbrs_i1'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(9) := 'on EBA_ca_email_group_mbrs (group_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create or replace trigger EBA_ca_email_group_mbrs_biu'||wwv_flow.LF||
+'  befo';
+wwv_flow_imp.g_varchar2_table(10) := 're insert or update on EBA_ca_email_group_mbrs              '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if insertin';
+wwv_flow_imp.g_varchar2_table(11) := 'g then'||wwv_flow.LF||
+'     if :NEW.mbr_id is null '||wwv_flow.LF||
+'        then :NEW.mbr_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(12) := '  :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(13) := ''||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := ';
+wwv_flow_imp.g_varchar2_table(14) := 'nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger EBA_ca_email_group_mbrs_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254470867751756580)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'group members'
+,p_sequence=>220
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_history
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_history '||wwv_flow.LF||
+'   (   '||wwv_flow.LF||
+'    ID                  NUMBER constraint eba_ca_history_pk pri';
+wwv_flow_imp.g_varchar2_table(2) := 'mary key, '||wwv_flow.LF||
+'    ROW_VERSION_NUMBER  NUMBER, '||wwv_flow.LF||
+'    COMPONENT_ID        NUMBER, '||wwv_flow.LF||
+'    COMPONENT_ROWKEY   ';
+wwv_flow_imp.g_varchar2_table(3) := ' VARCHAR2(30 BYTE),'||wwv_flow.LF||
+'    TABLE_NAME          VARCHAR2(60 BYTE) not null,'||wwv_flow.LF||
+'    COLUMN_NAME         VARC';
+wwv_flow_imp.g_varchar2_table(4) := 'HAR2(60 BYTE) not null, '||wwv_flow.LF||
+'    OLD_VALUE           VARCHAR2(4000 BYTE), '||wwv_flow.LF||
+'    NEW_VALUE           VARCH';
+wwv_flow_imp.g_varchar2_table(5) := 'AR2(4000 BYTE), '||wwv_flow.LF||
+'    CHANGE_DATE         TIMESTAMP WITH TIME ZONE, '||wwv_flow.LF||
+'    CHANGED_BY          VARCHAR2';
+wwv_flow_imp.g_varchar2_table(6) := '(255 BYTE)'||wwv_flow.LF||
+'   )  ;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create index eba_ca_history_i1 on eba_ca_history(component_id);'||wwv_flow.LF||
+''||wwv_flow.LF||
+'CREATE OR REPLA';
+wwv_flow_imp.g_varchar2_table(7) := 'CE TRIGGER biu_eba_ca_history '||wwv_flow.LF||
+'   before insert or update on eba_ca_history'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(8) := ' if :new.ID is null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :';
+wwv_flow_imp.g_varchar2_table(9) := 'new.id from dual;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.change_date := current_timestamp;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(10) := '   :new.changed_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number := 1;'||wwv_flow.LF||
+'   elsif updat';
+wwv_flow_imp.g_varchar2_table(11) := 'ing then'||wwv_flow.LF||
+'       :new.row_version_number := :new.row_version_number + 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'ALTER TRIG';
+wwv_flow_imp.g_varchar2_table(12) := 'GER biu_eba_ca_history ENABLE;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256238759065944833)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'history'
+,p_sequence=>203
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_install_the_acl_seed_data
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '/* Bug tracker access levels */'||wwv_flow.LF||
+'insert into eba_ca_access_levels (id, access_level) values (1, ''Read';
+wwv_flow_imp.g_varchar2_table(2) := 'er'');'||wwv_flow.LF||
+'insert into eba_ca_access_levels (id, access_level) values (2, ''Contributor'');'||wwv_flow.LF||
+'insert into eba';
+wwv_flow_imp.g_varchar2_table(3) := '_ca_access_levels (id, access_level) values (3, ''Administrator'');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'/* Bug Tracker preferences */'||wwv_flow.LF||
+'ins';
+wwv_flow_imp.g_varchar2_table(4) := 'ert into eba_ca_preferences (id, preference_name, preference_value) values (1, ''ACCESS_CONTROL_ENABL';
+wwv_flow_imp.g_varchar2_table(5) := 'ED'', ''N'');'||wwv_flow.LF||
+'insert into eba_ca_preferences (id, preference_name, preference_value) values (2, ''ACCESS';
+wwv_flow_imp.g_varchar2_table(6) := '_CONTROL_SCOPE'', ''ACL_ONLY'');'||wwv_flow.LF||
+'insert into eba_ca_preferences (id, preference_name, preference_value)';
+wwv_flow_imp.g_varchar2_table(7) := ' values (3, ''USERNAME_FORMAT'', ''EMAIL'');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'/* Constraint error lookups */'||wwv_flow.LF||
+'insert into eba_ca_error_lo';
+wwv_flow_imp.g_varchar2_table(8) := 'okup (constraint_name, message, language_code) values (''EBA_CA_USERS_UK'', ''Username must be unique.''';
+wwv_flow_imp.g_varchar2_table(9) := ', ''en'');'||wwv_flow.LF||
+'insert into eba_ca_error_lookup (constraint_name, message, language_code) values (''EBA_CA_C';
+wwv_flow_imp.g_varchar2_table(10) := 'ALENDAR_UK1'', ''Calendar Short Name must be unique.'', ''en'');'||wwv_flow.LF||
+'insert into eba_ca_error_lookup (constra';
+wwv_flow_imp.g_varchar2_table(11) := 'int_name, message, language_code) values (''EBA_CA_CALENDAR_UK2'', ''Calendar Name must be unique.'', ''e';
+wwv_flow_imp.g_varchar2_table(12) := 'n'');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'commit;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254484979694072285)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'install the acl seed data'
+,p_sequence=>630
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_notifications
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_CA_notifications ('||wwv_flow.LF||
+'    id                        number            not null'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(2) := '                                         constraint EBA_CA_note_pk'||wwv_flow.LF||
+'                                 ';
+wwv_flow_imp.g_varchar2_table(3) := '               primary key,'||wwv_flow.LF||
+'    row_version_number        number,'||wwv_flow.LF||
+'    notification_name         varc';
+wwv_flow_imp.g_varchar2_table(4) := 'har2(255)     not null,'||wwv_flow.LF||
+'    notification_description  varchar2(4000)    null,'||wwv_flow.LF||
+'    --'||wwv_flow.LF||
+'    notificatio';
+wwv_flow_imp.g_varchar2_table(5) := 'n_type         varchar2(30)      not null'||wwv_flow.LF||
+'                                                constraint';
+wwv_flow_imp.g_varchar2_table(6) := ' EBA_CA_note_tp_cc'||wwv_flow.LF||
+'                                                check (notification_type in (''RED';
+wwv_flow_imp.g_varchar2_table(7) := ''',''YELLOW'')),'||wwv_flow.LF||
+'    --'||wwv_flow.LF||
+'    display_sequence          number,'||wwv_flow.LF||
+'    display_from              timestamp w';
+wwv_flow_imp.g_varchar2_table(8) := 'ith time zone,'||wwv_flow.LF||
+'    display_until             timestamp with time zone,'||wwv_flow.LF||
+'    --'||wwv_flow.LF||
+'    created_by        ';
+wwv_flow_imp.g_varchar2_table(9) := '        varchar2(255)       not null,'||wwv_flow.LF||
+'    created                   timestamp with time zone,'||wwv_flow.LF||
+'    up';
+wwv_flow_imp.g_varchar2_table(10) := 'dated_by                varchar2(255)       not null,'||wwv_flow.LF||
+'    updated                   timestamp with t';
+wwv_flow_imp.g_varchar2_table(11) := 'ime zone )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create unique index EBA_CA_note_uk on EBA_CA_notifications (notification_name);'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'crea';
+wwv_flow_imp.g_varchar2_table(12) := 'te or replace trigger EBA_CA_note_biu'||wwv_flow.LF||
+'before insert or update on EBA_CA_notifications'||wwv_flow.LF||
+'    for each r';
+wwv_flow_imp.g_varchar2_table(13) := 'ow'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if inserting and :new.id is null then'||wwv_flow.LF||
+'        select to_number(sys_guid(),''XXXXXXXXXXXX';
+wwv_flow_imp.g_varchar2_table(14) := 'XXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
+'        into :new.id'||wwv_flow.LF||
+'        from dual;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if inserting then'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(15) := '     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.created := current_timestamp;'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(16) := ':new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.updated := current_timestamp;'||wwv_flow.LF||
+'        :new.';
+wwv_flow_imp.g_varchar2_table(17) := 'row_version_number := 1;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if updating then'||wwv_flow.LF||
+'        :new.row_version_number := nvl(:ol';
+wwv_flow_imp.g_varchar2_table(18) := 'd.row_version_number,1) + 1;'||wwv_flow.LF||
+'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.update';
+wwv_flow_imp.g_varchar2_table(19) := 'd    := current_timestamp;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if :new.notification_type is null then'||wwv_flow.LF||
+'       :new.notifi';
+wwv_flow_imp.g_varchar2_table(20) := 'cation_type := ''MANUAL'';'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if :new.display_sequence is null then'||wwv_flow.LF||
+'       :new.display_s';
+wwv_flow_imp.g_varchar2_table(21) := 'equence := 10;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger EBA_CA_note_biu enable;'||wwv_flow.LF||
+'/';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256158360094202056)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'notifications'
+,p_sequence=>235
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_series
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_series ('||wwv_flow.LF||
+'   series_id        number        not null,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   start_date       t';
+wwv_flow_imp.g_varchar2_table(2) := 'imestamp with time zone  not null,'||wwv_flow.LF||
+'   end_date         timestamp with time zone  not null,'||wwv_flow.LF||
+'   recur_';
+wwv_flow_imp.g_varchar2_table(3) := 'freq       varchar2(10)  not null,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(4) := 'created_by       varchar2(255)  not null,'||wwv_flow.LF||
+'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'   last_upda';
+wwv_flow_imp.g_varchar2_table(5) := 'ted_by  varchar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_series '||wwv_flow.LF||
+'   add constraint eba_ca_series_pk primary key ';
+wwv_flow_imp.g_varchar2_table(6) := '(series_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create or replace trigger eba_ca_series_biu'||wwv_flow.LF||
+'  before insert or update on eba_ca_series';
+wwv_flow_imp.g_varchar2_table(7) := '               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW.series_id is null '||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(8) := '  then :NEW.series_id := eba_ca_api.gen_id;'||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(9) := '     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPD';
+wwv_flow_imp.g_varchar2_table(10) := 'ATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end';
+wwv_flow_imp.g_varchar2_table(11) := '; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger eba_ca_series_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254470178702750242)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'series'
+,p_sequence=>205
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_tags
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_tags ('||wwv_flow.LF||
+'    id                      number primary key,'||wwv_flow.LF||
+'    tag                  ';
+wwv_flow_imp.g_varchar2_table(2) := '   varchar2(255) not null,'||wwv_flow.LF||
+'    content_id              number,'||wwv_flow.LF||
+'    content_type            varchar2(';
+wwv_flow_imp.g_varchar2_table(3) := '30)'||wwv_flow.LF||
+'                            constraint eba_ca_tags_ck check'||wwv_flow.LF||
+'                            (content';
+wwv_flow_imp.g_varchar2_table(4) := '_type in (''EVENT'',''NOTES'',''FILE'')),'||wwv_flow.LF||
+'    --'||wwv_flow.LF||
+'    created                 timestamp with time zone,'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(5) := ' created_by              varchar2(255),'||wwv_flow.LF||
+'    updated                 timestamp with time zone,'||wwv_flow.LF||
+'    up';
+wwv_flow_imp.g_varchar2_table(6) := 'dated_by              varchar2(255)'||wwv_flow.LF||
+'    )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace trigger biu_eba_ca_tags'||wwv_flow.LF||
+'   before ins';
+wwv_flow_imp.g_varchar2_table(7) := 'ert or update on eba_ca_tags'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'   begin'||wwv_flow.LF||
+'      if inserting then'||wwv_flow.LF||
+'         if :NEW.ID is';
+wwv_flow_imp.g_varchar2_table(8) := ' null then'||wwv_flow.LF||
+'           select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
+'           int';
+wwv_flow_imp.g_varchar2_table(9) := 'o :new.id'||wwv_flow.LF||
+'           from dual;'||wwv_flow.LF||
+'         end if;'||wwv_flow.LF||
+'         :NEW.CREATED := current_timestamp;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(10) := '  :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'      end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'      if updating then'||wwv_flow.LF||
+'         :NEW.UP';
+wwv_flow_imp.g_varchar2_table(11) := 'DATED := current_timestamp;'||wwv_flow.LF||
+'         :NEW.UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'      end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(12) := '/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create table eba_ca_tags_type_sum ('||wwv_flow.LF||
+'    tag                             varchar2(255)';
+wwv_flow_imp.g_varchar2_table(13) := ','||wwv_flow.LF||
+'    content_type                    varchar2(30),'||wwv_flow.LF||
+'    tag_count                       number,'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(14) := 'constraint eba_ca_tags_type_sum_pk primary key (tag,content_type)'||wwv_flow.LF||
+'    )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create table eba_ca_tags_';
+wwv_flow_imp.g_varchar2_table(15) := 'sum ('||wwv_flow.LF||
+'    tag                             varchar2(255),'||wwv_flow.LF||
+'    tag_count                       number,';
+wwv_flow_imp.g_varchar2_table(16) := ''||wwv_flow.LF||
+'    constraint eba_ca_tags_sum_pk   primary key (tag)'||wwv_flow.LF||
+'    )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256257167180108093)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'tags'
+,p_sequence=>206
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_timeframes
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_timeframes ('||wwv_flow.LF||
+'   tf_id       number         not null,'||wwv_flow.LF||
+'   tf_name     varchar2(255';
+wwv_flow_imp.g_varchar2_table(2) := ')  not null,'||wwv_flow.LF||
+'   start_date  date           not null,'||wwv_flow.LF||
+'   end_date    date           not null,'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(3) := '  created_on       timestamp with time zone  not null,'||wwv_flow.LF||
+'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(4) := '   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_';
+wwv_flow_imp.g_varchar2_table(5) := 'ca_timeframes'||wwv_flow.LF||
+'   add constraint EBA_ca_timeframes_pk primary key (tf_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_ca_timefr';
+wwv_flow_imp.g_varchar2_table(6) := 'ames'||wwv_flow.LF||
+'   add constraint EBA_ca_timeframes_uk unique (tf_name)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create or replace trigger EBA_ca_time';
+wwv_flow_imp.g_varchar2_table(7) := 'frames_biu'||wwv_flow.LF||
+'  before insert or update on EBA_ca_timeframes               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(8) := ' if inserting then'||wwv_flow.LF||
+'     if :NEW.tf_id is null '||wwv_flow.LF||
+'        then :NEW.tf_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     e';
+wwv_flow_imp.g_varchar2_table(9) := 'nd if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(10) := '  end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
+'      :NEW.LAST_UPDA';
+wwv_flow_imp.g_varchar2_table(11) := 'TED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger EBA_ca_timeframes_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(12) := ''||wwv_flow.LF||
+''||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3254471150567761033)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'timeframes'
+,p_sequence=>225
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/install_tz_prefs
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_CA_tz_pref ('||wwv_flow.LF||
+'  id                        number not null'||wwv_flow.LF||
+'                          ';
+wwv_flow_imp.g_varchar2_table(2) := '  constraint EBA_CA_tz_pref_pk'||wwv_flow.LF||
+'                            primary key,'||wwv_flow.LF||
+'  row_version_number        ';
+wwv_flow_imp.g_varchar2_table(3) := 'integer,'||wwv_flow.LF||
+'  userid                    varchar2(255) not null,'||wwv_flow.LF||
+'  TIMEZONE_PREFERENCE       varchar2(25';
+wwv_flow_imp.g_varchar2_table(4) := '5) not null,'||wwv_flow.LF||
+'  created                   timestamp with time zone,'||wwv_flow.LF||
+'  created_by                varch';
+wwv_flow_imp.g_varchar2_table(5) := 'ar2(255),'||wwv_flow.LF||
+'  updated                   timestamp with time zone,'||wwv_flow.LF||
+'  updated_by                varchar2';
+wwv_flow_imp.g_varchar2_table(6) := '(255)'||wwv_flow.LF||
+'  );'||wwv_flow.LF||
+'  '||wwv_flow.LF||
+'create or replace trigger biu_EBA_CA_tz_pref'||wwv_flow.LF||
+'   before insert or update on EBA_CA_tz_p';
+wwv_flow_imp.g_varchar2_table(7) := 'ref'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   if :new.ID is null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXX';
+wwv_flow_imp.g_varchar2_table(8) := 'XXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.created :=';
+wwv_flow_imp.g_varchar2_table(9) := ' current_timestamp;'||wwv_flow.LF||
+'       :new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.updated := curr';
+wwv_flow_imp.g_varchar2_table(10) := 'ent_timestamp;'||wwv_flow.LF||
+'       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number :';
+wwv_flow_imp.g_varchar2_table(11) := '= 1;'||wwv_flow.LF||
+'   elsif updating then'||wwv_flow.LF||
+'       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(12) := ' end if;'||wwv_flow.LF||
+'   if inserting or updating then'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.upda';
+wwv_flow_imp.g_varchar2_table(13) := 'ted_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if :new.TIMEZONE_PREFERENCE is null then'||wwv_flow.LF||
+'       :';
+wwv_flow_imp.g_varchar2_table(14) := 'new.timezone_preference := ''UTC'';'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger biu_EBA_CA_tz_pref enable;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(3256158756893220074)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'tz prefs'
+,p_sequence=>245
+,p_script_type=>'INSTALL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_adding_multi_calendar_mode
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_calendars ('||wwv_flow.LF||
+'   calendar_id      number         not null,'||wwv_flow.LF||
+'   short_name       var';
+wwv_flow_imp.g_varchar2_table(2) := 'char2(10)   not null,'||wwv_flow.LF||
+'   calendar_name    varchar2(60)   not null,'||wwv_flow.LF||
+'   public_view_yn   varchar2(1)  ';
+wwv_flow_imp.g_varchar2_table(3) := '  default ''Y'','||wwv_flow.LF||
+'   description      varchar2(4000),'||wwv_flow.LF||
+'   is_active_yn     varchar2(1)    default ''Y'','||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(4) := '  --'||wwv_flow.LF||
+'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
+'   created_by       varchar2(255)  not ';
+wwv_flow_imp.g_varchar2_table(5) := 'null,'||wwv_flow.LF||
+'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
+'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter tab';
+wwv_flow_imp.g_varchar2_table(6) := 'le eba_ca_calendars'||wwv_flow.LF||
+'   add constraint eba_ca_calendars_pk primary key (calendar_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'alter tab';
+wwv_flow_imp.g_varchar2_table(7) := 'le eba_ca_calendars'||wwv_flow.LF||
+'   add constraint eba_ca_calendars_uk1 unique (short_name)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_';
+wwv_flow_imp.g_varchar2_table(8) := 'calendars'||wwv_flow.LF||
+'   add constraint eba_ca_calendars_uk2 unique (calendar_name)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_calenda';
+wwv_flow_imp.g_varchar2_table(9) := 'rs'||wwv_flow.LF||
+'   add constraint eba_ca_calendar_cc1 '||wwv_flow.LF||
+'   check ( public_view_yn in (''Y'',''N'') )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba';
+wwv_flow_imp.g_varchar2_table(10) := '_ca_calendars'||wwv_flow.LF||
+'   add constraint eba_ca_calendar_cc2 '||wwv_flow.LF||
+'   check ( is_active_yn in (''Y'',''N'') )'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(11) := '   '||wwv_flow.LF||
+'create or replace trigger eba_ca_calendars_biu'||wwv_flow.LF||
+'  before insert or update on eba_ca_calendars    ';
+wwv_flow_imp.g_varchar2_table(12) := '           '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :new.calendar_id is null '||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(13) := 'then :new.calendar_id := eba_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;';
+wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'   :NEW.LAST_UPDATED_ON := CURRENT_TIM';
+wwv_flow_imp.g_varchar2_table(15) := 'ESTAMP;'||wwv_flow.LF||
+'   :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'alter trigger eba_ca_calend';
+wwv_flow_imp.g_varchar2_table(16) := 'ars_biu enable'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- Add constraint error messages'||wwv_flow.LF||
+'insert into eba_ca_error_lookup (constraint_name,';
+wwv_flow_imp.g_varchar2_table(17) := ' message, language_code) values (''EBA_CA_CALENDAR_UK1'', ''Calendar Short Name must be unique.'', ''en'')';
+wwv_flow_imp.g_varchar2_table(18) := ';'||wwv_flow.LF||
+'insert into eba_ca_error_lookup (constraint_name, message, language_code) values (''EBA_CA_CALENDAR';
+wwv_flow_imp.g_varchar2_table(19) := '_UK2'', ''Calendar Name must be unique.'', ''en'');'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- Update Events table'||wwv_flow.LF||
+'alter table eba_ca_events add';
+wwv_flow_imp.g_varchar2_table(20) := ' (calendar_id number)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table eba_ca_events add constraint eba_ca_events_fk3'||wwv_flow.LF||
+'   foreign key (c';
+wwv_flow_imp.g_varchar2_table(21) := 'alendar_id)'||wwv_flow.LF||
+'   references eba_ca_calendars (calendar_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'create index eba_ca_events_i3'||wwv_flow.LF||
+'   on eba_c';
+wwv_flow_imp.g_varchar2_table(22) := 'a_events (calendar_id)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- comma separated list of calendar_ids, for contributor (access_level_id ';
+wwv_flow_imp.g_varchar2_table(23) := '2)'||wwv_flow.LF||
+'alter table eba_ca_users add (restricted_to varchar2(4000)); '||wwv_flow.LF||
+''||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1856500086473604486)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Adding Multi-Calendar Mode'
+,p_sequence=>35
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'NOT_EXISTS'
+,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select null',
+'from user_tables',
+'where table_name = ''EBA_CA_CALENDARS'';'))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_framework_body
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'CREATE OR REPLACE PACKAGE BODY "EBA_CA_FW" as'||wwv_flow.LF||
+'    function conv_txt_html ('||wwv_flow.LF||
+'        p_txt_message in ';
+wwv_flow_imp.g_varchar2_table(2) := 'varchar2 )'||wwv_flow.LF||
+'        return varchar2'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l_html_message   varchar2(32767) default p_txt_mes';
+wwv_flow_imp.g_varchar2_table(3) := 'sage;'||wwv_flow.LF||
+'        l_temp_url varchar2(32767) := null;'||wwv_flow.LF||
+'        l_length number;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        l_html_';
+wwv_flow_imp.g_varchar2_table(4) := 'message := replace(l_html_message, chr(10), ''<br />'');'||wwv_flow.LF||
+'        l_html_message := replace(l_html_mess';
+wwv_flow_imp.g_varchar2_table(5) := 'age, chr(13), null);'||wwv_flow.LF||
+'        return l_html_message;'||wwv_flow.LF||
+'    end conv_txt_html;'||wwv_flow.LF||
+'    function conv_urls_li';
+wwv_flow_imp.g_varchar2_table(6) := 'nks ('||wwv_flow.LF||
+'        p_string in varchar2 )'||wwv_flow.LF||
+'        return varchar2'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l_string   varchar2(3276';
+wwv_flow_imp.g_varchar2_table(7) := '7) default p_string;'||wwv_flow.LF||
+'        l_endofUrl varchar2(4000) default chr(10) || chr(13) || chr(9) || '' )<>';
+wwv_flow_imp.g_varchar2_table(8) := ''';'||wwv_flow.LF||
+'        l_url         varchar2(4000);'||wwv_flow.LF||
+'        l_current_pos number := 1;'||wwv_flow.LF||
+'        n             nu';
+wwv_flow_imp.g_varchar2_table(9) := 'mber := 1;'||wwv_flow.LF||
+'        m             number := 1;'||wwv_flow.LF||
+'        p             number := 1;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        l';
+wwv_flow_imp.g_varchar2_table(10) := '_string := p_string || '' '';'||wwv_flow.LF||
+'        for i in 1 .. 1000 loop'||wwv_flow.LF||
+'            n := instr( lower(l_string),';
+wwv_flow_imp.g_varchar2_table(11) := ' ''http://'', l_current_pos );'||wwv_flow.LF||
+'            m := instr( lower(l_string), ''https://'', l_current_pos );'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(12) := '           p := instr( lower(l_string), ''ftp://'', l_current_pos   );'||wwv_flow.LF||
+'            -- set n to positio';
+wwv_flow_imp.g_varchar2_table(13) := 'n of first link'||wwv_flow.LF||
+'            if m > 0 and (n = 0 or m < n) and (p = 0 or m < p) then'||wwv_flow.LF||
+'               n';
+wwv_flow_imp.g_varchar2_table(14) := ' := m;'||wwv_flow.LF||
+'            elsif p > 0 and (n = 0 or p < n) then'||wwv_flow.LF||
+'               n := p;'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(15) := '            exit when n = 0 or length(l_string) > 32000;'||wwv_flow.LF||
+'            for j in 0 .. length( l_string ';
+wwv_flow_imp.g_varchar2_table(16) := ') - n loop'||wwv_flow.LF||
+'                if ( instr( l_endofUrl, substr( l_string, n+j, 1 ) ) > 0 ) then'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(17) := '          l_url := rtrim( substr( l_string, n, j ), ''.''||chr(32)||chr(10) );'||wwv_flow.LF||
+'                   l_ur';
+wwv_flow_imp.g_varchar2_table(18) := 'l := ''<a href="'' || l_url || ''">'' || l_url || ''</a>'';'||wwv_flow.LF||
+'                   l_string := substr( l_strin';
+wwv_flow_imp.g_varchar2_table(19) := 'g, 1, n-1 ) || l_url || substr( l_string, n+j );'||wwv_flow.LF||
+'                   l_current_pos := n + length(l_ur';
+wwv_flow_imp.g_varchar2_table(20) := 'l);'||wwv_flow.LF||
+'                   exit;'||wwv_flow.LF||
+'                end if;'||wwv_flow.LF||
+'            end loop;'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(21) := ' return l_string;'||wwv_flow.LF||
+'    end conv_urls_links;'||wwv_flow.LF||
+'    function tags_cleaner ('||wwv_flow.LF||
+'        p_tags  in varchar2,'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(22) := '        p_case  in varchar2 default ''U'' )'||wwv_flow.LF||
+'        return varchar2'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        type tags is table ';
+wwv_flow_imp.g_varchar2_table(23) := 'of varchar2(255) index by varchar2(255);'||wwv_flow.LF||
+'        l_tags_a        tags;'||wwv_flow.LF||
+'        l_tag           varch';
+wwv_flow_imp.g_varchar2_table(24) := 'ar2(255);'||wwv_flow.LF||
+'        l_tags          apex_application_global.vc_arr2;'||wwv_flow.LF||
+'        l_tags_string   varchar2(';
+wwv_flow_imp.g_varchar2_table(25) := '32767);'||wwv_flow.LF||
+'        i               integer;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        l_tags := apex_util.string_to_table(p_tag';
+wwv_flow_imp.g_varchar2_table(26) := 's,'','');'||wwv_flow.LF||
+'        for i in 1..l_tags.count loop'||wwv_flow.LF||
+'            --remove all whitespace, including tabs, s';
+wwv_flow_imp.g_varchar2_table(27) := 'paces, line feeds and carraige returns with a single space'||wwv_flow.LF||
+'            l_tag := substr(trim(regexp_r';
+wwv_flow_imp.g_varchar2_table(28) := 'eplace(l_tags(i),''[[:space:]]{1,}'','' '')),1,255);'||wwv_flow.LF||
+'            if l_tag is not null and l_tag != '' '' t';
+wwv_flow_imp.g_varchar2_table(29) := 'hen'||wwv_flow.LF||
+'                if p_case = ''U'' then'||wwv_flow.LF||
+'                    l_tag := upper(l_tag);'||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(30) := 'elsif p_case = ''L'' then'||wwv_flow.LF||
+'                    l_tag := lower(l_tag);'||wwv_flow.LF||
+'                end if;'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(31) := '       --add it to the associative array, if it is a duplicate, it will just be replaced'||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(32) := '     l_tags_a(l_tag) := l_tag;'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'        l_tag := null;'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(33) := 'l_tag := l_tags_a.first;'||wwv_flow.LF||
+'        while l_tag is not null loop'||wwv_flow.LF||
+'            l_tags_string := l_tags_st';
+wwv_flow_imp.g_varchar2_table(34) := 'ring||l_tag;'||wwv_flow.LF||
+'            if l_tag != l_tags_a.last then'||wwv_flow.LF||
+'                l_tags_string := l_tags_stri';
+wwv_flow_imp.g_varchar2_table(35) := 'ng || '', '';'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'            l_tag := l_tags_a.next(l_tag);'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(36) := ' return substr(l_tags_string, 1, 4000);'||wwv_flow.LF||
+'    end tags_cleaner;'||wwv_flow.LF||
+'    procedure tag_sync ('||wwv_flow.LF||
+'        p_new';
+wwv_flow_imp.g_varchar2_table(37) := '_tags          in varchar2,'||wwv_flow.LF||
+'        p_old_tags          in varchar2,'||wwv_flow.LF||
+'        p_content_type      in ';
+wwv_flow_imp.g_varchar2_table(38) := 'varchar2,'||wwv_flow.LF||
+'        p_content_id        in number )'||wwv_flow.LF||
+'    as'||wwv_flow.LF||
+'        type tags is table of varchar2(255)';
+wwv_flow_imp.g_varchar2_table(39) := ' index by varchar2(255);'||wwv_flow.LF||
+'        l_new_tags_a    tags;'||wwv_flow.LF||
+'        l_old_tags_a    tags;'||wwv_flow.LF||
+'        l_new_t';
+wwv_flow_imp.g_varchar2_table(40) := 'ags      apex_application_global.vc_arr2;'||wwv_flow.LF||
+'        l_old_tags      apex_application_global.vc_arr2;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(41) := '       l_merge_tags    apex_application_global.vc_arr2;'||wwv_flow.LF||
+'        l_dummy_tag     varchar2(255);'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(42) := '   i               integer;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        l_old_tags := apex_util.string_to_table(p_old_tags,'', ';
+wwv_flow_imp.g_varchar2_table(43) := ''');'||wwv_flow.LF||
+'        l_new_tags := apex_util.string_to_table(p_new_tags,'', '');'||wwv_flow.LF||
+'        if l_old_tags.count > ';
+wwv_flow_imp.g_varchar2_table(44) := '0 then --do inserts and deletes'||wwv_flow.LF||
+'            --build the associative arrays'||wwv_flow.LF||
+'            for i in 1..l';
+wwv_flow_imp.g_varchar2_table(45) := '_old_tags.count loop'||wwv_flow.LF||
+'                l_old_tags_a(l_old_tags(i)) := l_old_tags(i);'||wwv_flow.LF||
+'            end l';
+wwv_flow_imp.g_varchar2_table(46) := 'oop;'||wwv_flow.LF||
+'            for i in 1..l_new_tags.count loop'||wwv_flow.LF||
+'                l_new_tags_a(l_new_tags(i)) := l_';
+wwv_flow_imp.g_varchar2_table(47) := 'new_tags(i);'||wwv_flow.LF||
+'            end loop;'||wwv_flow.LF||
+'            --do the inserts'||wwv_flow.LF||
+'            for i in 1..l_new_tags.c';
+wwv_flow_imp.g_varchar2_table(48) := 'ount loop'||wwv_flow.LF||
+'                begin'||wwv_flow.LF||
+'                    l_dummy_tag := l_old_tags_a(l_new_tags(i));'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(49) := '            exception when no_data_found then'||wwv_flow.LF||
+'                    insert into eba_ca_tags (tag, cont';
+wwv_flow_imp.g_varchar2_table(50) := 'ent_id, content_type )'||wwv_flow.LF||
+'                    values (l_new_tags(i), p_content_id, p_content_type );'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(51) := '                  l_merge_tags(l_merge_tags.count + 1) := l_new_tags(i);'||wwv_flow.LF||
+'                end;'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(52) := '      end loop;'||wwv_flow.LF||
+'            --do the deletes'||wwv_flow.LF||
+'            for i in 1..l_old_tags.count loop'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(53) := '       begin'||wwv_flow.LF||
+'                    l_dummy_tag := l_new_tags_a(l_old_tags(i));'||wwv_flow.LF||
+'                excepti';
+wwv_flow_imp.g_varchar2_table(54) := 'on when no_data_found then'||wwv_flow.LF||
+'                    delete from eba_ca_tags where content_id = p_content_';
+wwv_flow_imp.g_varchar2_table(55) := 'id and tag = l_old_tags(i);'||wwv_flow.LF||
+'                    l_merge_tags(l_merge_tags.count + 1) := l_old_tags(i';
+wwv_flow_imp.g_varchar2_table(56) := ');'||wwv_flow.LF||
+'                end;'||wwv_flow.LF||
+'            end loop;'||wwv_flow.LF||
+'        else --just do inserts'||wwv_flow.LF||
+'            for i in 1.';
+wwv_flow_imp.g_varchar2_table(57) := '.l_new_tags.count loop'||wwv_flow.LF||
+'                insert into eba_ca_tags (tag, content_id, content_type )'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(58) := '            values (l_new_tags(i), p_content_id, p_content_type );'||wwv_flow.LF||
+'                l_merge_tags(l_me';
+wwv_flow_imp.g_varchar2_table(59) := 'rge_tags.count + 1) := l_new_tags(i);'||wwv_flow.LF||
+'            end loop;'||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'        for i in 1..l_me';
+wwv_flow_imp.g_varchar2_table(60) := 'rge_tags.count loop'||wwv_flow.LF||
+'            merge into eba_ca_tags_type_sum s'||wwv_flow.LF||
+'            using (select count(*)';
+wwv_flow_imp.g_varchar2_table(61) := ' tag_count'||wwv_flow.LF||
+'                     from eba_ca_tags'||wwv_flow.LF||
+'                    where tag = l_merge_tags(i) and';
+wwv_flow_imp.g_varchar2_table(62) := ' content_type = p_content_type ) t'||wwv_flow.LF||
+'            on (s.tag = l_merge_tags(i) and s.content_type = p_co';
+wwv_flow_imp.g_varchar2_table(63) := 'ntent_type )'||wwv_flow.LF||
+'            when not matched then insert (tag, content_type, tag_count)'||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(64) := '                   values (l_merge_tags(i), p_content_type, t.tag_count)'||wwv_flow.LF||
+'            when matched th';
+wwv_flow_imp.g_varchar2_table(65) := 'en update set s.tag_count = t.tag_count;'||wwv_flow.LF||
+'            merge into eba_ca_tags_sum s'||wwv_flow.LF||
+'            using ';
+wwv_flow_imp.g_varchar2_table(66) := '(select sum(tag_count) tag_count'||wwv_flow.LF||
+'                     from eba_ca_tags_type_sum'||wwv_flow.LF||
+'                    ';
+wwv_flow_imp.g_varchar2_table(67) := 'where tag = l_merge_tags(i) ) t'||wwv_flow.LF||
+'            on (s.tag = l_merge_tags(i) )'||wwv_flow.LF||
+'            when not match';
+wwv_flow_imp.g_varchar2_table(68) := 'ed then insert (tag, tag_count)'||wwv_flow.LF||
+'                                  values (l_merge_tags(i), t.tag_cou';
+wwv_flow_imp.g_varchar2_table(69) := 'nt)'||wwv_flow.LF||
+'            when matched then update set s.tag_count = t.tag_count;'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'    end ta';
+wwv_flow_imp.g_varchar2_table(70) := 'g_sync;'||wwv_flow.LF||
+'    function selective_escape ('||wwv_flow.LF||
+'        p_text  in varchar2,'||wwv_flow.LF||
+'        p_tags  in varchar2 def';
+wwv_flow_imp.g_varchar2_table(71) := 'ault ''<h2>,</h2>,<p>,</p>,<b>,</b>,<li>,</li>,<ul>,</ul>,<br />,<i>,</i>,<h3>,</h3>'''||wwv_flow.LF||
+'        ) retur';
+wwv_flow_imp.g_varchar2_table(72) := 'n varchar2'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        t apex_application_global.vc_arr2;'||wwv_flow.LF||
+'        x varchar2(32767) := p_text;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(73) := '  begin'||wwv_flow.LF||
+'        t := apex_util.string_to_table(p_tags, '','');'||wwv_flow.LF||
+'        for i in 1..t.count loop'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(74) := '      x := replace(x,t(i),''Aa''||i||''aA'');'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'        x := apex_escape.html(x);'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(75) := '  for i in 1..t.count loop'||wwv_flow.LF||
+'            x := replace(x,''Aa''||i||''aA'',t(i));'||wwv_flow.LF||
+'        end loop;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(76) := ' return x;'||wwv_flow.LF||
+'    end selective_escape;'||wwv_flow.LF||
+'    function get_preference_value ('||wwv_flow.LF||
+'        p_preference_name v';
+wwv_flow_imp.g_varchar2_table(77) := 'archar2 )'||wwv_flow.LF||
+'        return varchar2'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l_preference_value varchar2(255);'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(78) := ' select preference_value'||wwv_flow.LF||
+'            into l_preference_value'||wwv_flow.LF||
+'        from eba_ca_preferences'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(79) := ' where preference_name = p_preference_name;'||wwv_flow.LF||
+'        return l_preference_value;'||wwv_flow.LF||
+'    exception'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(80) := ' when no_data_found then'||wwv_flow.LF||
+'            return ''Preference does not exist'';'||wwv_flow.LF||
+'    end get_preference_valu';
+wwv_flow_imp.g_varchar2_table(81) := 'e;'||wwv_flow.LF||
+'    procedure set_preference_value ('||wwv_flow.LF||
+'        p_preference_name  varchar2, '||wwv_flow.LF||
+'        p_preference_v';
+wwv_flow_imp.g_varchar2_table(82) := 'alue varchar2 )'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        merge into eba_ca_preferences dest'||wwv_flow.LF||
+'        using ( select u';
+wwv_flow_imp.g_varchar2_table(83) := 'pper(p_preference_name) preference_name,'||wwv_flow.LF||
+'                    p_preference_value preference_value'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(84) := '             from dual ) src'||wwv_flow.LF||
+'        on ( upper(dest.preference_name) = src.preference_name )'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(85) := '  when matched then'||wwv_flow.LF||
+'            update set dest.preference_value = src.preference_value'||wwv_flow.LF||
+'        when';
+wwv_flow_imp.g_varchar2_table(86) := ' not matched then'||wwv_flow.LF||
+'            insert (dest.preference_name, dest.preference_value)'||wwv_flow.LF||
+'            value';
+wwv_flow_imp.g_varchar2_table(87) := 's (src.preference_name, src.preference_value);'||wwv_flow.LF||
+'    end set_preference_value;'||wwv_flow.LF||
+'    function compress_i';
+wwv_flow_imp.g_varchar2_table(88) := 'nt ('||wwv_flow.LF||
+'        n in integer )'||wwv_flow.LF||
+'        return varchar2'||wwv_flow.LF||
+'    as'||wwv_flow.LF||
+'        ret varchar2(30);'||wwv_flow.LF||
+'        quotien';
+wwv_flow_imp.g_varchar2_table(89) := 't integer;'||wwv_flow.LF||
+'        remainder integer;'||wwv_flow.LF||
+'        digit char(1);'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        ret := '''';'||wwv_flow.LF||
+'        qu';
+wwv_flow_imp.g_varchar2_table(90) := 'otient := n;'||wwv_flow.LF||
+'        while quotient > 0'||wwv_flow.LF||
+'        loop'||wwv_flow.LF||
+'            remainder := mod(quotient, 10 + 26)';
+wwv_flow_imp.g_varchar2_table(91) := ';'||wwv_flow.LF||
+'            quotient := floor(quotient  / (10 + 26));'||wwv_flow.LF||
+'            if remainder < 26 then'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(92) := '       digit := chr(ascii(''A'') + remainder);'||wwv_flow.LF||
+'            else'||wwv_flow.LF||
+'                digit := chr(ascii(''0''';
+wwv_flow_imp.g_varchar2_table(93) := ') + remainder - 26);'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'            ret := digit || ret;'||wwv_flow.LF||
+'        end loop ;'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(94) := ' if length(ret) < 5 then'||wwv_flow.LF||
+'            ret := lpad(ret, 4, ''A'');'||wwv_flow.LF||
+'        end if ;'||wwv_flow.LF||
+'        return upper';
+wwv_flow_imp.g_varchar2_table(95) := '(ret);'||wwv_flow.LF||
+'    end compress_int;'||wwv_flow.LF||
+'    procedure add_error_log ( '||wwv_flow.LF||
+'        p_error in apex_error.t_error )'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(96) := '    is'||wwv_flow.LF||
+'    pragma autonomous_transaction;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        -- Remove old errors'||wwv_flow.LF||
+'        delete from';
+wwv_flow_imp.g_varchar2_table(97) := ' eba_ca_errors where err_time <= current_timestamp - 21;'||wwv_flow.LF||
+'        -- Log the error.'||wwv_flow.LF||
+'        insert in';
+wwv_flow_imp.g_varchar2_table(98) := 'to eba_ca_errors ('||wwv_flow.LF||
+'            app_id,'||wwv_flow.LF||
+'            app_page_id,'||wwv_flow.LF||
+'            app_user,'||wwv_flow.LF||
+'            us';
+wwv_flow_imp.g_varchar2_table(99) := 'er_agent,'||wwv_flow.LF||
+'            ip_address,'||wwv_flow.LF||
+'            ip_address2,'||wwv_flow.LF||
+'            message,'||wwv_flow.LF||
+'            page_ite';
+wwv_flow_imp.g_varchar2_table(100) := 'm_name,'||wwv_flow.LF||
+'            region_id,'||wwv_flow.LF||
+'            column_alias,'||wwv_flow.LF||
+'            row_num,'||wwv_flow.LF||
+'            apex_error';
+wwv_flow_imp.g_varchar2_table(101) := '_code,'||wwv_flow.LF||
+'            ora_sqlcode,'||wwv_flow.LF||
+'            ora_sqlerrm,'||wwv_flow.LF||
+'            error_backtrace )'||wwv_flow.LF||
+'        selec';
+wwv_flow_imp.g_varchar2_table(102) := 't v(''APP_ID''),'||wwv_flow.LF||
+'            v(''APP_PAGE_ID''),'||wwv_flow.LF||
+'            v(''APP_USER''),'||wwv_flow.LF||
+'            owa_util.get_cgi';
+wwv_flow_imp.g_varchar2_table(103) := '_env(''HTTP_USER_AGENT''),'||wwv_flow.LF||
+'            owa_util.get_cgi_env(''REMOTE_ADDR''),'||wwv_flow.LF||
+'            sys_context(''U';
+wwv_flow_imp.g_varchar2_table(104) := 'SERENV'', ''IP_ADDRESS''),'||wwv_flow.LF||
+'            substr(p_error.message,0,4000),'||wwv_flow.LF||
+'            p_error.page_item_na';
+wwv_flow_imp.g_varchar2_table(105) := 'me,'||wwv_flow.LF||
+'            p_error.region_id,'||wwv_flow.LF||
+'            p_error.column_alias,'||wwv_flow.LF||
+'            p_error.row_num,'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(106) := '          p_error.apex_error_code,'||wwv_flow.LF||
+'            p_error.ora_sqlcode,'||wwv_flow.LF||
+'            substr(p_error.ora_s';
+wwv_flow_imp.g_varchar2_table(107) := 'qlerrm,0,4000),'||wwv_flow.LF||
+'            substr(p_error.error_backtrace,0,4000)'||wwv_flow.LF||
+'        from dual;'||wwv_flow.LF||
+'        commit';
+wwv_flow_imp.g_varchar2_table(108) := ';'||wwv_flow.LF||
+'    end add_error_log;'||wwv_flow.LF||
+'    function apex_error_handling ('||wwv_flow.LF||
+'        p_error in apex_error.t_error )'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(109) := '        return apex_error.t_error_result'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l_result          apex_error.t_error_result;';
+wwv_flow_imp.g_varchar2_table(110) := ''||wwv_flow.LF||
+'        l_constraint_name varchar2(255);'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        l_result := apex_error.init_error_result';
+wwv_flow_imp.g_varchar2_table(111) := ' ('||wwv_flow.LF||
+'                        p_error => p_error );'||wwv_flow.LF||
+'        -- If it is an internal error raised by APE';
+wwv_flow_imp.g_varchar2_table(112) := 'X, like an invalid statement or'||wwv_flow.LF||
+'        -- code which can not be executed, the error text might cont';
+wwv_flow_imp.g_varchar2_table(113) := 'ain security sensitive'||wwv_flow.LF||
+'        -- information. To avoid this security problem we can rewrite the err';
+wwv_flow_imp.g_varchar2_table(114) := 'or to'||wwv_flow.LF||
+'        -- a generic error message and log the original error message for further'||wwv_flow.LF||
+'        -- i';
+wwv_flow_imp.g_varchar2_table(115) := 'nvestigation by the help desk.'||wwv_flow.LF||
+'        if p_error.is_internal_error then'||wwv_flow.LF||
+'            -- mask all err';
+wwv_flow_imp.g_varchar2_table(116) := 'ors that are not common runtime errors (Access Denied'||wwv_flow.LF||
+'            -- errors raised by application / ';
+wwv_flow_imp.g_varchar2_table(117) := 'page authorization and all errors'||wwv_flow.LF||
+'            -- regarding session and session state)'||wwv_flow.LF||
+'            if';
+wwv_flow_imp.g_varchar2_table(118) := ' not p_error.is_common_runtime_error then'||wwv_flow.LF||
+'                add_error_log( p_error );'||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(119) := '-- Change the message to the generic error message which doesn''t expose'||wwv_flow.LF||
+'                -- any sensi';
+wwv_flow_imp.g_varchar2_table(120) := 'tive information.'||wwv_flow.LF||
+'                l_result.message         := ''An unexpected internal application er';
+wwv_flow_imp.g_varchar2_table(121) := 'ror has occurred.'';'||wwv_flow.LF||
+'                l_result.additional_info := null;'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'        el';
+wwv_flow_imp.g_varchar2_table(122) := 'se'||wwv_flow.LF||
+'            -- Always show the error as inline error'||wwv_flow.LF||
+'            -- Note: If you have created man';
+wwv_flow_imp.g_varchar2_table(123) := 'ual tabular forms (using the package'||wwv_flow.LF||
+'            --       apex_item/htmldb_item in the SQL statement';
+wwv_flow_imp.g_varchar2_table(124) := ') you should still'||wwv_flow.LF||
+'            --       use "On error page" on that pages to avoid loosing entered d';
+wwv_flow_imp.g_varchar2_table(125) := 'ata'||wwv_flow.LF||
+'            l_result.display_location := case'||wwv_flow.LF||
+'                                           when l_';
+wwv_flow_imp.g_varchar2_table(126) := 'result.display_location = apex_error.c_on_error_page then apex_error.c_inline_in_notification'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(127) := '                                     else l_result.display_location'||wwv_flow.LF||
+'                                ';
+wwv_flow_imp.g_varchar2_table(128) := '         end;'||wwv_flow.LF||
+'            -- If it''s a constraint violation like'||wwv_flow.LF||
+'            --'||wwv_flow.LF||
+'            --   -) ';
+wwv_flow_imp.g_varchar2_table(129) := 'ORA-00001: unique constraint violated'||wwv_flow.LF||
+'            --   -) ORA-02091: transaction rolled back (-> can';
+wwv_flow_imp.g_varchar2_table(130) := ' hide a deferred constraint)'||wwv_flow.LF||
+'            --   -) ORA-02290: check constraint violated'||wwv_flow.LF||
+'            --';
+wwv_flow_imp.g_varchar2_table(131) := '   -) ORA-02291: integrity constraint violated - parent key not found'||wwv_flow.LF||
+'            --   -) ORA-02292:';
+wwv_flow_imp.g_varchar2_table(132) := ' integrity constraint violated - child record found'||wwv_flow.LF||
+'            --'||wwv_flow.LF||
+'            -- we try to get a fr';
+wwv_flow_imp.g_varchar2_table(133) := 'iendly error message from our constraint lookup configuration.'||wwv_flow.LF||
+'            -- If we don''t find the c';
+wwv_flow_imp.g_varchar2_table(134) := 'onstraint in our lookup table we fallback to'||wwv_flow.LF||
+'            -- the original ORA error message.'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(135) := '    if p_error.ora_sqlcode in (-1, -2091, -2290, -2291, -2292) then'||wwv_flow.LF||
+'                l_constraint_nam';
+wwv_flow_imp.g_varchar2_table(136) := 'e := apex_error.extract_constraint_name ('||wwv_flow.LF||
+'                                         p_error => p_erro';
+wwv_flow_imp.g_varchar2_table(137) := 'r );'||wwv_flow.LF||
+'                begin'||wwv_flow.LF||
+'                    select message'||wwv_flow.LF||
+'                      into l_result.me';
+wwv_flow_imp.g_varchar2_table(138) := 'ssage'||wwv_flow.LF||
+'                      from eba_ca_error_lookup'||wwv_flow.LF||
+'                     where constraint_name = l_';
+wwv_flow_imp.g_varchar2_table(139) := 'constraint_name;'||wwv_flow.LF||
+'                exception when no_data_found then null; -- not every constraint has';
+wwv_flow_imp.g_varchar2_table(140) := ' to be in our lookup table'||wwv_flow.LF||
+'                end;'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'            -- If an ORA error h';
+wwv_flow_imp.g_varchar2_table(141) := 'as been raised, for example a raise_application_error(-20xxx, ''...'')'||wwv_flow.LF||
+'            -- in a table trigg';
+wwv_flow_imp.g_varchar2_table(142) := 'er or in a PL/SQL package called by a process and we'||wwv_flow.LF||
+'            -- haven''t found the error in our l';
+wwv_flow_imp.g_varchar2_table(143) := 'ookup table, then we just want to see'||wwv_flow.LF||
+'            -- the actual error text and not the full error st';
+wwv_flow_imp.g_varchar2_table(144) := 'ack with all the ORA error numbers.'||wwv_flow.LF||
+'            if p_error.ora_sqlcode is not null and l_result.mess';
+wwv_flow_imp.g_varchar2_table(145) := 'age = p_error.message then'||wwv_flow.LF||
+'                l_result.message := apex_error.get_first_ora_error_text (';
+wwv_flow_imp.g_varchar2_table(146) := ''||wwv_flow.LF||
+'                                        p_error => p_error );'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'            -- If';
+wwv_flow_imp.g_varchar2_table(147) := ' no associated page item/tabular form column has been set, we can use'||wwv_flow.LF||
+'            -- apex_error.auto';
+wwv_flow_imp.g_varchar2_table(148) := '_set_associated_item to automatically guess the affected'||wwv_flow.LF||
+'            -- error field by examine the O';
+wwv_flow_imp.g_varchar2_table(149) := 'RA error for constraint names or column names.'||wwv_flow.LF||
+'            if l_result.page_item_name is null and l_';
+wwv_flow_imp.g_varchar2_table(150) := 'result.column_alias is null then'||wwv_flow.LF||
+'                apex_error.auto_set_associated_item ('||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(151) := '       p_error        => p_error,'||wwv_flow.LF||
+'                    p_error_result => l_result );'||wwv_flow.LF||
+'            end ';
+wwv_flow_imp.g_varchar2_table(152) := 'if;'||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'        return l_result;'||wwv_flow.LF||
+'    end apex_error_handling;'||wwv_flow.LF||
+'end eba_ca_fw;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show erro';
+wwv_flow_imp.g_varchar2_table(153) := 'rs';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1326986348855207156)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Framework Body'
+,p_sequence=>10
+,p_script_type=>'UPGRADE'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_framework_package
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace'||wwv_flow.LF||
+'package eba_ca_fw as'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function conv_txt_html ('||wwv_flow.LF||
+'        p_txt_message in varcha';
+wwv_flow_imp.g_varchar2_table(2) := 'r2 )'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function conv_urls_links ('||wwv_flow.LF||
+'        p_string in varchar2 )'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(3) := ' return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function tags_cleaner ('||wwv_flow.LF||
+'        p_tags  in varchar2,'||wwv_flow.LF||
+'        p_case  in varch';
+wwv_flow_imp.g_varchar2_table(4) := 'ar2 default ''U'' )'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    procedure tag_sync ('||wwv_flow.LF||
+'        p_new_tags          in ';
+wwv_flow_imp.g_varchar2_table(5) := 'varchar2,'||wwv_flow.LF||
+'        p_old_tags          in varchar2,'||wwv_flow.LF||
+'        p_content_type      in varchar2,'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(6) := 'p_content_id        in number );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function selective_escape ('||wwv_flow.LF||
+'        p_text  in varchar2,'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(7) := '   p_tags  in varchar2 default ''<h2>,</h2>,<p>,</p>,<b>,</b>,<li>,</li>,<ul>,</ul>,<br />,<i>,</i>,<';
+wwv_flow_imp.g_varchar2_table(8) := 'h3>,</h3>'' )'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function get_preference_value ('||wwv_flow.LF||
+'        p_preference_name';
+wwv_flow_imp.g_varchar2_table(9) := ' in varchar2 )'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    procedure set_preference_value ('||wwv_flow.LF||
+'        p_preference_n';
+wwv_flow_imp.g_varchar2_table(10) := 'ame  in varchar2, '||wwv_flow.LF||
+'        p_preference_value in varchar2 );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function compress_int ('||wwv_flow.LF||
+'        n ';
+wwv_flow_imp.g_varchar2_table(11) := 'in integer )'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function apex_error_handling ('||wwv_flow.LF||
+'        p_error in apex_er';
+wwv_flow_imp.g_varchar2_table(12) := 'ror.t_error )'||wwv_flow.LF||
+'        return apex_error.t_error_result;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'end eba_ca_fw;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'show errors'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1449117849657139110)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Framework Package'
+,p_sequence=>5
+,p_script_type=>'UPGRADE'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_more_event_colors
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'alter table EBA_CA_COLOR_PREFS add constraint'||wwv_flow.LF||
+'   EBA_CA_COLOR_PREFS_UK unique (COLOR_NAME)'||wwv_flow.LF||
+'/ '||wwv_flow.LF||
+''||wwv_flow.LF||
+'inser';
+wwv_flow_imp.g_varchar2_table(2) := 't into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (6,''Black'',  ''#303030'', ''#30';
+wwv_flow_imp.g_varchar2_table(3) := '3030'');'||wwv_flow.LF||
+'insert into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (7,''Darkblue'', ';
+wwv_flow_imp.g_varchar2_table(4) := ' ''#1F5F97'', ''#1F5F97'');'||wwv_flow.LF||
+'insert into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values';
+wwv_flow_imp.g_varchar2_table(5) := ' (8,''Bluesky'',  ''#6BB9F0'', ''#6BB9F0'');'||wwv_flow.LF||
+'insert into EBA_CA_color_prefs (id, color_name, bg_color, tex';
+wwv_flow_imp.g_varchar2_table(6) := 't_color) values (9,''Brown'',  ''#D88935'', ''#D88935'');'||wwv_flow.LF||
+'insert into EBA_CA_color_prefs (id, color_name, ';
+wwv_flow_imp.g_varchar2_table(7) := 'bg_color, text_color) values (10,''Cyan'',  ''#1ABC9C'', ''#1ABC9C'');'||wwv_flow.LF||
+'insert into EBA_CA_color_prefs (id,';
+wwv_flow_imp.g_varchar2_table(8) := ' color_name, bg_color, text_color) values (11,''Lime'',  ''#28A346'', ''#28A346'');'||wwv_flow.LF||
+'insert into EBA_CA_col';
+wwv_flow_imp.g_varchar2_table(9) := 'or_prefs (id, color_name, bg_color, text_color) values (12,''Silver'',  ''#BDC3C7'', ''#BDC3C7'');'||wwv_flow.LF||
+'insert ';
+wwv_flow_imp.g_varchar2_table(10) := 'into EBA_CA_color_prefs (id, color_name, bg_color, text_color) values (13,''Yellow'',  ''#F1C40F'', ''#F1';
+wwv_flow_imp.g_varchar2_table(11) := 'C40F'');'||wwv_flow.LF||
+'commit;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(2564607310498110518)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'More Event Colors'
+,p_sequence=>50
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'FUNCTION_BODY'
+,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'declare',
+'    l_cnt    pls_integer;',
+'    l_retval boolean := true;',
+'begin',
+'    select count(*)',
+'      into l_cnt',
+'      from eba_ca_color_prefs',
+'     where color_name in (''Black'', ''Darkblue'', ''Bluesky'', ''Brown'', ''Cyan'', ''Lime'', ''Silver'', ''Yellow'');',
+'',
+'    if l_cnt > 0 then',
+'        l_retval := false;',
+'    end if;',
+'',
+'    return l_retval;',
+'end;'))
+,p_condition2=>'PLSQL'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_remove_help_table
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'drop table eba_ca_help_page;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1449117455760131473)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Remove Help Table'
+,p_sequence=>30
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'EXISTS'
+,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select table_name',
+'from user_tables',
+'where table_name = ''EBA_CA_HELP_PAGE'''))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_sample_data_package
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace package eba_ca_sample_data as'||wwv_flow.LF||
+'    procedure load;'||wwv_flow.LF||
+'    procedure remove;'||wwv_flow.LF||
+'    functi';
+wwv_flow_imp.g_varchar2_table(2) := 'on is_loaded return boolean;'||wwv_flow.LF||
+'end eba_ca_sample_data;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace package body eba_ca_sample';
+wwv_flow_imp.g_varchar2_table(3) := '_data as'||wwv_flow.LF||
+'    procedure load is'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        merge into eba_ca_event_types dest using ('||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(4) := '    select 1 type_id, ''External Meeting'' type_name, ''#00FF00'' display_color, ''#00FF00'' border_color,';
+wwv_flow_imp.g_varchar2_table(5) := ' ''Y'' is_active_yn, ''N'' internal_yn, 2 color_pref_id from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            sele';
+wwv_flow_imp.g_varchar2_table(6) := 'ct 2 type_id, ''Team Meeting'' type_name, ''#FF0000'' display_color, ''#FF0000'' border_color,  ''Y'' is_act';
+wwv_flow_imp.g_varchar2_table(7) := 'ive_yn, ''Y'' internal_yn, 1 color_pref_id from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            select 3 type_i';
+wwv_flow_imp.g_varchar2_table(8) := 'd, ''Recurring Meeting'' type_name, ''#F1C40F'' display_color, ''#F1C40F'' border_color,  ''Y'' is_active_yn';
+wwv_flow_imp.g_varchar2_table(9) := ', ''Y'' internal_yn, 13 color_pref_id from dual'||wwv_flow.LF||
+'            ) src'||wwv_flow.LF||
+'        on (dest.type_id = src.type_';
+wwv_flow_imp.g_varchar2_table(10) := 'id)'||wwv_flow.LF||
+'        when not matched then'||wwv_flow.LF||
+'            insert ( type_id, type_name, display_color, border_col';
+wwv_flow_imp.g_varchar2_table(11) := 'or, is_active_yn, color_pref_id )'||wwv_flow.LF||
+'            values ( src.type_id, src.type_name, src.display_color';
+wwv_flow_imp.g_varchar2_table(12) := ', src.border_color, src.is_active_yn, src.color_pref_id );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'        merge into eba_ca_series dest us';
+wwv_flow_imp.g_varchar2_table(13) := 'ing ('||wwv_flow.LF||
+'            select 1 series_id, trunc(current_timestamp+1,''HH'') start_date, trunc(current_time';
+wwv_flow_imp.g_varchar2_table(14) := 'stamp+50,''HH'') end_date, 8 recur_freq from dual'||wwv_flow.LF||
+'            ) src'||wwv_flow.LF||
+'        on (dest.series_id = src.s';
+wwv_flow_imp.g_varchar2_table(15) := 'eries_id)'||wwv_flow.LF||
+'        when not matched then'||wwv_flow.LF||
+'            insert ( series_id, start_date, end_date, recur_';
+wwv_flow_imp.g_varchar2_table(16) := 'freq )'||wwv_flow.LF||
+'            values ( src.series_id, src.start_date, src.end_date, src.recur_freq );'||wwv_flow.LF||
+''||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(17) := 'merge into eba_ca_events dest using ('||wwv_flow.LF||
+'            select 1 event_id,'||wwv_flow.LF||
+'                ''All Hands Meet';
+wwv_flow_imp.g_varchar2_table(18) := 'ing'' event_name,'||wwv_flow.LF||
+'                2 type_id,'||wwv_flow.LF||
+'                trunc(current_timestamp+5,''HH'') event_da';
+wwv_flow_imp.g_varchar2_table(19) := 'te_time,'||wwv_flow.LF||
+'                2 duration,'||wwv_flow.LF||
+'                ''Mandatory event'' event_desc,'||wwv_flow.LF||
+'                ''';
+wwv_flow_imp.g_varchar2_table(20) := 'Larry'' contact_person,'||wwv_flow.LF||
+'                ''Y'' display_time,'||wwv_flow.LF||
+'                ''HQ Conference Room 1'' loca';
+wwv_flow_imp.g_varchar2_table(21) := 'tion,'||wwv_flow.LF||
+'                ''Acme'' link_name_1,'||wwv_flow.LF||
+'                ''http://acme.com'' link_url_1,'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(22) := '    null series_id'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            select 2,'||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(23) := ' ''Sales Event'','||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                trunc(current_timestamp+7,''DD''),'||wwv_flow.LF||
+'                ';
+wwv_flow_imp.g_varchar2_table(24) := '24,'||wwv_flow.LF||
+'                ''An all-day event.'','||wwv_flow.LF||
+'                ''Moe'','||wwv_flow.LF||
+'                ''N'','||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(25) := ' ''Pasadena, CA'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                null'||wwv_flow.LF||
+'            from d';
+wwv_flow_imp.g_varchar2_table(26) := 'ual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            select 3,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'             ';
+wwv_flow_imp.g_varchar2_table(27) := '   3,'||wwv_flow.LF||
+'                trunc(current_timestamp+1,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pi';
+wwv_flow_imp.g_varchar2_table(28) := 'peline and discuss wins/losses.'','||wwv_flow.LF||
+'                ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''D';
+wwv_flow_imp.g_varchar2_table(29) := 'enver, CO'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(30) := '        union all'||wwv_flow.LF||
+'            select 4,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(31) := '              trunc(current_timestamp+8,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline a';
+wwv_flow_imp.g_varchar2_table(32) := 'nd discuss wins/losses.'','||wwv_flow.LF||
+'                ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, C';
+wwv_flow_imp.g_varchar2_table(33) := 'O'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(34) := 'union all'||wwv_flow.LF||
+'            select 5,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'          ';
+wwv_flow_imp.g_varchar2_table(35) := '      trunc(current_timestamp+15,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and disc';
+wwv_flow_imp.g_varchar2_table(36) := 'uss wins/losses.'','||wwv_flow.LF||
+'                ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(37) := '             null,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union a';
+wwv_flow_imp.g_varchar2_table(38) := 'll'||wwv_flow.LF||
+'            select 6,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'                t';
+wwv_flow_imp.g_varchar2_table(39) := 'runc(current_timestamp+22,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and discuss win';
+wwv_flow_imp.g_varchar2_table(40) := 's/losses.'','||wwv_flow.LF||
+'                ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'          ';
+wwv_flow_imp.g_varchar2_table(41) := '      null,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(42) := '        select 7,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'                trunc(cu';
+wwv_flow_imp.g_varchar2_table(43) := 'rrent_timestamp+29,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and discuss wins/losse';
+wwv_flow_imp.g_varchar2_table(44) := 's.'','||wwv_flow.LF||
+'                ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'                n';
+wwv_flow_imp.g_varchar2_table(45) := 'ull,'||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'           ';
+wwv_flow_imp.g_varchar2_table(46) := ' select 8,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'                trunc(current_t';
+wwv_flow_imp.g_varchar2_table(47) := 'imestamp+36,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(48) := '              ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(49) := '              null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            select';
+wwv_flow_imp.g_varchar2_table(50) := ' 9,'||wwv_flow.LF||
+'                ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'                trunc(current_timestam';
+wwv_flow_imp.g_varchar2_table(51) := 'p+43,''HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(52) := '       ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(53) := '       null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            union all'||wwv_flow.LF||
+'            select 10,'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(54) := '              ''Weekly Sales Update'','||wwv_flow.LF||
+'                3,'||wwv_flow.LF||
+'                trunc(current_timestamp+50,''';
+wwv_flow_imp.g_varchar2_table(55) := 'HH''),'||wwv_flow.LF||
+'                1,'||wwv_flow.LF||
+'                ''Review pipeline and discuss wins/losses.'','||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(56) := ' ''Carolyn'','||wwv_flow.LF||
+'                ''Y'','||wwv_flow.LF||
+'                ''Denver, CO'','||wwv_flow.LF||
+'                null,'||wwv_flow.LF||
+'               ';
+wwv_flow_imp.g_varchar2_table(57) := ' null,'||wwv_flow.LF||
+'                1'||wwv_flow.LF||
+'            from dual'||wwv_flow.LF||
+'            ) src'||wwv_flow.LF||
+'        on (dest.event_id = src.eve';
+wwv_flow_imp.g_varchar2_table(58) := 'nt_id)'||wwv_flow.LF||
+'        when not matched then'||wwv_flow.LF||
+'            insert (event_id, event_name, type_id, event_date_t';
+wwv_flow_imp.g_varchar2_table(59) := 'ime,'||wwv_flow.LF||
+'                duration, event_desc, contact_person, display_time,'||wwv_flow.LF||
+'                location, l';
+wwv_flow_imp.g_varchar2_table(60) := 'ink_name_1, link_url_1 )'||wwv_flow.LF||
+'            values (src.event_id, src.event_name, src.type_id, src.event_da';
+wwv_flow_imp.g_varchar2_table(61) := 'te_time,'||wwv_flow.LF||
+'                src.duration, src.event_desc, src.contact_person, src.display_time,'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(62) := '         src.location, src.link_name_1, src.link_url_1 );'||wwv_flow.LF||
+'    end load;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    procedure remove is'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(63) := ' begin'||wwv_flow.LF||
+'        delete from eba_ca_events where event_id < 100;'||wwv_flow.LF||
+'        delete from eba_ca_event_type';
+wwv_flow_imp.g_varchar2_table(64) := 's where type_id < 100 and type_id not in (select distinct type_id from eba_ca_events);'||wwv_flow.LF||
+'        delet';
+wwv_flow_imp.g_varchar2_table(65) := 'e from eba_ca_series where series_id < 100 and series_id not in (select distinct series_id from eba_';
+wwv_flow_imp.g_varchar2_table(66) := 'ca_events);'||wwv_flow.LF||
+'    end remove;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    function is_loaded return boolean is'||wwv_flow.LF||
+'        l_cnt number := 0;'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(67) := ' begin'||wwv_flow.LF||
+'        select count(*) into l_cnt from eba_ca_events where event_id < 100;'||wwv_flow.LF||
+'        if l_cnt ';
+wwv_flow_imp.g_varchar2_table(68) := '> 0 then return true; end if;'||wwv_flow.LF||
+'        select count(*) into l_cnt from eba_ca_event_types where type_';
+wwv_flow_imp.g_varchar2_table(69) := 'id < 100 and type_id not in (select distinct type_id from eba_ca_events);'||wwv_flow.LF||
+'        if l_cnt > 0 then ';
+wwv_flow_imp.g_varchar2_table(70) := 'return true; end if;'||wwv_flow.LF||
+'        return false;'||wwv_flow.LF||
+'    end is_loaded;'||wwv_flow.LF||
+'end eba_ca_sample_data;'||wwv_flow.LF||
+'/';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1996279992070876996)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Sample Data Package'
+,p_sequence=>40
+,p_script_type=>'UPGRADE'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_set_first_run_preference
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'begin'||wwv_flow.LF||
+'    eba_ca_fw.set_preference_value( p_preference_name => ''FIRST_RUN'', p_preference_value => ''N';
+wwv_flow_imp.g_varchar2_table(2) := 'O'' );'||wwv_flow.LF||
+'end;';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1168354336626808582)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Set First Run Preference'
+,p_sequence=>60
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'NOT_EXISTS'
+,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select null',
+'  from eba_ca_preferences',
+' where preference_name = ''FIRST_RUN'';'))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_timestamp_fix_bugid_31352674
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := '-- This script fixes BUG 31352674, replacing all columns of type TIMESTAMP(6) WITH LOCAL TIME ZONE t';
+wwv_flow_imp.g_varchar2_table(2) := 'o TIMESTAMP WITH TIME ZONE'||wwv_flow.LF||
+'-- it also updates all application triggers where columns where updated w';
+wwv_flow_imp.g_varchar2_table(3) := 'ith LOCALTIMESTAMP to CURRENT_TIMESTAMP'||wwv_flow.LF||
+'-- '||wwv_flow.LF||
+'-- This upgrade script will only run if there are tables';
+wwv_flow_imp.g_varchar2_table(4) := ' that start with ''EBA_CA%'' with columns of data type'||wwv_flow.LF||
+'-- TIMESTAMP(6) WITH LOCAL TIME ZONE'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- 1 Disa';
+wwv_flow_imp.g_varchar2_table(5) := 'ble all triggers.'||wwv_flow.LF||
+'alter trigger "BI_EBA_CA_ERRORS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_COLOR_PREFS"';
+wwv_flow_imp.g_varchar2_table(6) := ' DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_EVENT_TYPES_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_HISTORY" DIS';
+wwv_flow_imp.g_varchar2_table(7) := 'ABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_SERIES_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_TAGS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alte';
+wwv_flow_imp.g_varchar2_table(8) := 'r trigger "EBA_CA_CALENDARS_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "AD_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigge';
+wwv_flow_imp.g_varchar2_table(9) := 'r "EBA_CA_EVENTS_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BD_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "AU_EBA_C';
+wwv_flow_imp.g_varchar2_table(10) := 'A_EVENTS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "AI_EBA_CA_EVENTS" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_NOTES" DI';
+wwv_flow_imp.g_varchar2_table(11) := 'SABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_FILES" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_EMAIL_GROUPS_BIU" DISABLE';
+wwv_flow_imp.g_varchar2_table(12) := ';'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_EMAIL_GROUP_MBRS_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_TIMEFRAMES_BIU" DIS';
+wwv_flow_imp.g_varchar2_table(13) := 'ABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'--TABLE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
+'--alter trigger "EBA_CA_ADMINS_BIU" DISA';
+wwv_flow_imp.g_varchar2_table(14) := 'BLE;'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+'alter trigger "EBA_CA_NOTE_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_TZ_PREF" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'al';
+wwv_flow_imp.g_varchar2_table(15) := 'ter trigger "EBA_CA_USERS_BD" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "EBA_CA_USERS_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter trigger "';
+wwv_flow_imp.g_varchar2_table(16) := 'EBA_CA_PREFERENCES_BIU" DISABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- 2 Add temporary timestamp columns'||wwv_flow.LF||
+'alter table EBA_CA_ERRORS a';
+wwv_flow_imp.g_varchar2_table(17) := 'dd (ERR_TIME1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_COLOR_PREFS add (CREATED1 timestamp wit';
+wwv_flow_imp.g_varchar2_table(18) := 'h time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENT_TYPES add (CREATED_ON1 tim';
+wwv_flow_imp.g_varchar2_table(19) := 'estamp with time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_HISTORY add (C';
+wwv_flow_imp.g_varchar2_table(20) := 'HANGE_DATE1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_SERIES add (START_DATE1 timestamp with ti';
+wwv_flow_imp.g_varchar2_table(21) := 'me zone,END_DATE1 timestamp with time zone,CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 tim';
+wwv_flow_imp.g_varchar2_table(22) := 'estamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TAGS add (CREATED1 timestamp with time zone,UPDATED1 tim';
+wwv_flow_imp.g_varchar2_table(23) := 'estamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_CALENDARS add (CREATED_ON1 timestamp with time zone,LAST';
+wwv_flow_imp.g_varchar2_table(24) := '_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENTS add (EVENT_DATE_TIME1 timestamp w';
+wwv_flow_imp.g_varchar2_table(25) := 'ith time zone,CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alte';
+wwv_flow_imp.g_varchar2_table(26) := 'r table EBA_CA_NOTES add (CREATED1 timestamp with time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alt';
+wwv_flow_imp.g_varchar2_table(27) := 'er table EBA_CA_FILES add (CREATED1 timestamp with time zone,UPDATED1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'al';
+wwv_flow_imp.g_varchar2_table(28) := 'ter table EBA_CA_EMAIL_GROUPS add (CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 timestamp w';
+wwv_flow_imp.g_varchar2_table(29) := 'ith time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUP_MBRS add (CREATED_ON1 timestamp with time zone,LAST_';
+wwv_flow_imp.g_varchar2_table(30) := 'UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TIMEFRAMES add (CREATED_ON1 timestamp wit';
+wwv_flow_imp.g_varchar2_table(31) := 'h time zone,LAST_UPDATED_ON1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'--TABLE and TRIGGER NO LONGER EXISTS AT THI';
+wwv_flow_imp.g_varchar2_table(32) := 'S POINT.'||wwv_flow.LF||
+'--alter table EBA_CA_ADMINS add (CREATED_ON1 timestamp with time zone,LAST_UPDATED_ON1 time';
+wwv_flow_imp.g_varchar2_table(33) := 'stamp with time zone)'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+'alter table EBA_CA_NOTIFICATIONS add (DISPLAY_FROM1 timestamp with time zo';
+wwv_flow_imp.g_varchar2_table(34) := 'ne,DISPLAY_UNTIL1 timestamp with time zone,CREATED1 timestamp with time zone,UPDATED1 timestamp with';
+wwv_flow_imp.g_varchar2_table(35) := ' time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TZ_PREF add (CREATED1 timestamp with time zone,UPDATED1 timestamp w';
+wwv_flow_imp.g_varchar2_table(36) := 'ith time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_USERS add (CREATED1 timestamp with time zone,UPDATED1 timestamp ';
+wwv_flow_imp.g_varchar2_table(37) := 'with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_PREFERENCES add (CREATED_ON1 timestamp with time zone,UPDATED_O';
+wwv_flow_imp.g_varchar2_table(38) := 'N1 timestamp with time zone)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- Copy original column values into temporary column values'||wwv_flow.LF||
+'update E';
+wwv_flow_imp.g_varchar2_table(39) := 'BA_CA_ERRORS set ERR_TIME1 = ERR_TIME;'||wwv_flow.LF||
+'update EBA_CA_COLOR_PREFS set CREATED1 = CREATED,UPDATED1 = U';
+wwv_flow_imp.g_varchar2_table(40) := 'PDATED;'||wwv_flow.LF||
+'update EBA_CA_EVENT_TYPES set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'u';
+wwv_flow_imp.g_varchar2_table(41) := 'pdate EBA_CA_HISTORY set CHANGE_DATE1 = CHANGE_DATE;'||wwv_flow.LF||
+'update EBA_CA_SERIES set START_DATE1 = START_DA';
+wwv_flow_imp.g_varchar2_table(42) := 'TE,END_DATE1 = END_DATE,CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'update EBA_CA_T';
+wwv_flow_imp.g_varchar2_table(43) := 'AGS set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
+'update EBA_CA_CALENDARS set CREATED_ON1 = CREATED_ON,';
+wwv_flow_imp.g_varchar2_table(44) := 'LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'update EBA_CA_EVENTS set EVENT_DATE_TIME1 = EVENT_DATE_TIME,CREA';
+wwv_flow_imp.g_varchar2_table(45) := 'TED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'update EBA_CA_NOTES set CREATED1 = CREATED,';
+wwv_flow_imp.g_varchar2_table(46) := 'UPDATED1 = UPDATED;'||wwv_flow.LF||
+'update EBA_CA_FILES set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
+'update EBA_CA_EMA';
+wwv_flow_imp.g_varchar2_table(47) := 'IL_GROUPS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'update EBA_CA_EMAIL_GROUP';
+wwv_flow_imp.g_varchar2_table(48) := '_MBRS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'update EBA_CA_TIMEFRAMES set ';
+wwv_flow_imp.g_varchar2_table(49) := 'CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;'||wwv_flow.LF||
+'--TABLE and TRIGGER NO LONGER EXISTS AT';
+wwv_flow_imp.g_varchar2_table(50) := ' THIS POINT.'||wwv_flow.LF||
+'--update EBA_CA_ADMINS set CREATED_ON1 = CREATED_ON,LAST_UPDATED_ON1 = LAST_UPDATED_ON;';
+wwv_flow_imp.g_varchar2_table(51) := ''||wwv_flow.LF||
+'update EBA_CA_NOTIFICATIONS set DISPLAY_FROM1 = DISPLAY_FROM,DISPLAY_UNTIL1 = DISPLAY_UNTIL,CREATED';
+wwv_flow_imp.g_varchar2_table(52) := '1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
+'update EBA_CA_TZ_PREF set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
+'upd';
+wwv_flow_imp.g_varchar2_table(53) := 'ate EBA_CA_USERS set CREATED1 = CREATED,UPDATED1 = UPDATED;'||wwv_flow.LF||
+'update EBA_CA_PREFERENCES set CREATED_ON';
+wwv_flow_imp.g_varchar2_table(54) := '1 = CREATED_ON,UPDATED_ON1 = UPDATED_ON;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- 3 Drop original timestamp with local time zone columns'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(55) := 'alter table EBA_CA_ERRORS drop (ERR_TIME)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_COLOR_PREFS drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(56) := 'alter table EBA_CA_EVENT_TYPES drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_HISTORY drop (';
+wwv_flow_imp.g_varchar2_table(57) := 'CHANGE_DATE)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_SERIES drop (START_DATE,END_DATE,CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alt';
+wwv_flow_imp.g_varchar2_table(58) := 'er table EBA_CA_TAGS drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_CALENDARS drop (CREATED_ON,LAST_UPD';
+wwv_flow_imp.g_varchar2_table(59) := 'ATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENTS drop (EVENT_DATE_TIME,CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table';
+wwv_flow_imp.g_varchar2_table(60) := ' EBA_CA_NOTES drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_FILES drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table';
+wwv_flow_imp.g_varchar2_table(61) := ' EBA_CA_EMAIL_GROUPS drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUP_MBRS drop (C';
+wwv_flow_imp.g_varchar2_table(62) := 'REATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TIMEFRAMES drop (CREATED_ON,LAST_UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'--TAB';
+wwv_flow_imp.g_varchar2_table(63) := 'LE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
+'--alter table EBA_CA_ADMINS drop (CREATED_ON,LAST_UPD';
+wwv_flow_imp.g_varchar2_table(64) := 'ATED_ON)'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+'alter table EBA_CA_NOTIFICATIONS drop (DISPLAY_FROM,DISPLAY_UNTIL,CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'al';
+wwv_flow_imp.g_varchar2_table(65) := 'ter table EBA_CA_TZ_PREF drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_USERS drop (CREATED,UPDATED)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(66) := 'alter table EBA_CA_PREFERENCES drop (CREATED_ON,UPDATED_ON)'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- 4 Rename temporary columns back to';
+wwv_flow_imp.g_varchar2_table(67) := ' original column names'||wwv_flow.LF||
+'alter table EBA_CA_ERRORS rename column ERR_TIME1 to ERR_TIME'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table E';
+wwv_flow_imp.g_varchar2_table(68) := 'BA_CA_COLOR_PREFS rename column CREATED1 to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_COLOR_PREFS rename column U';
+wwv_flow_imp.g_varchar2_table(69) := 'PDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENT_TYPES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter ';
+wwv_flow_imp.g_varchar2_table(70) := 'table EBA_CA_EVENT_TYPES rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_HIST';
+wwv_flow_imp.g_varchar2_table(71) := 'ORY rename column CHANGE_DATE1 to CHANGE_DATE'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_SERIES rename column START_DATE1 ';
+wwv_flow_imp.g_varchar2_table(72) := 'to START_DATE'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_SERIES rename column END_DATE1 to END_DATE'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_S';
+wwv_flow_imp.g_varchar2_table(73) := 'ERIES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_SERIES rename column LAST_UPDATED';
+wwv_flow_imp.g_varchar2_table(74) := '_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TAGS rename column CREATED1 to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EB';
+wwv_flow_imp.g_varchar2_table(75) := 'A_CA_TAGS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_CALENDARS rename column CREATED_ON1';
+wwv_flow_imp.g_varchar2_table(76) := ' to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_CALENDARS rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'al';
+wwv_flow_imp.g_varchar2_table(77) := 'ter table EBA_CA_EVENTS rename column EVENT_DATE_TIME1 to EVENT_DATE_TIME'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENT';
+wwv_flow_imp.g_varchar2_table(78) := 'S rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EVENTS rename column LAST_UPDATED_ON1';
+wwv_flow_imp.g_varchar2_table(79) := ' to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_NOTES rename column CREATED1 to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_C';
+wwv_flow_imp.g_varchar2_table(80) := 'A_NOTES rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_FILES rename column CREATED1 to CREAT';
+wwv_flow_imp.g_varchar2_table(81) := 'ED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_FILES rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUPS re';
+wwv_flow_imp.g_varchar2_table(82) := 'name column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUPS rename column LAST_UPDATED_O';
+wwv_flow_imp.g_varchar2_table(83) := 'N1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUP_MBRS rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(84) := '/'||wwv_flow.LF||
+'alter table EBA_CA_EMAIL_GROUP_MBRS rename column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter tabl';
+wwv_flow_imp.g_varchar2_table(85) := 'e EBA_CA_TIMEFRAMES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TIMEFRAMES rename c';
+wwv_flow_imp.g_varchar2_table(86) := 'olumn LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'----TABLE and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
+'--';
+wwv_flow_imp.g_varchar2_table(87) := 'alter table EBA_CA_ADMINS rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+'--alter table EBA_CA_ADMINS re';
+wwv_flow_imp.g_varchar2_table(88) := 'name column LAST_UPDATED_ON1 to LAST_UPDATED_ON'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+'alter table EBA_CA_NOTIFICATIONS rename column D';
+wwv_flow_imp.g_varchar2_table(89) := 'ISPLAY_FROM1 to DISPLAY_FROM'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_NOTIFICATIONS rename column DISPLAY_UNTIL1 to DISP';
+wwv_flow_imp.g_varchar2_table(90) := 'LAY_UNTIL'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_NOTIFICATIONS rename column CREATED1 to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_';
+wwv_flow_imp.g_varchar2_table(91) := 'NOTIFICATIONS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TZ_PREF rename column CREATED1 ';
+wwv_flow_imp.g_varchar2_table(92) := 'to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_TZ_PREF rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_USERS';
+wwv_flow_imp.g_varchar2_table(93) := ' rename column CREATED1 to CREATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_USERS rename column UPDATED1 to UPDATED'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'al';
+wwv_flow_imp.g_varchar2_table(94) := 'ter table EBA_CA_PREFERENCES rename column CREATED_ON1 to CREATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'alter table EBA_CA_PREFERENCE';
+wwv_flow_imp.g_varchar2_table(95) := 'S rename column UPDATED_ON1 to UPDATED_ON'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'-- 6 Re-create, enable Triggers and set columns with cu';
+wwv_flow_imp.g_varchar2_table(96) := 'rrent_timestamp instead of localtimestamp'||wwv_flow.LF||
+'create or replace TRIGGER BI_EBA_CA_ERRORS'||wwv_flow.LF||
+'    before inse';
+wwv_flow_imp.g_varchar2_table(97) := 'rt or update on EBA_CA_ERRORS'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if :new.id is null then'||wwv_flow.LF||
+'        select to_n';
+wwv_flow_imp.g_varchar2_table(98) := 'umber(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alt';
+wwv_flow_imp.g_varchar2_table(99) := 'er trigger "BI_EBA_CA_ERRORS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER BIU_EBA_CA_COLOR_PREFS'||wwv_flow.LF||
+'before ins';
+wwv_flow_imp.g_varchar2_table(100) := 'ert or update on EBA_CA_COLOR_PREFS'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if inserting and :new.id is null then';
+wwv_flow_imp.g_varchar2_table(101) := ''||wwv_flow.LF||
+'        select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
+'        into :new.id'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(102) := '  from dual;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if inserting then'||wwv_flow.LF||
+'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(103) := '       :new.created := current_timestamp;'||wwv_flow.LF||
+'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(104) := '  :new.updated := current_timestamp;'||wwv_flow.LF||
+'        :new.row_version_number := 1;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if updati';
+wwv_flow_imp.g_varchar2_table(105) := 'ng then'||wwv_flow.LF||
+'        :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'        :new.updated_';
+wwv_flow_imp.g_varchar2_table(106) := 'by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.updated    := current_timestamp;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if :new';
+wwv_flow_imp.g_varchar2_table(107) := '.display_sequence is null then'||wwv_flow.LF||
+'       :new.display_sequence := 10;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger';
+wwv_flow_imp.g_varchar2_table(108) := ' "BIU_EBA_CA_COLOR_PREFS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_EVENT_TYPES_BIU'||wwv_flow.LF||
+'  before inser';
+wwv_flow_imp.g_varchar2_table(109) := 't or update on EBA_CA_EVENT_TYPES               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(110) := 'if :new.type_id is null '||wwv_flow.LF||
+'        then :new.type_id := eba_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :new.cre';
+wwv_flow_imp.g_varchar2_table(111) := 'ated_on := current_timestamp;'||wwv_flow.LF||
+'     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if upda';
+wwv_flow_imp.g_varchar2_table(112) := 'ting then'||wwv_flow.LF||
+'      :new.last_updated_on := current_timestamp;'||wwv_flow.LF||
+'      :new.last_updated_by := nvl(v(''APP_';
+wwv_flow_imp.g_varchar2_table(113) := 'USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'   if :new.is_active_yn is null then'||wwv_flow.LF||
+'       if :new.type_name is null then';
+wwv_flow_imp.g_varchar2_table(114) := ''||wwv_flow.LF||
+'          :new.is_active_yn := ''N'';'||wwv_flow.LF||
+'       else'||wwv_flow.LF||
+'          :new.is_active_yn := ''Y'';'||wwv_flow.LF||
+'       end if;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(115) := '   end if;'||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_EVENT_TYPES_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER BIU_';
+wwv_flow_imp.g_varchar2_table(116) := 'EBA_CA_HISTORY '||wwv_flow.LF||
+'   before insert or update on EBA_CA_HISTORY'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   if :new.ID is ';
+wwv_flow_imp.g_varchar2_table(117) := 'null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dua';
+wwv_flow_imp.g_varchar2_table(118) := 'l;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.change_date := current_timestamp;'||wwv_flow.LF||
+'       :new.changed';
+wwv_flow_imp.g_varchar2_table(119) := '_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number := 1;'||wwv_flow.LF||
+'   elsif updating then'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(120) := ' :new.row_version_number := :new.row_version_number + 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "BIU_EBA_C';
+wwv_flow_imp.g_varchar2_table(121) := 'A_HISTORY" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_SERIES_BIU'||wwv_flow.LF||
+'  before insert or update on EBA_C';
+wwv_flow_imp.g_varchar2_table(122) := 'A_SERIES               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :new.series_id is null';
+wwv_flow_imp.g_varchar2_table(123) := ' '||wwv_flow.LF||
+'        then :new.series_id := eba_ca_api.gen_id;'||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :new.created_on := current_tim';
+wwv_flow_imp.g_varchar2_table(124) := 'estamp;'||wwv_flow.LF||
+'     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :new.l';
+wwv_flow_imp.g_varchar2_table(125) := 'ast_updated_on := current_timestamp;'||wwv_flow.LF||
+'      :new.last_updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end i';
+wwv_flow_imp.g_varchar2_table(126) := 'f; '||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_SERIES_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER BIU_EBA_CA_TAGS'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(127) := '  before insert or update on EBA_CA_TAGS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'   begin'||wwv_flow.LF||
+'      if inserting then'||wwv_flow.LF||
+'         i';
+wwv_flow_imp.g_varchar2_table(128) := 'f :new.id is null then'||wwv_flow.LF||
+'           select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(129) := '         into :new.id'||wwv_flow.LF||
+'           from dual;'||wwv_flow.LF||
+'         end if;'||wwv_flow.LF||
+'         :new.created := current_timest';
+wwv_flow_imp.g_varchar2_table(130) := 'amp;'||wwv_flow.LF||
+'         :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'      end if;'||wwv_flow.LF||
+'      if updating then'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(131) := '    :new.updated := current_timestamp;'||wwv_flow.LF||
+'         :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'      en';
+wwv_flow_imp.g_varchar2_table(132) := 'd if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_TAGS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_CALENDARS_';
+wwv_flow_imp.g_varchar2_table(133) := 'BIU'||wwv_flow.LF||
+'  before insert or update on EBA_CA_CALENDARS               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inse';
+wwv_flow_imp.g_varchar2_table(134) := 'rting then'||wwv_flow.LF||
+'     if :new.calendar_id is null '||wwv_flow.LF||
+'        then :new.calendar_id := eba_ca_api.gen_id; '||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(135) := '   end if;'||wwv_flow.LF||
+'     :new.created_on := current_timestamp;'||wwv_flow.LF||
+'     :new.created_by := nvl(v(''APP_USER''),USER';
+wwv_flow_imp.g_varchar2_table(136) := ');'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :new.last_updated_on := current_timestamp;'||wwv_flow.LF||
+'      :new.last_u';
+wwv_flow_imp.g_varchar2_table(137) := 'pdated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_CALENDARS_BIU" ENAB';
+wwv_flow_imp.g_varchar2_table(138) := 'LE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER AD_EBA_CA_EVENTS'||wwv_flow.LF||
+'   after delete on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'b';
+wwv_flow_imp.g_varchar2_table(139) := 'egin'||wwv_flow.LF||
+'   insert into eba_ca_history ('||wwv_flow.LF||
+'       table_name, component_rowkey, COMPONENT_ID, column_name,';
+wwv_flow_imp.g_varchar2_table(140) := ' old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :old.row_key, :old.event_id, ''DELETE'',null,''Removed ';
+wwv_flow_imp.g_varchar2_table(141) := 'event ''||:old.EVENT_NAME);'||wwv_flow.LF||
+'end AD_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "AD_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'crea';
+wwv_flow_imp.g_varchar2_table(142) := 'te or replace TRIGGER EBA_CA_EVENTS_BIU'||wwv_flow.LF||
+'  before insert or update on EBA_CA_EVENTS               '||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(143) := 'for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW.event_id is null '||wwv_flow.LF||
+'        then :NEW.event_i';
+wwv_flow_imp.g_varchar2_table(144) := 'd := EBA_ca_api.gen_id;'||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'     :NEW.CREATED_BY';
+wwv_flow_imp.g_varchar2_table(145) := ' := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'     :new.row_version_number := 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'     ';
+wwv_flow_imp.g_varchar2_table(146) := ' :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(147) := '     :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'   if :new.row_key i';
+wwv_flow_imp.g_varchar2_table(148) := 's null then'||wwv_flow.LF||
+'       select eba_ca_fw.compress_int(eba_ca_seq.nextval) into :new.row_key from dual;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(149) := ' end if;'||wwv_flow.LF||
+'   eba_ca_fw.tag_sync('||wwv_flow.LF||
+'         p_new_tags      => :new.tags,'||wwv_flow.LF||
+'         p_old_tags      => :';
+wwv_flow_imp.g_varchar2_table(150) := 'old.tags,'||wwv_flow.LF||
+'         p_content_type  => ''EVENT'','||wwv_flow.LF||
+'         p_content_id    => :new.event_id );'||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(151) := ''||wwv_flow.LF||
+'alter trigger "EBA_CA_EVENTS_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER BD_EBA_CA_EVENTS'||wwv_flow.LF||
+'    before ';
+wwv_flow_imp.g_varchar2_table(152) := 'delete on EBA_CA_EVENTS'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    eba_ca_fw.tag_sync('||wwv_flow.LF||
+'        p_new_tags      => nu';
+wwv_flow_imp.g_varchar2_table(153) := 'll,'||wwv_flow.LF||
+'        p_old_tags      => :old.tags,'||wwv_flow.LF||
+'        p_content_type  => ''EVENT'','||wwv_flow.LF||
+'        p_content_id  ';
+wwv_flow_imp.g_varchar2_table(154) := '  => :old.event_id );'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "BD_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER ';
+wwv_flow_imp.g_varchar2_table(155) := 'AU_EBA_CA_EVENTS'||wwv_flow.LF||
+'   after update on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'declare'||wwv_flow.LF||
+'   ov varchar2(4000) := nu';
+wwv_flow_imp.g_varchar2_table(156) := 'll;'||wwv_flow.LF||
+'   nv varchar2(4000) := null;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   -- FK'||wwv_flow.LF||
+'   if updating and :old.TYPE_ID != :new.TYPE_ID the';
+wwv_flow_imp.g_varchar2_table(157) := 'n'||wwv_flow.LF||
+'      ov := null; nv := null;'||wwv_flow.LF||
+'      for c1 in (select type_name from eba_ca_event_types t where t.';
+wwv_flow_imp.g_varchar2_table(158) := 'type_id = :old.TYPE_ID) loop'||wwv_flow.LF||
+'          ov := c1.type_name;'||wwv_flow.LF||
+'      end loop;'||wwv_flow.LF||
+'      for c1 in (select t';
+wwv_flow_imp.g_varchar2_table(159) := 'ype_name from eba_ca_event_types t where t.type_id = :new.TYPE_ID) loop'||wwv_flow.LF||
+'          nv := c1.type_name';
+wwv_flow_imp.g_varchar2_table(160) := ';'||wwv_flow.LF||
+'      end loop;   '||wwv_flow.LF||
+'      insert into eba_ca_history (table_name, component_rowkey, component_id, c';
+wwv_flow_imp.g_varchar2_table(161) := 'olumn_name, old_value, new_value) values'||wwv_flow.LF||
+'          (''EVENTS'',:new.row_key, :new.event_id, ''TYPE_ID'',';
+wwv_flow_imp.g_varchar2_table(162) := 'ov,nv);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   --'||wwv_flow.LF||
+'   if nvl(:old.SERIES_ID,''0'') != nvl(:new.SERIES_ID,''0'') then'||wwv_flow.LF||
+'       insert';
+wwv_flow_imp.g_varchar2_table(163) := ' into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value)';
+wwv_flow_imp.g_varchar2_table(164) := ' values'||wwv_flow.LF||
+'       (''EVENTS'',:new.row_key, :new.event_id, ''SERIES_ID'',:old.SERIES_ID,:new.SERIES_ID);'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(165) := ' end if;'||wwv_flow.LF||
+'   if nvl(:old.EVENT_NAME,''0'') != nvl(:new.EVENT_NAME,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_h';
+wwv_flow_imp.g_varchar2_table(166) := 'istory (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(167) := ' (''EVENTS'',:new.row_key, :new.event_id, ''EVENT_NAME'',:old.EVENT_NAME,:new.EVENT_NAME);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(168) := ' if nvl(:old.DURATION,''0'') != nvl(:new.DURATION,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_n';
+wwv_flow_imp.g_varchar2_table(169) := 'ame, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :ne';
+wwv_flow_imp.g_varchar2_table(170) := 'w.row_key, :new.event_id, ''DURATION'',:old.DURATION,:new.DURATION);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.EVENT_D';
+wwv_flow_imp.g_varchar2_table(171) := 'ESC,''0'') != nvl(:new.EVENT_DESC,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_r';
+wwv_flow_imp.g_varchar2_table(172) := 'owkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.';
+wwv_flow_imp.g_varchar2_table(173) := 'event_id, ''EVENT_DESC'',:old.EVENT_DESC,:new.EVENT_DESC);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.CONTACT_PERSON,''0';
+wwv_flow_imp.g_varchar2_table(174) := ''') != nvl(:new.CONTACT_PERSON,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_row';
+wwv_flow_imp.g_varchar2_table(175) := 'key, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.ev';
+wwv_flow_imp.g_varchar2_table(176) := 'ent_id, ''CONTACT_PERSON'',:old.CONTACT_PERSON,:new.CONTACT_PERSON);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.CONTACT';
+wwv_flow_imp.g_varchar2_table(177) := '_EMAIL,''0'') != nvl(:new.CONTACT_EMAIL,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, compo';
+wwv_flow_imp.g_varchar2_table(178) := 'nent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key,';
+wwv_flow_imp.g_varchar2_table(179) := ' :new.event_id, ''CONTACT_EMAIL'',:old.CONTACT_EMAIL,:new.CONTACT_EMAIL);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.DI';
+wwv_flow_imp.g_varchar2_table(180) := 'SPLAY_TIME,''0'') != nvl(:new.DISPLAY_TIME,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, co';
+wwv_flow_imp.g_varchar2_table(181) := 'mponent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_k';
+wwv_flow_imp.g_varchar2_table(182) := 'ey, :new.event_id, ''DISPLAY_TIME'',:old.DISPLAY_TIME,:new.DISPLAY_TIME);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LO';
+wwv_flow_imp.g_varchar2_table(183) := 'CATION,''0'') != nvl(:new.LOCATION,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_';
+wwv_flow_imp.g_varchar2_table(184) := 'rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new';
+wwv_flow_imp.g_varchar2_table(185) := '.event_id, ''LOCATION'',:old.LOCATION,:new.LOCATION);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_1,''0'') != nv';
+wwv_flow_imp.g_varchar2_table(186) := 'l(:new.LINK_NAME_1,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPON';
+wwv_flow_imp.g_varchar2_table(187) := 'ENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LI';
+wwv_flow_imp.g_varchar2_table(188) := 'NK_NAME_1'',:old.LINK_NAME_1,:new.LINK_NAME_1);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_1,''0'') != nvl(:new';
+wwv_flow_imp.g_varchar2_table(189) := '.LINK_URL_1,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID,';
+wwv_flow_imp.g_varchar2_table(190) := ' column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_';
+wwv_flow_imp.g_varchar2_table(191) := '1'',:old.LINK_URL_1,:new.LINK_URL_1);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_2,''0'') != nvl(:new.LINK_NAM';
+wwv_flow_imp.g_varchar2_table(192) := 'E_2,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_';
+wwv_flow_imp.g_varchar2_table(193) := 'name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_2'',:old';
+wwv_flow_imp.g_varchar2_table(194) := '.LINK_NAME_2,:new.LINK_NAME_2);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_2,''0'') != nvl(:new.LINK_URL_2,''0''';
+wwv_flow_imp.g_varchar2_table(195) := ') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, o';
+wwv_flow_imp.g_varchar2_table(196) := 'ld_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_2'',:old.LINK_UR';
+wwv_flow_imp.g_varchar2_table(197) := 'L_2,:new.LINK_URL_2);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_3,''0'') != nvl(:new.LINK_NAME_3,''0'') then'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(198) := '      insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value';
+wwv_flow_imp.g_varchar2_table(199) := ', new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_3'',:old.LINK_NAME_3,:n';
+wwv_flow_imp.g_varchar2_table(200) := 'ew.LINK_NAME_3);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_3,''0'') != nvl(:new.LINK_URL_3,''0'') then'||wwv_flow.LF||
+'       i';
+wwv_flow_imp.g_varchar2_table(201) := 'nsert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_v';
+wwv_flow_imp.g_varchar2_table(202) := 'alue) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_3'',:old.LINK_URL_3,:new.LINK_U';
+wwv_flow_imp.g_varchar2_table(203) := 'RL_3);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_NAME_4,''0'') != nvl(:new.LINK_NAME_4,''0'') then'||wwv_flow.LF||
+'       insert in';
+wwv_flow_imp.g_varchar2_table(204) := 'to eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) va';
+wwv_flow_imp.g_varchar2_table(205) := 'lues'||wwv_flow.LF||
+'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_4'',:old.LINK_NAME_4,:new.LINK_NAME_4)';
+wwv_flow_imp.g_varchar2_table(206) := ';'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if nvl(:old.LINK_URL_4,''0'') != nvl(:new.LINK_URL_4,''0'') then'||wwv_flow.LF||
+'       insert into eba_';
+wwv_flow_imp.g_varchar2_table(207) := 'ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(208) := '     (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_4'',:old.LINK_URL_4,:new.LINK_URL_4);'||wwv_flow.LF||
+'   end i';
+wwv_flow_imp.g_varchar2_table(209) := 'f;'||wwv_flow.LF||
+'   if nvl(:old.TAGS,''0'') != nvl(:new.TAGS,''0'') then'||wwv_flow.LF||
+'       insert into eba_ca_history (table_name';
+wwv_flow_imp.g_varchar2_table(210) := ', component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'', :new.r';
+wwv_flow_imp.g_varchar2_table(211) := 'ow_key, :new.event_id, ''TAGS'',:old.TAGS,:new.TAGS);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   -- timestamp columns'||wwv_flow.LF||
+'   if (:old.E';
+wwv_flow_imp.g_varchar2_table(212) := 'VENT_DATE_TIME is null and :new.EVENT_DATE_TIME is not null) or '||wwv_flow.LF||
+'      (:old.EVENT_DATE_TIME is not ';
+wwv_flow_imp.g_varchar2_table(213) := 'null and :new.EVENT_DATE_TIME is null) or '||wwv_flow.LF||
+'      (:old.EVENT_DATE_TIME != :new.EVENT_DATE_TIME) then';
+wwv_flow_imp.g_varchar2_table(214) := ''||wwv_flow.LF||
+'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_val';
+wwv_flow_imp.g_varchar2_table(215) := 'ue, new_value) values'||wwv_flow.LF||
+'          (''EVENTS'', :new.row_key, :new.event_id, ''EVENT_DATE_TIME'',:old.EVENT';
+wwv_flow_imp.g_varchar2_table(216) := '_DATE_TIME,:new.EVENT_DATE_TIME);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end AU_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "AU_EBA_CA_EVENT';
+wwv_flow_imp.g_varchar2_table(217) := 'S" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER AI_EBA_CA_EVENTS'||wwv_flow.LF||
+'   after insert on EBA_CA_EVENTS'||wwv_flow.LF||
+'   for eac';
+wwv_flow_imp.g_varchar2_table(218) := 'h row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   insert into eba_ca_history ('||wwv_flow.LF||
+'       table_name, component_rowkey, component_id, colum';
+wwv_flow_imp.g_varchar2_table(219) := 'n_name, old_value, new_value) values'||wwv_flow.LF||
+'       (''EVENTS'',:new.row_key, :new.event_id, ''Event Name '',nul';
+wwv_flow_imp.g_varchar2_table(220) := 'l,:new.EVENT_NAME);'||wwv_flow.LF||
+'end AI_EBA_CA_EVENTS;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "AI_EBA_CA_EVENTS" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or r';
+wwv_flow_imp.g_varchar2_table(221) := 'eplace TRIGGER BIU_EBA_CA_NOTES '||wwv_flow.LF||
+'   before insert or update on EBA_CA_NOTES'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(222) := ' if :new.ID is null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :';
+wwv_flow_imp.g_varchar2_table(223) := 'new.id from dual;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.created := current_timestamp;'||wwv_flow.LF||
+'       :';
+wwv_flow_imp.g_varchar2_table(224) := 'new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.u';
+wwv_flow_imp.g_varchar2_table(225) := 'pdated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number := 1;'||wwv_flow.LF||
+'   elsif updating then'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(226) := '       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting or ';
+wwv_flow_imp.g_varchar2_table(227) := 'updating then'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.updated_by := nvl(wwv_flow.g_use';
+wwv_flow_imp.g_varchar2_table(228) := 'r,user);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_NOTES" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER BI';
+wwv_flow_imp.g_varchar2_table(229) := 'U_EBA_CA_FILES '||wwv_flow.LF||
+'   before insert or update on EBA_CA_FILES'||wwv_flow.LF||
+'   for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'  if :new.ID is nul';
+wwv_flow_imp.g_varchar2_table(230) := 'l then'||wwv_flow.LF||
+'    select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(231) := ' end if;'||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'    :new.created := current_timestamp;'||wwv_flow.LF||
+'    :new.created_by := nvl(wwv_f';
+wwv_flow_imp.g_varchar2_table(232) := 'low.g_user,user);'||wwv_flow.LF||
+'    :new.updated := current_timestamp;'||wwv_flow.LF||
+'    :new.updated_by := nvl(wwv_flow.g_user,';
+wwv_flow_imp.g_varchar2_table(233) := 'user);'||wwv_flow.LF||
+'    :new.row_version_number := 1;'||wwv_flow.LF||
+'  elsif updating then'||wwv_flow.LF||
+'    :new.row_version_number := nvl(:o';
+wwv_flow_imp.g_varchar2_table(234) := 'ld.row_version_number,1) + 1;'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'  if (inserting or updating) and nvl(dbms_lob.getlength(:new';
+wwv_flow_imp.g_varchar2_table(235) := '.file_blob),0) > 15728640 then'||wwv_flow.LF||
+'    raise_application_error(-20000, ''The size of the uploaded file wa';
+wwv_flow_imp.g_varchar2_table(236) := 's over 15MB. Please upload a smaller file.'');'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'  if inserting or updating then'||wwv_flow.LF||
+'    :new.upd';
+wwv_flow_imp.g_varchar2_table(237) := 'ated := current_timestamp;'||wwv_flow.LF||
+'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'  end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter';
+wwv_flow_imp.g_varchar2_table(238) := ' trigger "BIU_EBA_CA_FILES" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_EMAIL_GROUPS_BIU'||wwv_flow.LF||
+'  before in';
+wwv_flow_imp.g_varchar2_table(239) := 'sert or update on EBA_CA_EMAIL_GROUPS               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(240) := '    if :NEW.group_id is null '||wwv_flow.LF||
+'        then :NEW.group_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :N';
+wwv_flow_imp.g_varchar2_table(241) := 'EW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   i';
+wwv_flow_imp.g_varchar2_table(242) := 'f updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v';
+wwv_flow_imp.g_varchar2_table(243) := '(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_EMAIL_GROUPS_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create o';
+wwv_flow_imp.g_varchar2_table(244) := 'r replace TRIGGER EBA_CA_EMAIL_GROUP_MBRS_BIU'||wwv_flow.LF||
+'  before insert or update on EBA_CA_EMAIL_GROUP_MBRS  ';
+wwv_flow_imp.g_varchar2_table(245) := '            '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserting then'||wwv_flow.LF||
+'     if :NEW.mbr_id is null '||wwv_flow.LF||
+'        then';
+wwv_flow_imp.g_varchar2_table(246) := ' :NEW.mbr_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'     :NE';
+wwv_flow_imp.g_varchar2_table(247) := 'W.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON :';
+wwv_flow_imp.g_varchar2_table(248) := '= current_timestamp;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alt';
+wwv_flow_imp.g_varchar2_table(249) := 'er trigger "EBA_CA_EMAIL_GROUP_MBRS_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_TIMEFRAMES_BIU'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(250) := '  before insert or update on EBA_CA_TIMEFRAMES               '||wwv_flow.LF||
+'  for each row  '||wwv_flow.LF||
+'begin   '||wwv_flow.LF||
+'  if inserti';
+wwv_flow_imp.g_varchar2_table(251) := 'ng then'||wwv_flow.LF||
+'     if :NEW.tf_id is null '||wwv_flow.LF||
+'        then :NEW.tf_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'     end if;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(252) := ' :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(253) := '  if updating then'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
+'      :NEW.LAST_UPDATED_BY := nv';
+wwv_flow_imp.g_varchar2_table(254) := 'l(v(''APP_USER''),USER);'||wwv_flow.LF||
+'   end if; '||wwv_flow.LF||
+'end; '||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_TIMEFRAMES_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'--TABLE';
+wwv_flow_imp.g_varchar2_table(255) := ' and TRIGGER NO LONGER EXISTS AT THIS POINT.'||wwv_flow.LF||
+'--create or replace TRIGGER EBA_CA_ADMINS_BIU'||wwv_flow.LF||
+'--  befor';
+wwv_flow_imp.g_varchar2_table(256) := 'e insert or update on EBA_CA_ADMINS               '||wwv_flow.LF||
+'--  for each row  '||wwv_flow.LF||
+'--begin   '||wwv_flow.LF||
+'--  if inserting th';
+wwv_flow_imp.g_varchar2_table(257) := 'en'||wwv_flow.LF||
+'--     if :NEW.admin_id is null '||wwv_flow.LF||
+'--        then :NEW.admin_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
+'--     end i';
+wwv_flow_imp.g_varchar2_table(258) := 'f;'||wwv_flow.LF||
+'--     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
+'--     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'-';
+wwv_flow_imp.g_varchar2_table(259) := '-   end if;'||wwv_flow.LF||
+'--   if updating then'||wwv_flow.LF||
+'--      :NEW.LAST_UPDATED_ON := current_timestamp;'||wwv_flow.LF||
+'--      :NEW.LA';
+wwv_flow_imp.g_varchar2_table(260) := 'ST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'--   end if; '||wwv_flow.LF||
+'--end;'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'--alter trigger "EBA_CA_ADMINS_B';
+wwv_flow_imp.g_varchar2_table(261) := 'IU" ENABLE;'||wwv_flow.LF||
+'--/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_NOTE_BIU'||wwv_flow.LF||
+'before insert or update on EBA_CA_NOTIFIC';
+wwv_flow_imp.g_varchar2_table(262) := 'ATIONS'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if inserting and :new.id is null then'||wwv_flow.LF||
+'        select to_number(sys';
+wwv_flow_imp.g_varchar2_table(263) := '_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
+'        into :new.id'||wwv_flow.LF||
+'        from dual;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(264) := 'if inserting then'||wwv_flow.LF||
+'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.created := curren';
+wwv_flow_imp.g_varchar2_table(265) := 't_timestamp;'||wwv_flow.LF||
+'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.updated := current_tim';
+wwv_flow_imp.g_varchar2_table(266) := 'estamp;'||wwv_flow.LF||
+'        :new.row_version_number := 1;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if updating then'||wwv_flow.LF||
+'        :new.row_vers';
+wwv_flow_imp.g_varchar2_table(267) := 'ion_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'        :new.updated_by := nvl(v(''APP_USER''),USER)';
+wwv_flow_imp.g_varchar2_table(268) := ';'||wwv_flow.LF||
+'        :new.updated    := current_timestamp;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if :new.notification_type is null th';
+wwv_flow_imp.g_varchar2_table(269) := 'en'||wwv_flow.LF||
+'       :new.notification_type := ''MANUAL'';'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if :new.display_sequence is null then'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(270) := '       :new.display_sequence := 10;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_NOTE_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'c';
+wwv_flow_imp.g_varchar2_table(271) := 'reate or replace TRIGGER BIU_EBA_CA_TZ_PREF'||wwv_flow.LF||
+'   before insert or update on EBA_CA_TZ_PREF'||wwv_flow.LF||
+'   for each';
+wwv_flow_imp.g_varchar2_table(272) := ' row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'   if :new.ID is null then'||wwv_flow.LF||
+'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+wwv_flow_imp.g_varchar2_table(273) := 'XXXX'') into :new.id from dual;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if inserting then'||wwv_flow.LF||
+'       :new.created := current_timest';
+wwv_flow_imp.g_varchar2_table(274) := 'amp;'||wwv_flow.LF||
+'       :new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(275) := '       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
+'       :new.row_version_number := 1;'||wwv_flow.LF||
+'   elsif u';
+wwv_flow_imp.g_varchar2_table(276) := 'pdating then'||wwv_flow.LF||
+'       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if ';
+wwv_flow_imp.g_varchar2_table(277) := 'inserting or updating then'||wwv_flow.LF||
+'       :new.updated := current_timestamp;'||wwv_flow.LF||
+'       :new.updated_by := nvl(w';
+wwv_flow_imp.g_varchar2_table(278) := 'wv_flow.g_user,user);'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'   if :new.TIMEZONE_PREFERENCE is null then'||wwv_flow.LF||
+'       :new.timezone_pr';
+wwv_flow_imp.g_varchar2_table(279) := 'eference := ''UTC'';'||wwv_flow.LF||
+'   end if;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "BIU_EBA_CA_TZ_PREF" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replac';
+wwv_flow_imp.g_varchar2_table(280) := 'e TRIGGER EBA_CA_USERS_BD'||wwv_flow.LF||
+'    before delete on EBA_CA_USERS'||wwv_flow.LF||
+'    for each row'||wwv_flow.LF||
+'declare'||wwv_flow.LF||
+'    pragma auto';
+wwv_flow_imp.g_varchar2_table(281) := 'nomous_transaction;'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    -- Disallow deletes to a user''s own record unless last one.'||wwv_flow.LF||
+'    if v(''';
+wwv_flow_imp.g_varchar2_table(282) := 'APP_USER'') = upper(:old.username) then'||wwv_flow.LF||
+'       for c1 in ('||wwv_flow.LF||
+'          select count(*) cnt'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(283) := 'from eba_ca_users'||wwv_flow.LF||
+'           where id != :old.id )'||wwv_flow.LF||
+'       loop'||wwv_flow.LF||
+'          if c1.cnt > 0 then'||wwv_flow.LF||
+'        ';
+wwv_flow_imp.g_varchar2_table(284) := '     raise_application_error(-20002, ''Delete disallowed, you cannot delete your own access control d';
+wwv_flow_imp.g_varchar2_table(285) := 'etails.'');'||wwv_flow.LF||
+'          end if;'||wwv_flow.LF||
+'       end loop;'||wwv_flow.LF||
+'    end if;    '||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_USERS_BD';
+wwv_flow_imp.g_varchar2_table(286) := '" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace TRIGGER EBA_CA_USERS_BIU'||wwv_flow.LF||
+'    before insert or update on EBA_CA_USERS'||wwv_flow.LF||
+'';
+wwv_flow_imp.g_varchar2_table(287) := '    for each row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if inserting then'||wwv_flow.LF||
+'        if :new.id is null then'||wwv_flow.LF||
+'            :new.id := ';
+wwv_flow_imp.g_varchar2_table(288) := 'eba_ca.gen_id();'||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'        :new.created_by         := nvl(v(''APP_USER''), USER);'||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(289) := '  :new.created            := current_timestamp;'||wwv_flow.LF||
+'        :new.row_version        := 1;'||wwv_flow.LF||
+'        if :ne';
+wwv_flow_imp.g_varchar2_table(290) := 'w.account_locked is null then'||wwv_flow.LF||
+'            :new.account_locked := ''N'';    '||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'    end if';
+wwv_flow_imp.g_varchar2_table(291) := ';'||wwv_flow.LF||
+'    if updating then'||wwv_flow.LF||
+'            :new.updated_by         := nvl(v(''APP_USER''), USER);'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(292) := ':new.updated            := current_timestamp;'||wwv_flow.LF||
+'            :new.row_version        := nvl(:old.row_ve';
+wwv_flow_imp.g_varchar2_table(293) := 'rsion,1) + 1;                                '||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    -- Always store username as upper case';
+wwv_flow_imp.g_varchar2_table(294) := ''||wwv_flow.LF||
+'    :new.username := upper(:new.username);'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_USERS_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'crea';
+wwv_flow_imp.g_varchar2_table(295) := 'te or replace TRIGGER EBA_CA_PREFERENCES_BIU'||wwv_flow.LF||
+'before insert or update on EBA_CA_PREFERENCES'||wwv_flow.LF||
+'    for e';
+wwv_flow_imp.g_varchar2_table(296) := 'ach row'||wwv_flow.LF||
+'begin'||wwv_flow.LF||
+'    if inserting and :new.id is null then'||wwv_flow.LF||
+'        :new.id := eba_ca.gen_id();'||wwv_flow.LF||
+'    end ';
+wwv_flow_imp.g_varchar2_table(297) := 'if;'||wwv_flow.LF||
+'    if inserting then'||wwv_flow.LF||
+'        :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
+'        :new.created_o';
+wwv_flow_imp.g_varchar2_table(298) := 'n := current_timestamp;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    if updating then'||wwv_flow.LF||
+'        :new.updated_by := nvl(v(''APP_USER''';
+wwv_flow_imp.g_varchar2_table(299) := '),USER);'||wwv_flow.LF||
+'        :new.updated_on := current_timestamp;'||wwv_flow.LF||
+'    end if;'||wwv_flow.LF||
+'    :new.preference_name := upper';
+wwv_flow_imp.g_varchar2_table(300) := '(:new.preference_name);'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'alter trigger "EBA_CA_PREFERENCES_BIU" ENABLE;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(409358566007575955)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'TIMESTAMP Fix (BUGID: 31352674)'
+,p_sequence=>120
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'EXISTS'
+,p_condition=>'select null from all_tab_cols where table_name like ''EBA_CA_%'' and data_type = ''TIMESTAMP(6) WITH LOCAL TIME ZONE'''
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_update_event_types
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'alter table eba_ca_event_types'||wwv_flow.LF||
+'  add (INTERNAL_YN VARCHAR2(1));'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1631728847678874687)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Update event types'
+,p_sequence=>70
+,p_script_type=>'UPGRADE'
+,p_condition_type=>'NOT_EXISTS'
+,p_condition=>wwv_flow_string.join(wwv_flow_t_varchar2(
+'select column_name',
+'from user_tab_columns',
+'where table_name = ''EBA_CA_EVENT_TYPES''',
+'    and column_name = ''INTERNAL_YN'''))
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_username_format_preference
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'begin'||wwv_flow.LF||
+'    insert into eba_ca_preferences (id, preference_name, preference_value) values (3, ''USERNAM';
+wwv_flow_imp.g_varchar2_table(2) := 'E_FORMAT'', ''EMAIL'');'||wwv_flow.LF||
+'exception'||wwv_flow.LF||
+'    when others then'||wwv_flow.LF||
+'        null;'||wwv_flow.LF||
+'end;'||wwv_flow.LF||
+'/';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1437838149912697084)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'Username Format Preference'
+,p_sequence=>20
+,p_script_type=>'UPGRADE'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
+prompt --application/deployment/install/upgrade_eba_ca_package
+begin
+wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
+wwv_flow_imp.g_varchar2_table(1) := 'create or replace package eba_ca is '||wwv_flow.LF||
+'    -----------------------------------------------------------';
+wwv_flow_imp.g_varchar2_table(2) := '--------------'||wwv_flow.LF||
+'    -- Generates a unique Identifier'||wwv_flow.LF||
+'    --------------------------------------------';
+wwv_flow_imp.g_varchar2_table(3) := '-----------------------------'||wwv_flow.LF||
+'    function gen_id return number;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    ------------------------------';
+wwv_flow_imp.g_varchar2_table(4) := '-------------------------------------------'||wwv_flow.LF||
+'    -- Gets the current user''s authorization level. Can ';
+wwv_flow_imp.g_varchar2_table(5) := 'depend on the following:'||wwv_flow.LF||
+'    --  * If access control is currently disabled, returns highest level of';
+wwv_flow_imp.g_varchar2_table(6) := ' 3.'||wwv_flow.LF||
+'    --  * If access control is enabled, but user is not in list, returns 0'||wwv_flow.LF||
+'    --  * If access c';
+wwv_flow_imp.g_varchar2_table(7) := 'ontrol is enabled and user is in list, returns their'||wwv_flow.LF||
+'    --    access level.'||wwv_flow.LF||
+'    -------------------';
+wwv_flow_imp.g_varchar2_table(8) := '------------------------------------------------------'||wwv_flow.LF||
+'    function get_authorization_level ('||wwv_flow.LF||
+'      ';
+wwv_flow_imp.g_varchar2_table(9) := '  p_username             varchar2)'||wwv_flow.LF||
+'        return number;'||wwv_flow.LF||
+'    --------------------------------------';
+wwv_flow_imp.g_varchar2_table(10) := '-----------------------------------'||wwv_flow.LF||
+'    -- Returns all of the restricted calendars for the given use';
+wwv_flow_imp.g_varchar2_table(11) := 'r          --'||wwv_flow.LF||
+'    -------------------------------------------------------------------------'||wwv_flow.LF||
+'    func';
+wwv_flow_imp.g_varchar2_table(12) := 'tion decode_restrictions ('||wwv_flow.LF||
+'        p_user_id             number)'||wwv_flow.LF||
+'        return varchar2;'||wwv_flow.LF||
+'end eba_ca';
+wwv_flow_imp.g_varchar2_table(13) := ' ;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+''||wwv_flow.LF||
+'create or replace package body eba_ca as '||wwv_flow.LF||
+''||wwv_flow.LF||
+'    -----------------------------------------------';
+wwv_flow_imp.g_varchar2_table(14) := '--------------------------'||wwv_flow.LF||
+'    -- Generates a unique Identifier'||wwv_flow.LF||
+'    --------------------------------';
+wwv_flow_imp.g_varchar2_table(15) := '-----------------------------------------'||wwv_flow.LF||
+'    function gen_id'||wwv_flow.LF||
+'        return number'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l';
+wwv_flow_imp.g_varchar2_table(16) := '_id  number;'||wwv_flow.LF||
+'    begin        '||wwv_flow.LF||
+'        select to_number(sys_guid(), ''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+wwv_flow_imp.g_varchar2_table(17) := 'X'')'||wwv_flow.LF||
+'          into l_id'||wwv_flow.LF||
+'          from dual;'||wwv_flow.LF||
+'    '||wwv_flow.LF||
+'        return l_id;'||wwv_flow.LF||
+'    end gen_id;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'    --------';
+wwv_flow_imp.g_varchar2_table(18) := '-----------------------------------------------------------------'||wwv_flow.LF||
+'    -- Gets the current user''s aut';
+wwv_flow_imp.g_varchar2_table(19) := 'horization level. Depends on the following:'||wwv_flow.LF||
+'    --  * If access control is currently disabled, retur';
+wwv_flow_imp.g_varchar2_table(20) := 'ns highest level of 3.'||wwv_flow.LF||
+'    --  * If access control is enabled, but user is not in list, returns 0'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(21) := '  --  * If access control is enabled and user is in list, returns their'||wwv_flow.LF||
+'    --    access level.'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(22) := '-------------------------------------------------------------------------'||wwv_flow.LF||
+'    function get_authoriza';
+wwv_flow_imp.g_varchar2_table(23) := 'tion_level ('||wwv_flow.LF||
+'        p_username             varchar2)'||wwv_flow.LF||
+'        return number'||wwv_flow.LF||
+'    is'||wwv_flow.LF||
+'        l_access_';
+wwv_flow_imp.g_varchar2_table(24) := 'level_id       eba_ca_users.access_level_id%type := 0;  -- default to lowest privilege.'||wwv_flow.LF||
+'        l_ac';
+wwv_flow_imp.g_varchar2_table(25) := 'count_locked        eba_ca_users.account_locked%type;'||wwv_flow.LF||
+'    begin'||wwv_flow.LF||
+'        -- If access control is disa';
+wwv_flow_imp.g_varchar2_table(26) := 'bled, default to highest privilege'||wwv_flow.LF||
+'        if eba_ca_fw.get_preference_value(''ACCESS_CONTROL_ENABLED';
+wwv_flow_imp.g_varchar2_table(27) := ''') = ''N'' then'||wwv_flow.LF||
+'            return 3;'||wwv_flow.LF||
+'        else'||wwv_flow.LF||
+'            -- Query for user''s access level, throw';
+wwv_flow_imp.g_varchar2_table(28) := 's no_data_found if no user'||wwv_flow.LF||
+'            select access_level_id,'||wwv_flow.LF||
+'                   account_locked'||wwv_flow.LF||
+'   ';
+wwv_flow_imp.g_varchar2_table(29) := '           into l_access_level_id,'||wwv_flow.LF||
+'                   l_account_locked'||wwv_flow.LF||
+'              from eba_ca_use';
+wwv_flow_imp.g_varchar2_table(30) := 'rs'||wwv_flow.LF||
+'             where username = p_username;'||wwv_flow.LF||
+'            -- Check if user''s account is locked, retur';
+wwv_flow_imp.g_varchar2_table(31) := 'n 0 (no privilege), otherwise stick'||wwv_flow.LF||
+'            -- with their level.'||wwv_flow.LF||
+'            if l_account_locked';
+wwv_flow_imp.g_varchar2_table(32) := ' = ''Y'' then'||wwv_flow.LF||
+'                return 0;'||wwv_flow.LF||
+'            end if;'||wwv_flow.LF||
+'            -- Overwrite user access level';
+wwv_flow_imp.g_varchar2_table(33) := ' 1 with access level 2 if access control scope is PUBLIC_CONTRIBUTE'||wwv_flow.LF||
+'            if l_access_level_id';
+wwv_flow_imp.g_varchar2_table(34) := ' = 1 and eba_ca_fw.get_preference_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_CONTRIBUTE'' then'||wwv_flow.LF||
+'         ';
+wwv_flow_imp.g_varchar2_table(35) := '       return 2;'||wwv_flow.LF||
+'            end if;            '||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'        return l_access_level_id;'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(36) := '   exception'||wwv_flow.LF||
+'        when no_data_found then'||wwv_flow.LF||
+'            -- If no user exists with passed username, ';
+wwv_flow_imp.g_varchar2_table(37) := 'do a final check if reader access is set to any authenticated user'||wwv_flow.LF||
+'            if eba_ca_fw.get_pref';
+wwv_flow_imp.g_varchar2_table(38) := 'erence_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_CONTRIBUTE'' then'||wwv_flow.LF||
+'                return 2;'||wwv_flow.LF||
+'          ';
+wwv_flow_imp.g_varchar2_table(39) := '  elsif eba_ca_fw.get_preference_value(''ACCESS_CONTROL_SCOPE'') = ''PUBLIC_READONLY'' then'||wwv_flow.LF||
+'            ';
+wwv_flow_imp.g_varchar2_table(40) := '    return 1;'||wwv_flow.LF||
+'            else'||wwv_flow.LF||
+'                return 0;'||wwv_flow.LF||
+'            end if;           '||wwv_flow.LF||
+'    end get_';
+wwv_flow_imp.g_varchar2_table(41) := 'authorization_level;'||wwv_flow.LF||
+'    -------------------------------------------------------------------------'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(42) := '   -- Returns all of the restricted calendars for the given user          --'||wwv_flow.LF||
+'    -------------------';
+wwv_flow_imp.g_varchar2_table(43) := '------------------------------------------------------'||wwv_flow.LF||
+'    function decode_restrictions ('||wwv_flow.LF||
+'        p_';
+wwv_flow_imp.g_varchar2_table(44) := 'user_id             number)'||wwv_flow.LF||
+'        return varchar2 is'||wwv_flow.LF||
+'      l_restricted_to varchar2(4000);'||wwv_flow.LF||
+'      l';
+wwv_flow_imp.g_varchar2_table(45) := '_calendar_id   number;'||wwv_flow.LF||
+'      l_calendar_name varchar2(4000);'||wwv_flow.LF||
+'      l_return        varchar2(4000);'||wwv_flow.LF||
+' ';
+wwv_flow_imp.g_varchar2_table(46) := '   begin'||wwv_flow.LF||
+'null;'||wwv_flow.LF||
+'/*'||wwv_flow.LF||
+'      select restricted_to'||wwv_flow.LF||
+'      into l_restricted_to'||wwv_flow.LF||
+'      from eba_ca_users'||wwv_flow.LF||
+'    ';
+wwv_flow_imp.g_varchar2_table(47) := '  where id = p_user_id;'||wwv_flow.LF||
+''||wwv_flow.LF||
+'      if l_restricted_to is null then'||wwv_flow.LF||
+'        return null;'||wwv_flow.LF||
+'      end if;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(48) := '    '||wwv_flow.LF||
+'      while l_restricted_to is not null loop'||wwv_flow.LF||
+'        l_calendar_id := decode(instr(l_restricted';
+wwv_flow_imp.g_varchar2_table(49) := '_to, '':''), 0, l_restricted_to, substr(l_restricted_to, 1, instr(l_restricted_to, '':'') - 1));'||wwv_flow.LF||
+'       ';
+wwv_flow_imp.g_varchar2_table(50) := ' begin'||wwv_flow.LF||
+'          select short_name || '' ('' || decode(public_view_yn, ''Y'', null, ''Private'') || '')'''||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(51) := '        into l_calendar_name'||wwv_flow.LF||
+'          from eba_ca_calendars'||wwv_flow.LF||
+'          where calendar_id = l_calenda';
+wwv_flow_imp.g_varchar2_table(52) := 'r_id;'||wwv_flow.LF||
+'        exception'||wwv_flow.LF||
+'          when no_data_found then'||wwv_flow.LF||
+'            l_calendar_name := l_calendar_';
+wwv_flow_imp.g_varchar2_table(53) := 'id;'||wwv_flow.LF||
+'        end;'||wwv_flow.LF||
+'        '||wwv_flow.LF||
+'        if l_return is null then'||wwv_flow.LF||
+'          l_return := l_calendar_name;'||wwv_flow.LF||
+'  ';
+wwv_flow_imp.g_varchar2_table(54) := '      elsif length(l_return) + length(l_calendar_name) + 2 > 3900 then'||wwv_flow.LF||
+'          l_return := l_retur';
+wwv_flow_imp.g_varchar2_table(55) := 'n || ''; ...'';'||wwv_flow.LF||
+'          exit;'||wwv_flow.LF||
+'        else'||wwv_flow.LF||
+'          l_return := l_return || ''; '' || l_calendar_name';
+wwv_flow_imp.g_varchar2_table(56) := ';'||wwv_flow.LF||
+'        end if;'||wwv_flow.LF||
+'        '||wwv_flow.LF||
+'        l_restricted_to := substr(l_restricted_to, instr(l_restricted_to,';
+wwv_flow_imp.g_varchar2_table(57) := ' '':'') + 1);'||wwv_flow.LF||
+'      end loop;'||wwv_flow.LF||
+'      '||wwv_flow.LF||
+'      return l_return;'||wwv_flow.LF||
+'    exception'||wwv_flow.LF||
+'      when no_data_found the';
+wwv_flow_imp.g_varchar2_table(58) := 'n'||wwv_flow.LF||
+'        return null;'||wwv_flow.LF||
+'*/'||wwv_flow.LF||
+'    end decode_restrictions;'||wwv_flow.LF||
+'end eba_ca;'||wwv_flow.LF||
+'/'||wwv_flow.LF||
+'';
+wwv_flow_imp_shared.create_install_script(
+ p_id=>wwv_flow_imp.id(1877304485343029439)
+,p_install_id=>wwv_flow_imp.id(7407360007655550898)
+,p_name=>'eba_ca package'
+,p_sequence=>110
+,p_script_type=>'UPGRADE'
+,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
+);
+end;
+/
 prompt --application/deployment/install/upgrade_eba_ca_api_body
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -34487,1041 +35814,6 @@ wwv_flow_imp_shared.create_install_script(
 );
 end;
 /
-prompt --application/deployment/install/install_error_log
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_errors ('||wwv_flow.LF||
-'    id                 number not null'||wwv_flow.LF||
-'                       constrain';
-wwv_flow_imp.g_varchar2_table(2) := 't eba_ca_errors_pk'||wwv_flow.LF||
-'                       primary key,'||wwv_flow.LF||
-'    err_time           timestamp with time zo';
-wwv_flow_imp.g_varchar2_table(3) := 'ne'||wwv_flow.LF||
-'                       default current_timestamp'||wwv_flow.LF||
-'                       not null,'||wwv_flow.LF||
-'    app_id     ';
-wwv_flow_imp.g_varchar2_table(4) := '        number,'||wwv_flow.LF||
-'    app_page_id        number,'||wwv_flow.LF||
-'    app_user           varchar2(512),'||wwv_flow.LF||
-'    user_agent ';
-wwv_flow_imp.g_varchar2_table(5) := '        varchar2(4000),'||wwv_flow.LF||
-'    ip_address         varchar2(512), -- As reported by owa_util.get_cgi_env';
-wwv_flow_imp.g_varchar2_table(6) := ''||wwv_flow.LF||
-'    ip_address2       varchar2(512), -- As reported by sys_context'||wwv_flow.LF||
-'    -- From APEX_ERROR.T_ERROR:'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(7) := '    message           varchar2(4000), /* Displayed error message */'||wwv_flow.LF||
-'    page_item_name    varchar2(2';
-wwv_flow_imp.g_varchar2_table(8) := '55),  /* Associated page item name */'||wwv_flow.LF||
-'    region_id         number,         /* Associated tabular fo';
-wwv_flow_imp.g_varchar2_table(9) := 'rm region id of the primary application */'||wwv_flow.LF||
-'    column_alias      varchar2(255),  /* Associated tabul';
-wwv_flow_imp.g_varchar2_table(10) := 'ar form column alias */'||wwv_flow.LF||
-'    row_num           number,         /* Associated tabular form row */'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(11) := 'apex_error_code   varchar2(255),  /* Contains the system message code if it''''s an error raised by AP';
-wwv_flow_imp.g_varchar2_table(12) := 'EX */'||wwv_flow.LF||
-'    ora_sqlcode       number,         /* SQLCODE on exception stack which triggered the error,';
-wwv_flow_imp.g_varchar2_table(13) := ' NULL if the error was not raised by an ORA error */'||wwv_flow.LF||
-'    ora_sqlerrm       varchar2(4000), /* SQLERR';
-wwv_flow_imp.g_varchar2_table(14) := 'M which triggered the error, NULL if the error was not raised by an ORA error */'||wwv_flow.LF||
-'    error_backtrace';
-wwv_flow_imp.g_varchar2_table(15) := '   varchar2(4000)  /* Output of dbms_utility.format_error_backtrace or dbms_utility.format_call_stac';
-wwv_flow_imp.g_varchar2_table(16) := 'k */'||wwv_flow.LF||
-'    -- END APEX_ERROR.T_ERROR'||wwv_flow.LF||
-');'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create index eba_ca_errors_i1 on eba_ca_errors( err_time );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(17) := 'create or replace trigger bi_eba_ca_errors'||wwv_flow.LF||
-'    before insert or update on eba_ca_errors'||wwv_flow.LF||
-'    for each';
-wwv_flow_imp.g_varchar2_table(18) := ' row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if :new.id is null then'||wwv_flow.LF||
-'        select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXX';
-wwv_flow_imp.g_varchar2_table(19) := 'XXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3304017160028307576)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'error log'
-,p_sequence=>5
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_event_groups
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_email_groups ('||wwv_flow.LF||
-'   group_id    number         not null,'||wwv_flow.LF||
-'   group_name  varchar2(2';
-wwv_flow_imp.g_varchar2_table(2) := '55)  not null,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
-'   created_by       var';
-wwv_flow_imp.g_varchar2_table(3) := 'char2(255)  not null,'||wwv_flow.LF||
-'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'   last_updated_by  varchar2(255';
-wwv_flow_imp.g_varchar2_table(4) := ') )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_email_groups'||wwv_flow.LF||
-'   add constraint EBA_ca_email_groups_pk primary key (group_id';
-wwv_flow_imp.g_varchar2_table(5) := ')'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_email_groups'||wwv_flow.LF||
-'   add constraint EBA_ca_email_groups_uk unique (group_name)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'c';
-wwv_flow_imp.g_varchar2_table(6) := 'reate or replace trigger EBA_ca_email_groups_biu'||wwv_flow.LF||
-'  before insert or update on EBA_ca_email_groups   ';
-wwv_flow_imp.g_varchar2_table(7) := '            '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW.group_id is null '||wwv_flow.LF||
-'        th';
-wwv_flow_imp.g_varchar2_table(8) := 'en :NEW.group_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := current_timestamp;'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(9) := ' :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED';
-wwv_flow_imp.g_varchar2_table(10) := '_ON := current_timestamp;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/';
-wwv_flow_imp.g_varchar2_table(11) := ''||wwv_flow.LF||
-'alter trigger EBA_ca_email_groups_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254470663595755329)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'event groups'
-,p_sequence=>215
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_event_notes
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE EBA_CA_NOTES '||wwv_flow.LF||
-'   ( '||wwv_flow.LF||
-'    ID                     NUMBER constraint EBA_CA_notes_pk primar';
-wwv_flow_imp.g_varchar2_table(2) := 'y key, '||wwv_flow.LF||
-'    ROW_VERSION_NUMBER     NUMBER not null, '||wwv_flow.LF||
-'    EVENT_ID               NUMBER constraint eb';
-wwv_flow_imp.g_varchar2_table(3) := 'a_ca_notes_fk'||wwv_flow.LF||
-'                           references eba_ca_events (event_id)'||wwv_flow.LF||
-'                       ';
-wwv_flow_imp.g_varchar2_table(4) := '    on delete cascade, '||wwv_flow.LF||
-'    NOTE                   CLOB, '||wwv_flow.LF||
-'    tags                     VARCHAR2(4000';
-wwv_flow_imp.g_varchar2_table(5) := ' BYTE), '||wwv_flow.LF||
-'    CREATED                timestamp with time zone, '||wwv_flow.LF||
-'    CREATED_BY             VARCHAR2(2';
-wwv_flow_imp.g_varchar2_table(6) := '55 BYTE), '||wwv_flow.LF||
-'    UPDATED                timestamp with time zone, '||wwv_flow.LF||
-'    UPDATED_BY             VARCHAR2';
-wwv_flow_imp.g_varchar2_table(7) := '(255 BYTE)'||wwv_flow.LF||
-'   ) ;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create index EBA_CA_NOTES_i1 on EBA_CA_NOTES(event_id);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'CREATE OR REPLACE TRIGGE';
-wwv_flow_imp.g_varchar2_table(8) := 'R BIU_EBA_CA_NOTES '||wwv_flow.LF||
-'   before insert or update on EBA_CA_NOTES'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   if :new.ID i';
-wwv_flow_imp.g_varchar2_table(9) := 's null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from d';
-wwv_flow_imp.g_varchar2_table(10) := 'ual;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.created := current_timestamp;'||wwv_flow.LF||
-'       :new.created_b';
-wwv_flow_imp.g_varchar2_table(11) := 'y := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.updated_by := ';
-wwv_flow_imp.g_varchar2_table(12) := 'nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number := 1;'||wwv_flow.LF||
-'   elsif updating then'||wwv_flow.LF||
-'       :new.r';
-wwv_flow_imp.g_varchar2_table(13) := 'ow_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting or updating then';
-wwv_flow_imp.g_varchar2_table(14) := ''||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'   e';
-wwv_flow_imp.g_varchar2_table(15) := 'nd if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'ALTER TRIGGER BIU_EBA_CA_NOTES ENABLE;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256239174218968160)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'event notes'
-,p_sequence=>211
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_event_types
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_event_types ('||wwv_flow.LF||
-'   type_id          number         not null,'||wwv_flow.LF||
-'   type_name        v';
-wwv_flow_imp.g_varchar2_table(2) := 'archar2(60)   not null,'||wwv_flow.LF||
-'   display_color    varchar2(60),'||wwv_flow.LF||
-'   border_color     varchar2(30),'||wwv_flow.LF||
-'   text_';
-wwv_flow_imp.g_varchar2_table(3) := 'color       varchar2(30),'||wwv_flow.LF||
-'   internal_yn      varchar2(1),'||wwv_flow.LF||
-'   is_active_yn     varchar2(1),'||wwv_flow.LF||
-'   color';
-wwv_flow_imp.g_varchar2_table(4) := '_pref_id    number'||wwv_flow.LF||
-'                    constraint eba_ca_et_cp_ck'||wwv_flow.LF||
-'                    references eba';
-wwv_flow_imp.g_varchar2_table(5) := '_ca_color_prefs (id),'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
-'   created_by   ';
-wwv_flow_imp.g_varchar2_table(6) := '    varchar2(255)  not null,'||wwv_flow.LF||
-'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'   last_updated_by  varch';
-wwv_flow_imp.g_varchar2_table(7) := 'ar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'-- Add index on foreign key columns'||wwv_flow.LF||
-'create index eba_ca_event_types_cp_idx on eba_ca_e';
-wwv_flow_imp.g_varchar2_table(8) := 'vent_types(color_pref_id);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter table eba_ca_event_types'||wwv_flow.LF||
-'   add constraint eba_ca_event_types_pk p';
-wwv_flow_imp.g_varchar2_table(9) := 'rimary key (type_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'alter table eba_ca_event_types'||wwv_flow.LF||
-'   add constraint eba_ca_event_types_uk u';
-wwv_flow_imp.g_varchar2_table(10) := 'nique (type_name)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'create or replace trigger eba_ca_event_types_biu'||wwv_flow.LF||
-'  before insert or up';
-wwv_flow_imp.g_varchar2_table(11) := 'date on eba_ca_event_types               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW';
-wwv_flow_imp.g_varchar2_table(12) := '.type_id is null '||wwv_flow.LF||
-'        then :NEW.type_id := eba_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON';
-wwv_flow_imp.g_varchar2_table(13) := ' := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if updating t';
-wwv_flow_imp.g_varchar2_table(14) := 'hen'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER'')';
-wwv_flow_imp.g_varchar2_table(15) := ',USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'   if :new.is_active_yn is null then'||wwv_flow.LF||
-'       if :new.type_name is null then'||wwv_flow.LF||
-'     ';
-wwv_flow_imp.g_varchar2_table(16) := '     :new.is_active_yn := ''N'';'||wwv_flow.LF||
-'       else'||wwv_flow.LF||
-'          :new.is_active_yn := ''Y'';'||wwv_flow.LF||
-'       end if;'||wwv_flow.LF||
-'   end';
-wwv_flow_imp.g_varchar2_table(17) := ' if;'||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-' '||wwv_flow.LF||
-'alter trigger eba_ca_event_types_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'commit;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(7407365910380559032)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'event types'
-,p_sequence=>200
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_events
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_events ('||wwv_flow.LF||
-'   event_id            number         not null,'||wwv_flow.LF||
-'   row_version_number  ';
-wwv_flow_imp.g_varchar2_table(2) := 'integer,'||wwv_flow.LF||
-'   row_key             varchar2(30),'||wwv_flow.LF||
-'   event_name          varchar2(255)  not null,'||wwv_flow.LF||
-'   typ';
-wwv_flow_imp.g_varchar2_table(3) := 'e_id             number,'||wwv_flow.LF||
-'   calendar_id         number,'||wwv_flow.LF||
-'   event_date_time     timestamp with time z';
-wwv_flow_imp.g_varchar2_table(4) := 'one  not null,'||wwv_flow.LF||
-'   duration            number         not null,'||wwv_flow.LF||
-'   event_desc          varchar2(4000)';
-wwv_flow_imp.g_varchar2_table(5) := ','||wwv_flow.LF||
-'   contact_person      varchar2(255),'||wwv_flow.LF||
-'   contact_email       varchar2(255),'||wwv_flow.LF||
-'   display_time       ';
-wwv_flow_imp.g_varchar2_table(6) := ' varchar2(1)    not null,'||wwv_flow.LF||
-'   location            varchar2(255),'||wwv_flow.LF||
-'   link_name_1         varchar2(255)';
-wwv_flow_imp.g_varchar2_table(7) := ','||wwv_flow.LF||
-'   link_url_1          varchar2(4000),'||wwv_flow.LF||
-'   link_name_2         varchar2(255),'||wwv_flow.LF||
-'   link_url_2        ';
-wwv_flow_imp.g_varchar2_table(8) := '  varchar2(4000),'||wwv_flow.LF||
-'   link_name_3         varchar2(255),'||wwv_flow.LF||
-'   link_url_3          varchar2(4000),'||wwv_flow.LF||
-'   li';
-wwv_flow_imp.g_varchar2_table(9) := 'nk_name_4         varchar2(255),'||wwv_flow.LF||
-'   link_url_4          varchar2(4000),'||wwv_flow.LF||
-'   tags                varch';
-wwv_flow_imp.g_varchar2_table(10) := 'ar2(4000),'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   series_id        number,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   created_on       timestamp with time zone  not';
-wwv_flow_imp.g_varchar2_table(11) := ' null,'||wwv_flow.LF||
-'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
-'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(12) := ' last_updated_by  varchar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events '||wwv_flow.LF||
-'   add constraint eba_ca_events_pk pr';
-wwv_flow_imp.g_varchar2_table(13) := 'imary key (event_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events '||wwv_flow.LF||
-'   add constraint eba_ca_event_fk1 '||wwv_flow.LF||
-'   foreign key';
-wwv_flow_imp.g_varchar2_table(14) := ' (type_id)'||wwv_flow.LF||
-'   references eba_ca_event_types (type_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create index eba_ca_events_i1 '||wwv_flow.LF||
-'   on eba_ca_';
-wwv_flow_imp.g_varchar2_table(15) := 'events (type_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events '||wwv_flow.LF||
-'   add constraint eba_ca_event_fk2 '||wwv_flow.LF||
-'   foreign key (se';
-wwv_flow_imp.g_varchar2_table(16) := 'ries_id)'||wwv_flow.LF||
-'   references eba_ca_series (series_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create index eba_ca_events_i2'||wwv_flow.LF||
-'   on eba_ca_events';
-wwv_flow_imp.g_varchar2_table(17) := ' (series_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events '||wwv_flow.LF||
-'   add constraint eba_ca_event_fk3 '||wwv_flow.LF||
-'   foreign key (calend';
-wwv_flow_imp.g_varchar2_table(18) := 'ar_id)'||wwv_flow.LF||
-'   references eba_ca_calendars (calendar_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create index eba_ca_events_i3'||wwv_flow.LF||
-'   on eba_ca_eve';
-wwv_flow_imp.g_varchar2_table(19) := 'nts (calendar_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_events '||wwv_flow.LF||
-'   add constraint eba_ca_event_cc1 '||wwv_flow.LF||
-'   check ( displa';
-wwv_flow_imp.g_varchar2_table(20) := 'y_time in (''Y'',''N'') )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254470457362753502)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'events'
-,p_sequence=>210
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_events_history_trigger
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create or replace trigger ad_EBA_CA_EVENTS'||wwv_flow.LF||
-'   after delete on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(2) := ' insert into eba_ca_history ('||wwv_flow.LF||
-'       table_name, component_rowkey, COMPONENT_ID, column_name, old_va';
-wwv_flow_imp.g_varchar2_table(3) := 'lue, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :old.row_key, :old.event_id, ''DELETE'',null,''Removed event ''';
-wwv_flow_imp.g_varchar2_table(4) := '||:old.EVENT_NAME);'||wwv_flow.LF||
-'end ad_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace trigger ai_EBA_CA_EVENTS';
-wwv_flow_imp.g_varchar2_table(5) := ''||wwv_flow.LF||
-'   after insert on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   insert into eba_ca_history ('||wwv_flow.LF||
-'       table';
-wwv_flow_imp.g_varchar2_table(6) := '_name, component_rowkey, component_id, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'',:n';
-wwv_flow_imp.g_varchar2_table(7) := 'ew.row_key, :new.event_id, ''Event Name '',null,:new.EVENT_NAME);'||wwv_flow.LF||
-'end ai_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(8) := ''||wwv_flow.LF||
-'create or replace trigger au_EBA_CA_EVENTS'||wwv_flow.LF||
-'   after update on EBA_CA_EVENTS'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'declare';
-wwv_flow_imp.g_varchar2_table(9) := ''||wwv_flow.LF||
-'   ov varchar2(4000) := null;'||wwv_flow.LF||
-'   nv varchar2(4000) := null;'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   -- FK'||wwv_flow.LF||
-'   if updating and :old.';
-wwv_flow_imp.g_varchar2_table(10) := 'TYPE_ID != :new.TYPE_ID then'||wwv_flow.LF||
-'      ov := null; nv := null;'||wwv_flow.LF||
-'      for c1 in (select type_name from eb';
-wwv_flow_imp.g_varchar2_table(11) := 'a_ca_event_types t where t.type_id = :old.TYPE_ID) loop'||wwv_flow.LF||
-'          ov := c1.type_name;'||wwv_flow.LF||
-'      end loop';
-wwv_flow_imp.g_varchar2_table(12) := ';'||wwv_flow.LF||
-'      for c1 in (select type_name from eba_ca_event_types t where t.type_id = :new.TYPE_ID) loop'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(13) := '         nv := c1.type_name;'||wwv_flow.LF||
-'      end loop;   '||wwv_flow.LF||
-'      insert into eba_ca_history (table_name, compon';
-wwv_flow_imp.g_varchar2_table(14) := 'ent_rowkey, component_id, column_name, old_value, new_value) values'||wwv_flow.LF||
-'          (''EVENTS'',:new.row_key';
-wwv_flow_imp.g_varchar2_table(15) := ', :new.event_id, ''TYPE_ID'',ov,nv);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   if nvl(:old.SERIES_ID,''0'') != nvl(:new.SERIES';
-wwv_flow_imp.g_varchar2_table(16) := '_ID,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_';
-wwv_flow_imp.g_varchar2_table(17) := 'name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'',:new.row_key, :new.event_id, ''SERIES_ID'',:old.SE';
-wwv_flow_imp.g_varchar2_table(18) := 'RIES_ID,:new.SERIES_ID);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.EVENT_NAME,''0'') != nvl(:new.EVENT_NAME,''0'') then'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(19) := '       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_valu';
-wwv_flow_imp.g_varchar2_table(20) := 'e, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'',:new.row_key, :new.event_id, ''EVENT_NAME'',:old.EVENT_NAME,:new';
-wwv_flow_imp.g_varchar2_table(21) := '.EVENT_NAME);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.DURATION,''0'') != nvl(:new.DURATION,''0'') then'||wwv_flow.LF||
-'       insert i';
-wwv_flow_imp.g_varchar2_table(22) := 'nto eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) v';
-wwv_flow_imp.g_varchar2_table(23) := 'alues'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''DURATION'',:old.DURATION,:new.DURATION);'||wwv_flow.LF||
-'   end';
-wwv_flow_imp.g_varchar2_table(24) := ' if;'||wwv_flow.LF||
-'   if nvl(:old.EVENT_DESC,''0'') != nvl(:new.EVENT_DESC,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_histo';
-wwv_flow_imp.g_varchar2_table(25) := 'ry (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''E';
-wwv_flow_imp.g_varchar2_table(26) := 'VENTS'', :new.row_key, :new.event_id, ''EVENT_DESC'',:old.EVENT_DESC,:new.EVENT_DESC);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if';
-wwv_flow_imp.g_varchar2_table(27) := ' nvl(:old.CONTACT_PERSON,''0'') != nvl(:new.CONTACT_PERSON,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history';
-wwv_flow_imp.g_varchar2_table(28) := ' (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVE';
-wwv_flow_imp.g_varchar2_table(29) := 'NTS'', :new.row_key, :new.event_id, ''CONTACT_PERSON'',:old.CONTACT_PERSON,:new.CONTACT_PERSON);'||wwv_flow.LF||
-'   end';
-wwv_flow_imp.g_varchar2_table(30) := ' if;'||wwv_flow.LF||
-'   if nvl(:old.CONTACT_EMAIL,''0'') != nvl(:new.CONTACT_EMAIL,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca';
-wwv_flow_imp.g_varchar2_table(31) := '_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(32) := '   (''EVENTS'', :new.row_key, :new.event_id, ''CONTACT_EMAIL'',:old.CONTACT_EMAIL,:new.CONTACT_EMAIL);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(33) := '  end if;'||wwv_flow.LF||
-'   if nvl(:old.DISPLAY_TIME,''0'') != nvl(:new.DISPLAY_TIME,''0'') then'||wwv_flow.LF||
-'       insert into eba';
-wwv_flow_imp.g_varchar2_table(34) := '_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(35) := '      (''EVENTS'', :new.row_key, :new.event_id, ''DISPLAY_TIME'',:old.DISPLAY_TIME,:new.DISPLAY_TIME);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(36) := '  end if;'||wwv_flow.LF||
-'   if nvl(:old.LOCATION,''0'') != nvl(:new.LOCATION,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_hist';
-wwv_flow_imp.g_varchar2_table(37) := 'ory (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''';
-wwv_flow_imp.g_varchar2_table(38) := 'EVENTS'', :new.row_key, :new.event_id, ''LOCATION'',:old.LOCATION,:new.LOCATION);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(';
-wwv_flow_imp.g_varchar2_table(39) := ':old.LINK_NAME_1,''0'') != nvl(:new.LINK_NAME_1,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_nam';
-wwv_flow_imp.g_varchar2_table(40) := 'e, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.';
-wwv_flow_imp.g_varchar2_table(41) := 'row_key, :new.event_id, ''LINK_NAME_1'',:old.LINK_NAME_1,:new.LINK_NAME_1);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.';
-wwv_flow_imp.g_varchar2_table(42) := 'LINK_URL_1,''0'') != nvl(:new.LINK_URL_1,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, comp';
-wwv_flow_imp.g_varchar2_table(43) := 'onent_rowkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key';
-wwv_flow_imp.g_varchar2_table(44) := ', :new.event_id, ''LINK_URL_1'',:old.LINK_URL_1,:new.LINK_URL_1);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_';
-wwv_flow_imp.g_varchar2_table(45) := '2,''0'') != nvl(:new.LINK_NAME_2,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_ro';
-wwv_flow_imp.g_varchar2_table(46) := 'wkey, COMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.e';
-wwv_flow_imp.g_varchar2_table(47) := 'vent_id, ''LINK_NAME_2'',:old.LINK_NAME_2,:new.LINK_NAME_2);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_2,''0'')';
-wwv_flow_imp.g_varchar2_table(48) := ' != nvl(:new.LINK_URL_2,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, C';
-wwv_flow_imp.g_varchar2_table(49) := 'OMPONENT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id';
-wwv_flow_imp.g_varchar2_table(50) := ', ''LINK_URL_2'',:old.LINK_URL_2,:new.LINK_URL_2);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_3,''0'') != nvl(:';
-wwv_flow_imp.g_varchar2_table(51) := 'new.LINK_NAME_3,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT';
-wwv_flow_imp.g_varchar2_table(52) := '_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_';
-wwv_flow_imp.g_varchar2_table(53) := 'NAME_3'',:old.LINK_NAME_3,:new.LINK_NAME_3);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_3,''0'') != nvl(:new.LI';
-wwv_flow_imp.g_varchar2_table(54) := 'NK_URL_3,''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, co';
-wwv_flow_imp.g_varchar2_table(55) := 'lumn_name, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_3'',';
-wwv_flow_imp.g_varchar2_table(56) := ':old.LINK_URL_3,:new.LINK_URL_3);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_NAME_4,''0'') != nvl(:new.LINK_NAME_4';
-wwv_flow_imp.g_varchar2_table(57) := ',''0'') then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_nam';
-wwv_flow_imp.g_varchar2_table(58) := 'e, old_value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_NAME_4'',:old.LI';
-wwv_flow_imp.g_varchar2_table(59) := 'NK_NAME_4,:new.LINK_NAME_4);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.LINK_URL_4,''0'') != nvl(:new.LINK_URL_4,''0'') t';
-wwv_flow_imp.g_varchar2_table(60) := 'hen'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_';
-wwv_flow_imp.g_varchar2_table(61) := 'value, new_value) values'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''LINK_URL_4'',:old.LINK_URL_4';
-wwv_flow_imp.g_varchar2_table(62) := ',:new.LINK_URL_4);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if nvl(:old.TAGS,''0'') != nvl(:new.TAGS,''0'') then'||wwv_flow.LF||
-'       insert into';
-wwv_flow_imp.g_varchar2_table(63) := ' eba_ca_history (table_name, component_rowkey, COMPONENT_ID, column_name, old_value, new_value) valu';
-wwv_flow_imp.g_varchar2_table(64) := 'es'||wwv_flow.LF||
-'       (''EVENTS'', :new.row_key, :new.event_id, ''TAGS'',:old.TAGS,:new.TAGS);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   -- time';
-wwv_flow_imp.g_varchar2_table(65) := 'stamp columns'||wwv_flow.LF||
-'   if (:old.EVENT_DATE_TIME is null and :new.EVENT_DATE_TIME is not null) or '||wwv_flow.LF||
-'      (:';
-wwv_flow_imp.g_varchar2_table(66) := 'old.EVENT_DATE_TIME is not null and :new.EVENT_DATE_TIME is null) or '||wwv_flow.LF||
-'      (:old.EVENT_DATE_TIME !=';
-wwv_flow_imp.g_varchar2_table(67) := ' :new.EVENT_DATE_TIME) then'||wwv_flow.LF||
-'       insert into eba_ca_history (table_name, component_rowkey, COMPONE';
-wwv_flow_imp.g_varchar2_table(68) := 'NT_ID, column_name, old_value, new_value) values'||wwv_flow.LF||
-'          (''EVENTS'', :new.row_key, :new.event_id, ''';
-wwv_flow_imp.g_varchar2_table(69) := 'EVENT_DATE_TIME'',:old.EVENT_DATE_TIME,:new.EVENT_DATE_TIME);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end au_EBA_CA_EVENTS;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show';
-wwv_flow_imp.g_varchar2_table(70) := ' errors';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3257086958997215777)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'events history trigger'
-,p_sequence=>410
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_events_triggers
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create or replace trigger EBA_ca_events_biu'||wwv_flow.LF||
-'  before insert or update on EBA_ca_events              ';
-wwv_flow_imp.g_varchar2_table(2) := ' '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW.event_id is null '||wwv_flow.LF||
-'        then :NEW.eve';
-wwv_flow_imp.g_varchar2_table(3) := 'nt_id := EBA_ca_api.gen_id;'||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'     :NEW.CREATE';
-wwv_flow_imp.g_varchar2_table(4) := 'D_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'     :new.row_version_number := 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(5) := '      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USE';
-wwv_flow_imp.g_varchar2_table(6) := 'R);'||wwv_flow.LF||
-'      :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if :new.row';
-wwv_flow_imp.g_varchar2_table(7) := '_key is null then'||wwv_flow.LF||
-'       select eba_ca_fw.compress_int(eba_ca_seq.nextval) into :new.row_key from du';
-wwv_flow_imp.g_varchar2_table(8) := 'al;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   eba_ca_fw.tag_sync('||wwv_flow.LF||
-'         p_new_tags      => :new.tags,'||wwv_flow.LF||
-'         p_old_tags   ';
-wwv_flow_imp.g_varchar2_table(9) := '   => :old.tags,'||wwv_flow.LF||
-'         p_content_type  => ''EVENT'','||wwv_flow.LF||
-'         p_content_id    => :new.event_id );'||wwv_flow.LF||
-'e';
-wwv_flow_imp.g_varchar2_table(10) := 'nd; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors    '||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger EBA_ca_events_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'create or replace trigger';
-wwv_flow_imp.g_varchar2_table(11) := ' BD_EBA_ca_events'||wwv_flow.LF||
-'    before delete on EBA_ca_events'||wwv_flow.LF||
-'    for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    eba_ca_fw.tag_sync('||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(12) := '        p_new_tags      => null,'||wwv_flow.LF||
-'        p_old_tags      => :old.tags,'||wwv_flow.LF||
-'        p_content_type  => ''E';
-wwv_flow_imp.g_varchar2_table(13) := 'VENT'','||wwv_flow.LF||
-'        p_content_id    => :old.event_id );'||wwv_flow.LF||
-''||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-'    '||wwv_flow.LF||
-'alter trigger BD_EBA_ca_';
-wwv_flow_imp.g_varchar2_table(14) := 'events enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256461178157079401)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'events triggers'
-,p_sequence=>400
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_events_seq
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create sequence eba_ca_seq;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256459857462054443)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'events_seq'
-,p_sequence=>202
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_files
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_FILES '||wwv_flow.LF||
-'   (   '||wwv_flow.LF||
-'    ID                   NUMBER constraint eba_ca_FILES_PK primar';
-wwv_flow_imp.g_varchar2_table(2) := 'y key, '||wwv_flow.LF||
-'    ROW_VERSION_NUMBER   NUMBER, '||wwv_flow.LF||
-'    EVENT_ID             NUMBER references eba_ca_events (';
-wwv_flow_imp.g_varchar2_table(3) := 'event_id) on delete cascade, '||wwv_flow.LF||
-'    FILENAME             VARCHAR2(4000 BYTE), '||wwv_flow.LF||
-'    FILE_MIMETYPE      ';
-wwv_flow_imp.g_varchar2_table(4) := '  VARCHAR2(512 BYTE), '||wwv_flow.LF||
-'    FILE_CHARSET         VARCHAR2(512 BYTE), '||wwv_flow.LF||
-'    FILE_BLOB            BLOB, ';
-wwv_flow_imp.g_varchar2_table(5) := ''||wwv_flow.LF||
-'    FILE_COMMENTS        VARCHAR2(4000 BYTE), '||wwv_flow.LF||
-'    TAGS                 VARCHAR2(4000 BYTE), '||wwv_flow.LF||
-'    C';
-wwv_flow_imp.g_varchar2_table(6) := 'REATED              timestamp with time zone, '||wwv_flow.LF||
-'    CREATED_BY           VARCHAR2(255 BYTE), '||wwv_flow.LF||
-'    UPD';
-wwv_flow_imp.g_varchar2_table(7) := 'ATED              timestamp with time zone, '||wwv_flow.LF||
-'    UPDATED_BY           VARCHAR2(255 BYTE)'||wwv_flow.LF||
-'   )  ;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'cr';
-wwv_flow_imp.g_varchar2_table(8) := 'eate index eba_ca_FILES_i1 on eba_ca_FILES(event_id);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'CREATE OR REPLACE TRIGGER BIU_eba_ca_FILES '||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(9) := '  before insert or update on eba_ca_files'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'  if :new.ID is null then'||wwv_flow.LF||
-'    select';
-wwv_flow_imp.g_varchar2_table(10) := ' to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'  if ins';
-wwv_flow_imp.g_varchar2_table(11) := 'erting then'||wwv_flow.LF||
-'    :new.created := current_timestamp;'||wwv_flow.LF||
-'    :new.created_by := nvl(wwv_flow.g_user,user);';
-wwv_flow_imp.g_varchar2_table(12) := ''||wwv_flow.LF||
-'    :new.updated := current_timestamp;'||wwv_flow.LF||
-'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'    :new.r';
-wwv_flow_imp.g_varchar2_table(13) := 'ow_version_number := 1;'||wwv_flow.LF||
-'  elsif updating then'||wwv_flow.LF||
-'    :new.row_version_number := nvl(:old.row_version_nu';
-wwv_flow_imp.g_varchar2_table(14) := 'mber,1) + 1;'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'  if (inserting or updating) and nvl(dbms_lob.getlength(:new.file_blob),0) > ';
-wwv_flow_imp.g_varchar2_table(15) := '15728640 then'||wwv_flow.LF||
-'    raise_application_error(-20000, ''The size of the uploaded file was over 15MB. Plea';
-wwv_flow_imp.g_varchar2_table(16) := 'se upload a smaller file.'');'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'  if inserting or updating then'||wwv_flow.LF||
-'    :new.updated := current_t';
-wwv_flow_imp.g_varchar2_table(17) := 'imestamp;'||wwv_flow.LF||
-'    :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'  end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-''||wwv_flow.LF||
-'ALTER TRIG';
-wwv_flow_imp.g_varchar2_table(18) := 'GER BIU_eba_ca_FILES ENABLE;'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256259467405174322)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'files'
-,p_sequence=>212
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_group_members
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_email_group_mbrs ('||wwv_flow.LF||
-'   mbr_id         number         not null,'||wwv_flow.LF||
-'   group_id       ';
-wwv_flow_imp.g_varchar2_table(2) := 'number         not null,'||wwv_flow.LF||
-'   email_address  varchar2(255)  not null,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   created_on       timest';
-wwv_flow_imp.g_varchar2_table(3) := 'amp with time zone  not null,'||wwv_flow.LF||
-'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
-'   last_updated_on  times';
-wwv_flow_imp.g_varchar2_table(4) := 'tamp with time zone,'||wwv_flow.LF||
-'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_email_group_mbrs'||wwv_flow.LF||
-'   ad';
-wwv_flow_imp.g_varchar2_table(5) := 'd constraint EBA_ca_email_group_mbrs_pk primary key (mbr_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_email_group_mbrs'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(6) := '  add constraint EBA_ca_email_group_mbrs_uk unique (group_id, email_address)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_em';
-wwv_flow_imp.g_varchar2_table(7) := 'ail_group_mbrs '||wwv_flow.LF||
-'   add constraint EBA_ca_email_group_mbrs_fk1 '||wwv_flow.LF||
-'   foreign key (group_id)'||wwv_flow.LF||
-'   referenc';
-wwv_flow_imp.g_varchar2_table(8) := 'es EBA_ca_email_groups (group_id)'||wwv_flow.LF||
-'   on delete cascade'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create index EBA_ca_email_group_mbrs_i1'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(9) := 'on EBA_ca_email_group_mbrs (group_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create or replace trigger EBA_ca_email_group_mbrs_biu'||wwv_flow.LF||
-'  befo';
-wwv_flow_imp.g_varchar2_table(10) := 're insert or update on EBA_ca_email_group_mbrs              '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if insertin';
-wwv_flow_imp.g_varchar2_table(11) := 'g then'||wwv_flow.LF||
-'     if :NEW.mbr_id is null '||wwv_flow.LF||
-'        then :NEW.mbr_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(12) := '  :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(13) := ''||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := ';
-wwv_flow_imp.g_varchar2_table(14) := 'nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger EBA_ca_email_group_mbrs_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254470867751756580)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'group members'
-,p_sequence=>220
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_history
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_history '||wwv_flow.LF||
-'   (   '||wwv_flow.LF||
-'    ID                  NUMBER constraint eba_ca_history_pk pri';
-wwv_flow_imp.g_varchar2_table(2) := 'mary key, '||wwv_flow.LF||
-'    ROW_VERSION_NUMBER  NUMBER, '||wwv_flow.LF||
-'    COMPONENT_ID        NUMBER, '||wwv_flow.LF||
-'    COMPONENT_ROWKEY   ';
-wwv_flow_imp.g_varchar2_table(3) := ' VARCHAR2(30 BYTE),'||wwv_flow.LF||
-'    TABLE_NAME          VARCHAR2(60 BYTE) not null,'||wwv_flow.LF||
-'    COLUMN_NAME         VARC';
-wwv_flow_imp.g_varchar2_table(4) := 'HAR2(60 BYTE) not null, '||wwv_flow.LF||
-'    OLD_VALUE           VARCHAR2(4000 BYTE), '||wwv_flow.LF||
-'    NEW_VALUE           VARCH';
-wwv_flow_imp.g_varchar2_table(5) := 'AR2(4000 BYTE), '||wwv_flow.LF||
-'    CHANGE_DATE         TIMESTAMP WITH TIME ZONE, '||wwv_flow.LF||
-'    CHANGED_BY          VARCHAR2';
-wwv_flow_imp.g_varchar2_table(6) := '(255 BYTE)'||wwv_flow.LF||
-'   )  ;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create index eba_ca_history_i1 on eba_ca_history(component_id);'||wwv_flow.LF||
-''||wwv_flow.LF||
-'CREATE OR REPLA';
-wwv_flow_imp.g_varchar2_table(7) := 'CE TRIGGER biu_eba_ca_history '||wwv_flow.LF||
-'   before insert or update on eba_ca_history'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(8) := ' if :new.ID is null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'') into :';
-wwv_flow_imp.g_varchar2_table(9) := 'new.id from dual;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.change_date := current_timestamp;'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(10) := '   :new.changed_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number := 1;'||wwv_flow.LF||
-'   elsif updat';
-wwv_flow_imp.g_varchar2_table(11) := 'ing then'||wwv_flow.LF||
-'       :new.row_version_number := :new.row_version_number + 1;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'ALTER TRIG';
-wwv_flow_imp.g_varchar2_table(12) := 'GER biu_eba_ca_history ENABLE;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256238759065944833)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'history'
-,p_sequence=>203
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_install_the_acl_seed_data
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := '/* Bug tracker access levels */'||wwv_flow.LF||
-'insert into eba_ca_access_levels (id, access_level) values (1, ''Read';
-wwv_flow_imp.g_varchar2_table(2) := 'er'');'||wwv_flow.LF||
-'insert into eba_ca_access_levels (id, access_level) values (2, ''Contributor'');'||wwv_flow.LF||
-'insert into eba';
-wwv_flow_imp.g_varchar2_table(3) := '_ca_access_levels (id, access_level) values (3, ''Administrator'');'||wwv_flow.LF||
-''||wwv_flow.LF||
-'/* Bug Tracker preferences */'||wwv_flow.LF||
-'ins';
-wwv_flow_imp.g_varchar2_table(4) := 'ert into eba_ca_preferences (id, preference_name, preference_value) values (1, ''ACCESS_CONTROL_ENABL';
-wwv_flow_imp.g_varchar2_table(5) := 'ED'', ''N'');'||wwv_flow.LF||
-'insert into eba_ca_preferences (id, preference_name, preference_value) values (2, ''ACCESS';
-wwv_flow_imp.g_varchar2_table(6) := '_CONTROL_SCOPE'', ''ACL_ONLY'');'||wwv_flow.LF||
-'insert into eba_ca_preferences (id, preference_name, preference_value)';
-wwv_flow_imp.g_varchar2_table(7) := ' values (3, ''USERNAME_FORMAT'', ''EMAIL'');'||wwv_flow.LF||
-''||wwv_flow.LF||
-'/* Constraint error lookups */'||wwv_flow.LF||
-'insert into eba_ca_error_lo';
-wwv_flow_imp.g_varchar2_table(8) := 'okup (constraint_name, message, language_code) values (''EBA_CA_USERS_UK'', ''Username must be unique.''';
-wwv_flow_imp.g_varchar2_table(9) := ', ''en'');'||wwv_flow.LF||
-'insert into eba_ca_error_lookup (constraint_name, message, language_code) values (''EBA_CA_C';
-wwv_flow_imp.g_varchar2_table(10) := 'ALENDAR_UK1'', ''Calendar Short Name must be unique.'', ''en'');'||wwv_flow.LF||
-'insert into eba_ca_error_lookup (constra';
-wwv_flow_imp.g_varchar2_table(11) := 'int_name, message, language_code) values (''EBA_CA_CALENDAR_UK2'', ''Calendar Name must be unique.'', ''e';
-wwv_flow_imp.g_varchar2_table(12) := 'n'');'||wwv_flow.LF||
-''||wwv_flow.LF||
-'commit;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254484979694072285)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'install the acl seed data'
-,p_sequence=>630
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_notifications
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_CA_notifications ('||wwv_flow.LF||
-'    id                        number            not null'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(2) := '                                         constraint EBA_CA_note_pk'||wwv_flow.LF||
-'                                 ';
-wwv_flow_imp.g_varchar2_table(3) := '               primary key,'||wwv_flow.LF||
-'    row_version_number        number,'||wwv_flow.LF||
-'    notification_name         varc';
-wwv_flow_imp.g_varchar2_table(4) := 'har2(255)     not null,'||wwv_flow.LF||
-'    notification_description  varchar2(4000)    null,'||wwv_flow.LF||
-'    --'||wwv_flow.LF||
-'    notificatio';
-wwv_flow_imp.g_varchar2_table(5) := 'n_type         varchar2(30)      not null'||wwv_flow.LF||
-'                                                constraint';
-wwv_flow_imp.g_varchar2_table(6) := ' EBA_CA_note_tp_cc'||wwv_flow.LF||
-'                                                check (notification_type in (''RED';
-wwv_flow_imp.g_varchar2_table(7) := ''',''YELLOW'')),'||wwv_flow.LF||
-'    --'||wwv_flow.LF||
-'    display_sequence          number,'||wwv_flow.LF||
-'    display_from              timestamp w';
-wwv_flow_imp.g_varchar2_table(8) := 'ith time zone,'||wwv_flow.LF||
-'    display_until             timestamp with time zone,'||wwv_flow.LF||
-'    --'||wwv_flow.LF||
-'    created_by        ';
-wwv_flow_imp.g_varchar2_table(9) := '        varchar2(255)       not null,'||wwv_flow.LF||
-'    created                   timestamp with time zone,'||wwv_flow.LF||
-'    up';
-wwv_flow_imp.g_varchar2_table(10) := 'dated_by                varchar2(255)       not null,'||wwv_flow.LF||
-'    updated                   timestamp with t';
-wwv_flow_imp.g_varchar2_table(11) := 'ime zone )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create unique index EBA_CA_note_uk on EBA_CA_notifications (notification_name);'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'crea';
-wwv_flow_imp.g_varchar2_table(12) := 'te or replace trigger EBA_CA_note_biu'||wwv_flow.LF||
-'before insert or update on EBA_CA_notifications'||wwv_flow.LF||
-'    for each r';
-wwv_flow_imp.g_varchar2_table(13) := 'ow'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'    if inserting and :new.id is null then'||wwv_flow.LF||
-'        select to_number(sys_guid(),''XXXXXXXXXXXX';
-wwv_flow_imp.g_varchar2_table(14) := 'XXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
-'        into :new.id'||wwv_flow.LF||
-'        from dual;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if inserting then'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(15) := '     :new.created_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.created := current_timestamp;'||wwv_flow.LF||
-'        ';
-wwv_flow_imp.g_varchar2_table(16) := ':new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.updated := current_timestamp;'||wwv_flow.LF||
-'        :new.';
-wwv_flow_imp.g_varchar2_table(17) := 'row_version_number := 1;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if updating then'||wwv_flow.LF||
-'        :new.row_version_number := nvl(:ol';
-wwv_flow_imp.g_varchar2_table(18) := 'd.row_version_number,1) + 1;'||wwv_flow.LF||
-'        :new.updated_by := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'        :new.update';
-wwv_flow_imp.g_varchar2_table(19) := 'd    := current_timestamp;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if :new.notification_type is null then'||wwv_flow.LF||
-'       :new.notifi';
-wwv_flow_imp.g_varchar2_table(20) := 'cation_type := ''MANUAL'';'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'    if :new.display_sequence is null then'||wwv_flow.LF||
-'       :new.display_s';
-wwv_flow_imp.g_varchar2_table(21) := 'equence := 10;'||wwv_flow.LF||
-'    end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-''||wwv_flow.LF||
-'alter trigger EBA_CA_note_biu enable;'||wwv_flow.LF||
-'/';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256158360094202056)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'notifications'
-,p_sequence=>235
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
 prompt --application/deployment/install/upgrade_remove_eba_ca_admins_not_used
 begin
 wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
@@ -35532,278 +35824,6 @@ wwv_flow_imp_shared.create_install_script(
 ,p_name=>'remove eba_ca_admins (not used)'
 ,p_sequence=>100
 ,p_script_type=>'UPGRADE'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_series
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table eba_ca_series ('||wwv_flow.LF||
-'   series_id        number        not null,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   start_date       t';
-wwv_flow_imp.g_varchar2_table(2) := 'imestamp with time zone  not null,'||wwv_flow.LF||
-'   end_date         timestamp with time zone  not null,'||wwv_flow.LF||
-'   recur_';
-wwv_flow_imp.g_varchar2_table(3) := 'freq       varchar2(10)  not null,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-'   created_on       timestamp with time zone  not null,'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(4) := 'created_by       varchar2(255)  not null,'||wwv_flow.LF||
-'   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'   last_upda';
-wwv_flow_imp.g_varchar2_table(5) := 'ted_by  varchar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table eba_ca_series '||wwv_flow.LF||
-'   add constraint eba_ca_series_pk primary key ';
-wwv_flow_imp.g_varchar2_table(6) := '(series_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create or replace trigger eba_ca_series_biu'||wwv_flow.LF||
-'  before insert or update on eba_ca_series';
-wwv_flow_imp.g_varchar2_table(7) := '               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-'  if inserting then'||wwv_flow.LF||
-'     if :NEW.series_id is null '||wwv_flow.LF||
-'      ';
-wwv_flow_imp.g_varchar2_table(8) := '  then :NEW.series_id := eba_ca_api.gen_id;'||wwv_flow.LF||
-'     end if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(9) := '     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPD';
-wwv_flow_imp.g_varchar2_table(10) := 'ATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end';
-wwv_flow_imp.g_varchar2_table(11) := '; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger eba_ca_series_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254470178702750242)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'series'
-,p_sequence=>205
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_tags
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'CREATE TABLE eba_ca_tags ('||wwv_flow.LF||
-'    id                      number primary key,'||wwv_flow.LF||
-'    tag                  ';
-wwv_flow_imp.g_varchar2_table(2) := '   varchar2(255) not null,'||wwv_flow.LF||
-'    content_id              number,'||wwv_flow.LF||
-'    content_type            varchar2(';
-wwv_flow_imp.g_varchar2_table(3) := '30)'||wwv_flow.LF||
-'                            constraint eba_ca_tags_ck check'||wwv_flow.LF||
-'                            (content';
-wwv_flow_imp.g_varchar2_table(4) := '_type in (''EVENT'',''NOTES'',''FILE'')),'||wwv_flow.LF||
-'    --'||wwv_flow.LF||
-'    created                 timestamp with time zone,'||wwv_flow.LF||
-'   ';
-wwv_flow_imp.g_varchar2_table(5) := ' created_by              varchar2(255),'||wwv_flow.LF||
-'    updated                 timestamp with time zone,'||wwv_flow.LF||
-'    up';
-wwv_flow_imp.g_varchar2_table(6) := 'dated_by              varchar2(255)'||wwv_flow.LF||
-'    )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create or replace trigger biu_eba_ca_tags'||wwv_flow.LF||
-'   before ins';
-wwv_flow_imp.g_varchar2_table(7) := 'ert or update on eba_ca_tags'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'   begin'||wwv_flow.LF||
-'      if inserting then'||wwv_flow.LF||
-'         if :NEW.ID is';
-wwv_flow_imp.g_varchar2_table(8) := ' null then'||wwv_flow.LF||
-'           select to_number(sys_guid(),''XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX'')'||wwv_flow.LF||
-'           int';
-wwv_flow_imp.g_varchar2_table(9) := 'o :new.id'||wwv_flow.LF||
-'           from dual;'||wwv_flow.LF||
-'         end if;'||wwv_flow.LF||
-'         :NEW.CREATED := current_timestamp;'||wwv_flow.LF||
-'       ';
-wwv_flow_imp.g_varchar2_table(10) := '  :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'      end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'      if updating then'||wwv_flow.LF||
-'         :NEW.UP';
-wwv_flow_imp.g_varchar2_table(11) := 'DATED := current_timestamp;'||wwv_flow.LF||
-'         :NEW.UPDATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'      end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(12) := '/'||wwv_flow.LF||
-'show errors'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create table eba_ca_tags_type_sum ('||wwv_flow.LF||
-'    tag                             varchar2(255)';
-wwv_flow_imp.g_varchar2_table(13) := ','||wwv_flow.LF||
-'    content_type                    varchar2(30),'||wwv_flow.LF||
-'    tag_count                       number,'||wwv_flow.LF||
-'    ';
-wwv_flow_imp.g_varchar2_table(14) := 'constraint eba_ca_tags_type_sum_pk primary key (tag,content_type)'||wwv_flow.LF||
-'    )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-''||wwv_flow.LF||
-'create table eba_ca_tags_';
-wwv_flow_imp.g_varchar2_table(15) := 'sum ('||wwv_flow.LF||
-'    tag                             varchar2(255),'||wwv_flow.LF||
-'    tag_count                       number,';
-wwv_flow_imp.g_varchar2_table(16) := ''||wwv_flow.LF||
-'    constraint eba_ca_tags_sum_pk   primary key (tag)'||wwv_flow.LF||
-'    )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256257167180108093)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'tags'
-,p_sequence=>206
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_timeframes
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_ca_timeframes ('||wwv_flow.LF||
-'   tf_id       number         not null,'||wwv_flow.LF||
-'   tf_name     varchar2(255';
-wwv_flow_imp.g_varchar2_table(2) := ')  not null,'||wwv_flow.LF||
-'   start_date  date           not null,'||wwv_flow.LF||
-'   end_date    date           not null,'||wwv_flow.LF||
-'   --'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(3) := '  created_on       timestamp with time zone  not null,'||wwv_flow.LF||
-'   created_by       varchar2(255)  not null,'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(4) := '   last_updated_on  timestamp with time zone,'||wwv_flow.LF||
-'   last_updated_by  varchar2(255) )'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_';
-wwv_flow_imp.g_varchar2_table(5) := 'ca_timeframes'||wwv_flow.LF||
-'   add constraint EBA_ca_timeframes_pk primary key (tf_id)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter table EBA_ca_timefr';
-wwv_flow_imp.g_varchar2_table(6) := 'ames'||wwv_flow.LF||
-'   add constraint EBA_ca_timeframes_uk unique (tf_name)'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'create or replace trigger EBA_ca_time';
-wwv_flow_imp.g_varchar2_table(7) := 'frames_biu'||wwv_flow.LF||
-'  before insert or update on EBA_ca_timeframes               '||wwv_flow.LF||
-'  for each row  '||wwv_flow.LF||
-'begin   '||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(8) := ' if inserting then'||wwv_flow.LF||
-'     if :NEW.tf_id is null '||wwv_flow.LF||
-'        then :NEW.tf_id := EBA_ca_api.gen_id; '||wwv_flow.LF||
-'     e';
-wwv_flow_imp.g_varchar2_table(9) := 'nd if;'||wwv_flow.LF||
-'     :NEW.CREATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'     :NEW.CREATED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-' ';
-wwv_flow_imp.g_varchar2_table(10) := '  end if;'||wwv_flow.LF||
-''||wwv_flow.LF||
-'   if updating then'||wwv_flow.LF||
-'      :NEW.LAST_UPDATED_ON := CURRENT_TIMESTAMP;'||wwv_flow.LF||
-'      :NEW.LAST_UPDA';
-wwv_flow_imp.g_varchar2_table(11) := 'TED_BY := nvl(v(''APP_USER''),USER);'||wwv_flow.LF||
-'   end if; '||wwv_flow.LF||
-'end; '||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger EBA_ca_timeframes_biu enable'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'';
-wwv_flow_imp.g_varchar2_table(12) := ''||wwv_flow.LF||
-''||wwv_flow.LF||
-''||wwv_flow.LF||
-'';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3254471150567761033)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'timeframes'
-,p_sequence=>225
-,p_script_type=>'INSTALL'
-,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
-);
-end;
-/
-prompt --application/deployment/install/install_tz_prefs
-begin
-wwv_flow_imp.g_varchar2_table := wwv_flow_imp.empty_varchar2_table;
-wwv_flow_imp.g_varchar2_table(1) := 'create table EBA_CA_tz_pref ('||wwv_flow.LF||
-'  id                        number not null'||wwv_flow.LF||
-'                          ';
-wwv_flow_imp.g_varchar2_table(2) := '  constraint EBA_CA_tz_pref_pk'||wwv_flow.LF||
-'                            primary key,'||wwv_flow.LF||
-'  row_version_number        ';
-wwv_flow_imp.g_varchar2_table(3) := 'integer,'||wwv_flow.LF||
-'  userid                    varchar2(255) not null,'||wwv_flow.LF||
-'  TIMEZONE_PREFERENCE       varchar2(25';
-wwv_flow_imp.g_varchar2_table(4) := '5) not null,'||wwv_flow.LF||
-'  created                   timestamp with time zone,'||wwv_flow.LF||
-'  created_by                varch';
-wwv_flow_imp.g_varchar2_table(5) := 'ar2(255),'||wwv_flow.LF||
-'  updated                   timestamp with time zone,'||wwv_flow.LF||
-'  updated_by                varchar2';
-wwv_flow_imp.g_varchar2_table(6) := '(255)'||wwv_flow.LF||
-'  );'||wwv_flow.LF||
-'  '||wwv_flow.LF||
-'create or replace trigger biu_EBA_CA_tz_pref'||wwv_flow.LF||
-'   before insert or update on EBA_CA_tz_p';
-wwv_flow_imp.g_varchar2_table(7) := 'ref'||wwv_flow.LF||
-'   for each row'||wwv_flow.LF||
-'begin'||wwv_flow.LF||
-'   if :new.ID is null then'||wwv_flow.LF||
-'     select to_number(sys_guid(),''XXXXXXXXXXXXX';
-wwv_flow_imp.g_varchar2_table(8) := 'XXXXXXXXXXXXXXXXXXX'') into :new.id from dual;'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if inserting then'||wwv_flow.LF||
-'       :new.created :=';
-wwv_flow_imp.g_varchar2_table(9) := ' current_timestamp;'||wwv_flow.LF||
-'       :new.created_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.updated := curr';
-wwv_flow_imp.g_varchar2_table(10) := 'ent_timestamp;'||wwv_flow.LF||
-'       :new.updated_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'       :new.row_version_number :';
-wwv_flow_imp.g_varchar2_table(11) := '= 1;'||wwv_flow.LF||
-'   elsif updating then'||wwv_flow.LF||
-'       :new.row_version_number := nvl(:old.row_version_number,1) + 1;'||wwv_flow.LF||
-'  ';
-wwv_flow_imp.g_varchar2_table(12) := ' end if;'||wwv_flow.LF||
-'   if inserting or updating then'||wwv_flow.LF||
-'       :new.updated := current_timestamp;'||wwv_flow.LF||
-'       :new.upda';
-wwv_flow_imp.g_varchar2_table(13) := 'ted_by := nvl(wwv_flow.g_user,user);'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'   if :new.TIMEZONE_PREFERENCE is null then'||wwv_flow.LF||
-'       :';
-wwv_flow_imp.g_varchar2_table(14) := 'new.timezone_preference := ''UTC'';'||wwv_flow.LF||
-'   end if;'||wwv_flow.LF||
-'end;'||wwv_flow.LF||
-'/'||wwv_flow.LF||
-'alter trigger biu_EBA_CA_tz_pref enable;';
-wwv_flow_imp_shared.create_install_script(
- p_id=>wwv_flow_imp.id(3256158756893220074)
-,p_install_id=>wwv_flow_imp.id(7407360007655550898)
-,p_name=>'tz prefs'
-,p_sequence=>245
-,p_script_type=>'INSTALL'
 ,p_script_clob=>wwv_flow_imp.varchar2_to_clob(wwv_flow_imp.g_varchar2_table)
 );
 end;

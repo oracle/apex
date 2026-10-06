@@ -1,0 +1,68 @@
+list data-load-process-train-contacts (
+    name: Data Load Process Train - contacts
+
+    entry data-load-results (
+        label: Data Load Results
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 63
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 60
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 61
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 62
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+

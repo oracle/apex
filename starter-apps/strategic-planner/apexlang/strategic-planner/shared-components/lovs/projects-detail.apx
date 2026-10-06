@@ -1,0 +1,23 @@
+lov projects-detail (
+    name: PROJECTS DETAIL
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select 
+                 p.id, 
+                 decode(rt.release,null,p.project,rt.release_train||' '||rt.release||': '||project)|| ' - '||pct_complete||'%' display
+            from SP_PROJECTS p,
+                 SP_RELEASE_TRAINS rt
+            where p.release_id = rt.id(+) and
+                  p.ARCHIVED_YN = 'N' and
+                  p.DUPLICATE_OF_PROJECT_ID is null
+            order by p.project
+            ```
+    }
+    columnMapping {
+        return: ID
+        display: DISPLAY
+    }
+)
+

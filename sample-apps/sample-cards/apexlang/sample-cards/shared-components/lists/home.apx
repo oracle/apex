@@ -1,0 +1,77 @@
+list home (
+    name: Home
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-ellipsis-h
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to create a Cards region of charts, define a Cards region's No Data Found message, and use template directives to dynamically display information
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to create color coded cards, a Cards region with a Faceted Search, and several other Cards regions using various styles
+        }
+    )
+
+    entry card-actions (
+        label: Card Actions
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to make an each card link to a given URL or how to define different elements on each card that link to different URLs
+        }
+    )
+
+    entry images-and-media (
+        label: Images and Media
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images and embedded videos in Cards regions
+        }
+    )
+
+)
+

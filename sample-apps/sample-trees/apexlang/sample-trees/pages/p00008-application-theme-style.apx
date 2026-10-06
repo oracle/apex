@@ -7,13 +7,10 @@ page 8 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -33,9 +30,13 @@ page 8 (
             slot: body
         }
         appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-            cssClasses: infoTextRegion
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+            renderComponents: belowContent
         }
     )
 
@@ -62,44 +63,10 @@ page 8 (
         }
     )
 
-    region items (
-        name: items
-        type: staticContent
-        layout {
-            sequence: 30
-            parentRegion: @set-user-interface-theme-style
-            slot: subRegions
-        }
-        appearance {
-            template: @/blank-with-attributes
-            templateOptions: #DEFAULT#
-        }
-        advanced {
-            excludeTitleFromTranslation: true
-        }
-    )
-
-    region set-user-interface-theme-style (
-        name: Set User Interface Theme Style
-        type: staticContent
-        layout {
-            sequence: 20
-            slot: body
-        }
-        appearance {
-            template: @/standard
-            templateOptions: [
-                #DEFAULT#
-                t-Region--hideHeader js-addHiddenHeadingRoleDesc
-                t-Region--hiddenOverflow
-            ]
-        }
-    )
-
     pageItem P8_DESKTOP_THEME_STYLE_ID (
         type: selectList
         label {
-            label: Desktop Theme Style
+            label: Theme Style
             alignment: left
         }
         lov {
@@ -120,8 +87,8 @@ page 8 (
             displayNullValue: false
         }
         layout {
-            sequence: 10
-            region: @items
+            sequence: 20
+            region: @about-this-page
             slot: regionBody
             alignment: left
         }

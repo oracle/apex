@@ -15,12 +15,10 @@ page 18 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
+        cursorFocus: firstItemOnPage
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -89,40 +87,6 @@ page 18 (
             formRegion: @nomenclature-area
             column: AREA
             dataType: varchar2
-        }
-    )
-
-    pageItem P18_CREATED (
-        type: hidden
-        layout {
-            sequence: 140
-            region: @nomenclature-area
-            slot: regionBody
-        }
-        source {
-            formRegion: @nomenclature-area
-            column: CREATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P18_CREATED_BY (
-        type: hidden
-        layout {
-            sequence: 150
-            region: @nomenclature-area
-            slot: regionBody
-        }
-        source {
-            formRegion: @nomenclature-area
-            column: CREATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 
@@ -394,40 +358,6 @@ page 18 (
         }
     )
 
-    pageItem P18_UPDATED (
-        type: hidden
-        layout {
-            sequence: 160
-            region: @nomenclature-area
-            slot: regionBody
-        }
-        source {
-            formRegion: @nomenclature-area
-            column: UPDATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P18_UPDATED_BY (
-        type: hidden
-        layout {
-            sequence: 170
-            region: @nomenclature-area
-            slot: regionBody
-        }
-        source {
-            formRegion: @nomenclature-area
-            column: UPDATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
     button cancel (
         buttonName: CANCEL
         label: Cancel
@@ -548,7 +478,7 @@ page 18 (
         name: Close Dialog
         type: closeDialog
         execution {
-            sequence: 50
+            sequence: 30
         }
         advanced {
             executionMappingIdentifier: 139342528713164605975

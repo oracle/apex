@@ -1,10 +1,5 @@
 authentication apex-auth (
     name: APEX Auth
     type: oracleApexAccounts
-    sessionSharing {
-        type: custom
-        cookieName: ORA_WWV_PACKAGED_APPLICATIONS
-        secure: true
-    }
 )
 

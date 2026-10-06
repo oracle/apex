@@ -7,10 +7,11 @@ page 6 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -138,6 +139,9 @@ page 6 (
         }
         chart {
             type: combination
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: end
@@ -329,6 +333,9 @@ page 6 (
                 t-MediaList--stack
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column ASSIGNED_TO (
@@ -531,6 +538,9 @@ page 6 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         animation {
             onDataChange: none

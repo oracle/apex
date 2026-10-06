@@ -10,13 +10,8 @@ page 4016 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -125,9 +120,6 @@ page 4016 (
                 t-Report--rowHighlight
                 t-Report--horizontalBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column APPROVAL_SEQ (
@@ -514,22 +506,6 @@ page 4016 (
         action native-execute-plsql-code (
             action: executeServerSideCode
             settings {
-                plsqlCode: null;
-                itemsToSubmit: [
-                    P4016_INITIATIVE_APPROVAL_ID
-                    P4016_TEAM_MEMBER_ID
-                    P4016_APPROVAL_SEQ
-                ]
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-        action native-execute-plsql-code-2 (
-            action: executeServerSideCode
-            settings {
                 plsqlCode:
                     ```plsql
                     if :P4016_TEAM_MEMBER_ID is not null and :P4016_APPROVAL_SEQ is not null then
@@ -547,6 +523,22 @@ page 4016 (
             }
             execution {
                 sequence: 70
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code-2 (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: [
+                    P4016_INITIATIVE_APPROVAL_ID
+                    P4016_TEAM_MEMBER_ID
+                    P4016_APPROVAL_SEQ
+                ]
+            }
+            execution {
+                sequence: 20
                 fireOnInit: false
             }
         )

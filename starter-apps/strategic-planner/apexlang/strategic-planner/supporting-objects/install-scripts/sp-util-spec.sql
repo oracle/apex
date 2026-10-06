@@ -4,6 +4,7 @@ procedure add_error_log (
     p_package_name    in varchar2,
     p_procedure_name  in varchar2, 
     p_error           in varchar2, 
+    p_error_backtrace in varchar2 default null,
     p_arg1_name       in varchar2 default null, 
     p_arg1_val        in varchar2 default null, 
     p_arg2_name       in varchar2 default null, 
@@ -283,16 +284,19 @@ procedure assignment_notification (
     p_notification_type  in  varchar2 );
 
 procedure comment_notification (
-    p_team_member_id     in  number,
-    p_app_name           in  varchar2,
-    p_app_id             in  number,
-    p_project_id         in  number  default null,
-    p_task_id            in  number  default null,
-    p_link               in  varchar2,
-    p_view_what          in  varchar2,
-    p_title              in  varchar2,
-    p_email_contents     in  varchar2,
-    p_notification_type  in  varchar2 default 'COMMENT' );
+    p_team_member_id      in  number,
+    p_app_name            in  varchar2,
+    p_app_id              in  number,
+    p_project_id          in  number  default null,
+    p_task_id             in  number  default null,
+    p_release_id          in  number  default null,
+    p_initiative_id       in  number  default null,
+    p_init_focus_area_id  in  number  default null,
+    p_link                in  varchar2,
+    p_view_what           in  varchar2,
+    p_title               in  varchar2,
+    p_email_contents      in  varchar2,
+    p_notification_type   in  varchar2 default 'COMMENT' );
 
 -- used by SP_CONTRIBUTOR_SUMMARY, SP_RELEASE_TIMELINE and with app
 function exceptions_for_project (
@@ -311,6 +315,10 @@ function exceptions_for_project (
 function replace_nomenclature (
     p_contents  in  varchar2 )
     return varchar2;
+
+function fix_demo_dates (
+    p_date  in  date
+) return date;
 
 end sp_util;
 /

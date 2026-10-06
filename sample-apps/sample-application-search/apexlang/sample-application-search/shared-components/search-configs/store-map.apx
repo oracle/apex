@@ -1,0 +1,36 @@
+searchConfig store_map (
+    name: Store Search Configuration With Location
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select store_id,
+                   store_name,
+                   web_address,
+                   physical_address,
+                   longitude,
+                   latitude
+              from eba_demo_search_stores
+            ```
+        searchableColumns: [
+            STORE_NAME
+            PHYSICAL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: STORE_ID
+        titleColumn: STORE_NAME
+        subtitleColumn: WEB_ADDRESS
+        descriptionColumn: PHYSICAL_ADDRESS
+        customColumn1: LONGITUDE
+        customColumn2: LATITUDE
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-shopping-bag
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

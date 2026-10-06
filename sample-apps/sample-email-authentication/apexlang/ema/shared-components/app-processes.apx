@@ -1,6 +1,5 @@
 appProcess check-for-email-from (
     name: check for email_from
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

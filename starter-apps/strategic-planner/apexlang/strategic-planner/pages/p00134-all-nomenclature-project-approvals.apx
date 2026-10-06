@@ -7,13 +7,6 @@ page 134 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: All Approvals, regardless of status.  Includes &NOMENCLATURE_PROJECT., approval type, status, justification, list of approvers, and submitter.
     }
@@ -45,7 +38,7 @@ page 134 (
                        (select max(updated) from sp_project_approval_chain
                          where project_approval_id = a.id) last_action,
                        i.id initiative_id,
-                       (select listagg(t.first_name||' '||t.last_name,', ')
+                       (select listagg(t.first_name||' '||t.last_name,', ' on overflow truncate with count)
                                within group (order by c.last_status_on)
                          from sp_project_approval_chain c,
                               sp_team_members t
@@ -81,6 +74,10 @@ page 134 (
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Approvals, regardless of status.  Includes Project, approval type, status, justification, list of approvers, and submitter.  There is a default filter to only include those approvals which are active.
+        }
         advanced {
             savedReportMappingIdentifier: 13590359693946819038
         }
@@ -94,7 +91,7 @@ page 134 (
                 sequence: 31
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -110,10 +107,13 @@ page 134 (
                 sequence: 141
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
+            }
+            genAI {
+                columnContext: List of approvers, if status is Pending, the last approver listed is who it is pending for
             }
         )
 
@@ -136,7 +136,7 @@ page 134 (
                 linkText: #INITIATIVE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -152,7 +152,7 @@ page 134 (
                 sequence: 121
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: S
@@ -168,7 +168,7 @@ page 134 (
                 sequence: 41
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -187,7 +187,7 @@ page 134 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: O
@@ -203,7 +203,7 @@ page 134 (
                 sequence: 161
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -229,7 +229,7 @@ page 134 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -245,7 +245,7 @@ page 134 (
                 sequence: 131
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: T
@@ -261,7 +261,7 @@ page 134 (
                 sequence: 151
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -277,7 +277,7 @@ page 134 (
                 sequence: 51
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -296,7 +296,7 @@ page 134 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -312,7 +312,7 @@ page 134 (
                 sequence: 71
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N

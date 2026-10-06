@@ -7,7 +7,6 @@ page 11 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -23,7 +22,7 @@ page 11 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -108,6 +107,9 @@ page 11 (
                 t-Comments--chat
             ]
             showNullValuesAs: &nbsp;
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No comments for this project.
@@ -308,6 +310,9 @@ page 11 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -455,6 +460,9 @@ page 11 (
                 t-Report--inline
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No milestones for this project.
@@ -636,6 +644,9 @@ page 11 (
                 t-Report--inline
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No tasks for this project.

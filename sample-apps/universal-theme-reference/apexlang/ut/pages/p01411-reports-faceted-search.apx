@@ -7,13 +7,10 @@ page 1411 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -126,6 +123,7 @@ page 1411 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: ASSIGNED_TO
@@ -146,6 +144,7 @@ page 1411 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: BUDGET
@@ -167,6 +166,7 @@ page 1411 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: COST
@@ -188,6 +188,7 @@ page 1411 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PROJECT
@@ -221,6 +222,7 @@ page 1411 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: STATUS
@@ -331,9 +333,6 @@ page 1411 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

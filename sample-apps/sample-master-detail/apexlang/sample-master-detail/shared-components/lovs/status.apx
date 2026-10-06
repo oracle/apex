@@ -1,0 +1,13 @@
+lov status (
+    name: STATUS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select description d, cd r
+            from eba_demo_md_status
+            order by display_order
+            ```
+    }
+)
+

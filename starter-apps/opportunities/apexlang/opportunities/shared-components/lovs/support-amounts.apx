@@ -1,0 +1,14 @@
+lov support-amounts (
+    name: SUPPORT AMOUNTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_SUPPORT_AMTS
+             order by 1
+            ```
+    }
+)
+

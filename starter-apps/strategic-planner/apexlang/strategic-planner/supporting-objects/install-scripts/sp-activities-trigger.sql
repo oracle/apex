@@ -6,11 +6,18 @@ declare
     l_tags varchar2(4000) := null;
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+    --
+    if :new.private_yn is null then 
+       :new.private_yn := 'N';
+    end if;
     --
     -- validations
     --
@@ -41,6 +48,11 @@ begin
     --
     -- touch parent
     --
-    update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
+    if sp_globals.g_audit_this and :new.initiative_id is not null then
+        update sp_initiatives set updated = sysdate, updated_by = :new.updated_by where id = :new.initiative_id;
+    end if;
+    if sp_globals.g_audit_this and :new.project_id is not null then
+        update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
+    end if;
 end sp_activities_biu;
 /

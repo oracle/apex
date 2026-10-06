@@ -7,7 +7,6 @@ page 20 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -41,7 +40,7 @@ page 20 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -115,6 +114,9 @@ page 20 (
                 t-Report--rowHighlight
                 t-Report--inline
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 5000
@@ -732,6 +734,9 @@ page 20 (
                 t-MediaList--showDesc
                 t-MediaList--stack
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: <div class="u-tC">No data found.</div>

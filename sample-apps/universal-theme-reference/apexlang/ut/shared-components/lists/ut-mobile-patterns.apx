@@ -1,0 +1,95 @@
+list ut-mobile-patterns (
+    name: UT - Mobile Patterns
+
+    entry data-entry (
+        label: Data Entry
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 423
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+    entry headers-and-footers (
+        label: Headers and Footers
+        icon {
+            imageIconCssClasses: fa-layout-header-footer
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 422
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+    entry mobile-components (
+        label: Mobile Components
+        icon {
+            imageIconCssClasses: fa-cubes
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 425
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+    entry navigation (
+        label: Navigation
+        icon {
+            imageIconCssClasses: fa-breadcrumb
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 421
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+    entry touch-gestures (
+        label: Touch Gestures
+        icon {
+            imageIconCssClasses: fa-hand-o-right
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 424
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+)
+

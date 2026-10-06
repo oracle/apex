@@ -10,13 +10,6 @@ page 10791 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region notification-email-contents (
         name: Notification Email Contents
@@ -52,6 +45,9 @@ page 10791 (
                 t-Report--noBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

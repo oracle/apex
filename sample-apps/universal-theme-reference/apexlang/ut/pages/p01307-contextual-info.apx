@@ -12,7 +12,6 @@ page 1307 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -29,7 +28,7 @@ page 1307 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -98,6 +97,9 @@ page 1307 (
             template: @/contextual-info
             templateOptions: #DEFAULT#
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column STATUS (

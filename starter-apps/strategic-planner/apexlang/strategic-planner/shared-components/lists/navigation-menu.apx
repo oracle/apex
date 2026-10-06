@@ -1,0 +1,294 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry activities-p1-activities (
+        label: "Activities [&P1_ACTIVITIES.]"
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                96
+                102
+                129
+                129
+                169
+            ]
+        }
+        link {
+            target: {
+                page: 102
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry nomenclature-areas-p1-areas (
+        label: "&NOMENCLATURE_AREAS. [&P1_AREAS.]"
+        icon {
+            imageIconCssClasses: fa-folder-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                17
+                9
+            ]
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry nomenclature-initiatives-p1-initiatives (
+        label: "&NOMENCLATURE_INITIATIVES. [&P1_INITIATIVES.]"
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                21
+                94
+                53
+                11
+                33
+                57
+                59
+                62
+                68
+                127
+                170
+                171
+                172
+                173
+                174
+                175
+                112
+                158
+                135
+            ]
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry nomenclature-projects-p1-projects (
+        label: "&NOMENCLATURE_PROJECTS. [&P1_PROJECTS.]"
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                23
+                113
+                64
+                29
+                30
+                502
+                507
+                505
+                60
+                116
+                121
+                98
+                126
+                70
+                119
+                85
+                176
+                123
+            ]
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry nomenclature-users-p1-people (
+        label: "&NOMENCLATURE_USERS. [&P1_PEOPLE.]"
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                5
+                19
+                20
+                74
+                61
+                148
+                153
+                103
+                151
+            ]
+        }
+        link {
+            target: {
+                page: 74
+                action: resetPagination
+            }
+        }
+    )
+
+    entry releases-p1-releases (
+        label: "Releases [&P1_RELEASES.]"
+        icon {
+            imageIconCssClasses: fa-ship
+        }
+        layout {
+            sequence: 77
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                63
+                77
+                38
+                76
+                8
+                117
+                202
+                42
+                69
+                133
+                14
+                203
+            ]
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 150
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                41
+                14
+                46
+                31
+                78
+                7
+                45
+                51
+                86
+                26
+                500
+                79
+                4
+                80
+                81
+                89
+                15
+                91
+                111
+                122
+                65
+                134
+                146
+                156
+                157
+                159
+                157
+                37
+                55
+                167
+                710
+                164
+                31
+                66
+            ]
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry team-calendar (
+        label: Team Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 110
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                700
+                702
+            ]
+        }
+        link {
+            target: {
+                page: 700
+            }
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
+)
+

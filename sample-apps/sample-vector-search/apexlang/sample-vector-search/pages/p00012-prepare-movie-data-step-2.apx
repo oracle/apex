@@ -7,11 +7,8 @@ page 12 (
         dialogTemplate: @/modal-dialog
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
-        executeWhenPageLoads: gInterval = window.setInterval( function() {apex.event.trigger( document, "updateProgress" ); }, 3700 );
+        executeWhenPageLoads: "gInterval = window.setInterval( function() {apex.event.trigger( document, \"updateProgress\" ); }, 3700 );"
     }
     css {
         inline:
@@ -22,10 +19,6 @@ page 12 (
                font-size: 8pt;
                overflow-x: scroll; }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region button-bar (

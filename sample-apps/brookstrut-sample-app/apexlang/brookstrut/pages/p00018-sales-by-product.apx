@@ -7,12 +7,7 @@ page 18 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -90,9 +85,6 @@ page 18 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column DATE_OF_SALE (
@@ -275,6 +267,9 @@ page 18 (
             layout {
                 sequence: 20
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -304,6 +299,9 @@ page 18 (
             layout {
                 sequence: 30
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -322,6 +320,9 @@ page 18 (
             }
             layout {
                 sequence: 40
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

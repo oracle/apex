@@ -1,0 +1,13 @@
+customAttribute sql_query (
+    apexlangName: sqlQuery
+    attribute: 1
+    name: SQL Query
+    type: sqlQuery
+    validation {
+        required: true
+    }
+    appearance {
+        sequence: 10
+    }
+)
+

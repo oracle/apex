@@ -9,13 +9,10 @@ page 16015 (
         cssClasses: rw-pillar--sienna
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @subscriptions
@@ -58,7 +55,7 @@ page 16015 (
                                         p_on_value => 'Y', p_off_value => 'N',
                                         p_item_id => static_id || rownum, p_item_label => 'Opted In') opted_in,
                        case when opted_in_yn = 'Y' then 'Yes' else 'No' end opted_in_for_filter,
-                       (select listagg(g.group_name, ', ') within group(order by g.group_name)
+                       (select listagg(g.group_name, ', ' on overflow truncate with count) within group(order by g.group_name)
                           from sp_groups g,
                                sp_group_members m
                          where g.id = m.group_id
@@ -132,7 +129,7 @@ page 16015 (
                 sequence: 101
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -148,7 +145,7 @@ page 16015 (
                 sequence: 31
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -179,7 +176,7 @@ page 16015 (
                 sequence: 61
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             columnFilter {
                 type: definedLovWordContains
@@ -207,7 +204,7 @@ page 16015 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: T
@@ -223,7 +220,7 @@ page 16015 (
                 sequence: 11
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -243,7 +240,7 @@ page 16015 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -274,7 +271,7 @@ page 16015 (
                 sequence: 51
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -290,7 +287,7 @@ page 16015 (
                 sequence: 111
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Y
@@ -306,7 +303,7 @@ page 16015 (
                 sequence: 121
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -322,7 +319,7 @@ page 16015 (
                 sequence: 21
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -354,7 +351,7 @@ page 16015 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: S
@@ -370,7 +367,7 @@ page 16015 (
                 sequence: 91
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U

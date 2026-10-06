@@ -7,7 +7,6 @@ page 340 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -50,8 +49,6 @@ page 340 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -462,6 +459,9 @@ page 340 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column REFERENCE (
             reportColumnQueryId: 1
@@ -565,6 +565,9 @@ page 340 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DUE (
@@ -760,6 +763,9 @@ page 340 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CATEGORY (

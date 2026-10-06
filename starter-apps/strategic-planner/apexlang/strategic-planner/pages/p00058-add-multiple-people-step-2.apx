@@ -11,9 +11,6 @@ page 58 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -29,8 +26,6 @@ page 58 (
     security {
         authorizationScheme: @contribution-rights
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @access-control
@@ -93,11 +88,13 @@ page 58 (
         componentAppearance {
             template: @/standard
             templateOptions: [
-                #DEFAULT#
                 t-Report--stretch
                 t-Report--staticRowColors
                 t-Report--rowHighlightOff
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

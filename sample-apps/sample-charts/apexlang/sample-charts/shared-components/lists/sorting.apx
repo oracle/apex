@@ -1,0 +1,56 @@
+list sorting (
+    name: Sorting
+
+    entry area-chart-stacked-page (
+        label: Area Chart (Stacked) - Page 2
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates sorting the chart by the x-axis labels, descending.
+        }
+    )
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Four Bar charts demonstrate the various methods of defining colors on a chart, and each of the charts demonstrates a different style of sorting.
+        }
+    )
+
+    entry donut-chart-sorting-page (
+        label: Donut Chart (Sorting) - Page 9
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates sorting the chart by the values, ascending.
+        }
+    )
+
+)
+

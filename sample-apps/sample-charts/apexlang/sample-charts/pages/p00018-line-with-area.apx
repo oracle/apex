@@ -7,11 +7,8 @@ page 18 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -90,7 +87,7 @@ page 18 (
                 }
                 </pre><p/>
                 
-                For more information on the tooltip label settings, refer to the Oracle JET Cookbook <a href="&OJCHART_API_URL.#valueFormats.value.tooltipLabel" target="_blank">valueFormats.value.tooltipLabel</a>, <a href="&OJCHART_API_URL.#valueFormats.group.tooltipLabel" target="_blank">valueFormats.group.tooltipLabel</a> and <a href="&OJCHART_API_URL.#valueFormats.series.tooltipLabel" target="_blank">valueFormats.series.tooltipLabel</a> examples.
+                For more information on the tooltip label settings, refer to the Oracle JET Cookbook <a href="&OJCHART_API_URL.#valueFormats.value.tooltipLabel" target="_blank" rel="noopener noreferrer external">valueFormats.value.tooltipLabel</a>, <a href="&OJCHART_API_URL.#valueFormats.group.tooltipLabel" target="_blank" rel="noopener noreferrer external">valueFormats.group.tooltipLabel</a> and <a href="&OJCHART_API_URL.#valueFormats.series.tooltipLabel" target="_blank" rel="noopener noreferrer external">valueFormats.series.tooltipLabel</a> examples.
                 ```
         }
         layout {
@@ -121,7 +118,7 @@ page 18 (
                 <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
                 <strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>
                 
-                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank">Line with Area Chart: Line Types</a> examples.
+                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Line Types</a> examples.
                 ```
         }
         layout {
@@ -153,7 +150,7 @@ page 18 (
                 </ul>
                 <p/>Note that multi-series charts using the attribute <strong>Time Axis Type</strong> setting of <strong>Mixed Frequency</strong> or <strong>Skip Gaps</strong> will not be densified, to respect the intended behavior of the Oracle JET 'Time Axis Type' attribute.<p/>
                 
-                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank">Line with Area Chart: Line Types</a> examples.
+                For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Line Types</a> examples.
                 ```
         }
         layout {
@@ -195,6 +192,9 @@ page 18 (
         }
         chartLayout {
             height: 480
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             behavior: smooth
@@ -391,6 +391,9 @@ page 18 (
         chartLayout {
             height: 480
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             behavior: smooth
             dimOnHover: false
@@ -562,6 +565,9 @@ page 18 (
         }
         chartLayout {
             height: 480
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             behavior: smooth
@@ -743,6 +749,9 @@ page 18 (
         }
         chartLayout {
             height: 480
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             behavior: smooth
@@ -1002,7 +1011,7 @@ page 18 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'horizontal'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({orientation: 'horizontal'});"
             }
             affectedElements {
                 selectionType: region
@@ -1030,7 +1039,7 @@ page 18 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("lineChart").widget().ojChart({orientation: 'vertical'});
+                jsCode: "apex.region(\"lineChart\").widget().ojChart({orientation: 'vertical'});"
             }
             affectedElements {
                 selectionType: region

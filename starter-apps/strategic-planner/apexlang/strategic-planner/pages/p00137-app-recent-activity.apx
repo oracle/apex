@@ -13,13 +13,6 @@ page 137 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region app-recent-activity-24-hours (
         name: App Recent Activity (24 hours)
@@ -69,9 +62,6 @@ page 137 (
                 t-Report--rowHighlight
                 t-Report--horizontalBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column DITINCT_PAGES_VIEWED (

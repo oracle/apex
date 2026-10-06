@@ -1,0 +1,20 @@
+lov card-and-interactive-report-view-as (
+    name: CARD AND INTERACTIVE REPORT VIEW AS
+    source {
+        location: staticValues
+    }
+
+    entry cards (
+        sequence: 10
+        display: Cards
+        return: CARDS
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: IR
+    )
+
+)
+

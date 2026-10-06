@@ -8,14 +8,9 @@ page 10000 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -185,7 +180,7 @@ page 10000 (
         name: Column 1
         type: staticContent
         layout {
-            sequence: 180
+            sequence: 190
             slot: body
         }
         appearance {
@@ -201,7 +196,7 @@ page 10000 (
         name: Column 2
         type: staticContent
         layout {
-            sequence: 190
+            sequence: 200
             slot: body
             startNewRow: false
         }
@@ -438,6 +433,9 @@ page 10000 (
                 t-AVPList--rightAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -517,6 +515,9 @@ page 10000 (
                 #DEFAULT#
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -725,7 +726,7 @@ page 10000 (
     pageItem P10000_DEFAULT_TAGS (
         type: hidden
         layout {
-            sequence: 130
+            sequence: 140
             slot: body
         }
         security {
@@ -733,10 +734,24 @@ page 10000 (
         }
     )
 
+    pageItem P10000_EVENT_TYPES (
+        type: hidden
+        layout {
+            sequence: 20
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
     pageItem P10000_FOCUS_AREAS (
         type: hidden
         layout {
-            sequence: 150
+            sequence: 160
             slot: body
         }
         security {
@@ -769,7 +784,7 @@ page 10000 (
     pageItem P10000_PROJECT_STATUSES (
         type: hidden
         layout {
-            sequence: 120
+            sequence: 130
             slot: body
         }
         security {
@@ -788,10 +803,21 @@ page 10000 (
         }
     )
 
+    pageItem P10000_RELATION_TYPES (
+        type: hidden
+        layout {
+            sequence: 110
+            slot: body
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
     pageItem P10000_REL_MILESTONE_TYPES (
         type: hidden
         layout {
-            sequence: 170
+            sequence: 180
             slot: body
         }
         security {
@@ -813,7 +839,7 @@ page 10000 (
     pageItem P10000_RM_DEFAULT_TAGS (
         type: hidden
         layout {
-            sequence: 140
+            sequence: 150
             slot: body
         }
         security {
@@ -824,7 +850,7 @@ page 10000 (
     pageItem P10000_SYSTEM_NOTIFICATIONS (
         type: hidden
         layout {
-            sequence: 160
+            sequence: 170
             slot: body
         }
         security {
@@ -835,7 +861,7 @@ page 10000 (
     pageItem P10000_TASK_STATUSES (
         type: hidden
         layout {
-            sequence: 110
+            sequence: 120
             slot: body
         }
         security {
@@ -958,7 +984,7 @@ page 10000 (
     computation p10000-activity-types (
         itemName: P10000_ACTIVITY_TYPES
         execution {
-            sequence: 140
+            sequence: 150
             point: beforeHeader
         }
         computation {
@@ -969,7 +995,7 @@ page 10000 (
     computation p10000-competencies (
         itemName: P10000_COMPETENCIES
         execution {
-            sequence: 170
+            sequence: 180
             point: beforeHeader
         }
         computation {
@@ -999,6 +1025,24 @@ page 10000 (
         }
     )
 
+    computation p10000-event-types (
+        itemName: P10000_EVENT_TYPES
+        execution {
+            sequence: 160
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select count(*) from sp_event_types
+                 where active_yn = 'Y'
+                ```
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
     computation p10000-focus-areas (
         itemName: P10000_FOCUS_AREAS
         execution {
@@ -1024,7 +1068,7 @@ page 10000 (
     computation p10000-project-sizes (
         itemName: P10000_PROJECT_SIZES
         execution {
-            sequence: 130
+            sequence: 140
             point: beforeHeader
         }
         computation {
@@ -1046,7 +1090,7 @@ page 10000 (
     computation p10000-project-statuses (
         itemName: P10000_PROJECT_STATUSES
         execution {
-            sequence: 110
+            sequence: 120
             point: beforeHeader
         }
         computation {
@@ -1057,11 +1101,22 @@ page 10000 (
     computation p10000-rel-milestone-types (
         itemName: P10000_REL_MILESTONE_TYPES
         execution {
-            sequence: 160
+            sequence: 170
             point: beforeHeader
         }
         computation {
             sqlQuery: select count(*) from sp_release_milestone_types
+        }
+    )
+
+    computation p10000-relation-types (
+        itemName: P10000_RELATION_TYPES
+        execution {
+            sequence: 110
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery: select count(*) from sp_relation_types;
         }
     )
 
@@ -1111,7 +1166,7 @@ page 10000 (
     computation p10000-task-types (
         itemName: P10000_TASK_TYPES
         execution {
-            sequence: 120
+            sequence: 130
             point: beforeHeader
         }
         computation {
@@ -1132,7 +1187,7 @@ page 10000 (
     computation p10000-user-counts (
         itemName: P10000_USER_COUNTS
         execution {
-            sequence: 180
+            sequence: 190
             point: beforeHeader
         }
         computation {

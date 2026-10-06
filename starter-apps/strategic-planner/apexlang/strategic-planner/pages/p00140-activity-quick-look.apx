@@ -1,0 +1,1305 @@
+page 140 (
+    name: Activity Quick Look
+    alias: ACTIVITY-QUICK-LOOK
+    title: Activity Quick Look
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        resizable: false
+    }
+    css {
+        inline:
+            ```css
+            .sp-tag {
+                padding: 2px 4px;
+                display: inline-block;
+                vertical-align: text-bottom;
+                border-radius: 3px;
+                background-color: rgba(0,0,0,.1);
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+            .sp-tags-container {
+                display: flex;
+                align-items: center;
+                flex-wrap: wrap;
+                gap: 4px;
+                justify-content: flex-start;
+            }
+            
+            .resize-region {
+              resize: vertical;
+              overflow: auto;
+            }
+            ```
+    }
+
+    region activity (
+        name: Activity
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.ID,
+                       ap.ACTIVITY_TYPE_ID,
+                       (select activity_type from SP_ACTIVITY_TYPES at where at.id = ap.ACTIVITY_TYPE_ID) activity_type,
+                       ap.PROJECT_ID,
+                       nvl((select project from sp_projects p where p.id = ap.project_id),'Non Specified') project,
+                       ap.TEAM_MEMBER_ID,
+                       decode(tm.first_name,null,tm.email,tm.first_Name||' '||tm.last_name||' ('||tm.email||')') owner,
+                       trunc(ap.END_DATE) - trunc(ap.START_DATE) activity_length,
+                       to_char(ap.START_DATE,'FMDay DD-Mon-YYYY')|| ' - '||to_char(ap.END_DATE,'FMDay DD-Mon-YYYY') dates,
+                       decode(
+                           greatest(trunc(sysdate),trunc(ap.end_date)),
+                           trunc(sysdate),
+                           'Past',
+                           decode(
+                               greatest(trunc(sysdate),trunc(ap.start_date)),
+                               trunc(sysdate),
+                               'Current',
+                               'Future')
+                           ) timeframe,
+                       ap.activity,
+                       ap.COMMENTS,
+                       decode(ap.private_yn,'Y','Yes',null) private,
+                       apex_util.get_since(ap.CREATED) created,
+                       lower(ap.CREATED_BY) CREATED_BY,
+                       apex_util.get_since(ap.UPDATED) updated,
+                       lower(ap.UPDATED_BY) UPDATED_BY,
+                       sp_date_range_pct_comp(ap.start_date, ap.end_date)||'%' time_elapesed,
+                       ap.URL
+                  from sp_activities ap, 
+                       sp_team_Members tm
+                 where ap.id = :P140_ID and
+                       ap.team_member_id = tm.id
+                ```
+            pageItemsToSubmit: P140_ID
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        reportLayout {
+            numberOfRows: 50
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        pagination {
+            type: showAll
+        }
+        performance {
+            maxRowsToProcess: 500
+        }
+        messages {
+            whenNoDataFound: no data found
+        }
+
+        column ACTIVITY (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Activity
+            }
+            layout {
+                sequence: 32
+            }
+            link {
+                target: {
+                    page: 129
+                    items: {
+                        P129_ACTIVITY_ID: #ID#
+                    }
+                    clearCache: 129
+                    action: resetPagination
+                }
+                linkText: #ACTIVITY#
+            }
+        )
+
+        column ACTIVITY_LENGTH (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Activity Length
+                alignment: end
+            }
+            layout {
+                sequence: 82
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #ACTIVITY_LENGTH# Days, #TIME_ELAPESED# elapsed
+            }
+        )
+
+        column ACTIVITY_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 22
+            }
+        )
+
+        column ACTIVITY_TYPE_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 2
+            }
+        )
+
+        column COMMENTS (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 52
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from sp_activities
+                     where id = :P140_ID
+                       and comments is not null
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 142
+            }
+            columnFormatting {
+                htmlExpression: #CREATED# by #CREATED_BY#
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 152
+            }
+        )
+
+        column DATES (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Dates
+            }
+            layout {
+                sequence: 62
+            }
+            columnFormatting {
+                htmlExpression: <strong>#TIMEFRAME#</strong>: #DATES#
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 0
+            }
+        )
+
+        column OWNER (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 12
+            }
+        )
+
+        column PRIVATE (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Private
+            }
+            layout {
+                sequence: 42
+            }
+            columnFormatting {
+                cssClasses: u-danger-text
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 from sp_activities
+                     where id = :P140_ID
+                       and private_yn = 'Y'
+                    ```
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 122
+            }
+        )
+
+        column PROJECT_ID (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 102
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 112
+            }
+        )
+
+        column TIMEFRAME (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 72
+            }
+        )
+
+        column TIME_ELAPESED (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 92
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 162
+            }
+            columnFormatting {
+                htmlExpression: #UPDATED# by #UPDATED_BY#
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 172
+            }
+        )
+
+        column URL (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            type: link
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 132
+            }
+            link {
+                target: {
+                    type: url
+                    url: #URL#
+                }
+                linkText: #URL#
+                linkAttributes: target="_blank" title="open link in new browser tab"
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1 
+                    from SP_ACTIVITIES
+                    where id = :P140_ID and URL is not null
+                    ```
+            }
+        )
+
+    )
+
+    region associated-nomenclature-initiative (
+        name: Associated &NOMENCLATURE_INITIATIVE.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select i.ID initiative_id,
+                       f.area,
+                       i.initiative initiative,
+                       nvl((select t.first_name||' '||t.last_name from sp_team_members t where t.id = i.SPONSOR_ID),'No Owner') initiative_owner,
+                       i.OBJECTIVE description
+                from 
+                       SP_INITIATIVES i,
+                       SP_AREAS f,
+                       sp_activities a
+                where 
+                      a.id = :P140_ID and
+                      i.area_id = f.id and
+                      i.id = a.initiative_id and 
+                      a.initiative_id is not null
+                ```
+            pageItemsToSubmit: P140_ID
+        }
+        layout {
+            sequence: 40
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from SP_ACTIVITIES a
+                where a.id = :P140_ID and a.initiative_id is not null
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        pagination {
+            type: showAll
+        }
+        messages {
+            whenNoDataFound: No &NOMENCLATURE_PROJECT. found
+        }
+
+        column AREA (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE. &NOMENCLATURE_AREA.
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+        column DESCRIPTION (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: link
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 10
+            }
+            link {
+                target: {
+                    page: 94
+                    items: {
+                        P94_INITIATIVE_ID: #INITIATIVE_ID#
+                    }
+                    clearCache: 94
+                    action: resetPagination
+                }
+                linkText: #INITIATIVE#
+            }
+        )
+
+        column INITIATIVE_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column INITIATIVE_OWNER (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: " &NOMENCLATURE_INITIATIVE. Owner"
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+    )
+
+    region associated-nomenclature-project (
+        name: Associated &NOMENCLATURE_PROJECT.
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       f.area,
+                       i.initiative initiative,
+                       nvl((select t.first_name||' '||t.last_name from sp_team_members t where t.id = p.OWNER_ID),'No Owner') the_owner,
+                       p.owner_id,
+                       p.project,
+                       --
+                       nvl((select '<span class="fa fa-heart u-danger-text" aria-hidden="true"></span>' 
+                            from sp_favorites fav
+                            where fav.project_id = p.id and 
+                                  fav.team_member_id = :APP_USER_ID),
+                            '<span class="fa fa-heart-o" aria-hidden="true"></span>') favorite_icon,
+                       --
+                       p.PCT_COMPLETE||'%' PCT_COMPLETE,
+                       nvl((select 'P'||priority from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized') priority,
+                       null attributes,
+                       --
+                       -- optional release association
+                       --
+                       (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id) release,
+                       --
+                       -- optional project targeted date
+                       --
+                       nvl(to_char(p.target_complete,'DD-Mon-YYYY'),'No Target') targeted_date,
+                       --
+                       --
+                       --
+                       lower(p.TAGS) tags,
+                       lower(p.CREATED_BY)||' '||apex_util.get_since(p.CREATED) created,
+                       lower(p.UPDATED_BY)||' '||apex_util.get_since(p.updated) updated,
+                       --
+                       p.PROJECT_SIZE,
+                       p.project_url_name,
+                       p.friendly_identifier friendly_identifier1
+                  from SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       SP_AREAS f,
+                       SP_PROJECT_SIZES s
+                where 
+                      p.archived_yn = 'N' and
+                      p.initiative_id = i.id and
+                      i.area_id = f.id and
+                      p.PROJECT_SIZE = s.project_size and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.id = (select project_id from sp_activities ap where ap.id = :P140_ID)
+                ```
+            pageItemsToSubmit: P140_ID
+        }
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from SP_ACTIVITIES a
+                where a.id = :P140_ID and a.project_id is not null
+                ```
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+            ]
+        }
+        pagination {
+            type: showAll
+        }
+        messages {
+            whenNoDataFound: No &NOMENCLATURE_PROJECT. found
+        }
+
+        column AREA (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_AREA.
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column ATTRIBUTES (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attributes
+            }
+            layout {
+                sequence: 110
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="sp-tags-container">
+                        <span class="sp-tag">#PRIORITY#</span>
+                        <span class="sp-tag">#PROJECT_SIZE#</span>
+                        <span class="sp-tag">#PCT_COMPLETE#</span>
+                    </div>
+                    ```
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 240
+            }
+        )
+
+        column FAVORITE_ICON (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: link
+            heading {
+                heading: My Favorite
+            }
+            layout {
+                sequence: 270
+            }
+            link {
+                target: {
+                    page: 128
+                    items: {
+                        P128_PROJECT_ID: #ID#
+                    }
+                    clearCache: 128
+                    action: resetPagination
+                }
+                linkText: #FAVORITE_ICON#
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER1 (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 210
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
+            }
+        )
+
+        column INITIATIVE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: &NOMENCLATURE_INITIATIVE.
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column OWNER_ID (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column PCT_COMPLETE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 260
+            }
+        )
+
+        column PRIORITY (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 180
+            }
+        )
+
+        column PROJECT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 40
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER1#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                }
+                linkText: #PROJECT#
+                linkAttributes: title="navigate to detail view"
+            }
+        )
+
+        column PROJECT_SIZE (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 190
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 200
+            }
+        )
+
+        column RELEASE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 160
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                    from sp_projects P  
+                    where p.release_id is not null 
+                      and p.id = (select project_id from SP_ACTIVITIES a where a.id = :P140_ID)
+                    
+                    ```
+            }
+        )
+
+        column TAGS (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Tags
+            }
+            layout {
+                sequence: 230
+            }
+        )
+
+        column TARGETED_DATE (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Target Completion
+            }
+            layout {
+                sequence: 170
+            }
+        )
+
+        column THE_OWNER (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 70
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 250
+            }
+        )
+
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 60
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region comment-report (
+        name: Comment Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select pc.ID,
+                       -- Display Columns
+                       tm.initials user_icon,
+                       apex_util.get_since(pc.created) comment_date,
+                       tm.first_name || ' ' || tm.last_name user_name,
+                       --
+                       pc.comment_nbr,
+                       pc.body_html comment_text,
+                       null actions,
+                       decode(pc.private_yn,null,null,'N',null,'Y',' Private Comment') private_comment_label,
+                       ' ' attribute_1,
+                       ' ' attribute_2,
+                       ' ' attribute_3,
+                       ' ' attribute_4,
+                       'u-color-'||ora_hash(pc.created_by,45) icon_modifier,
+                
+                       -- Data Columns
+                       pc.BODY,
+                       pc.BODY_HTML,
+                       --
+                       pc.CREATED,
+                       pc.CREATED_BY,
+                       pc.UPDATED,
+                       pc.UPDATED_BY,
+                       tm.id team_member_id
+                  from SP_ACTIVITY_COMMENTS pc, 
+                       sp_team_members tm
+                where pc.author_id = tm.id (+)
+                  and pc.activity_id = :P140_ID
+                  and (nvl(pc.private_yn,'N') = 'N' or lower(pc.created_by) = lower(:app_user) )
+                order by created desc
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: COMMENTS
+            regionDisplaySelector: true
+        }
+        componentAppearance {
+            template: @/comments
+            templateOptions: [
+                #DEFAULT#
+                t-Comments--chat
+            ]
+        }
+        messages {
+            whenNoDataFound: No Comments
+        }
+
+        column ACTIONS (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Actions
+                alignment: center
+            }
+            layout {
+                sequence: 170
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ATTRIBUTE_1 (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Attribute 1
+                alignment: center
+            }
+            layout {
+                sequence: 180
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_2 (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            heading {
+                heading: Attribute 2
+                alignment: center
+            }
+            layout {
+                sequence: 190
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_3 (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Attribute 3
+                alignment: center
+            }
+            layout {
+                sequence: 200
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ATTRIBUTE_4 (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Attribute 4
+                alignment: center
+            }
+            layout {
+                sequence: 210
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Body
+                alignment: center
+            }
+            layout {
+                sequence: 30
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column BODY_HTML (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            heading {
+                heading: Body Html
+                alignment: center
+            }
+            layout {
+                sequence: 40
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_DATE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Comment Date
+                alignment: center
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_NBR (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 240
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Text
+                alignment: center
+            }
+            layout {
+                sequence: 160
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="is-markdownified">
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    </div>
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Created
+                alignment: center
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column CREATED_BY (
+            reportColumnQueryId: 17
+            derivedColumn: N
+            heading {
+                heading: Created By
+                alignment: center
+            }
+            layout {
+                sequence: 100
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ICON_MODIFIER (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            heading {
+                heading: Icon Modifier
+                alignment: center
+            }
+            layout {
+                sequence: 220
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Id
+                alignment: center
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 250
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            reportColumnQueryId: 20
+            derivedColumn: N
+            heading {
+                heading: User ID
+            }
+            layout {
+                sequence: 230
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column UPDATED (
+            reportColumnQueryId: 18
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column UPDATED_BY (
+            reportColumnQueryId: 19
+            derivedColumn: N
+            heading {
+                heading: Updated By
+                alignment: center
+            }
+            layout {
+                sequence: 120
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_ICON (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: User Icon
+                alignment: center
+            }
+            layout {
+                sequence: 130
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column USER_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: User Name
+                alignment: center
+            }
+            layout {
+                sequence: 150
+            }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P140_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @activity
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    button close (
+        buttonName: Close
+        label: Close
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button details (
+        buttonName: Details
+        label: View Details
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-package
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 129
+                items: {
+                    P129_ACTIVITY_ID: &P140_ID.
+                }
+                clearCache: 129
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @close
+        }
+
+        action native-dialog-close (
+            action: closeDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

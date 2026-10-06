@@ -6,13 +6,6 @@ page 41 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region about-this-page (
         name: About this page
@@ -21,7 +14,7 @@ page 41 (
             htmlCode:
                 ```html
                 <p>&PRODUCT_NAME. native Box Plot charts, using Oracle JET Data Visualizations, are showcased on this page. The Box Plot chart is useful for reading statistical data, and follows a specific formula for representing the data on the chart.</p><br/><strong>How to Read a Box Plot chart</strong><p/>
-                Review the image explaining the sections of a <a href="#APP_IMAGES#box-plot-explained.gif" target="_blank">Box Plot chart</a>.
+                Review the image explaining the sections of a <a href="#APP_IMAGES#box-plot-explained.gif" target="_blank" rel="noopener noreferrer external">Box Plot chart</a>.
                 Here are the main components of a Box Plot:<p/>
                 
                 <ul>
@@ -99,11 +92,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -197,11 +192,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -292,11 +289,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -382,11 +381,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -595,11 +596,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -677,11 +680,13 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -751,6 +756,9 @@ page 41 (
         chart {
             type: boxPlot
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -758,7 +766,6 @@ page 41 (
             timeAxisType: enabled
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {

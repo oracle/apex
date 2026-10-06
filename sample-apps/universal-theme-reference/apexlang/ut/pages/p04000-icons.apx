@@ -8,6 +8,7 @@ page 4000 (
         cssClasses: dm-Page
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -20,7 +21,7 @@ page 4000 (
             apex.jQuery("#P4000_SEARCH").on("keyup",function(){apex.theme42demo.renderIcons({debounce: 250, filterString: this.value});});
             var returnIcon = function(c){return;};
             ```
-        executeWhenPageLoads: apex.theme42demo.renderIcons({});
+        executeWhenPageLoads: "apex.theme42demo.renderIcons({});"
     }
     css {
         inline:
@@ -284,8 +285,6 @@ page 4000 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.

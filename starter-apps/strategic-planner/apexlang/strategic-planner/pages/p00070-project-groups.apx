@@ -6,13 +6,6 @@ page 70 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: All &NOMENCLATURE_PROJECT. Groups along with how many projects are associated with each.
     }
@@ -88,7 +81,7 @@ page 70 (
                          where g.id = p.project_group_id and
                                p.ARCHIVED_YN = 'N' and
                                p.DUPLICATE_OF_PROJECT_ID is null) total_project_count,
-                       (select listagg(distinct i.initiative,', ') 
+                       (select listagg(distinct i.initiative,', ' on overflow truncate with count) 
                                within group (order by i.initiative)
                           from sp_projects p,
                                sp_initiatives i
@@ -144,7 +137,7 @@ page 70 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -163,7 +156,7 @@ page 70 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -179,7 +172,7 @@ page 70 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -195,7 +188,7 @@ page 70 (
                 sequence: 37
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -211,7 +204,7 @@ page 70 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -237,7 +230,7 @@ page 70 (
                 linkText: #GROUP_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -254,7 +247,7 @@ page 70 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -270,7 +263,7 @@ page 70 (
                 sequence: 47
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -291,7 +284,7 @@ page 70 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -310,7 +303,7 @@ page 70 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -326,7 +319,7 @@ page 70 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G

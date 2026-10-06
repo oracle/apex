@@ -6,9 +6,6 @@ page 139 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -37,10 +34,6 @@ page 139 (
             .a-CardView-iconWrap,
             .a-CardView-badge { align-self: flex-start; }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @subscriptions
@@ -120,6 +113,9 @@ page 139 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No notification subscriptions found

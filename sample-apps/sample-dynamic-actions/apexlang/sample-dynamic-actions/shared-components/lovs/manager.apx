@@ -1,0 +1,13 @@
+lov manager (
+    name: MANAGER
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select ename d, empno r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+

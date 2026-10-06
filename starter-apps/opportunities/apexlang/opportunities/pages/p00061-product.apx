@@ -7,13 +7,6 @@ page 61 (
         pageTemplate: @/marquee
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: Manage an product's details, links, attachments, and/or comments. You can also validate the product.
     }
@@ -81,6 +74,9 @@ page 61 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column CREATED (

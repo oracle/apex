@@ -1,0 +1,95 @@
+list page-navigation (
+    name: Page Navigation
+
+    entry browse-and-seach (
+        label: Browse and Seach
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 2
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            1: Help users discover, filter, compare, and open records using cards, lists, reports, and search-oriented layouts.
+        }
+    )
+
+    entry dashboards (
+        label: Dashboards
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: Summarize key information, highlight status, and guide users toward high-value follow-up actions.
+        }
+    )
+
+    entry data-entry (
+        label: Data Entry
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 4
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            1: Guide users through creating or changing information with forms, dialogs, drawers, and wizards.
+        }
+    )
+
+    entry item-details (
+        label: Item Details
+        icon {
+            imageIconCssClasses: fa-id-card-o
+        }
+        layout {
+            sequence: 3
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            1: Present a single record with the right balance of summary, supporting detail, and related information.
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        userDefinedAttributes {
+            1: Show parent-child relationships where users need context, comparison, and focused detail editing.
+        }
+    )
+
+)
+

@@ -1,0 +1,41 @@
+list combine-with-relational-data (
+    name: Combine with Relational Data
+
+    entry derived-columns (
+        label: Derived Columns
+        icon {
+            imageIconCssClasses: fa-circle-arrow-in-east
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to use additional <em>derived columns</em> in the <strong>Data Profile</strong> to enrich results coming from the REST service.
+        }
+    )
+
+    entry post-processing-sql (
+        label: Post Processing SQL
+        icon {
+            imageIconCssClasses: fa-arrow-up
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to combine external REST data with data from local tables using <strong>Post Processing SQL</strong>.
+        }
+    )
+
+)
+

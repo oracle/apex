@@ -1,0 +1,363 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 150
+        }
+        isCurrent {
+            type: pages
+            pages: 50
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry application-theme-style (
+        label: Application Theme Style
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 170
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-number-2-o
+        }
+        layout {
+            sequence: 200
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 15
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry basic-vector-search-2 (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-number-2-o
+        }
+        layout {
+            sequence: 270
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 31
+        }
+        link {
+            target: {
+                page: 31
+                clearCache: 31
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null
+        }
+    )
+
+    entry custom-data (
+        label: Custom Data
+        icon {
+            imageIconCssClasses: fa-database-user
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry mixed-languages (
+        label: Mixed Languages
+        icon {
+            imageIconCssClasses: fa-number-6-o
+        }
+        layout {
+            sequence: 310
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 42
+        }
+        link {
+            target: {
+                page: 42
+                clearCache: 42
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry movie-data (
+        label: Movie Data
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry movie-recommendations (
+        label: Movie Recommendations
+        icon {
+            imageIconCssClasses: fa-number-5-o
+        }
+        layout {
+            sequence: 300
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 41
+        }
+        link {
+            target: {
+                page: 41
+                clearCache: 41
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_MOVIEDATA where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-number-1-o
+        }
+        layout {
+            sequence: 13
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+            }
+        }
+    )
+
+    entry prepare-data-2 (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-number-1-o
+        }
+        layout {
+            sequence: 250
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+                clearCache: [
+                    25
+                    26
+                    27
+                ]
+            }
+        }
+    )
+
+    entry reset-sample-data-tables (
+        label: Reset Sample Data Tables
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 160
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry set-ai-provider (
+        label: Set AI Provider
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 150
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-4-o
+        }
+        layout {
+            sequence: 220
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-and-oracle-text-2 (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-4-o
+        }
+        layout {
+            sequence: 290
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+                clearCache: 33
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-3-o
+        }
+        layout {
+            sequence: 210
+            parentEntry: @movie-data
+        }
+        isCurrent {
+            type: pages
+            pages: 16
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: 16
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_moviedata_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text-2 (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-number-3-o
+        }
+        layout {
+            sequence: 280
+            parentEntry: @custom-data
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+                clearCache: 32
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+)
+

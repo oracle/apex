@@ -7,13 +7,8 @@ page 10074 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -120,7 +115,7 @@ page 10074 (
                 linkText: #CNT_ACTIVE#
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -139,7 +134,7 @@ page 10074 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -155,7 +150,7 @@ page 10074 (
                 sequence: 44
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -171,7 +166,7 @@ page 10074 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -188,7 +183,7 @@ page 10074 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -204,7 +199,7 @@ page 10074 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -220,7 +215,7 @@ page 10074 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -236,7 +231,7 @@ page 10074 (
                 sequence: 24
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -255,7 +250,7 @@ page 10074 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -271,7 +266,7 @@ page 10074 (
                 sequence: 64
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -372,9 +367,6 @@ page 10074 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column SQL (

@@ -1,0 +1,13 @@
+lov lead-codes (
+    name: LEAD CODES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select STATUS_CODE display_value, id return_value 
+            from EBA_SALES_LEAD_STATUS_CODES
+            order by 1
+            ```
+    }
+)
+

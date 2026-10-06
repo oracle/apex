@@ -6,9 +6,6 @@ page 18 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -21,8 +18,6 @@ page 18 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -32,7 +27,7 @@ page 18 (
             htmlCode:
                 ```html
                 <p>You can color code cards or icons based on a column value.</p>
-                <p>This page color codes cards and icon background colors by departments. The region query uses <a href="https://apex.oracle.com/pls/apex/apex_pm/r/ut/color-and-status-modifiers" target="_blank">Universal Theme Color Modifiers</a> and selects this as column:
+                <p>This page color codes cards and icon background colors by departments. The region query uses <a href="https://oracleapex.com/ords/r/apex_pm/ut/color-and-status-modifiers" target="_blank" rel="noopener noreferrer external">Universal Theme Color Modifiers</a> and selects this as column:
                 <pre>
                 case when deptno = 10 then
                     'u-color-2'

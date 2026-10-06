@@ -8,13 +8,8 @@ page 10061 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -83,9 +78,6 @@ page 10061 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column SQL (
@@ -177,7 +169,7 @@ page 10061 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -193,7 +185,7 @@ page 10061 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -211,7 +203,7 @@ page 10061 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -228,7 +220,7 @@ page 10061 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -244,7 +236,7 @@ page 10061 (
                 sequence: 19
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -260,7 +252,7 @@ page 10061 (
                 sequence: 49
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -276,7 +268,7 @@ page 10061 (
                 sequence: 79
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -297,7 +289,7 @@ page 10061 (
                 formatMask: 999G999G999G999G999G999G990
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -313,7 +305,7 @@ page 10061 (
                 sequence: 59
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -329,7 +321,7 @@ page 10061 (
                 sequence: 39
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -345,7 +337,7 @@ page 10061 (
                 sequence: 69
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -361,7 +353,7 @@ page 10061 (
                 sequence: 89
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -380,7 +372,7 @@ page 10061 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -396,7 +388,7 @@ page 10061 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H

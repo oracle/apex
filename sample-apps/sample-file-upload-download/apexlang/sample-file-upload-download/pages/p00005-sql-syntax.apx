@@ -7,11 +7,11 @@ page 5 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         pageAccessProtection: noArgumentsSupported
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -26,7 +26,7 @@ page 5 (
         source {
             htmlCode:
                 ```html
-                <p>This page shows the recommended SQL syntax to build file upload and download into your Oracle Application Express (APEX) application.  You need more than just a <strong>BLOB</strong> column as the browser will need to know the filename, mime type and character sets when downloading files.</p>
+                <p>This page shows the recommended SQL syntax to build file upload and download into your Oracle APEX application.  You need more than just a <strong>BLOB</strong> column as the browser will need to know the filename, mime type and character sets when downloading files.</p>
                 <p>Recommended column details</p>
                 <ul>
                 <li><strong>FILENAME</strong>: ICON_NAME in the example below.  Tracks the actual filename so that downloads of the file are given an appropriate name.  Without this attribute a download link would not know what filename to download a file as.</li>
@@ -36,7 +36,7 @@ page 5 (
                 <li><strong>LAST_UPDATED</strong>: ICON_LAST_UPDATED in the example below.  Tracks the timestamp of when the file was last updated and can be used for browser caching.  It is not required but can dramatically improve performance of some applications.</li>
                 
                 </ul>
-                <p>Reference Oracle Application Express documentation for additional information.</p>
+                <p>Reference Oracle APEX documentation for additional information.</p>
                 ```
         }
         layout {

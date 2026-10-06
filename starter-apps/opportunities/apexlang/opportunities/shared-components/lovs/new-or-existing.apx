@@ -1,0 +1,20 @@
+lov new-or-existing (
+    name: NEW_OR_EXISTING
+    source {
+        location: staticValues
+    }
+
+    entry existing-account (
+        sequence: 1
+        display: Existing Account
+        return: EXISTING
+    )
+
+    entry new-account (
+        sequence: 2
+        display: New Account
+        return: NEW
+    )
+
+)
+

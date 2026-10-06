@@ -11,9 +11,6 @@ page 10014 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -29,8 +26,6 @@ page 10014 (
     security {
         authorizationScheme: @administration-rights
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @access-control
@@ -93,11 +88,13 @@ page 10014 (
         componentAppearance {
             template: @/standard
             templateOptions: [
-                #DEFAULT#
                 t-Report--stretch
                 t-Report--staticRowColors
                 t-Report--rowHighlightOff
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -302,7 +299,7 @@ page 10014 (
             type: sqlQuerySingleValue
             sqlQuery:
                 ```sql
-                select LISTAGG( role_name, ', ')
+                select LISTAGG( role_name, ', ' on overflow truncate with count)
                          WITHIN GROUP (ORDER BY role_name) role_name
                 from APEX_APPL_ACL_ROLES
                 where application_id = :APP_ID

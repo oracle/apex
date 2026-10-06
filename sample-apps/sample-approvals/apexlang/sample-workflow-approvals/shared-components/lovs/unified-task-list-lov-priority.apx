@@ -1,0 +1,19 @@
+lov unified-task-list-lov-priority (
+    name: UNIFIED_TASK_LIST.LOV.PRIORITY
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            
+            select disp, 
+                   val 
+              from table ( apex_approval.get_lov_priority )
+             order by insert_order
+            ```
+    }
+    columnMapping {
+        return: VAL
+        display: DISP
+    }
+)
+

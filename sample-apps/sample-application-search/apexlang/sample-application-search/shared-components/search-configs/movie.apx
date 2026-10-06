@@ -1,0 +1,37 @@
+searchConfig movie (
+    name: Movie Search Configuration
+    source {
+        location: restSource
+        restSource: @MovieDB
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        descriptionColumn: OVERVIEW
+        badgeColumn: VOTE_AVERAGE
+        lastModifiedColumn: RELEASE_DATE
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 104
+            items: {
+                P104_ID: &ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: imageUrl
+        imageUrl: &POSTER_PATH.
+    }
+
+    parameter (
+        name: @query
+        value {
+            type: staticValue
+            staticValue: Jack+Reacher
+        }
+    )
+
+)
+

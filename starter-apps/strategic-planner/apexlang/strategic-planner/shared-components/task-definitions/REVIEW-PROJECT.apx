@@ -43,14 +43,6 @@ taskDefinition REVIEW-PROJECT (
         label: Project Name
     )
 
-    parameter P_REVIEWER_EMAIL (
-        label: Reviewer Email
-    )
-
-    parameter P_REVIEWER_TM_ID (
-        label: Reviewer Team Member ID
-    )
-
     parameter V_EMAIL_BODY (
         label: Email Body
     )
@@ -61,6 +53,16 @@ taskDefinition REVIEW-PROJECT (
 
     parameter V_PROJECT_APPROVAL_CHAIN_ID (
         label: Project Approval Chain ID
+        advanced {
+            updatable: true
+        }
+    )
+
+    parameter V_REVIEWER_TM_ID (
+        label: Reviewer Team Member ID
+        advanced {
+            updatable: true
+        }
     )
 
     action add-comment-comments-are-passed-after-the-action (
@@ -99,6 +101,30 @@ taskDefinition REVIEW-PROJECT (
         }
     )
 
+    action notify-new-reviewer-on-delegate (
+        name: Notify New Reviewer on Delegate
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_util.assignment_notification (
+                    p_team_member_id    => :V_REVIEWER_TM_ID,
+                    p_app_name          => :P_APP_NAME,
+                    p_app_id            => :P_APP_ID,
+                    p_project_id        => :P_PROJECT_ID,
+                    p_link              => :P_PROJECT_LINK,
+                    p_view_what         => :P_NOMENCLATURE_PROJECT,
+                    p_title             => :V_EMAIL_SUBJECT,
+                    p_email_contents    => :V_EMAIL_BODY,
+                    p_notification_type => 'APPROVAL' );
+                ```
+        }
+        execution {
+            onEvent: delegate
+            sequence: 120
+        }
+    )
+
     action notify-reviewer (
         name: Notify Reviewer
         type: executeCode
@@ -106,7 +132,7 @@ taskDefinition REVIEW-PROJECT (
             plsqlCode:
                 ```plsql
                 sp_util.assignment_notification (
-                    p_team_member_id    => :P_REVIEWER_TM_ID,
+                    p_team_member_id    => :V_REVIEWER_TM_ID,
                     p_app_name          => :P_APP_NAME,
                     p_app_id            => :P_APP_ID,
                     p_project_id        => :P_PROJECT_ID,
@@ -235,13 +261,27 @@ taskDefinition REVIEW-PROJECT (
     )
 
     participant (
+        type: businessAdministrator
+        value {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select upper(user_name_lc)
+                  from APEX_APPL_ACL_USERS
+                 where APPLICATION_ID = :APP_ID
+                   and role_names = 'Administrator'
+                ```
+        }
+    )
+
+    participant (
         value {
             type: sqlQuery
             sqlQuery:
                 ```sql
                 select upper(email)
                   from sp_team_members
-                 where id = :P_REVIEWER_TM_ID
+                 where id = :V_REVIEWER_TM_ID
                 ```
         }
     )

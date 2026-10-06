@@ -1,0 +1,89 @@
+list user-settings (
+    name: User Settings
+    config {
+        buildOption: @feature-user-settings
+    }
+
+    entry faq (
+        label: FAQ
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry manage-account (
+        label: Manage Account
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry my-address (
+        label: My Address
+        icon {
+            imageIconCssClasses: fa-map-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 20010
+            }
+        }
+        userDefinedAttributes {
+            2: <span class="a-pwaPush--state"></span>
+        }
+        config {
+            buildOption: @feature-push-notifications
+        }
+    )
+
+    entry support (
+        label: Support
+        icon {
+            imageIconCssClasses: fa-support
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+)
+

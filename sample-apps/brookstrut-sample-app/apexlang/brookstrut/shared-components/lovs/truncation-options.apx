@@ -1,0 +1,20 @@
+lov truncation-options (
+    name: TRUNCATION OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry retain-existing-history-and-generate-additional-history (
+        sequence: 10
+        display: Retain existing history and generate additional history
+        return: N
+    )
+
+    entry truncate-existing-sales-history-and-generate-new-history (
+        sequence: 20
+        display: Truncate existing sales history and generate new history
+        return: Y
+    )
+
+)
+

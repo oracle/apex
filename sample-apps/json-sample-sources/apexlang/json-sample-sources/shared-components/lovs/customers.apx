@@ -1,0 +1,13 @@
+lov customers (
+    name: CUSTOMERS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_customers
+    }
+    columnMapping {
+        return: CUSTOMER_ID
+        display: FULL_NAME
+        defaultSort: FULL_NAME
+    }
+)
+

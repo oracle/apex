@@ -1,0 +1,131 @@
+list admin-project-interactions (
+    name: Admin - Project Interactions
+
+    entry favorite-nomenclature-projects (
+        label: Favorite &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-table-heart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+        userDefinedAttributes {
+            1: Count of times each &NOMENCLATURE_PROJECT. has been favorited
+        }
+    )
+
+    entry favorited-nomenclature-projects-by-user (
+        label: Favorited &NOMENCLATURE_PROJECTS. by User
+        icon {
+            imageIconCssClasses: fa-user-heart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Each &NOMENCLATURE_PROJECT. a user has favorited
+        }
+    )
+
+    entry initiative-views (
+        label: Initiative Views
+        icon {
+            imageIconCssClasses: fa-lightbulb-o
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+        userDefinedAttributes {
+            1: "Views of &NOMENCLATURE_INITIATIVES. by user over the last 90 days "
+        }
+    )
+
+    entry most-viewed-nomenclature-projects (
+        label: Most Viewed &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 97
+            }
+        }
+        userDefinedAttributes {
+            1: Most Viewed &NOMENCLATURE_PROJECTS. over the last 90 days
+        }
+    )
+
+    entry nomenclature-project-interactions-by-user (
+        label: &NOMENCLATURE_PROJECT. Interactions by User
+        icon {
+            imageIconCssClasses: fa-file-edit
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 610
+            }
+        }
+        userDefinedAttributes {
+            1: Each time a user viewed, or interacted in any way, with a &NOMENCLATURE_PROJECT. or something related to a &NOMENCLATURE_PROJECT. (Milestone, Review or Task)
+        }
+    )
+
+    entry nomenclature-projects-views-by-user (
+        label: &NOMENCLATURE_PROJECTS. Views by User
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 80
+            }
+        }
+        userDefinedAttributes {
+            1: Views of &NOMENCLATURE_PROJECTS. by user over the last 90 days
+        }
+    )
+
+    entry nomenclature-projects-views-by-user-by-month (
+        label: &NOMENCLATURE_PROJECTS. Views by User by Month
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 89
+            }
+        }
+        userDefinedAttributes {
+            1: Views of &NOMENCLATURE_PROJECTS. by User by Month over the last 4 months
+        }
+    )
+
+)
+

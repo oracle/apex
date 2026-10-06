@@ -1,0 +1,41 @@
+list wizard-progress-list (
+    name: Wizard Progress List
+
+    entry step (
+        label: Step 1
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1920
+            }
+        }
+    )
+
+    entry step-2 (
+        label: Step 2
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 1921
+            }
+        }
+    )
+
+    entry step-3 (
+        label: Step 3
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 1922
+            }
+        }
+    )
+
+)
+

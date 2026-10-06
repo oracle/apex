@@ -6,12 +6,9 @@ page 8 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
 
     region actions (
@@ -297,6 +294,9 @@ page 8 (
                 t-AVPList--fixedLabelLarge
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column TOTAL (

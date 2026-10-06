@@ -8,10 +8,11 @@ page 100 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -152,6 +153,9 @@ page 100 (
             template: @/alerts
             templateOptions: #DEFAULT#
         }
+        pagination {
+            type: showAll
+        }
         componentAdvanced {
             stripHtml: true
         }
@@ -250,11 +254,13 @@ page 100 (
         chartLayout {
             height: 330
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -374,6 +380,9 @@ page 100 (
         chartLayout {
             height: 330
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -381,7 +390,6 @@ page 100 (
             format: decimal
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -443,11 +451,13 @@ page 100 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -561,11 +571,13 @@ page 100 (
         chart {
             type: pie
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -674,11 +686,13 @@ page 100 (
         config {
             buildOption: @opportunity-amount-set-at-product-level
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -821,11 +835,13 @@ page 100 (
         config {
             buildOption: @opportunity-amount-set-at-product-level
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -1084,11 +1100,13 @@ page 100 (
         chartLayout {
             height: 330
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {

@@ -1,0 +1,421 @@
+list desktop-navigation-menu (
+    name: Desktop Navigation Menu
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-ellipsis-h
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry application-static-files (
+        label: Application Static Files
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 140
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 8
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry background-image (
+        label: Background Image
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 150
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry basics (
+        label: Basics
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                3
+                12
+                13
+                18
+                20
+            ]
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry blob-column (
+        label: BLOB Column
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 160
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry blob-column-as-url (
+        label: BLOB Column as URL
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 170
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry card-actions (
+        label: Card Actions
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                13
+                15
+                16
+                22
+            ]
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 70
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry color-coded-cards (
+        label: Color Coded Cards
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 100
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry conditional-actions (
+        label: Conditional Actions
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 200
+            parentEntry: @card-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 16
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+    )
+
+    entry embedded-video (
+        label: Embedded Video
+        icon {
+            imageIconCssClasses: fa-video-camera
+        }
+        layout {
+            sequence: 180
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                10
+            ]
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 110
+            parentEntry: @basics
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry full-card-action (
+        label: Full Card Action
+        icon {
+            imageIconCssClasses: fa-clipboard-check
+        }
+        layout {
+            sequence: 210
+            parentEntry: @card-actions
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+            attributes: title="#LIST_LABEL#"
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry image-url (
+        label: Image URL
+        icon {
+            imageIconCssClasses: fa-camera
+        }
+        layout {
+            sequence: 190
+            parentEntry: @images-and-media
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry images-and-media (
+        label: Images and Media
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry no-data-found (
+        label: No Data Found
+        icon {
+            imageIconCssClasses: fa-emoji-worry
+        }
+        layout {
+            sequence: 80
+            parentEntry: @advanced
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry rest-data-sources (
+        label: REST Data Sources
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry star-icons (
+        label: Star Icons
+        icon {
+            imageIconCssClasses: fa-star-o
+        }
+        layout {
+            sequence: 120
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry styles (
+        label: Styles
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 130
+            parentEntry: @basics
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 90
+            parentEntry: @advanced
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry video-images-with-durations (
+        label: Video Images with Durations
+        icon {
+            imageIconCssClasses: fa-play
+        }
+        layout {
+            sequence: 220
+            parentEntry: @images-and-media
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+

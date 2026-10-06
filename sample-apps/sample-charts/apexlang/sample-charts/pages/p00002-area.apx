@@ -7,14 +7,13 @@ page 2 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
         functionAndGlobalVariableDeclaration: var gAppImages = "#APP_IMAGES#";
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -73,6 +72,9 @@ page 2 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             cursor: true
@@ -243,10 +245,10 @@ page 2 (
                 </pre><p/>
                 
                 <p>
-                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.
+                For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.
                 </p>
                 <p>
-                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.
+                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank" rel="noopener noreferrer external">Area Chart: Styles</a> example.
                 ```
         }
         layout {
@@ -290,6 +292,9 @@ page 2 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             cursor: true
@@ -486,10 +491,10 @@ page 2 (
                 </pre><p/>
                 
                 <p>
-                For more information on the JET chart legend options, refer to the Oracle JET <a href="&OJCHART_API_URL.#LegendItem" target="_blank">LegendItem symbolType</a> attributes in the ojChart API.
+                For more information on the JET chart legend options, refer to the Oracle JET <a href="&OJCHART_API_URL.#LegendItem" target="_blank" rel="noopener noreferrer external">LegendItem symbolType</a> attributes in the ojChart API.
                 </p>
                 <p>
-                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.
+                For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank" rel="noopener noreferrer external">Area Chart: Styles</a> example.
                 ```
         }
         layout {
@@ -534,6 +539,9 @@ page 2 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: end
@@ -667,7 +675,7 @@ page 2 (
                 <strong>Hide and Show Behavior</strong> - Use this chart-level attribute to support hide and show behavior using the chart legend. The legend uses the <strong>Without Rescale</strong> Hide and Show behavior, allowing a user to hide and unhide a series by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>
                 <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the chart series. Line type specifies the shape of the data point connectors on the chart.<p/>
                 <p>
-                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=lineTypes" target="_blank">Area Chart: Line Types</a> example.
+                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Area Chart: Line Types</a> example.
                 ```
         }
         layout {
@@ -730,11 +738,13 @@ page 2 (
         chartAppearance {
             stack: true
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -812,6 +822,9 @@ page 2 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             cursor: true
@@ -942,7 +955,7 @@ page 2 (
                 <strong>Sort Order</strong> - Use this new chart-level attribute to set the sort order of the chart. In this example, the attribute is set to <strong>Label - Descending</strong>, which orders the x-axis labels in descending order.<p/>
                 <strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical buttons to the top left of the chart to change the orientiation of the data items on the charts, and the Stack/Unstack buttons to the top right of the chart to change the rendering style of the data items. When multiple series are shown, stacking is recommended to prevent values from being obscured.<p/>
                 <p>
-                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=default" target="_blank">Area Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=hideShow" target="_blank">Area Chart: Hide & Show</a> examples.
+                For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=default" target="_blank" rel="noopener noreferrer external">Area Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=hideShow" target="_blank" rel="noopener noreferrer external">Area Chart: Hide & Show</a> examples.
                 
                 
                 ```
@@ -985,6 +998,9 @@ page 2 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         animation {
             onDataChange: none
@@ -1307,7 +1323,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'curved'}});
+                jsCode: "apex.region(\"area2\").widget().ojChart({styleDefaults:{lineType:'curved'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1335,7 +1351,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area1").widget().ojChart({orientation: 'horizontal'});
+                jsCode: "apex.region(\"area1\").widget().ojChart({orientation: 'horizontal'});"
             }
             affectedElements {
                 selectionType: region
@@ -1363,7 +1379,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'none'}});
+                jsCode: "apex.region(\"area2\").widget().ojChart({styleDefaults:{lineType:'none'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1391,7 +1407,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});
+                jsCode: "apex.region(\"area2\").widget().ojChart({styleDefaults:{lineType:'centeredSegmented'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1419,7 +1435,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area1").widget().ojChart({stack: 'on'});
+                jsCode: "apex.region(\"area1\").widget().ojChart({stack: 'on'});"
             }
             affectedElements {
                 selectionType: region
@@ -1447,7 +1463,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'stepped'}});
+                jsCode: "apex.region(\"area2\").widget().ojChart({styleDefaults:{lineType:'stepped'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1475,7 +1491,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area2").widget().ojChart({styleDefaults:{lineType:'straight'}});
+                jsCode: "apex.region(\"area2\").widget().ojChart({styleDefaults:{lineType:'straight'}});"
             }
             affectedElements {
                 selectionType: region
@@ -1503,7 +1519,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area1").widget().ojChart({stack: 'off'});
+                jsCode: "apex.region(\"area1\").widget().ojChart({stack: 'off'});"
             }
             affectedElements {
                 selectionType: region
@@ -1531,7 +1547,7 @@ page 2 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("area1").widget().ojChart({orientation: 'vertical'});
+                jsCode: "apex.region(\"area1\").widget().ojChart({orientation: 'vertical'});"
             }
             affectedElements {
                 selectionType: region

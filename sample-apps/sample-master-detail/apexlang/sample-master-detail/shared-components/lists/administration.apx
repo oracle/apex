@@ -1,0 +1,62 @@
+list administration (
+    name: Administration
+
+    entry feedback-preference (
+        label: Feedback Preference
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Enable or disable Feedback for the application
+            2: &P33_FEEDBACK_STATUS.
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 26
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Re-create or remove sample data delivered with this application.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+

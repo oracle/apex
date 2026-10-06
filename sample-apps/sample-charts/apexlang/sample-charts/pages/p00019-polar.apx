@@ -7,12 +7,7 @@ page 19 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -74,7 +69,7 @@ page 19 (
                 <strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>
                 <strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>
                 <strong>Label Position</strong> - Use this series-level attribute to control the positioning of the labels on data items of the chart.<p/>
-                For more information on the Polar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=lineTypes" target="_blank">Polar Chart: Line Types</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank">Polar Chart: Basic</a> examples.
+                For more information on the Polar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Polar Chart: Line Types</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank" rel="noopener noreferrer external">Polar Chart: Basic</a> examples.
                 ```
         }
         layout {
@@ -118,6 +113,9 @@ page 19 (
         chartLayout {
             maxWidth: 500
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: top

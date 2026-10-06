@@ -1,0 +1,14 @@
+lov contact-types (
+    name: CONTACT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select contact_type d, id r
+              from EBA_CUST_CONTACT_TYPES
+             where is_active = 'Y'
+            order by 1
+            ```
+    }
+)
+

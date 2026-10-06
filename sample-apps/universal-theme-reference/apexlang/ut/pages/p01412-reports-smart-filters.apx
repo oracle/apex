@@ -6,13 +6,8 @@ page 1412 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -162,6 +157,9 @@ page 1412 (
             layout {
                 sequence: 40
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -194,6 +192,9 @@ page 1412 (
             layout {
                 sequence: 30
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -213,6 +214,9 @@ page 1412 (
             layout {
                 sequence: 20
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -231,6 +235,9 @@ page 1412 (
             }
             layout {
                 sequence: 50
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -288,9 +295,6 @@ page 1412 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

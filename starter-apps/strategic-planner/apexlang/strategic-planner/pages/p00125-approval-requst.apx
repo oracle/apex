@@ -11,13 +11,6 @@ page 125 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @approvals
     }
@@ -54,7 +47,8 @@ page 125 (
                             when 'CLARIFICATION-REQUESTED' then 'u-warning-bg'
                             end icon_modifier,
                        c.last_status_on updated,
-                       1 ob
+                       1 ob,
+                       c.created
                   from sp_project_approval_chain c,
                        sp_team_members t
                  where c.project_approval_id = :P125_PROJECT_APPROVAL_ID
@@ -72,7 +66,8 @@ page 125 (
                        null actions,
                        'u-warning-bg' icon_modifier,
                        a.updated,
-                       1 ob
+                       0 ob,
+                       a.submitted created
                   from sp_project_approvals a,
                        sp_team_members t  
                  where a.id = :P125_PROJECT_APPROVAL_ID
@@ -91,7 +86,8 @@ page 125 (
                        null actions,
                        'u-info-bg' icon_modifier,
                        a.submitted updated,
-                       2 ob
+                       2 ob,
+                       a.submitted created
                   from sp_project_approvals a,
                        sp_team_members t  
                  where a.id = :P125_PROJECT_APPROVAL_ID
@@ -100,7 +96,7 @@ page 125 (
         }
         orderBy {
             type: staticValue
-            orderByClause: ob, updated desc nulls first
+            orderByClause: ob, created desc nulls first
         }
         layout {
             sequence: 40
@@ -121,6 +117,9 @@ page 125 (
         componentAppearance {
             template: @/comments
             templateOptions: t-Comments--chat
+        }
+        pagination {
+            type: showAll
         }
 
         column ACTIONS (
@@ -230,6 +229,20 @@ page 125 (
             }
             security {
                 escapeSpecialChars: false
+            }
+        )
+
+        column CREATED (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 160
+            }
+            sorting {
+                sortable: false
             }
         )
 
@@ -385,6 +398,9 @@ page 125 (
                 t-AVPList--leftAligned
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column APPROVAL_TYPE (
             reportColumnQueryId: 2
@@ -443,6 +459,7 @@ page 125 (
                        sp_team_members t
                  where a.id = :P125_PROJECT_APPROVAL_ID
                    and a.initiative_approval_id = c.initiative_approval_id
+                   and c.active_yn = 'Y'
                    and c.team_member_id = t.id
                    and c.id not in (select initiative_approval_chain_id
                                       from sp_project_approval_chain
@@ -478,13 +495,6 @@ page 125 (
                                         where project_approval_id = pa.id
                                           and status in ('PENDING','APPROVED')
                                           and final_yn = 'Y')
-                    and iac.approval_seq > nvl((select max(iac2.approval_seq)
-                                                  from sp_project_approval_chain pac,
-                                                       sp_initiative_approval_chain iac2
-                                                 where pac.initiative_approval_chain_id = iac2.id
-                                                   and pac.project_approval_id = pa.id
-                                                   and pac.status = 'APPROVED'
-                                                   and pac.final_yn = 'Y'),-100)
                 ```
         }
         componentAppearance {
@@ -495,6 +505,9 @@ page 125 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column REVIEWER (
@@ -588,7 +601,7 @@ page 125 (
         buttonName: APPROVE
         label: Approve
         layout {
-            sequence: 100
+            sequence: 20
             region: @p125-approval-type-review
             slot: create
         }
@@ -684,6 +697,17 @@ page 125 (
         }
     )
 
+    dynamicAction when-delegate (
+        name: when delegate
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P125_DELEGATE
+        }
+    )
+
     validation must-have-comments-to-reject-or-request-more-info (
         name: must have comments to reject or request more info
         execution {
@@ -767,7 +791,7 @@ page 125 (
         name: Close window
         type: closeDialog
         execution {
-            sequence: 60
+            sequence: 90
         }
         advanced {
             executionMappingIdentifier: 10528790320667238412
@@ -785,7 +809,7 @@ page 125 (
             commentText: &P125_COMMENTS.
         }
         execution {
-            sequence: 40
+            sequence: 70
         }
         advanced {
             executionMappingIdentifier: 10625516473675307941
@@ -806,7 +830,7 @@ page 125 (
             taskIdItem: P125_WF_TASK_ID
         }
         execution {
-            sequence: 20
+            sequence: 50
         }
         successMessage {
             successMessage: Rejection submitted.
@@ -830,7 +854,7 @@ page 125 (
             commentText: &P125_COMMENTS.
         }
         execution {
-            sequence: 30
+            sequence: 60
         }
         successMessage {
             successMessage: More information requested.
@@ -865,7 +889,7 @@ page 125 (
                 ```
         }
         execution {
-            sequence: 50
+            sequence: 80
         }
         successMessage {
             successMessage: Request withdrawn.

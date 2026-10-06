@@ -1,0 +1,123 @@
+list user-activity-reports (
+    name: User Activity Reports
+
+    entry activity-calendar (
+        label: Activity Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 21
+                clearCache: 21
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Summary of page views by user by day.  Requires contributor rights.
+            2: Monthly Calendar
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry application-activity (
+        label: Application Activity
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+        userDefinedAttributes {
+            1: Monthly calendar reporting historical usage, number of users and number of page views by day.  Requires contributor rights.
+            2: Monthly Calendar
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry application-activity-by-page (
+        label: Application Activity by Page
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 24
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: "Review application page performance and popularity.  A weighted page performance column multiplies page views by median rendering time. "
+            2: Interactive Report
+        }
+    )
+
+    entry page-view-activity (
+        label: Page View Activity
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 45
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Interactive report of each application page view.  Requires contributor rights.
+            2: Interactive Report
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    entry top-users (
+        label: Top Users
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 23
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        userDefinedAttributes {
+            1: Summary report of page view activity by user.  Requires contributor rights.
+            2: Interactive Report
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+)
+

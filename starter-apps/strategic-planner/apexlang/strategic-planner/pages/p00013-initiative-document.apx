@@ -14,13 +14,8 @@ page 13 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -61,40 +56,6 @@ page 13 (
                 update
                 delete
             ]
-        }
-    )
-
-    pageItem P13_CREATED (
-        type: hidden
-        layout {
-            sequence: 180
-            region: @document
-            slot: regionBody
-        }
-        source {
-            formRegion: @document
-            column: CREATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P13_CREATED_BY (
-        type: hidden
-        layout {
-            sequence: 190
-            region: @document
-            slot: regionBody
-        }
-        source {
-            formRegion: @document
-            column: CREATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 
@@ -207,14 +168,10 @@ page 13 (
     )
 
     pageItem P13_DOC_DESCRIPTION (
-        type: richTextEditor
+        type: textarea
         label {
             label: Description
             alignment: left
-        }
-        settings {
-            minHeight: 180
-            allowCustomHtml: true
         }
         layout {
             sequence: 70
@@ -225,6 +182,11 @@ page 13 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            maxLength: 4000
         }
         source {
             formRegion: @document
@@ -295,11 +257,47 @@ page 13 (
         }
     )
 
+    pageItem P13_ON_DELETE (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P13_PREV_PAGE (
+        type: hidden
+        layout {
+            sequence: 170
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     pageItem P13_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
         }
         layout {
             sequence: 80
@@ -322,40 +320,6 @@ page 13 (
         }
         security {
             restrictedChars: webSafe
-        }
-    )
-
-    pageItem P13_UPDATED (
-        type: hidden
-        layout {
-            sequence: 200
-            region: @document
-            slot: regionBody
-        }
-        source {
-            formRegion: @document
-            column: UPDATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P13_UPDATED_BY (
-        type: hidden
-        layout {
-            sequence: 210
-            region: @document
-            slot: regionBody
-        }
-        source {
-            formRegion: @document
-            column: UPDATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 
@@ -489,7 +453,27 @@ page 13 (
         }
         serverSideCondition {
             type: requestIsContainedInValue
-            value: CREATE,SAVE,DELETE
+            value: CREATE,SAVE
+        }
+    )
+
+    process close-dialog-delete (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 100
+        }
+        advanced {
+            executionMappingIdentifier: 19710762670031881517
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P13_ON_DELETE
+            value: CLOSE
         }
     )
 
@@ -515,6 +499,42 @@ page 13 (
         }
         advanced {
             executionMappingIdentifier: 16034019190717315300
+        }
+    )
+
+    branch (
+        name: after delete
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &P13_PREV_PAGE.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P13_ON_DELETE
+            value: PREV_PAGE
+        }
+    )
+
+    branch (
+        name: after delete, no prev page
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 21
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P13_ON_DELETE
+            value: HOME
         }
     )
 

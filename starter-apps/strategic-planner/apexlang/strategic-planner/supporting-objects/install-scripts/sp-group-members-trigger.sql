@@ -1,13 +1,16 @@
-create or replace trigger SP_GROUP_MEMBERS_biu
+create or replace trigger sp_group_members_biu
     before insert or update
-    on SP_GROUP_MEMBERS
+    on sp_group_members
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
-end SP_GROUP_MEMBERS_biu;
+end sp_group_members_biu;
 /

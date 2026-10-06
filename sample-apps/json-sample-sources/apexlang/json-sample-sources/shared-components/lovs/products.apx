@@ -1,0 +1,13 @@
+lov products (
+    name: PRODUCTS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_products
+    }
+    columnMapping {
+        return: PRODUCT_ID
+        display: PRODUCT_NAME
+        defaultSort: PRODUCT_NAME
+    }
+)
+

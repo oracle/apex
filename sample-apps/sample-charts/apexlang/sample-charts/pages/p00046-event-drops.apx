@@ -7,11 +7,8 @@ page 46 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -24,7 +21,7 @@ page 46 (
         name: About this page
         type: staticContent
         source {
-            htmlCode: <p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, can be customized to render as an <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=eventDrops" target="_blank">Event Drops</a> chart. Event Drop charts are useful for visualizing event occurrences over a given timeline, across multiple series.  This chart type is recommended for visualizing mixed frequency time data.</p>
+            htmlCode: <p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, can be customized to render as an <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=eventDrops" target="_blank" rel="noopener noreferrer external">Event Drops</a> chart. Event Drop charts are useful for visualizing event occurrences over a given timeline, across multiple series.  This chart type is recommended for visualizing mixed frequency time data.</p>
         }
         layout {
             sequence: 10
@@ -67,6 +64,9 @@ page 46 (
         }
         chartAppearance {
             stack: true
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -290,7 +290,7 @@ page 46 (
                 apex.region('sales').widget().ojChart('option','yAxis.tickLabel.converter', eventNamesFn );
                 </pre>
                 
-                For more information on the Event Drops chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=eventDrops" target="_blank">Event Drops</a> example.
+                For more information on the Event Drops chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=eventDrops" target="_blank" rel="noopener noreferrer external">Event Drops</a> example.
                 ```
         }
         layout {

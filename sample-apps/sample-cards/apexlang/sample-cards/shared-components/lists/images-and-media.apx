@@ -1,0 +1,131 @@
+list images-and-media (
+    name: Images and Media
+
+    entry application-static-files (
+        label: Application Static Files
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to reference application static files as Cards images
+        }
+    )
+
+    entry background-image (
+        label: Background Image
+        icon {
+            imageIconCssClasses: fa-film
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display movie posters as a Cards region's media background and as it's icon (for overlay effects)
+        }
+    )
+
+    entry blob-column (
+        label: BLOB Column
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images in Cards regions that are sourced from a BLOB column
+        }
+    )
+
+    entry blob-column-as-url (
+        label: BLOB Column as URL
+        icon {
+            imageIconCssClasses: fa-file-image-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display images in Cards regions that are sourced from a BLOB column as a URL
+        }
+    )
+
+    entry embedded-video (
+        label: Embedded Video
+        icon {
+            imageIconCssClasses: fa-video-camera
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use the Cards region's Media Advanced Formatting option to add an HTML <code>&lt;iframe&gt;</code> tag that embeds a video player inline in each card
+        }
+    )
+
+    entry image-url (
+        label: Image URL
+        icon {
+            imageIconCssClasses: fa-camera
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use Cards regions to display a photo gallery
+        }
+    )
+
+    entry video-images-with-durations (
+        label: Video Images with Durations
+        icon {
+            imageIconCssClasses: fa-play
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display cards that link to YouTube videos and display a background image along with a video duration overlay
+        }
+    )
+
+)
+

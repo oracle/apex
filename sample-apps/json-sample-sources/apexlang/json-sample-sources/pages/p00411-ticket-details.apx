@@ -8,13 +8,8 @@ page 411 (
         dialogTemplate: @/modal-dialog
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     pageItem P411_CREATION_DATE (

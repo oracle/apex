@@ -1,0 +1,693 @@
+list ut-get-started-navigation (
+    name: UT - Get Started Navigation
+
+    entry activity-timeline (
+        label: Activity Timeline
+        layout {
+            sequence: 1000
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1406
+            }
+        }
+    )
+
+    entry alert (
+        label: Alert
+        layout {
+            sequence: 1010
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1202
+            }
+        }
+    )
+
+    entry badges-list (
+        label: Badges List
+        layout {
+            sequence: 1020
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1304
+            }
+        }
+    )
+
+    entry breadcrumb (
+        label: Breadcrumb
+        layout {
+            sequence: 1040
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3810
+            }
+        }
+    )
+
+    entry button-builder (
+        label: Button Builder
+        layout {
+            sequence: 1330
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6100
+            }
+        }
+    )
+
+    entry button-container-region (
+        label: Button Container Region
+        layout {
+            sequence: 1070
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1250
+            }
+        }
+    )
+
+    entry button-group (
+        label: Button Group
+        layout {
+            sequence: 1060
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1204
+            }
+        }
+    )
+
+    entry buttons (
+        label: Buttons
+        layout {
+            sequence: 1050
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1500
+            }
+        }
+    )
+
+    entry calendars (
+        label: Calendars
+        layout {
+            sequence: 1080
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1800
+            }
+        }
+    )
+
+    entry cards (
+        label: Cards
+        layout {
+            sequence: 1090
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3100
+            }
+        }
+    )
+
+    entry carousel (
+        label: Carousel
+        layout {
+            sequence: 1090
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1205
+            }
+        }
+    )
+
+    entry charts (
+        label: Charts
+        layout {
+            sequence: 1100
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1902
+            }
+        }
+    )
+
+    entry classic-report (
+        label: Classic Report
+        layout {
+            sequence: 1140
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1401
+            }
+        }
+    )
+
+    entry collapsible (
+        label: Collapsible
+        layout {
+            sequence: 1110
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1206
+            }
+        }
+    )
+
+    entry color-and-status-modifiers (
+        label: Color and Status Modifiers
+        layout {
+            sequence: 1350
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6302
+            }
+        }
+    )
+
+    entry colors (
+        label: Colors
+        layout {
+            sequence: 690
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry comments (
+        label: Comments
+        layout {
+            sequence: 1120
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1405
+            }
+        }
+    )
+
+    entry components (
+        label: Components
+        icon {
+            imageIconCssClasses: fa-shapes
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 3000
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-15
+        }
+    )
+
+    entry data-tables-and-reports (
+        label: Data Tables and Reports
+        layout {
+            sequence: 1130
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3400
+            }
+        }
+    )
+
+    entry design (
+        label: Design
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-3
+        }
+    )
+
+    entry forms (
+        label: Forms
+        layout {
+            sequence: 1140
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1600
+            }
+        }
+    )
+
+    entry from-other-themes (
+        label: From Other Themes
+        layout {
+            sequence: 780
+            parentEntry: @migration-guide
+        }
+    )
+
+    entry getting-started (
+        label: Getting Started
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        userDefinedAttributes {
+            1: getting_started
+            5: u-color-1
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry grid-layout (
+        label: Grid Layout
+        layout {
+            sequence: 15
+            parentEntry: @layout
+        }
+        isCurrent {
+            type: pages
+            pages: 300
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry help-text (
+        label: Help Text
+        layout {
+            sequence: 1150
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1903
+            }
+        }
+    )
+
+    entry hero (
+        label: Hero
+        layout {
+            sequence: 1160
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1203
+            }
+        }
+    )
+
+    entry icons (
+        label: Icons
+        icon {
+            imageIconCssClasses: fa-apex
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 4000
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-9
+        }
+    )
+
+    entry inline-modal (
+        label: Inline Modal
+        layout {
+            sequence: 1230
+            parentEntry: @modal-dialogs
+        }
+        link {
+            target: {
+                page: 1911
+            }
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        layout {
+            sequence: 1160
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1410
+            }
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        layout {
+            sequence: 1150
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1402
+            }
+        }
+    )
+
+    entry javascript-events (
+        label: JavaScript Events
+        layout {
+            sequence: 1360
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6200
+            }
+        }
+    )
+
+    entry layout (
+        label: Layout
+        layout {
+            sequence: 720
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            10: 700
+        }
+    )
+
+    entry menu-bar (
+        label: Menu Bar
+        layout {
+            sequence: 1209
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1305
+            }
+        }
+    )
+
+    entry menu-popup (
+        label: Menu Popup
+        layout {
+            sequence: 1210
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1306
+            }
+        }
+    )
+
+    entry migration-guide (
+        label: Migration Guide
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 2000
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-11
+        }
+    )
+
+    entry modal-dialogs (
+        label: Modal Dialogs
+        layout {
+            sequence: 1210
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1906
+            }
+        }
+    )
+
+    entry navigation (
+        label: Navigation
+        layout {
+            sequence: 740
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+    )
+
+    entry overview (
+        label: Overview
+        layout {
+            sequence: 680
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry page-modal (
+        label: Page Modal
+        layout {
+            sequence: 1220
+            parentEntry: @modal-dialogs
+        }
+        link {
+            target: {
+                page: 1910
+            }
+        }
+    )
+
+    entry page-templates (
+        label: Page Templates
+        layout {
+            sequence: 34
+            parentEntry: @layout
+        }
+        link {
+            target: {
+                page: 1100
+            }
+        }
+    )
+
+    entry pl-sql-dynamic-content (
+        label: PL/SQL Dynamic Content
+        layout {
+            sequence: 1240
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1908
+            }
+        }
+    )
+
+    entry reference (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-cogs
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6000
+                6303
+                6304
+                6305
+                6306
+                2
+                6201
+            ]
+        }
+        link {
+            target: {
+                page: 6000
+            }
+        }
+        userDefinedAttributes {
+            6: u-color-13
+        }
+    )
+
+    entry region-display-selector (
+        label: Region Display Selector
+        layout {
+            sequence: 1250
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1907
+            }
+        }
+    )
+
+    entry standard-region (
+        label: Standard Region
+        layout {
+            sequence: 1260
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1201
+            }
+        }
+    )
+
+    entry static-content (
+        label: Static Content
+        layout {
+            sequence: 1270
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1905
+            }
+        }
+    )
+
+    entry title-bar-region (
+        label: Title Bar Region
+        layout {
+            sequence: 1280
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1207
+            }
+        }
+    )
+
+    entry tree (
+        label: Tree
+        layout {
+            sequence: 1290
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1901
+            }
+        }
+    )
+
+    entry value-attribute-pairs-report (
+        label: Value Attribute Pairs Report
+        layout {
+            sequence: 1310
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1403
+            }
+        }
+    )
+
+    entry wizards (
+        label: Wizards
+        layout {
+            sequence: 1320
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1208
+            }
+        }
+    )
+
+)
+

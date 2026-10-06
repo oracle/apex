@@ -1,0 +1,12 @@
+lov oow-demo-stores-store-name (
+    name: OOW_DEMO_STORES.STORE_NAME
+    source {
+        tableName: OOW_DEMO_STORES
+    }
+    columnMapping {
+        return: ID
+        display: STORE_NAME
+        defaultSort: STORE_NAME
+    }
+)
+

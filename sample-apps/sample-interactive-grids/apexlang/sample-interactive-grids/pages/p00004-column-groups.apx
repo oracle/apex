@@ -7,7 +7,6 @@ page 4 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -18,10 +17,6 @@ page 4 (
             }
             
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -423,9 +418,6 @@ page 4 (
                 sequence: 90
                 columnAlignment: center
                 group: @notes
-            }
-            validation {
-                valueRequired: true
             }
             source {
                 databaseColumn: ONLEAVE

@@ -7,9 +7,6 @@ page 159 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -28,12 +25,11 @@ page 159 (
             
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: Each &NOMENCLATURE_USER. contributing to a &NOMENCLATURE_PROJECT. along with the role they are assigned.
+    }
+    comments {
+        comments: The &NOMENCLATURE_AREA., &NOMENCLATURE_INITIATIVE., priority, size, percent complete, release, tags and target complete of the &NOMENCLATURE_PROJECT. is also available.
     }
 
     region breadcrumb (
@@ -97,7 +93,8 @@ page 159 (
                        p.target_complete,
                        p.PROJECT_SIZE,
                        'P'||nvl(to_char(pp.PRIORITY),'X') PRIORITY,
-                       to_char(p.PCT_COMPLETE)||'%' PCT_COMPLETE
+                       to_char(p.PCT_COMPLETE)||'%' PCT_COMPLETE,
+                       case when p.archived_yn = 'Y' then 'Yes' else 'No' end archived
                 from SP_PROJECT_CONTRIBUTORS pc,
                      SP_TEAM_MEMBERS tm,
                      SP_PROJECTS p,
@@ -106,6 +103,7 @@ page 159 (
                      SP_PROJECT_PRIORITIES pp
                 where pc.TEAM_MEMBER_ID = tm.id and
                       pc.PROJECT_ID = p.id and
+                      p.duplicate_of_project_id is null and
                       p.INITIATIVE_ID = i.id and
                       pc.RESPONSIBILITY_ID  = r.id and
                       p.PRIORITY_ID = pp.id(+)
@@ -129,9 +127,29 @@ page 159 (
         performance {
             maxRowsToProcess: 1000000
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: Each Team Member contributing to a Project along with the role (Resource Type) they are assigned.
+        }
         advanced {
             savedReportMappingIdentifier: 24158964563186031231
         }
+
+        column ARCHIVED (
+            type: plainText
+            heading {
+                heading: Archived
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
 
         column AREA (
             type: plainText
@@ -142,7 +160,7 @@ page 159 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -158,7 +176,7 @@ page 159 (
                 sequence: 190
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -174,7 +192,7 @@ page 159 (
                 sequence: 170
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -190,7 +208,7 @@ page 159 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -216,7 +234,7 @@ page 159 (
                 linkText: #NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -232,7 +250,7 @@ page 159 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -248,7 +266,7 @@ page 159 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: S
@@ -275,7 +293,7 @@ page 159 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -291,7 +309,7 @@ page 159 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -307,7 +325,7 @@ page 159 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -323,7 +341,7 @@ page 159 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -339,7 +357,7 @@ page 159 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -358,7 +376,7 @@ page 159 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -374,7 +392,7 @@ page 159 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -390,7 +408,7 @@ page 159 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -409,7 +427,7 @@ page 159 (
                 formatMask: DD-Mon-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AB
@@ -425,7 +443,7 @@ page 159 (
                 sequence: 180
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Z
@@ -444,7 +462,7 @@ page 159 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: L

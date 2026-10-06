@@ -7,12 +7,7 @@ page 41 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -97,6 +92,9 @@ page 41 (
                 t-BadgeList--dash
                 t-BadgeList--cols t-BadgeList--3cols
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DISTINCT_PRODUCTS (
@@ -259,6 +257,9 @@ page 41 (
                 t-ContextualInfo-item--stacked
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column LAST_ORDER (

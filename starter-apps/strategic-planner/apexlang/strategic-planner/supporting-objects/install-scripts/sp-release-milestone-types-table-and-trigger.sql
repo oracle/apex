@@ -23,10 +23,13 @@ create or replace trigger sp_release_milestone_types_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
 end sp_release_milestone_types_biu;
 /

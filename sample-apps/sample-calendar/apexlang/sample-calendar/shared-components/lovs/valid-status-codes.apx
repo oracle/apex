@@ -1,0 +1,32 @@
+lov valid-status-codes (
+    name: VALID STATUS CODES
+    source {
+        location: staticValues
+    }
+
+    entry closed (
+        sequence: 10
+        display: Closed
+        return: Closed
+    )
+
+    entry on-hold (
+        sequence: 20
+        display: On-Hold
+        return: On-Hold
+    )
+
+    entry open (
+        sequence: 30
+        display: Open
+        return: Open
+    )
+
+    entry pending (
+        sequence: 40
+        display: Pending
+        return: Pending
+    )
+
+)
+

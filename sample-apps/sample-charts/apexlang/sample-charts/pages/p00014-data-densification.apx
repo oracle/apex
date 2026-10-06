@@ -7,7 +7,6 @@ page 14 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -30,7 +29,7 @@ page 14 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -119,6 +118,9 @@ page 14 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -126,7 +128,6 @@ page 14 (
             sortOrder: labelDesc
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -220,6 +221,9 @@ page 14 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -227,7 +231,6 @@ page 14 (
             sortOrder: labelDesc
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -317,6 +320,9 @@ page 14 (
         chartLayout {
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
@@ -324,7 +330,6 @@ page 14 (
             fillGapsInChartData: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -431,6 +436,9 @@ page 14 (
         }
         chartLayout {
             height: 340
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false

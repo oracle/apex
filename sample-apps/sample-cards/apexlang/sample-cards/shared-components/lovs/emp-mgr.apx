@@ -1,0 +1,12 @@
+lov emp-mgr (
+    name: EMP.MGR
+    source {
+        tableName: EBA_DEMO_CARD_EMP
+    }
+    columnMapping {
+        return: EMPNO
+        display: ENAME
+        defaultSort: ENAME
+    }
+)
+

@@ -7,9 +7,6 @@ page 143 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
@@ -22,8 +19,6 @@ page 143 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: Verify the data was uploaded correctly and click the <strong>Finish</strong> button.

@@ -1,0 +1,11 @@
+legacyDataLoadDefinition aaa (
+    name: aaa
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_SALES_DEALS
+    }
+    uniqueKeys {
+        uniqueColumn1: ROW_KEY
+    }
+)
+

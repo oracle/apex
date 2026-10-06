@@ -1,6 +1,6 @@
 app CLOUD-APPS-REST-EXPLORER (
     name: Oracle Cloud Apps REST Data Source Explorer
-    version: 26.1.0
+    version: 26.2.0
     group: @utility-apps
     logo {
         type: imageAndText
@@ -32,7 +32,6 @@ app CLOUD-APPS-REST-EXPLORER (
         currentTheme: @universal-theme
         globalPage: 0
         usersCanChooseThemeStyle: true
-        autoDismissSuccessMessages: true
     }
     appFormatMasks {
         date: DS
@@ -48,8 +47,8 @@ app CLOUD-APPS-REST-EXPLORER (
     authentication {
         scheme: @oracle-apex-accounts
     }
-    sessionStateProtection {
-        checksumSalt: 191267E648626775AD12CBD628FE40F1B62D2AB1C285E14CE60ADCD799BA79D4
+    security {
+        allowBotAccess: true
     }
     globalization {
         documentDirection: leftToRight

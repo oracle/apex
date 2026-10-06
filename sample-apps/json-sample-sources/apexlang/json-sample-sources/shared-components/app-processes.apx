@@ -1,6 +1,5 @@
 appProcess load-products-images (
     name: Load Products Images
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

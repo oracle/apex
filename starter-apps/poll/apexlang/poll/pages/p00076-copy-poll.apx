@@ -11,13 +11,6 @@ page 76 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region select-poll-to-copy (
         name: Select Poll to Copy

@@ -1,6 +1,6 @@
 app EMA (
     name: Sample Email Authentication
-    version: 26.1.0
+    version: 26.2.0
     logo {
         type: imageAndText
         imageUrl: #APP_FILES#oracle-logo.svg
@@ -50,9 +50,7 @@ app EMA (
     }
     security {
         deepLinking: true
-    }
-    sessionStateProtection {
-        checksumSalt: 9F35685A3F5C4D9C58259333F863358F707E876474BADDD6C71A4AD846D63385
+        allowBotAccess: true
     }
     sessionManagement {
         maxSessionLength: 28800

@@ -1,0 +1,77 @@
+list home-page-list (
+    name: Home Page List
+
+    entry advanced (
+        label: Advanced
+        icon {
+            imageIconCssClasses: fa-rocket
+        }
+        layout {
+            sequence: 14
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of advanced Interactive Grid techniques
+        }
+    )
+
+    entry editing (
+        label: Editing
+        icon {
+            imageIconCssClasses: fa-pencil-square-o
+        }
+        layout {
+            sequence: 13
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of the editing capabilities of Interactive Grid
+        }
+    )
+
+    entry pagination (
+        label: Pagination
+        icon {
+            imageIconCssClasses: fa-chevron-circle-right
+        }
+        layout {
+            sequence: 12
+        }
+        link {
+            target: {
+                page: 38
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of pagination options of Interactive Grid
+        }
+    )
+
+    entry reporting (
+        label: Reporting
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 11
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrations of reporting (read-only) capabilities of Interactive Grid
+        }
+    )
+
+)
+

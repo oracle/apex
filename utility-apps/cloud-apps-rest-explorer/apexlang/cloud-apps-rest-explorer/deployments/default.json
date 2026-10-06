@@ -1,5 +1,8 @@
 {
   "app" : {
-    "id" : 6000
+    "id" : 6000,
+    "sessionStateProtection" : {
+      "checksumSalt" : "191267E648626775AD12CBD628FE40F1B62D2AB1C285E14CE60ADCD799BA79D4"
+    }
   }
 }

@@ -7,14 +7,110 @@ page 12150 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
+
+    region ai-services (
+        name: AI Services
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select remote_server_name, remote_server_static_id, model_name, base_url, is_builder_service
+                  from apex_workspace_ai_services 
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/collapsible
+            templateOptions: [
+                #DEFAULT#
+                is-collapsed
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--inline
+            ]
+        }
+        pagination {
+            type: showAll
+        }
+
+        column BASE_URL (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Base URL
+            }
+            layout {
+                sequence: 50
+            }
+        )
+
+        column IS_BUILDER_SERVICE (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Is Builder Service
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+        column MODEL_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Model Name
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column REMOTE_SERVER_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                defaultSequence: 2
+            }
+        )
+
+        column REMOTE_SERVER_STATIC_ID (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Static ID
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+    )
 
     region breadcrumb (
         name: breadcrumb
@@ -84,9 +180,6 @@ page 12150 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 500
@@ -277,7 +370,7 @@ page 12150 (
                             p_static_id     => l_static_id,
                             p_setting_value => apex_application.g_f02(i) );
                     end if;
-                    
+                
                     l_static_id := null;
                 end loop;
                 

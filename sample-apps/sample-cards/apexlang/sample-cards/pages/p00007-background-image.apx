@@ -6,13 +6,8 @@ page 7 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -21,7 +16,7 @@ page 7 (
         source {
             htmlCode:
                 ```html
-                <p>Cards regions can be sourced by REST Data Sources.  This page uses <a href="&MOVIEDB_API." title="Movie Database API" target="_blank">The Movie Database (TMDb) API</a> as a REST Data Source.</p>
+                <p>Cards regions can be sourced by REST Data Sources.  This page uses <a href="&MOVIEDB_API." title="Movie Database API" target="_blank" rel="noopener noreferrer external">The Movie Database (TMDb) API</a> as a REST Data Source.</p>
                 
                 <p>This page displays movie posters as a Cards region's Media background.  It also displays the same movie poster image as each card's icon (for an overlay effect).</p>
                 ```

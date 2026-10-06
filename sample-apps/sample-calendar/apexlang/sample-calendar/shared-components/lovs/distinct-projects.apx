@@ -1,0 +1,14 @@
+lov distinct-projects (
+    name: DISTINCT PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select project || ' (' || count(*) ||' tasks from ' || to_char(min(start_date),'Mon RR') ||' to ' ||to_char(max(start_date), 'Mon RR')||')' d, project r
+            from eba_demo_cal_projects
+            group by project
+            order by 1
+            ```
+    }
+)
+

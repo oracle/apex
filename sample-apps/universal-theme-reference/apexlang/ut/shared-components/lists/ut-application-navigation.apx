@@ -1,0 +1,1540 @@
+list ut-application-navigation (
+    name: UT - Application Navigation
+
+    entry alert (
+        label: Alert
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 110
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1202
+            }
+        }
+    )
+
+    entry avatar (
+        label: Avatar
+        icon {
+            imageIconCssClasses: fa-user-circle-o
+        }
+        layout {
+            sequence: 120
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 3001
+        }
+        link {
+            target: {
+                page: 3001
+            }
+        }
+    )
+
+    entry badge (
+        label: Badge
+        icon {
+            imageIconCssClasses: fa-badge-list
+        }
+        layout {
+            sequence: 130
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 3002
+        }
+        link {
+            target: {
+                page: 3002
+            }
+        }
+    )
+
+    entry badge-list (
+        label: Badge List
+        layout {
+            sequence: 60
+            parentEntry: @badge
+        }
+        link {
+            target: {
+                page: 1304
+            }
+        }
+    )
+
+    entry breadcrumb (
+        label: Breadcrumb
+        icon {
+            imageIconCssClasses: fa-breadcrumb
+        }
+        layout {
+            sequence: 140
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3810
+            }
+        }
+    )
+
+    entry button-builder (
+        label: Button Builder
+        icon {
+            imageIconCssClasses: fa-button
+        }
+        layout {
+            sequence: 640
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6100
+            }
+        }
+    )
+
+    entry button-container (
+        label: Button Container
+        icon {
+            imageIconCssClasses: fa-button-container
+        }
+        layout {
+            sequence: 170
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1250
+            }
+        }
+    )
+
+    entry button-group (
+        label: Button Group
+        icon {
+            imageIconCssClasses: fa-button-group
+        }
+        layout {
+            sequence: 160
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1204
+            }
+        }
+    )
+
+    entry buttons (
+        label: Buttons
+        icon {
+            imageIconCssClasses: fa-button
+        }
+        layout {
+            sequence: 150
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1500
+            }
+        }
+    )
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 180
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1800
+            }
+        }
+    )
+
+    entry card-regions (
+        label: Card Regions
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 190
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3110
+            }
+        }
+    )
+
+    entry card-templates (
+        label: Card Templates
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 200
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 3100
+            }
+        }
+    )
+
+    entry carousel (
+        label: Carousel
+        icon {
+            imageIconCssClasses: fa-carousel
+        }
+        layout {
+            sequence: 210
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1205
+            }
+        }
+    )
+
+    entry change-log (
+        label: Change Log
+        icon {
+            imageIconCssClasses: fa-history
+        }
+        layout {
+            sequence: 710
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6305
+            }
+        }
+    )
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 220
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1902
+            }
+        }
+    )
+
+    entry classic-report (
+        label: Classic Report
+        layout {
+            sequence: 500
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1401
+            }
+        }
+    )
+
+    entry collapsible (
+        label: Collapsible
+        icon {
+            imageIconCssClasses: fa-collapsible
+        }
+        layout {
+            sequence: 230
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1206
+            }
+        }
+    )
+
+    entry color-status-and-style-modifiers (
+        label: Color, Status, and Style Modifiers
+        icon {
+            imageIconCssClasses: fa-eyedropper
+        }
+        layout {
+            sequence: 660
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6302
+            }
+        }
+    )
+
+    entry colors (
+        label: Colors
+        icon {
+            imageIconCssClasses: fa-eyedropper
+        }
+        layout {
+            sequence: 740
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 402
+            }
+        }
+    )
+
+    entry column-toggle-report (
+        label: Column Toggle Report
+        layout {
+            sequence: 570
+            parentEntry: @data-tables-and-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 1720
+        }
+        link {
+            target: {
+                page: 1720
+            }
+        }
+    )
+
+    entry comments (
+        label: Comments
+        icon {
+            imageIconCssClasses: fa-comments-o
+        }
+        layout {
+            sequence: 240
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 3003
+            }
+        }
+    )
+
+    entry comments-component (
+        label: Comments Component
+        layout {
+            sequence: 69
+            parentEntry: @comments
+        }
+        link {
+            target: {
+                page: 3003
+            }
+        }
+    )
+
+    entry comments-report (
+        label: Comments Report
+        layout {
+            sequence: 70
+            parentEntry: @comments
+        }
+        link {
+            target: {
+                page: 1405
+            }
+        }
+    )
+
+    entry components (
+        label: Components
+        icon {
+            imageIconCssClasses: fa-shapes
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 3000
+            }
+        }
+    )
+
+    entry components-flexbox-container (
+        label: Flexbox Container
+        icon {
+            imageIconCssClasses: fa-layout-modal-nav-left
+        }
+        layout {
+            sequence: 295
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 3008
+        }
+        link {
+            target: {
+                page: 3008
+            }
+        }
+    )
+
+    entry content-block (
+        label: Content Block
+        icon {
+            imageIconCssClasses: fa-align-justify
+        }
+        layout {
+            sequence: 250
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 1209
+        }
+        link {
+            target: {
+                page: 1209
+            }
+        }
+    )
+
+    entry content-modifiers (
+        label: Content Modifiers
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 680
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6304
+            }
+        }
+    )
+
+    entry content-row (
+        label: Content Row
+        icon {
+            imageIconCssClasses: fa-layout-list-left
+        }
+        layout {
+            sequence: 260
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 3004
+            }
+        }
+    )
+
+    entry content-row-component (
+        label: Content Row Component
+        layout {
+            sequence: 79
+            parentEntry: @content-row
+        }
+        link {
+            target: {
+                page: 3004
+            }
+        }
+    )
+
+    entry content-row-report (
+        label: Content Row Report
+        layout {
+            sequence: 80
+            parentEntry: @content-row
+        }
+        link {
+            target: {
+                page: 1407
+            }
+        }
+    )
+
+    entry contextual-info (
+        label: Contextual Info
+        icon {
+            imageIconCssClasses: fa-layout-list-right
+        }
+        layout {
+            sequence: 270
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 1307
+        }
+        link {
+            target: {
+                page: 1307
+            }
+        }
+    )
+
+    entry css-variables (
+        label: CSS Variables
+        icon {
+            imageIconCssClasses: fa-variable
+        }
+        layout {
+            sequence: 685
+            parentEntry: @reference
+        }
+        isCurrent {
+            type: pages
+            pages: 6307
+        }
+        link {
+            target: {
+                page: 6307
+            }
+        }
+    )
+
+    entry data-entry (
+        label: Data Entry
+        layout {
+            sequence: 600
+            parentEntry: @mobile-patterns
+        }
+        link {
+            target: {
+                page: 423
+            }
+        }
+    )
+
+    entry data-tables-and-reports (
+        label: Data Tables and Reports
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 280
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 1401
+            }
+        }
+    )
+
+    entry design (
+        label: Design
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 401
+            }
+        }
+    )
+
+    entry dynamic-content-region (
+        label: Dynamic Content Region
+        icon {
+            imageIconCssClasses: fa-dynamic-content
+        }
+        layout {
+            sequence: 290
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1908
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        layout {
+            sequence: 530
+            parentEntry: @data-tables-and-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 1411
+        }
+        link {
+            target: {
+                page: 1411
+            }
+        }
+    )
+
+    entry form-item-types (
+        label: Form Item Types
+        layout {
+            sequence: 860
+            parentEntry: @forms
+        }
+        isCurrent {
+            type: pages
+            pages: 1601
+        }
+        link {
+            target: {
+                page: 1601
+            }
+        }
+    )
+
+    entry form-labels (
+        label: Form Labels
+        layout {
+            sequence: 870
+            parentEntry: @forms
+        }
+        link {
+            target: {
+                page: 1600
+            }
+        }
+    )
+
+    entry forms (
+        label: Forms
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 300
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 1601
+            }
+        }
+    )
+
+    entry getting-started (
+        label: Getting Started
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        userDefinedAttributes {
+            1: getting_started
+        }
+    )
+
+    entry grid-layout (
+        label: Grid Layout
+        icon {
+            imageIconCssClasses: fa-layout-3row
+        }
+        layout {
+            sequence: 760
+            parentEntry: @design
+        }
+        isCurrent {
+            type: pages
+            pages: 300
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry headers-and-footers (
+        label: Headers and Footers
+        layout {
+            sequence: 590
+            parentEntry: @mobile-patterns
+        }
+        link {
+            target: {
+                page: 422
+            }
+        }
+    )
+
+    entry help-text (
+        label: Help Text
+        icon {
+            imageIconCssClasses: fa-question-circle-o
+        }
+        layout {
+            sequence: 310
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1903
+            }
+        }
+    )
+
+    entry hero (
+        label: Hero
+        icon {
+            imageIconCssClasses: fa-hero
+        }
+        layout {
+            sequence: 320
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1203
+            }
+        }
+    )
+
+    entry icons (
+        label: Icons
+        icon {
+            imageIconCssClasses: fa-apex
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 4000
+            }
+        }
+    )
+
+    entry image (
+        label: Image
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 330
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 1210
+        }
+        link {
+            target: {
+                page: 1210
+            }
+        }
+    )
+
+    entry inline-dialog (
+        label: Inline Dialog
+        layout {
+            sequence: 820
+            parentEntry: @modal-dialogs-and-popups
+        }
+        link {
+            target: {
+                page: 1911
+            }
+        }
+    )
+
+    entry inline-drawer (
+        label: Inline Drawer
+        layout {
+            sequence: 830
+            parentEntry: @modal-dialogs-and-popups
+        }
+        isCurrent {
+            type: pages
+            pages: 1916
+        }
+        link {
+            target: {
+                page: 1916
+            }
+        }
+    )
+
+    entry inline-popup (
+        label: Inline Popup
+        layout {
+            sequence: 840
+            parentEntry: @modal-dialogs-and-popups
+        }
+        link {
+            target: {
+                page: 1915
+            }
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        layout {
+            sequence: 520
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1410
+            }
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        layout {
+            sequence: 510
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1402
+            }
+        }
+    )
+
+    entry javascript-apis (
+        label: JavaScript APIs
+        icon {
+            imageIconCssClasses: fa-code-fork
+        }
+        layout {
+            sequence: 700
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6201
+            }
+        }
+    )
+
+    entry javascript-events (
+        label: JavaScript Events
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 690
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6200
+            }
+        }
+    )
+
+    entry jquery-mobile-components (
+        label: jQuery Mobile Components
+        layout {
+            sequence: 620
+            parentEntry: @mobile-patterns
+        }
+        link {
+            target: {
+                page: 425
+            }
+        }
+    )
+
+    entry layout-modifiers (
+        label: Layout Modifiers
+        icon {
+            imageIconCssClasses: fa-fit-to-size
+        }
+        layout {
+            sequence: 670
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 6303
+            }
+        }
+    )
+
+    entry links-list (
+        label: Links List
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 340
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1303
+            }
+        }
+    )
+
+    entry list-view (
+        label: List View
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 350
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 1700
+        }
+        link {
+            target: {
+                page: 1700
+            }
+        }
+    )
+
+    entry map (
+        label: Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 355
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 1906
+        }
+        link {
+            target: {
+                page: 1906
+            }
+        }
+    )
+
+    entry media-list (
+        label: Media List
+        icon {
+            imageIconCssClasses: fa-media-list
+        }
+        layout {
+            sequence: 360
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 3005
+            }
+        }
+    )
+
+    entry media-list-component (
+        label: Media List Component
+        layout {
+            sequence: 89
+            parentEntry: @media-list
+        }
+        link {
+            target: {
+                page: 3005
+            }
+        }
+    )
+
+    entry media-list-report (
+        label: Media List Report
+        layout {
+            sequence: 90
+            parentEntry: @media-list
+        }
+        link {
+            target: {
+                page: 1301
+            }
+        }
+    )
+
+    entry menu-bar (
+        label: Menu Bar
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 370
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1305
+            }
+        }
+    )
+
+    entry menu-popup (
+        label: Menu Popup
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 380
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1306
+            }
+        }
+    )
+
+    entry metric-card (
+        label: Metric Card
+        icon {
+            imageIconCssClasses: fa-credit-card-front
+        }
+        layout {
+            sequence: 381
+            parentEntry: @components
+        }
+        isCurrent {
+            type: pages
+            pages: 3007
+        }
+        link {
+            target: {
+                page: 3007
+            }
+        }
+    )
+
+    entry migration-guides (
+        label: Migration Guides
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 630
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 2000
+            }
+        }
+    )
+
+    entry mobile-patterns (
+        label: Mobile Patterns
+        icon {
+            imageIconCssClasses: fa-mobile
+        }
+        layout {
+            sequence: 790
+            parentEntry: @design
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 421
+            }
+        }
+    )
+
+    entry modal-dialogs-and-popups (
+        label: Modal Dialogs and Popups
+        icon {
+            imageIconCssClasses: fa-layout-modal-header
+        }
+        layout {
+            sequence: 390
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 1910
+            }
+        }
+    )
+
+    entry navigation (
+        label: Navigation
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 750
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+    )
+
+    entry navigation-2 (
+        label: Navigation
+        layout {
+            sequence: 580
+            parentEntry: @mobile-patterns
+        }
+        link {
+            target: {
+                page: 421
+            }
+        }
+    )
+
+    entry navigation-bar (
+        label: Navigation Bar
+        icon {
+            imageIconCssClasses: fa-layout-header
+        }
+        layout {
+            sequence: 400
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+    )
+
+    entry page-dialog (
+        label: Page Dialog
+        layout {
+            sequence: 800
+            parentEntry: @modal-dialogs-and-popups
+        }
+        link {
+            target: {
+                page: 1910
+            }
+        }
+    )
+
+    entry page-drawer (
+        label: Page Drawer
+        layout {
+            sequence: 810
+            parentEntry: @modal-dialogs-and-popups
+        }
+        isCurrent {
+            type: pages
+            pages: 1917
+        }
+        link {
+            target: {
+                page: 1917
+            }
+        }
+    )
+
+    entry page-templates (
+        label: Page Templates
+        icon {
+            imageIconCssClasses: fa-layout-header-nav-left-right-footer
+        }
+        layout {
+            sequence: 770
+            parentEntry: @design
+        }
+        link {
+            target: {
+                page: 1100
+            }
+        }
+    )
+
+    entry reference (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-cogs
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6000
+                6306
+                6307
+            ]
+        }
+        link {
+            target: {
+                page: 6000
+            }
+        }
+    )
+
+    entry reflow-report (
+        label: Reflow Report
+        layout {
+            sequence: 560
+            parentEntry: @data-tables-and-reports
+        }
+        link {
+            target: {
+                page: 1710
+            }
+        }
+    )
+
+    entry region-display-selector (
+        label: Region Display Selector
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 410
+            parentEntry: @tabs
+        }
+        isCurrent {
+            type: pages
+            pages: 1923
+        }
+        link {
+            target: {
+                page: 1923
+            }
+        }
+    )
+
+    entry responsive-classes (
+        label: Responsive Classes
+        icon {
+            imageIconCssClasses: fa-expand
+        }
+        layout {
+            sequence: 650
+            parentEntry: @reference
+        }
+        link {
+            target: {
+                page: 300
+                request: responsive_design
+            }
+        }
+    )
+
+    entry search-region (
+        label: Search Region
+        layout {
+            sequence: 550
+            parentEntry: @data-tables-and-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 1413
+        }
+        link {
+            target: {
+                page: 1413
+            }
+        }
+    )
+
+    entry smart-filters (
+        label: Smart Filters
+        layout {
+            sequence: 540
+            parentEntry: @data-tables-and-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 1412
+        }
+        link {
+            target: {
+                page: 1412
+            }
+        }
+    )
+
+    entry standard (
+        label: Standard
+        icon {
+            imageIconCssClasses: fa-window
+        }
+        layout {
+            sequence: 420
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1201
+            }
+        }
+    )
+
+    entry static-content (
+        label: Static Content
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 430
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1905
+            }
+        }
+    )
+
+    entry tabs (
+        label: Tabs
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 440
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 1923
+            }
+        }
+    )
+
+    entry tabs-container (
+        label: Tabs Container
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 850
+            parentEntry: @tabs
+        }
+        link {
+            target: {
+                page: 1907
+            }
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 641
+            parentEntry: @reference
+        }
+        isCurrent {
+            type: pages
+            pages: 6400
+        }
+        link {
+            target: {
+                page: 6400
+            }
+        }
+    )
+
+    entry theme-styles (
+        label: Theme Styles
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 780
+            parentEntry: @design
+        }
+        isCurrent {
+            type: pages
+            pages: 405
+        }
+        link {
+            target: {
+                page: 405
+            }
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        icon {
+            imageIconCssClasses: fa-history
+        }
+        layout {
+            sequence: 450
+            parentEntry: @components
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 3006
+            }
+        }
+    )
+
+    entry timeline-component (
+        label: Timeline Component
+        layout {
+            sequence: 99
+            parentEntry: @timeline
+        }
+        link {
+            target: {
+                page: 3006
+            }
+        }
+    )
+
+    entry timeline-report (
+        label: Timeline Report
+        layout {
+            sequence: 100
+            parentEntry: @timeline
+        }
+        link {
+            target: {
+                page: 1406
+            }
+        }
+    )
+
+    entry title-bar (
+        label: Title Bar
+        icon {
+            imageIconCssClasses: fa-breadcrumb
+        }
+        layout {
+            sequence: 460
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1207
+            }
+        }
+    )
+
+    entry touch-gestures (
+        label: Touch Gestures
+        layout {
+            sequence: 610
+            parentEntry: @mobile-patterns
+        }
+        link {
+            target: {
+                page: 424
+            }
+        }
+    )
+
+    entry tree (
+        label: Tree
+        icon {
+            imageIconCssClasses: fa-tree-org
+        }
+        layout {
+            sequence: 470
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1901
+            }
+        }
+    )
+
+    entry value-attribute-pairs-report (
+        label: Value Attribute Pairs Report
+        icon {
+            imageIconCssClasses: fa-th-list
+        }
+        layout {
+            sequence: 480
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1403
+            }
+        }
+    )
+
+    entry wizards (
+        label: Wizards
+        icon {
+            imageIconCssClasses: fa-wizard
+        }
+        layout {
+            sequence: 490
+            parentEntry: @components
+        }
+        link {
+            target: {
+                page: 1208
+            }
+        }
+    )
+
+)
+

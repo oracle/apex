@@ -1,0 +1,14 @@
+lov agreements (
+    name: AGREEMENTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_agreements
+             order by 1
+            ```
+    }
+)
+

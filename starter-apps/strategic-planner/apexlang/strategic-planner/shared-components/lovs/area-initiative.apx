@@ -1,0 +1,58 @@
+lov area-initiative (
+    name: AREA INITIATIVE 2
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select i.initiative, 
+                   a.area,
+                   i.id initiative_id
+            from sp_initiatives i, sp_areas a
+            where i.area_id = a.id
+            order by 2, 1
+            ```
+    }
+    columnMapping {
+        return: INITIATIVE_ID
+        display: INITIATIVE
+    }
+
+    column AREA (
+        heading {
+            heading: Area
+        }
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column INITIATIVE (
+        heading {
+            heading: Initiative
+        }
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column INITIATIVE_ID (
+        show: false
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+)
+

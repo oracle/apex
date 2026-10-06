@@ -1,0 +1,50 @@
+lov communities-p (
+    name: COMMUNITIES, P72
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+              from
+            (
+            select name || ' (member count: '|| (select count(*) 
+                                                   from eba_qpoll_resp_comm_ref rc
+                                                  where rc.community_id = c.id) ||')' d,
+                   id r
+            from EBA_QPOLL_RESP_COMMUNITIES c
+            where publish_yn = 'Y'
+              and id not in
+                  (select community_id
+                     from eba_qpoll_comm_invites
+                    where poll_id = :P72_POLL_ID
+                      and community_id is not null)
+            union
+            select name ||' (added since last invitation: '|| cnt ||')' d,
+                   id r
+            from
+            (
+            select c.id, c.name, count(*) cnt
+              from eba_qpoll_resp_communities c,
+                   eba_qpoll_resp_comm_ref rc
+             where exists (select 1 from eba_qpoll_comm_invites ci
+                            where ci.poll_id = :P72_POLL_ID
+                              and ci.community_id = c.id)
+               and c.id = rc.community_id
+               and c.publish_yn = 'Y'
+               and rc.respondent_id not in 
+                   (select respondent_id
+                      from eba_qpoll_invites i,
+                           eba_qpoll_comm_invites ci2
+                     where i.comm_invite_id = ci2.id
+                       and ci2.community_id = c.id
+                       and ci2.poll_id = :P72_POLL_ID
+                       and ci2.community_id is not null)
+            group by c.id, c.name
+            )
+            where cnt > 0
+            )
+            order by 1
+            ```
+    }
+)
+

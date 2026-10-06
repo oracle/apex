@@ -6,9 +6,6 @@ page 122 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -32,10 +29,6 @@ page 122 (
                 }
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -147,9 +140,6 @@ page 122 (
                 t-ContentRow--styleCompact
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound:
@@ -507,7 +497,7 @@ page 122 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -523,7 +513,7 @@ page 122 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -544,7 +534,7 @@ page 122 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -560,7 +550,7 @@ page 122 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -578,7 +568,7 @@ page 122 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -597,7 +587,7 @@ page 122 (
                 htmlExpression: #AIRPORT_NAME# (#IATA_CODE#)
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -613,7 +603,7 @@ page 122 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -632,7 +622,7 @@ page 122 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -795,6 +785,7 @@ page 122 (
                      where COMMERCIAL_OPS > 100000
                     ```
                 pageItemsToSubmit: P122_CIRCLE_GEOJSON
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY
@@ -888,6 +879,7 @@ page 122 (
                        and sdo_anyinteract( geometry, mdsys.sdo_util.from_geojson( :P122_CIRCLE_GEOJSON)) = 'TRUE'
                     ```
                 pageItemsToSubmit: P122_CIRCLE_GEOJSON
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY

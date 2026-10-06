@@ -1,0 +1,16 @@
+emailTemplate JOB_CHANGE_NOTIFICATION (
+    name: Job Change Notification
+    emailSubject: Job Change for #P_ENAME# Completed
+    htmlFormat {
+        header: <b style="font-size: 24px;">Sample Workflow, Approvals, and Tasks</b>
+        body:
+            ```html
+            Hello,<br>
+            The job change for #P_ENAME# from #P_JOB_BEFORE# to #P_JOB_AFTER# has been approved and is now complete.
+            ```
+    }
+    advanced {
+        versionNumber: 2
+    }
+)
+

@@ -14,13 +14,14 @@ page 87 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -75,7 +76,7 @@ page 87 (
             allowCustomHtml: true
         }
         layout {
-            sequence: 40
+            sequence: 30
             region: @initiative-comment
             slot: regionBody
             alignment: left
@@ -98,6 +99,14 @@ page 87 (
                             data: {
                                 imageRefId: apex.item('P87_NEW_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'INITIATIVE',
+                            objectId: apex.items.P87_INITIATIVE_ID.value
+                        },
+                        docs: {
+                            scope: 'INITIATIVE',
+                            objectId: apex.items.P87_INITIATIVE_ID.value
                         }
                     });
                 }
@@ -132,10 +141,28 @@ page 87 (
         }
     )
 
+    pageItem P87_INITIATIVE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @initiative-comment
+            slot: regionBody
+        }
+        source {
+            formRegion: @initiative-comment
+            column: INITIATIVE_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
     pageItem P87_NEW_IMAGE_REF_ID (
         type: hidden
         layout {
-            sequence: 190
+            sequence: 50
             region: @initiative-comment
             slot: regionBody
         }
@@ -155,7 +182,7 @@ page 87 (
             alignment: left
         }
         layout {
-            sequence: 90
+            sequence: 40
             region: @initiative-comment
             slot: regionBody
             alignment: left

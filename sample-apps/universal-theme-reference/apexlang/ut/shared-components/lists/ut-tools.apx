@@ -1,0 +1,81 @@
+list ut-tools (
+    name: UT - Tools
+
+    entry button-builder (
+        label: Button Builder
+        icon {
+            imageIconCssClasses: fa-button
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 6100
+            }
+        }
+        userDefinedAttributes {
+            1: Get the HTML markup or link attributes you need to add buttons to report columns, static content regions, and more.
+            6: u-color-13
+        }
+    )
+
+    entry change-log (
+        label: Change Log
+        icon {
+            imageIconCssClasses: fa-history
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6305
+            }
+        }
+        userDefinedAttributes {
+            1: Look at the changes between Universal Theme versions, improvements, new features, and bug fixes.
+            6: u-color-13
+        }
+    )
+
+    entry migration-guides (
+        label: Migration Guides
+        icon {
+            imageIconCssClasses: fa-tasks
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2000
+            }
+        }
+        userDefinedAttributes {
+            1: Use the latest version of Universal Theme and keep current with the latest features, enhancements, and bug fixes.
+            6: u-color-13
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6400
+            }
+        }
+        userDefinedAttributes {
+            1: Take control of how substitution strings and content are processed.
+            6: u-color-13
+        }
+    )
+
+)
+

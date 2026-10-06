@@ -1,0 +1,115 @@
+dataLoadDefinition genai_csv_load (
+    name: GenAI CSV Load
+    target {
+        tableName: EBA_VECTOR_MOVIEDATA
+        loadingMethod: merge
+    }
+    errorHandling {
+        whenOnError: ignore
+    }
+    advanced {
+        commitInterval: 200
+    }
+    dataProfile {
+        name: GenAI CSV Load
+        format: csv
+    }
+    advanced {
+        encoding: utf-8
+        csvEnclosedBy: "
+    }
+
+    dataProfileColumn actors (
+        columnName: ACTORS
+        source {
+            sequence: 4
+            dataType: varchar2
+        }
+        parsing {
+            selector: ACTORS
+        }
+    )
+
+    dataProfileColumn embedding-vector (
+        columnName: EMBEDDING_VECTOR
+        source {
+            sequence: 18
+            type: sqlExpression
+            dataType: varchar2
+        }
+        computation {
+            sqlExpression: NULL
+        }
+    )
+
+    dataProfileColumn genre (
+        columnName: GENRE
+        source {
+            sequence: 5
+            dataType: varchar2
+        }
+        parsing {
+            selector: GENRE
+        }
+    )
+
+    dataProfileColumn moviedescription (
+        columnName: MOVIEDESCRIPTION
+        source {
+            sequence: 3
+            dataType: clob
+        }
+        parsing {
+            selector: MOVIEDESCRIPTION
+        }
+    )
+
+    dataProfileColumn rating (
+        columnName: RATING
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            selector: RATING
+        }
+    )
+
+    dataProfileColumn release-date (
+        columnName: RELEASE_DATE
+        source {
+            sequence: 7
+            dataType: date
+        }
+        parsing {
+            selector: RELEASE_DATE
+            formatMask: YYYY-MM-DD
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn title (
+        columnName: TITLE
+        source {
+            sequence: 2
+            dataType: varchar2
+            primaryKey: true
+        }
+        parsing {
+            selector: TITLE
+        }
+    )
+
+    dataProfileColumn votes (
+        columnName: VOTES
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            selector: VOTES
+        }
+    )
+
+)
+

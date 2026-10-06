@@ -154,7 +154,6 @@ plugin completeness (
     }
     information {
         version: 5.1.0
-        aboutUrl: http://apex.oracle.com/plugins
         helpText:
             ```
             <p>This plug-in takes a query and displays a &quot;completeness&quot; orb that shows the end-user at a glance how complete the current page content is.</p>

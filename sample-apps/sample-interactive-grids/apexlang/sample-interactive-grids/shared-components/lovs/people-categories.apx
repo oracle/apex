@@ -1,0 +1,38 @@
+lov people-categories (
+    name: PEOPLE_CATEGORIES
+    source {
+        location: staticValues
+    }
+
+    entry arts (
+        sequence: 2
+        display: Arts
+        return: A
+    )
+
+    entry business-law (
+        sequence: 3
+        display: Business & Law
+        return: B_L
+    )
+
+    entry politics (
+        sequence: 4
+        display: Politics
+        return: P
+    )
+
+    entry science-technology (
+        sequence: 1
+        display: Science & Technology
+        return: S_T
+    )
+
+    entry sports (
+        sequence: 5
+        display: Sports
+        return: S
+    )
+
+)
+

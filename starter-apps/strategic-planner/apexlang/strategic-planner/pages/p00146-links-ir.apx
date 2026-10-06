@@ -7,15 +7,8 @@ page 146 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
-        helpText: All Links with this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.
+        helpText: All Links with this application along with what object they are associated with (e.g. &NOMENCLATURE_INITIATIVE., &NOMENCLATURE_PROJECT.) and by whom and when they were added.  Other attributes include whether or not they were deemed Important and any tags associated.
     }
 
     region breadcrumb (
@@ -158,6 +151,10 @@ page 146 (
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Links with this application along with what object they are associated with (e.g. Initiative, Project) and by whom and when they were added.
+        }
         advanced {
             savedReportMappingIdentifier: 16651512047837978121
         }
@@ -171,7 +168,7 @@ page 146 (
                 sequence: 11
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -190,7 +187,7 @@ page 146 (
                 sequence: 91
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -209,7 +206,7 @@ page 146 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -225,10 +222,13 @@ page 146 (
                 sequence: 51
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
+            }
+            genAI {
+                columnContext: Yes if link was flagged as important (No if not)
             }
         )
 
@@ -249,7 +249,7 @@ page 146 (
                 linkAttributes: target="_blank"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -265,7 +265,7 @@ page 146 (
                 sequence: 41
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -281,7 +281,7 @@ page 146 (
                 sequence: 21
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -297,7 +297,7 @@ page 146 (
                 sequence: 61
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -313,7 +313,7 @@ page 146 (
                 sequence: 81
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L

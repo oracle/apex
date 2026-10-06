@@ -1,0 +1,39 @@
+list advanced (
+    name: Advanced
+
+    entry offline-fallback (
+        label: Offline Fallback
+        icon {
+            imageIconCssClasses: fa-power-off
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry service-worker (
+        label: Service Worker
+        icon {
+            imageIconCssClasses: fa-server
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+)
+

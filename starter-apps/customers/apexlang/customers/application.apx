@@ -1,6 +1,6 @@
 app CUSTOMERS (
     name: Customers
-    version: 26.1.0
+    version: 26.2.0
     group: @starter-apps
     logo {
         type: text
@@ -53,11 +53,8 @@ app CUSTOMERS (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: F69AADE21055FA93F74648144646DA410A26D54BFD1521EAD958D9A330D4A6C9
     }
     sessionManagement {
         rejoinSessions: publicSessions

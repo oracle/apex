@@ -1,0 +1,59 @@
+lov releases (
+    name: RELEASES
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select 
+                   id,
+                   RELEASE_TRAIN||' '||release release,
+                   to_char(release_open_date,'YYYY.MM.DD')||' - '||
+                   to_char(release_target_date,'YYYY.MM.DD') window
+            from SP_RELEASE_TRAINS
+            order by release_target_date
+            ```
+    }
+    columnMapping {
+        return: ID
+        display: RELEASE
+    }
+
+    column ID (
+        show: false
+        layout {
+            sequence: 10
+        }
+        source {
+            dataType: number
+        }
+        advanced {
+            searchable: false
+        }
+    )
+
+    column RELEASE (
+        heading {
+            heading: Release
+        }
+        layout {
+            sequence: 20
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+    column WINDOW (
+        heading {
+            heading: Window
+        }
+        layout {
+            sequence: 30
+        }
+        source {
+            dataType: varchar2
+        }
+    )
+
+)
+

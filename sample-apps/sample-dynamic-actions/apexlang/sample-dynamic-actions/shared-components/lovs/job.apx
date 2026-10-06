@@ -1,0 +1,13 @@
+lov job (
+    name: JOB
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct job d, job r
+            from eba_demo_da_emp
+            order by 1
+            ```
+    }
+)
+

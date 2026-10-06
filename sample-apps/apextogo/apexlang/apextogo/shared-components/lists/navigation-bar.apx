@@ -1,0 +1,47 @@
+list navigation-bar (
+    name: Navigation Bar
+
+    entry cart (
+        label: Cart
+        icon {
+            imageIconCssClasses: &SHOPPING_CART_ICON.
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 8
+                clearCache: 8
+            }
+        }
+        userDefinedAttributes {
+            1: &SHOPPING_CART_ITEMS.
+            2: js-shopping-cart-item
+        }
+    )
+
+    entry install-app (
+        label: Install App
+        icon {
+            imageIconCssClasses: fa-cloud-download
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #action$a-pwa-install
+            }
+        }
+        userDefinedAttributes {
+            2: a-pwaInstall
+        }
+    )
+
+)
+

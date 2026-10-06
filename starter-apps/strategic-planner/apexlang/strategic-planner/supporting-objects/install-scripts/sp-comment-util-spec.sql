@@ -10,9 +10,13 @@ function replace_session_on_display (
 
 procedure add_initiative_comment (
     p_app_user_id     in  number,
+    p_app_user        in  varchar2,
     p_comment         in  varchar2,
     p_private_yn      in  varchar2 default 'N',
     p_initiative_id   in  number,
+    p_app_id          in  number,
+    p_link            in  varchar2,
+    p_nomen_sp        in  varchar2,
     p_image_ref_id    in  number   default null );
 
 procedure update_initiative_comment (
@@ -72,9 +76,13 @@ procedure delete_task_comment (
 
 procedure add_release_comment (
     p_app_user_id     in  number,
-    p_comment         in varchar2,
-    p_release_id      in number,
-    p_private_yn      in varchar2 default 'N',
+    p_app_user        in  varchar2,
+    p_comment         in  varchar2,
+    p_release_id      in  number,
+    p_private_yn      in  varchar2 default 'N',
+    p_app_id          in  number,
+    p_link            in  varchar2,
+    p_nomen_sp        in  varchar2,
     p_image_ref_id    in  number   default null );
 
 procedure update_release_comment (
@@ -89,9 +97,13 @@ procedure delete_release_comment (
 
  procedure add_init_focus_area_comment (
     p_app_user_id         in  number,
+    p_app_user            in  varchar2,
     p_comment             in  varchar2,
     p_init_focus_area_id  in  number,
     p_private_yn          in  varchar2 default 'N',
+    p_app_id              in  number,
+    p_link                in  varchar2,
+    p_nomen_sp            in  varchar2, 
     p_image_ref_id        in  number   default null );
 
 procedure update_init_focus_area_comment (
@@ -101,6 +113,23 @@ procedure update_init_focus_area_comment (
     p_image_ref_id    in  number   default null );
 
 procedure delete_init_focus_area_comment (
+    p_comment_id      in  number );
+
+
+procedure add_activity_comment (
+    p_app_user_id     in  number,
+    p_comment         in  varchar2,
+    p_private_yn      in  varchar2 default 'N',
+    p_activity_id     in  number,
+    p_image_ref_id    in  number   default null );
+
+procedure update_activity_comment (
+    p_comment_id      in  number,
+    p_comment         in  varchar2,
+    p_private_yn      in  varchar2 default 'N',
+    p_image_ref_id    in  number   default null );
+
+procedure delete_activity_comment (
     p_comment_id      in  number );
 
 ----------------------
@@ -113,6 +142,22 @@ procedure upload_image (
 
 procedure display_image (
     p_unique_filename  in  varchar2 );
+
+----------------------
+
+-- used to populate mention lov in comments
+function get_mentions (
+    p_search     in  varchar2,
+    p_scope      in  varchar2, -- PROJECT, TASK, RELEASE, INITIATIVE, FOCUS_AREA
+    p_object_id  in  number
+) return clob;
+
+-- used to populate doc selector in comments
+function get_doc_links (
+    p_search           in  varchar2,
+    p_scope            in  varchar2, -- PROJECT, TASK, RELEASE, INITIATIVE, FOCUS_AREA,
+    p_object_id        in  number
+) return clob;
 
 end sp_comment_util;
 /

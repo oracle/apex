@@ -1,0 +1,13 @@
+lov contacts-with-titles (
+    name: CONTACTS WITH TITLES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CONTACT_NAME || case when contact_title is not null then ' (' || CONTACT_TITLE || ')' else null end as display_value, ID as return_value 
+              from EBA_SALES_CUSTOMER_CONTACTS
+             order by 1
+            ```
+    }
+)
+

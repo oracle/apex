@@ -1,0 +1,170 @@
+list reporting-list (
+    name: Reporting List
+
+    entry add-toolbar-button (
+        label: Add Toolbar Button
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a toolbar button to an Interactive Grid region.
+        }
+    )
+
+    entry basic-reporting (
+        label: Basic Reporting
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a basic read only report.
+        }
+    )
+
+    entry chart-view (
+        label: Chart View
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including a chart view within an Interactive Grid.
+        }
+    )
+
+    entry column-groups (
+        label: Column Groups
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how column groups can be applied to different columns.
+        }
+    )
+
+    entry icon-and-detail-views (
+        label: Icon and Detail Views
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including icon and detail views within an Interactive Grid.
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates linking to an Interactive Grid.
+        }
+    )
+
+    entry multiple-selection (
+        label: Multiple Selection
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to utilize the rows selected to populate a second region.
+        }
+    )
+
+    entry row-header (
+        label: Row Header
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a row header to a report.
+        }
+    )
+
+    entry saved-reports (
+        label: Saved Reports
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrate the different types of saved reports.
+        }
+    )
+
+    entry sequence-row-header (
+        label: Sequence Row Header
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to add a sequence number for each row.
+        }
+    )
+
+    entry single-row-view (
+        label: Single Row View
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates including the single row view in a non-editable Interactive Grid.
+        }
+    )
+
+)
+

@@ -1,0 +1,62 @@
+list data-load-process-train-load-opportunities (
+    name: Data Load Process Train - load opportunities
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 210
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 211
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 212
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry finish (
+        label: Finish
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 213
+            }
+        }
+    )
+
+)
+

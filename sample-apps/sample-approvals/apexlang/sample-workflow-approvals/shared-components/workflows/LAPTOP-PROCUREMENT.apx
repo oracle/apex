@@ -32,7 +32,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 80
             }
             advanced {
-                diagram: {"position":{"x":730,"y":1310},"z":14}
+                diagram: "{\"position\":{\"x\":730,\"y\":1310},\"z\":14}"
             }
             comments {
                 comments: This action task is completed by a conditional database trigger call to eba_demo_appr.laptop_delivered() procedure, which uses apex_approval.complete_task() in an autonomous transaction to do so.
@@ -57,7 +57,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 10
             }
             advanced {
-                diagram: {"position":{"x":560,"y":970},"z":1}
+                diagram: "{\"position\":{\"x\":560,\"y\":970},\"z\":1}"
             }
 
             connection (
@@ -90,7 +90,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 20
             }
             advanced {
-                diagram: {"position":{"x":730,"y":970},"z":2}
+                diagram: "{\"position\":{\"x\":730,\"y\":970},\"z\":2}"
             }
 
             connection (
@@ -128,7 +128,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 30
             }
             advanced {
-                diagram: {"position":{"x":1380,"y":970},"z":3}
+                diagram: "{\"position\":{\"x\":1380,\"y\":970},\"z\":3}"
             }
         )
 
@@ -143,7 +143,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 40
             }
             advanced {
-                diagram: {"position":{"x":1090,"y":1150},"z":6}
+                diagram: "{\"position\":{\"x\":1090,\"y\":1150},\"z\":6}"
             }
 
             connection (
@@ -260,7 +260,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 50
             }
             advanced {
-                diagram: {"position":{"x":1090,"y":970},"z":7}
+                diagram: "{\"position\":{\"x\":1090,\"y\":970},\"z\":7}"
             }
 
             connection (
@@ -309,7 +309,7 @@ workflow LAPTOP_PROCUREMENT (
                 sequence: 70
             }
             advanced {
-                diagram: {"position":{"x":730,"y":1150},"z":13}
+                diagram: "{\"position\":{\"x\":730,\"y\":1150},\"z\":13}"
             }
 
             connection (

@@ -6,13 +6,6 @@ page 120 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region about-this-page (
         name: About This Page
@@ -379,6 +372,7 @@ page 120 (
             }
             listEntries {
                 maxDisplayedEntries: 100
+                allowToExclude: false
             }
             source {
                 databaseColumn: ACTIVATION_DATE
@@ -399,6 +393,7 @@ page 120 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -431,6 +426,7 @@ page 120 (
             }
             listEntries {
                 maxDisplayedEntries: 100
+                allowToExclude: false
             }
             source {
                 databaseColumn: COMMERCIAL_OPS
@@ -453,6 +449,7 @@ page 120 (
                 sortByTopCounts: false
                 showSelectedFirst: true
                 maxDisplayedEntries: 5
+                allowToExclude: false
                 displayFilterInitially: true
             }
             actionsMenu {

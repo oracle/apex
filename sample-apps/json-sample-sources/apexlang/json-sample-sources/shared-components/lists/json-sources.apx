@@ -1,0 +1,59 @@
+list json-sources (
+    name: JSON Sources
+
+    entry json-collection-table (
+        label: JSON Collection Table
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to use JSON collections to manage JSON data.
+        }
+    )
+
+    entry post-processing (
+        label: Post Processing
+        icon {
+            imageIconCssClasses: fa-recycle
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates transforming JSON data after retrieval using local processing logic.
+        }
+    )
+
+    entry table-with-json-column (
+        label: Table with JSON Column
+        icon {
+            imageIconCssClasses: fa-database-file
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates storing and querying JSON data within relational table columns.
+        }
+    )
+
+)
+

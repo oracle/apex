@@ -11,7 +11,6 @@ page 74 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -23,9 +22,11 @@ page 74 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: All &NOMENCLATURE_USERS. identified in the application.
+    }
+    comments {
+        comments: Filterable on their Application Role (App Role), Competencies, Tags, whether or not they have Open Reviews, Groups they are associated with, Country, whether or not they have Current or Future Activities, their email domain and whether or not they have a screen name.
     }
 
     region breadcrumb (
@@ -56,7 +57,7 @@ page 74 (
         name: Faceted Search
         type: facetedSearch
         source {
-            filteredRegion: @users
+            filteredRegion: @people
         }
         layout {
             sequence: 30
@@ -194,6 +195,7 @@ page 74 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: HAS_ACTIVITIES
@@ -213,6 +215,7 @@ page 74 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: HAS_OPEN_REVIEWS
@@ -235,6 +238,7 @@ page 74 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: HAS_PROFILE_PHOTO
@@ -254,6 +258,7 @@ page 74 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: HAS_SCREEN_NAME
@@ -362,194 +367,8 @@ page 74 (
         }
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu about-nomenclature-users (
-                label: About &NOMENCLATURE_USERS.
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 109
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-info
-                }
-            )
-
-            menu add-multiple-nomenclature-users-admin (
-                label: Add Multiple &NOMENCLATURE_USERS. (admin)
-                layout {
-                    sequence: 10
-                }
-                behavior {
-                    target: {
-                        page: 54
-                        clearCache: 54
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users
-                }
-                security {
-                    authorizationScheme: @administration-rights
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 60
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 30
-                }
-            )
-
-            menu manage-groups (
-                label: Manage Groups
-                layout {
-                    sequence: 20
-                }
-                behavior {
-                    target: {
-                        page: 103
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users
-                }
-                security {
-                    authorizationScheme: @contribution-rights
-                }
-            )
-
-            menu nomenclature-users-details (
-                label: &NOMENCLATURE_USERS. Details
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 19
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 70
-                }
-                behavior {
-                    target: {
-                        page: 74
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 74
-                        clearCache: 74
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-        action add-nomenclature-user (
-            position: primaryActions
-            template: button
-            label: Add &NOMENCLATURE_USER.
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 20
-                    clearCache: 20
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-plus
-                hot: true
-            }
-            security {
-                authorizationScheme: @administration-rights
-            }
-        )
-
-    )
-
-    region users (
-        name: "Users "
+    region people (
+        name: People
         type: themeTemplateComponent/contentRow
         source {
             location: localDatabase
@@ -627,6 +446,7 @@ page 74 (
                         select 1 
                         from SP_ACTIVITIES ap 
                         where ap.TEAM_MEMBER_ID = t.id and 
+                              (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
                               ap.end_date >= trunc(sysdate)
                         )),'No') has_activities,
                     --
@@ -644,7 +464,9 @@ page 74 (
                     (select count(*) from SP_INITIATIVE_COMMENTS c where c.AUTHOR_ID = t.id) init_comments,
                     (select count(*) from SP_RELEASE_COMMENTS c where c.AUTHOR_ID = t.id) rel_comments,
                     (select count(*) from SP_TASK_COMMENTS c where c.AUTHOR_ID = t.id) task_comments,
-                    (select count(*) from SP_ACTIVITIES ap where ap.TEAM_MEMBER_ID = t.id and ap.end_date >= trunc(sysdate)) activities,
+                    (select count(*) from SP_ACTIVITIES ap 
+                      where ap.TEAM_MEMBER_ID = t.id and ap.end_date >= trunc(sysdate)
+                        and (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID)) activities,
                     --
                     -- profile photo
                     --
@@ -674,9 +496,9 @@ page 74 (
                     --
                     -- groups
                     --
-                    (select LISTAGG(g.group_name, ', ') within group (order by 1) the_groups
-                    from  SP_GROUP_MEMBERS gm, SP_GROUPS g
-                    where gm.group_id = g.id and gm.team_member_id = t.id) group_membership
+                    (select LISTAGG(g.group_name, ', ' on overflow truncate with count) within group (order by 1) the_groups
+                       from SP_GROUP_MEMBERS gm, SP_GROUPS g
+                      where gm.group_id = g.id and gm.team_member_id = t.id) group_membership
                 --
                 from SP_TEAM_MEMBERS t
                 where nvl(t.IS_CURRENT_YN,'Y') = 'Y'
@@ -1135,6 +957,170 @@ page 74 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu about-users (
+            label: About &NOMENCLATURE_USERS.
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 109
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu add-users (
+            label: Add Multiple &NOMENCLATURE_USERS.
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 54
+                    clearCache: 54
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users
+            }
+            security {
+                authorizationScheme: @administration-rights
+            }
+        )
+
+        menu groups (
+            label: Groups
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 103
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 74
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 80
+            }
+            behavior {
+                target: {
+                    page: 74
+                    clearCache: 74
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 30
+            }
+        )
+
+        menu sep2 (
+            type: separator
+            layout {
+                sequence: 60
+            }
+        )
+
+        menu user-details (
+            label: &NOMENCLATURE_USERS. Details
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 19
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users
+            }
+        )
+
+    )
+
+    button add-person (
+        buttonName: add_person
+        label: Add &NOMENCLATURE_USER.
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20
+                clearCache: 20
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
     button up (
         buttonName: UP
         label: Navigate Up
@@ -1169,17 +1155,17 @@ page 74 (
         when {
             event: apexafterclosedialog
             selectionType: region
-            region: @users
+            region: @people
         }
 
         action native-refresh (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @users
+                region: @faceted-search
             }
             execution {
-                sequence: 10
+                sequence: 20
                 fireOnInit: false
             }
         )
@@ -1188,10 +1174,10 @@ page 74 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @faceted-search
+                region: @people
             }
             execution {
-                sequence: 20
+                sequence: 10
                 fireOnInit: false
             }
         )
@@ -1213,7 +1199,7 @@ page 74 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @users
+                region: @people
             }
             execution {
                 sequence: 10

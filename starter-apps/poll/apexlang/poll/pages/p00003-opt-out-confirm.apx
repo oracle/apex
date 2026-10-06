@@ -8,7 +8,6 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -23,7 +22,7 @@ page 3 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -36,7 +35,7 @@ page 3 (
         name: hide nobody
         type: staticContent
         source {
-            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+            htmlCode: "<style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>"
         }
         layout {
             sequence: 1

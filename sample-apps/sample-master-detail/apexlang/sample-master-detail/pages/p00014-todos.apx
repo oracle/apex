@@ -13,13 +13,10 @@ page 14 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -401,6 +398,9 @@ page 14 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column PROJECT_ID (

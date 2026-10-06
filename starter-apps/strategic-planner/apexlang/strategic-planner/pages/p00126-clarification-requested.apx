@@ -11,9 +11,8 @@ page 126 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    navigation {
+        cursorFocus: firstItemOnPage
     }
     config {
         buildOption: @approvals
@@ -113,6 +112,9 @@ page 126 (
         componentAppearance {
             template: @/comments
             templateOptions: t-Comments--chat
+        }
+        pagination {
+            type: showAll
         }
 
         column ACTIONS (
@@ -377,6 +379,9 @@ page 126 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_TYPE (

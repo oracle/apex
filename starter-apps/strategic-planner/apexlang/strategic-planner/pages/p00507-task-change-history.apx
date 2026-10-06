@@ -7,13 +7,6 @@ page 507 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -250,9 +243,6 @@ page 507 (
                 t-Report--hideNoPagination
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         performance {
             maxRowsToProcess: 100000
         }
@@ -392,6 +382,9 @@ page 507 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

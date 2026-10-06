@@ -1,6 +1,5 @@
 appProcess apply-session-theme-style (
     name: Apply Session Theme Style
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

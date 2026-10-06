@@ -11,7 +11,6 @@ page 21 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -33,9 +32,11 @@ page 21 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: All &NOMENCLATURE_INITIATIVES..
+    }
+    comments {
+        comments: Filterable by &NOMENCLATURE_AREA., Owner, and tags.
     }
 
     region breadcrumb (
@@ -140,6 +141,7 @@ page 21 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             source {
                 databaseColumn: HIDDEN_BY_DEFAULT
@@ -244,136 +246,6 @@ page 21 (
         advanced {
             regionDisplaySelector: true
         }
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu about-nomenclature-initiatives (
-                label: About &NOMENCLATURE_INITIATIVES.
-                layout {
-                    sequence: 30
-                }
-                behavior {
-                    target: {
-                        page: 106
-                    }
-                }
-                appearance {
-                    icon: fa-info
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 40
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 60
-                }
-                behavior {
-                    target: {
-                        page: 21
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 21
-                        clearCache: 21
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-        action add-nomenclature-initiative (
-            position: primaryActions
-            template: button
-            label: Add &NOMENCLATURE_INITIATIVE.
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 170
-                    clearCache: [
-                        170
-                        171
-                        172
-                        173
-                        174
-                        175
-                    ]
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-plus
-                hot: true
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
-        )
-
     )
 
     region nomenclature-initiatives (
@@ -835,10 +707,11 @@ page 21 (
                 }
                 behavior {
                     target: {
-                        page: 160
+                        page: 158
                         items: {
-                            P160_INITIATIVE_ID: &ID.
+                            P158_INITIATIVE_ID: &ID.
                         }
+                        clearCache: 158
                     }
                 }
                 appearance {
@@ -969,6 +842,117 @@ page 21 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu about-initiatives (
+            label: About &NOMENCLATURE_INITIATIVES.
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 106
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu new (
+            type: separator
+            layout {
+                sequence: 20
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 21
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 21
+                    clearCache: 21
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+    )
+
+    button add-initiative (
+        buttonName: add_initiative
+        label: Add &NOMENCLATURE_INITIATIVE.
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 170
+                clearCache: [
+                    170
+                    171
+                    172
+                    173
+                    174
+                    175
+                ]
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
     button up (
         buttonName: UP
         label: Navigate Up
@@ -1007,43 +991,6 @@ page 21 (
         }
     )
 
-    dynamicAction refresh-bc (
-        name: refresh bc
-        execution {
-            sequence: 70
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @menubar
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @faceted-search
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-        action native-refresh-2 (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @nomenclature-initiatives
-            }
-            execution {
-                sequence: 30
-                fireOnInit: false
-            }
-        )
-
-    )
-
     dynamicAction refresh-on-dc (
         name: refresh on DC
         execution {
@@ -1068,31 +1015,6 @@ page 21 (
         )
 
         action native-refresh-2 (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @faceted-search
-            }
-            execution {
-                sequence: 20
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction refresh-on-dialog-close (
-        name: refresh on dialog close
-        execution {
-            sequence: 60
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @breadcrumb
-        }
-
-        action native-refresh (
             action: refresh
             affectedElements {
                 selectionType: region

@@ -1,4 +1,9 @@
 componentSetting (
+    type: dynamicAction
+    name: showAiAssistant
+)
+
+componentSetting (
     type: item
     name: colorPicker
 )
@@ -68,6 +73,9 @@ componentSetting (
 componentSetting (
     type: region
     name: interactiveReport
+    settings {
+        autoResetButton: false
+    }
 )
 
 componentSetting (
@@ -84,3 +92,4 @@ componentSetting (
     type: restDataSource
     name: oracleCloudAppsBoss
 )
+

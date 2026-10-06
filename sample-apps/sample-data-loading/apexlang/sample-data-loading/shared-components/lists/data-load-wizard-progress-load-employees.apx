@@ -1,0 +1,53 @@
+list data-load-wizard-progress-load-employees (
+    name: Data Load Wizard Progress - Load Employees
+
+    entry data-load-results (
+        label: Data Load Results
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-load-source (
+        label: Data Load Source
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry data-table-mapping (
+        label: Data / Table Mapping
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry data-validation (
+        label: Data Validation
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+)
+

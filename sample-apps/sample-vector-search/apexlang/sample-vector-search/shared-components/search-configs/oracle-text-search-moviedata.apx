@@ -1,0 +1,23 @@
+searchConfig oracle_text_search_moviedata (
+    name: ORACLE-TEXT-SEARCH-MOVIEDATA
+    type: text
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+        oracleTextIndexColumn: MOVIEDESCRIPTION
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

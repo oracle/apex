@@ -10,13 +10,6 @@ page 78 (
     dialog {
         chained: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region information (
         name: Information

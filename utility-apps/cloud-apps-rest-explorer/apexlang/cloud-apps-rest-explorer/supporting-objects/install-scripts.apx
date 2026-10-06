@@ -34,42 +34,6 @@ installScript Tables (
     databaseObject (
         owner: #OWNER#
         type: table
-        name: EBA_UTIL_FACAT_SERVER_PREFIXES
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
-        name: EBA_UTIL_FACAT_RELEASES
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
-        name: EBA_UTIL_FACAT_PILLARS
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
-        name: EBA_UTIL_FACAT_ENDPOINTS
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
-        name: EBA_UTIL_FACAT_ENDPOINT_ATTRS
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
-        name: EBA_UTIL_FACAT_CATALOGS
-    )
-
-    databaseObject (
-        owner: #OWNER#
-        type: table
         name: EBA_UTIL_FAREST_CAT_BASEURL
     )
 
@@ -95,22 +59,6 @@ installScript Tables (
         owner: #OWNER#
         type: table
         name: EBA_UTIL_FAREST_ENDPOINT_CHOBJ
-    )
-
-)
-
-installScript Views (
-    execution {
-        sequence: 40
-    }
-    script {
-        contentFile: views.sql
-    }
-
-    databaseObject (
-        owner: #OWNER#
-        type: view
-        name: EBA_UTIL_FACAT_MANIFEST
     )
 
 )

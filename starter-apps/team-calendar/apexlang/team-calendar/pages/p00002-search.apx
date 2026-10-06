@@ -8,11 +8,8 @@ page 2 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -216,7 +213,7 @@ page 2 (
                 sequence: 41
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AL
@@ -236,7 +233,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -256,7 +253,7 @@ page 2 (
                 group: @audit-info
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -279,7 +276,7 @@ page 2 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AH
@@ -296,7 +293,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AD
@@ -314,7 +311,7 @@ page 2 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AK
@@ -334,7 +331,7 @@ page 2 (
                 formatMask: &APP_DATE_FORMAT.
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AE
@@ -351,7 +348,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -370,7 +367,7 @@ page 2 (
                 sequence: 1
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -390,7 +387,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -413,7 +410,7 @@ page 2 (
                 formatMask: &APP_TIME_FORMAT.
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AF
@@ -430,7 +427,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -450,7 +447,7 @@ page 2 (
                 group: @audit-info
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -473,7 +470,7 @@ page 2 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AI
@@ -490,7 +487,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -507,7 +504,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -524,7 +521,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -540,7 +537,7 @@ page 2 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AJ
@@ -557,7 +554,7 @@ page 2 (
                 group: @details
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             columnFilter {
                 type: namedLovWordContains
@@ -689,6 +686,9 @@ page 2 (
         componentAppearance {
             template: @/alerts
             templateOptions: #DEFAULT#
+        }
+        pagination {
+            type: showAll
         }
         componentAdvanced {
             stripHtml: true

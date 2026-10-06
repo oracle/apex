@@ -1,0 +1,18 @@
+lov sales-rep-managers (
+    name: SALES REP MANAGERS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select initcap(rep_first_name) || ' '|| initcap(rep_last_name) display_value, ID return_value 
+            from eba_sales_salesreps
+            where rep_manager_id is null
+            union
+            select initcap(rep_first_name) || ' '|| initcap(rep_last_name) display_value, ID return_value 
+            from eba_sales_salesreps
+            where id in (select distinct rep_manager_id from eba_sales_salesreps)
+            order by 1
+            ```
+    }
+)
+

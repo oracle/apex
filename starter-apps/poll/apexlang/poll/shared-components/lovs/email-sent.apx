@@ -1,0 +1,26 @@
+lov email-sent (
+    name: EMAIL_SENT
+    source {
+        location: staticValues
+    }
+
+    entry opted-out (
+        sequence: 2
+        display: Opted Out
+        return: OPTED_OUT
+    )
+
+    entry previously-sent (
+        sequence: 3
+        display: Previously Sent
+        return: PREVIOUSLY_SENT
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: YES
+    )
+
+)
+

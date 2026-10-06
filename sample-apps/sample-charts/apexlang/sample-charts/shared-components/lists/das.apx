@@ -1,0 +1,131 @@
+list das (
+    name: DAs
+
+    entry area-chart-line-types-page (
+        label: Area Chart (Line Types) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart with dynamic actions to change the type of line used to render the chart elements
+        }
+    )
+
+    entry bar-chart-dual-y-axis-with-custom-labels-page (
+        label: Bar Chart (Dual Y Axis with custom Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: "This example demonstrates a Bar chart with dynamic actions to change the orientation of the chart, or render the chart elements as stacked or unstacked "
+        }
+    )
+
+    entry combination-chart-data-label-positions-page (
+        label: Combination Chart (Data Label Positions) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Combination chart with dynamic actions to change the type of line used to represent a series
+        }
+    )
+
+    entry line-chart-data-labels-line-styles-page (
+        label: Line Chart (Data Labels & Line Styles) -  Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart with dynamic actions to change the chart type and orientation
+        }
+    )
+
+    entry line-chart-show-hide-labels-via-dynamic-action-page (
+        label: Line Chart ( Show/Hide Labels via Dynamic Action ) -  Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart with dynamic actions to show/hide the data labels on the chart
+        }
+    )
+
+    entry pie-chart-page (
+        label: Pie Chart - Page 4
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pie chart with dynamic actions to increase or decrease the Legend Size
+        }
+    )
+
+    entry range-page (
+        label: Range - Page 23
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Range chart with dynamic actions to change the chart orientation
+        }
+    )
+
+)
+

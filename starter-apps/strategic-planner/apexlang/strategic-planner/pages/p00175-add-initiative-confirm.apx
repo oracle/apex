@@ -11,13 +11,8 @@ page 175 (
             ui-dialog--stretch
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -65,7 +60,7 @@ page 175 (
                      where collection_name = 'INITIATIVE_FOCUS_AREAS';
                 
                     l_clob := 'Name: <strong>'|| apex_escape.html(:P170_INITIATIVE) ||'</strong><br/>'||
-                              'Default Completeness Scale: '||l_status_scale||'<br/>'||
+                              'Default Completeness Scale: '||apex_escape.html(l_status_scale)||'<br/>'||
                               'Default Tasks: '||l_default_tasks||'<br/>'||
                               'Focus Areas: '||l_focus_areas;
                 

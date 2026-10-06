@@ -1,0 +1,61 @@
+plugin retrieveDataAdvanced (
+    name: Retrieve Data - Advanced
+    staticId: RETRIEVE_DATA_ADVANCED
+    type: genAITool
+    onDemand {
+        parameters: definedByAiTool
+    }
+    source {
+        plsqlCode:
+            ```plsql
+            procedure exec (
+                p_plugin    in              apex_plugin.t_plugin,
+                p_ai_tool   in              apex_plugin.t_ai_tool,
+                p_param     in              apex_plugin.t_ai_tool_exec_param,
+                p_result    in out nocopy   apex_plugin.t_ai_tool_exec_result )
+            as
+                c_sql_query     constant    varchar2(32767) :=  p_ai_tool.attributes.get_varchar2( 'sql_query' );
+            
+                l_parameters                apex_exec.t_parameters  := apex_exec.c_empty_parameters;
+            
+                l_clob                      clob := empty_clob();
+            
+                l_context                   apex_exec.t_context;
+                l_export                    apex_data_export.t_export;
+            begin
+                l_parameters :=
+                    apex_plugin_util.get_exec_parameters (
+                        p_ai_tool_exec_param => p_param );
+            
+                l_context :=
+                    apex_exec.open_query_context (
+                        p_location          => apex_exec.c_location_local_db,
+                        p_sql_query         => c_sql_query,
+                        p_sql_parameters    => l_parameters,
+                        p_total_row_count   => true );
+            
+                l_export :=
+                    apex_data_export.export (
+                        p_context   => l_context,
+                        p_format    => apex_data_export.c_format_json,
+                        p_as_clob   => true );
+            
+                l_clob :=
+                    l_clob || chr( 10 ) ||
+                    'Total records: ' || apex_exec.get_total_row_count( l_context ) || chr( 10 ) ||
+                    l_export.content_clob;
+            
+                apex_exec.close( l_context );
+            
+                p_result.result := l_clob;
+            end exec;
+            ```
+    }
+    callbacks {
+        executionFunctionProcedureName: exec
+    }
+    information {
+        version: 1.0
+    }
+)
+

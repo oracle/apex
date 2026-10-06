@@ -7,13 +7,8 @@ page 14010 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -40,7 +35,7 @@ page 14010 (
     )
 
     region delete-sample-data (
-        name: Delete Sample Data
+        name: Sample Data
         type: classicReport
         source {
             location: localDatabase
@@ -51,34 +46,34 @@ page 14010 (
                   from 
                 (
                 select 1 ob, :NOMENCLATURE_AREAS label, count(*) cnt,
-                       listagg(area,', ') within group (order by id) details
+                       listagg(area,', ' on overflow truncate with count) within group (order by id) details
                   from SP_AREAS
-                 where id in (1,2)
+                 where id in (1,2,3)
                 union all
                 select 2 ob, :NOMENCLATURE_INITIATIVES label, count(*) cnt,
-                       listagg(initiative,', ') within group (order by id) details
+                       listagg(initiative,', ' on overflow truncate with count) within group (order by id) details
                   from SP_INITIATIVES
-                 where id in (1,2,3)
-                union all
-                select 3 ob, :NOMENCLATURE_PROJECTS label, count(*) cnt,
-                       listagg(project,', ') within group (order by id) details
-                  from SP_PROJECTS
                  where id in (1,2,3,4,5,6)
                 union all
+                select 8 ob, :NOMENCLATURE_PROJECTS label, count(*) cnt,
+                       listagg(project,', ' on overflow truncate with count) within group (order by id) details
+                  from SP_PROJECTS
+                 where id in (1001,1002,1003,1004,1005,1006,1007,1008,1009,1010,6001,6002,6003,6004,6005,6006,6007,6008,6009,6010,8001,8002,8003,8004,8005,8006,8007,8008,8009,8010,8201,8202,8203,8204,8205,8206,8501,8502,8503,8504,8505,8506,8507,8508,8509,8510,8511,8512)
+                union all
                 select 4 ob, 'Activities' label, count(*) cnt,
-                       listagg(comments,', ') within group (order by id) details
+                       listagg(comments,', ' on overflow truncate with count) within group (order by id) details
                   from sp_activities
-                 where id in (1,2,3)
+                 where id in (1)
                 union all
                 select 5 ob, 'Releases' label, count(*) cnt,
-                       listagg(release_train||' ' ||release,', ') within group (order by id) details
+                       listagg(release_train||' ' ||release,', ' on overflow truncate with count) within group (order by id) details
                   from sp_release_trains
-                 where id in (1,2)
+                 where id in (1,2,3,7,8)
                 union all
                 select 7 ob, :NOMENCLATURE_USERS label, count(*) cnt,
-                       listagg(first_name||' '||last_name,', ') within group (order by id) details
+                       listagg(first_name||' '||last_name,', ' on overflow truncate with count) within group (order by id) details
                   from SP_TEAM_MEMBERS
-                 where id in (1,2,3)
+                 where id >= 1 and id <= 21
                 )
                 where cnt > 0
                 order by ob
@@ -112,6 +107,9 @@ page 14010 (
                 t-Report--rowHighlightOff
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -242,76 +240,119 @@ page 14010 (
         source {
             plsqlCode:
                 ```plsql
-                delete from SP_PROJ_INTERACTIONS_LOG 
-                 where project_id in (1,2,3,4,5,6);
+                declare
+                    l_project_ids      varchar2(4000);
+                    l_release_ids      varchar2(4000);
+                    l_initiative_ids   varchar2(4000);
+                    l_area_ids         varchar2(4000);
+                    l_team_member_ids  varchar2(4000);
+                begin
+                
+                l_project_ids     := ':1001:1002:1003:1004:1005:1006:1007:1008:1009:1010:6001:6002:6003:6004:6005:6006:6007:6008:6009:6010:8001:8002:8003:8004:8005:8006:8007:8008:8009:8010:8201:8202:8203:8204:8205:8206:8501:8502:8503:8504:8505:8506:8507:8508:8509:8510:8511:8512:';
+                l_release_ids     := ':1:2:3:7:8:';
+                l_initiative_ids  := ':1:2:3:4:5:6:';
+                l_area_ids        := ':1:2:3:';
+                l_team_member_ids := ':1:2:3:4:5:6:7:8:9:10:11:12:13:14:15:16:17:18:19:20:21:';
                 
                 delete from sp_activities
-                 where project_id in (1,2,3,4,5,6);
+                 where id = 1;
+                delete from sp_activities
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_comments
-                 where project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_documents
-                 where project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_tasks
-                 where project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_contributors
-                 where project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_links
-                 where project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_related
-                 where project_id in (1,2,3,4,5,6)
-                    or related_project_id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0
+                    or instr(l_project_ids,':'||related_project_id||':') > 0;
+                
+                delete from sp_project_approvals
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from sp_project_history
-                 where id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||project_id||':') > 0;
+                
+                delete from SP_PROJ_INTERACTIONS_LOG 
+                 where instr(l_project_ids,':'||project_id||':') > 0;
                 
                 delete from SP_PROJECTS
-                 where id in (1,2,3,4,5,6);
+                 where instr(l_project_ids,':'||id||':') > 0;
+                
                 
                 delete from sp_release_comments
-                 where release_id in (1,2);
+                 where instr(l_release_ids,':'||release_id||':') > 0;
                 
                 delete from sp_release_documents
-                 where release_id in (1,2);
+                 where instr(l_release_ids,':'||release_id||':') > 0;
                 
                 delete from sp_release_links
-                 where release_id in (1,2);
+                 where instr(l_release_ids,':'||release_id||':') > 0;
                 
                 delete from sp_release_milestones
-                 where release_id in (1,2);
+                 where instr(l_release_ids,':'||release_id||':') > 0;
                 
                 delete from sp_release_history
-                 where release_id in (1,2);
+                 where instr(l_release_ids,':'||release_id||':') > 0;
                 
                 delete from sp_release_trains
-                 where id in (1,2);
+                 where instr(l_release_ids,':'||id||':') > 0;
+                
                 
                 delete from sp_initiative_links
-                 where initiative_id in (1,2,3);
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
                 
                 delete from sp_initiative_comments
-                 where initiative_id in (1,2,3);
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
                 
                 delete from sp_initiative_documents
-                 where initiative_id in (1,2,3);
-                 
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
+                
+                delete from sp_initiative_default_tasks
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
+                
+                delete from sp_initiative_focus_areas
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
+                
+                delete from sp_initiative_approval_chain
+                 where initiative_approval_id in (select id from sp_initiative_approvals
+                                                   where instr(l_initiative_ids,':'||id||':'));
+                
+                delete from sp_initiative_approvals
+                 where instr(l_initiative_ids,':'||initiative_id||':') > 0;
+                
                 delete from SP_INITIATIVES
-                 where id in (1,2,3);
+                 where instr(l_initiative_ids,':'||id||':') > 0;
+                
                 
                 delete from SP_AREAS
-                 where id in (1,2);
+                 where instr(l_area_ids,':'||id||':') > 0;
+                
                 
                 delete from SP_TEAM_MEMBERS
-                 where id in (1,2,3);
+                 where instr(l_team_member_ids,':'||id||':') > 0;
                 
-                sp_util.add_app_log(
+                
+                delete from sp_approval_types
+                 where id = 1;
+                
+                
+                sp_util.add_app_log (
                     p_activity => 'Sample Data Deleted', 
                     p_details  => null );
+                
+                end;
                 ```
         }
         execution {
@@ -355,7 +396,8 @@ page 14010 (
                 
                 for c1 in (select count(*) c 
                              from sp_activities ap, sp_projects p
-                            where ap.project_id = p.id(+) and
+                            where (nvl(ap.private_yn,'N') = 'N' or lower(ap.created_by) = lower(:APP_USER)) and
+                                  ap.project_id = p.id(+) and
                                   p.DUPLICATE_OF_PROJECT_ID is null and
                                   (p.ARCHIVED_YN = 'N' or p.archived_yn is null) -- need the is null to accomodate the outer join
                 ) loop
@@ -368,10 +410,6 @@ page 14010 (
                 
                 for c1 in (select count(*) c from SP_TEAM_MEMBERS) loop
                     :P1_PEOPLE := to_char(c1.c,'FM999G999G990'); 
-                end loop;
-                
-                for c1 in (select count(*) c from SP_GROUPS) loop
-                    :P1_GROUPS := to_char(c1.c,'FM999G999G990'); 
                 end loop;
                 ```
         }

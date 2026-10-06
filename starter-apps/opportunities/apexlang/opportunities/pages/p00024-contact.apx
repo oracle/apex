@@ -7,12 +7,7 @@ page 24 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: Manage a contact's details, links, attachments, and/or comments. You can also validate the contact.
@@ -112,6 +107,9 @@ page 24 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found

@@ -1,0 +1,110 @@
+list master-detail-pages (
+    name: Master Detail Pages
+
+    entry drill-down (
+        label: Drill Down
+        icon {
+            imageIconCssClasses: fa-clone
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                48
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 48
+            }
+        }
+        userDefinedAttributes {
+            1: Consists of a report page that drills down to a page where the selected master is standard form items, and the detail tables use editable Interactive Grids.
+        }
+    )
+
+    entry report-and-marquee (
+        label: Report and Marquee
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                5
+                11
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Consists of a report page that drills down to a marquee page. On the marquee page each of the detail tables are shown using a classic report.
+        }
+    )
+
+    entry side-by-side (
+        label: Side by Side
+        icon {
+            imageIconCssClasses: fa-layout-header-sidebar-left
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail utilizing side by side layout and report regions with modal edit windows.
+        }
+    )
+
+    entry stacked (
+        label: Stacked
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail utilizing editable Interactive Grids.
+        }
+    )
+
+    entry stacked-with-sub-detail (
+        label: Stacked with Sub Detail
+        icon {
+            imageIconCssClasses: fa-layers
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: A single page master-detail-subdetail utilizing editable Interactive Grids.
+        }
+    )
+
+)
+

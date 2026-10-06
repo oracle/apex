@@ -1,0 +1,26 @@
+lov issue-types (
+    name: ISSUE TYPES
+    source {
+        location: staticValues
+    }
+
+    entry bug (
+        sequence: 1
+        display: Bug
+        return: BUG
+    )
+
+    entry enhancement-request (
+        sequence: 2
+        display: Enhancement Request
+        return: ER
+    )
+
+    entry other (
+        sequence: 3
+        display: Other
+        return: OTHER
+    )
+
+)
+

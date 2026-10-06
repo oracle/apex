@@ -1,0 +1,13 @@
+lov p2-industry-id-lookup (
+    name: P2_INDUSTRY_ID LOOKUP
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select INDUSTRY_NAME display_value, ID return_value 
+            from EBA_CUST_INDUSTRIES
+            order by 1
+            ```
+    }
+)
+

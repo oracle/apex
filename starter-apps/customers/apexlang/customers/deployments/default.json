@@ -1,5 +1,9 @@
 {
   "app" : {
-    "id" : 7170
+    "id" : 7170,
+    "sessionStateProtection" : {
+      "allowUrlsCreatedAfter" : "1999-08-04T00:00:00",
+      "checksumSalt" : "F69AADE21055FA93F74648144646DA410A26D54BFD1521EAD958D9A330D4A6C9"
+    }
   }
 }

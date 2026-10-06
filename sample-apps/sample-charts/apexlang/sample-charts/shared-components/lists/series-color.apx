@@ -1,0 +1,41 @@
+list series-color (
+    name: Series Color
+
+    entry bar-chart-series-colors-page (
+        label: Bar Chart (Series Colors) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the various options available to define a color on a chart series
+        }
+    )
+
+    entry pie-chart-series-colors-page (
+        label: Pie Chart (Series Colors) - Page 4
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the various options available to define a color on a chart series
+        }
+    )
+
+)
+

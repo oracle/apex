@@ -7,7 +7,6 @@ page 4 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -35,7 +34,7 @@ page 4 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -48,7 +47,7 @@ page 4 (
             htmlCode:
                 ```html
                 <h2>About this Application</h2>
-                <p>Learn how to create Oracle Application Express applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links from interactive reports, classic reports, forms, and dynamically created HTML content.</p>
+                <p>Learn how to create Oracle APEX applications that include file upload and download. Upload files using dialogs as well as dedicated pages. See how to download files stored in Oracle database BLOB columns within database tables. Specifically see how to produce file download links from interactive reports, classic reports, forms, and dynamically created HTML content.</p>
                 ```
         }
         layout {
@@ -97,6 +96,9 @@ page 4 (
                 t-AVPList--rightAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column APP_VERSION (
@@ -212,7 +214,7 @@ page 4 (
             htmlCode:
                 ```html
                 <H2>Getting Started</h2>
-                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the APEX Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
                 <p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137">OTN Forum</a>.</p>
                 ```
         }

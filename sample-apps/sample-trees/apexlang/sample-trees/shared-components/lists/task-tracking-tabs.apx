@@ -1,0 +1,37 @@
+list task-tracking-tabs (
+    name: Task_Tracking_Tabs
+
+    entry project-dashboard (
+        label: Project Dashboard
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry task-tree (
+        label: Task Tree
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+)
+

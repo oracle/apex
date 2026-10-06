@@ -6,13 +6,8 @@ page 3001 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region avatar (
@@ -147,9 +142,6 @@ page 3001 (
                 t-Report--staticRowColors
                 t-Report--rowHighlightOff
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column AVATAR (
@@ -454,7 +446,7 @@ page 3001 (
                 columnAlignment: center
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -474,7 +466,7 @@ page 3001 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -491,7 +483,7 @@ page 3001 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -507,7 +499,7 @@ page 3001 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -523,7 +515,7 @@ page 3001 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N

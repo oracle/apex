@@ -8,7 +8,6 @@ page 145 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -26,7 +25,7 @@ page 145 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -79,6 +78,9 @@ page 145 (
                 t-AVPList--leftAligned
             ]
             cssClasses: t-Report--cleanBorders
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -331,6 +333,9 @@ page 145 (
             ]
             cssClasses: t-Report--cleanBorders
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

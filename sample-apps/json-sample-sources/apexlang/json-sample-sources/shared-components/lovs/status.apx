@@ -1,0 +1,20 @@
+lov status (
+    name: STATUS
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_support_ticket
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct status
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: STATUS
+        display: STATUS
+    }
+)
+

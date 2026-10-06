@@ -8,7 +8,6 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -44,6 +43,7 @@ page 1 (
                 flex-wrap: wrap;
                 gap: 4px;
                 justify-content: flex-start;
+                flex-wrap: nowrap;
             }
             
             .resize-region {
@@ -54,10 +54,6 @@ page 1 (
             .a-CardView-iconWrap,
             .a-CardView-badge { align-self: flex-start; }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments: home
@@ -87,93 +83,6 @@ page 1 (
         }
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 40
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 150
-                }
-                behavior {
-                    target: {
-                        page: 1
-                        clearCache: 1
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-        )
-
-        action my-favorites (
-            position: primaryActions
-            template: button
-            label: My Favorites
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 23
-                    items: {
-                        P23_FAVORITE: Yes
-                    }
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: icon
-                icon: fa-heart
-                cssClasses: t-Button--noUI
-            }
-        )
-
-        action view-nomenclature-projects (
-            position: primaryActions
-            template: button
-            label: View &NOMENCLATURE_PROJECTS.
-            layout {
-                sequence: 20
-            }
-            behavior {
-                target: {
-                    page: 23
-                    action: resetPagination
-                }
-            }
-            appearance {
-                hot: true
-            }
-        )
-
-    )
-
     region my-activities (
         name: My Activities
         type: themeTemplateComponent/contentRow
@@ -188,12 +97,13 @@ page 1 (
                        -- activity core information
                        --
                        at.activity_type,
-                       decode(greatest(length(ap.comments),80),80,ap.comments,substr(ap.comments,1,80)||'...') comments,
+                       ap.activity comments,
                        ap.url,
                        apex_util.get_since(ap.updated) last_updated,
                        ap.created,
                        ap.tags,
                        ap.updated,
+                       decode(ap.private_yn,'Y','Private',null) private_label,
                        --
                        -- activity date fields
                        --
@@ -201,13 +111,9 @@ page 1 (
                        ap.end_date,
                        to_char(start_date,'YYYY.MM') start_month,
                        to_char(end_date,'YYYY.MM') end_month,
-                       to_char(ap.start_date,'DD-MON-YYYY')||' to '||to_char(ap.end_date,'DD-MON-YYYY') TIMELINE,
+                       to_char(ap.start_date,'fmDay, DD-Mon-YYYY')||' to '||to_char(ap.end_date,'fmDay, DD-Mon-YYYY') TIMELINE,
                        ap.end_date - ap.start_date days,
                        round(ap.end_date - sysdate) days_remaining,
-                       --
-                       -- team member info
-                       --
-                       tm.first_name||' '||tm.last_name name,
                        --
                        -- optional initiative
                        --
@@ -274,24 +180,10 @@ page 1 (
                            ))) timeframe
                            
                 from sp_activities ap,
-                     sp_activity_types at,
-                     sp_team_members tm
+                     sp_activity_types at
                 where 
-                      --
-                      -- activity to activity type join
-                      --
                       ap.activity_type_id = at.id and
-                      --
-                      -- show only current logged in user
-                      --
-                      tm.id = (select id from sp_team_members where email = lower(:APP_USER)) and
-                      --
-                      -- join team member detail
-                      --
-                      ap.team_member_id = tm.id and
-                      --
-                      --
-                      --
+                      ap.team_member_id = :APP_USER_ID and
                       trunc(sysdate) <= trunc(ap.end_date)
                 ```
         }
@@ -315,6 +207,10 @@ page 1 (
         accessibility {
             landmarkType: region
         }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:HOME_PAGE_DISPLAY,':ACT:') > 0
+        }
         security {
             authorizationScheme: @contribution-rights
         }
@@ -332,7 +228,7 @@ page 1 (
                 {if PROJECT/}<strong>&NOMENCLATURE_PROJECT.</strong>: &PROJECT.<br>{endif/}
                 {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE.</strong>: &INITIATIVE.<br>{endif/}
                 ```
-            miscellaneous: &LAST_UPDATED.
+            miscellaneous: "{if PRIVATE_LABEL/}<strong class=\"u-danger-text\">&PRIVATE_LABEL.</strong><br/>{endif/}&LAST_UPDATED."
             displayAvatar: true
             displayBadge: true
         }
@@ -495,12 +391,12 @@ page 1 (
             }
         )
 
-        column NAME (
+        column PRIVATE_LABEL (
             layout {
-                sequence: 250
+                sequence: 460
             }
             source {
-                databaseColumn: NAME
+                databaseColumn: PRIVATE_LABEL
                 dataType: varchar2
             }
         )
@@ -605,25 +501,25 @@ page 1 (
             }
         )
 
-        action action (
+        action action-5 (
             position: titleLink
             layout {
                 sequence: 10
             }
             behavior {
                 target: {
-                    page: 140
+                    page: 129
                     items: {
-                        P140_ID: &ID.
+                        P129_ACTIVITY_ID: &ID.
                     }
-                    clearCache: 140
+                    clearCache: 129
                     action: resetPagination
                     anchor: ACTIVITY
                 }
             }
         )
 
-        action actions (
+        action actions-6 (
             position: primaryActions
             template: menu
             label: Actions
@@ -745,6 +641,612 @@ page 1 (
 
     )
 
+    region my-favorite-nomenclature-projects (
+        name: My Favorite &NOMENCLATURE_PROJECTS.
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       --
+                       -- project name
+                       --
+                       --decode(greatest(length(p.project),80),80,p.PROJECT,substr(p.project,1,80)||'...') project,
+                       p.project,
+                       --
+                       -- project owner
+                       --
+                       nvl(decode(t.first_name,null,t.email,t.first_name||' '||t.last_name),'No Owner') the_owner,
+                       p.owner_id,
+                       p.TARGET_COMPLETE,
+                       --
+                       -- percent complete
+                       --
+                       p.PCT_COMPLETE||'%' status,
+                       'fa-pie-chart-'||p.PCT_COMPLETE as icon,
+                       --
+                       -- priority
+                       --
+                       nvl((select 'P'||priority from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized') priority,
+                       --
+                       -- Target
+                       --
+                       case when p.release_id is not null
+                            then (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id)
+                            when p.target_complete is not null
+                            then to_char(p.target_complete,'Mon YYYY')
+                            else 'No Target'
+                            end target,
+                       case when p.target_complete < sysdate
+                            then 'danger'
+                            when p.target_complete is null
+                            then 'warning'
+                            when p.PCT_COMPLETE >= 90
+                            then 'success' 
+                            else 'info' end target_badge_class,
+                       --
+                       -- Project favorites
+                       --
+                       'Yes' favorite,
+                       'fa-heart u-danger-text' favorite_icon,
+                       --
+                       -- project fields
+                       --
+                       lower(p.TAGS) tags,
+                       p.CREATED,
+                       apex_util.get_since(p.UPDATED) updated_since,
+                       p.updated,
+                       p.PROJECT_SIZE,
+                       p.project_url_name,
+                       p.friendly_identifier friendly_identifier1,
+                       --
+                       -- activity
+                       --
+                       (select '<span class="fa fa-badge-check" aria-hidden="true" title="Active Activity"></span> ' from dual where exists (
+                           select 1 
+                           from SP_ACTIVITIES ap 
+                           where (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID)
+                             and ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))) active_activity_icon
+                  from SP_PROJECTS p, 
+                       SP_INITIATIVES i,
+                       sp_team_members t,
+                       sp_favorites f
+                where 
+                      p.initiative_id = i.id and
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.archived_yn = 'N' and
+                      p.owner_id = t.id and
+                      f.project_id = p.id and 
+                      f.team_member_id = :APP_USER_ID and
+                      --
+                      p.PCT_COMPLETE < 100
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: updated desc
+        }
+        layout {
+            sequence: 61
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--scrollBody
+            ]
+            icon: " "
+        }
+        accessibility {
+            landmarkType: region
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:HOME_PAGE_DISPLAY,':FAV:') > 0
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            title: <div class="u-lineclamp-1">&PROJECT.</div>
+            description:
+                ```html
+                &ACTIVE_ACTIVITY_ICON!RAW. &PRIORITY. - &STATUS. - &PROJECT_SIZE.  
+                
+                ```
+            miscellaneous: &UPDATED_SINCE.
+            displayAvatar: true
+            displayBadge: true
+        }
+        plugin-avatar {
+            icon: &ICON.
+            description: &STATUS. Complete
+            shape: noShape
+            size: small
+        }
+        plugin-badge {
+            label: Target
+            value: TARGET
+            state: TARGET_BADGE_CLASS
+        }
+        plugin-appearance {
+            applyThemeColors: false
+        }
+        pagination {
+            entitiesPerPage: 5
+        }
+        messages {
+            whenNoDataFound: You have no &NOMENCLATURE_PROJECT. Associations.
+        }
+
+        column ACTIVE_ACTIVITY_ICON (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: ACTIVE_ACTIVITY_ICON
+                dataType: varchar2
+            }
+        )
+
+        column CREATED (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: CREATED
+                dataType: date
+            }
+        )
+
+        column FAVORITE (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: FAVORITE
+                dataType: varchar2
+            }
+        )
+
+        column FAVORITE_ICON (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: FAVORITE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER1 (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: FRIENDLY_IDENTIFIER1
+                dataType: varchar2
+            }
+        )
+
+        column ICON (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: ID
+                dataType: number
+            }
+        )
+
+        column OWNER_ID (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: OWNER_ID
+                dataType: number
+            }
+        )
+
+        column PRIORITY (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: PRIORITY
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: PROJECT
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_SIZE (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: PROJECT_SIZE
+                dataType: varchar2
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: PROJECT_URL_NAME
+                dataType: varchar2
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column TAGS (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: TAGS
+                dataType: varchar2
+            }
+        )
+
+        column TARGET (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: TARGET
+                dataType: varchar2
+            }
+        )
+
+        column TARGET_BADGE_CLASS (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: TARGET_BADGE_CLASS
+                dataType: varchar2
+            }
+        )
+
+        column TARGET_COMPLETE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: TARGET_COMPLETE
+                dataType: date
+            }
+        )
+
+        column THE_OWNER (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: THE_OWNER
+                dataType: varchar2
+            }
+        )
+
+        column UPDATED (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: UPDATED
+                dataType: date
+            }
+        )
+
+        column UPDATED_SINCE (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: UPDATED_SINCE
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 3
+                    items: {
+                        FI: &FRIENDLY_IDENTIFIER1.
+                        PN: &PROJECT_URL_NAME.
+                    }
+                    clearCache: 3
+                    action: resetPagination
+                }
+            }
+        )
+
+        action actions (
+            position: primaryActions
+            template: menu
+            label: Actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu activity-quick-look (
+                label: Activity Quick Look
+                layout {
+                    sequence: 60
+                }
+                behavior {
+                    target: {
+                        page: 130
+                        items: {
+                            P130_PROJECT_ID: &ID.
+                        }
+                        clearCache: 130
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-badge-check
+                }
+                serverSideCondition {
+                    type: itemIsNotNull
+                    item: ACTIVE_ACTIVITY_ICON
+                }
+                config {
+                    buildOption: @activity-planning
+                }
+            )
+
+            menu add-activity (
+                label: Add Activity
+                layout {
+                    sequence: 70
+                }
+                behavior {
+                    target: {
+                        page: 101
+                        items: {
+                            P101_PROJECT_ID: &ID.
+                        }
+                        clearCache: 101
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-plus
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+                config {
+                    buildOption: @activity-planning
+                }
+            )
+
+            menu add-comment (
+                label: Add Comment
+                layout {
+                    sequence: 90
+                }
+                behavior {
+                    target: {
+                        page: 100
+                        items: {
+                            P100_PROJECT_ID: &ID.
+                        }
+                        clearCache: 100
+                    }
+                }
+                appearance {
+                    icon: fa-comment-o
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu ai-summaries (
+                label: AI Summaries
+                layout {
+                    sequence: 50
+                }
+                behavior {
+                    target: {
+                        page: 26
+                        items: {
+                            P26_PROJECT_ID: &ID.
+                        }
+                        clearCache: 26
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-ai-sparkle-generate-text
+                }
+                config {
+                    buildOption: @ai-project-summaries-view
+                }
+            )
+
+            menu change-history (
+                label: Change History
+                layout {
+                    sequence: 100
+                }
+                behavior {
+                    target: {
+                        page: 124
+                        items: {
+                            P124_ID: &ID.
+                        }
+                        clearCache: 124
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-clock-o
+                }
+            )
+
+            menu comp_menu_entry (
+                type: separator
+                layout {
+                    sequence: 20
+                }
+            )
+
+            menu edit (
+                label: "Edit "
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 24
+                        items: {
+                            P24_ID: &ID.
+                        }
+                        clearCache: 24
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-edit
+                }
+                security {
+                    authorizationScheme: @contribution-rights
+                }
+            )
+
+            menu nomenclature-project-details (
+                label: &NOMENCLATURE_PROJECT. Details
+                layout {
+                    sequence: 30
+                }
+                behavior {
+                    target: {
+                        page: 3
+                        items: {
+                            FI: &FRIENDLY_IDENTIFIER1.
+                            PN: &PROJECT_URL_NAME.
+                        }
+                        clearCache: 3
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu nomenclature-project-quick-look (
+                label: &NOMENCLATURE_PROJECT. Quick Look
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    target: {
+                        page: 36
+                        items: {
+                            P36_ID: &ID.
+                        }
+                        clearCache: 36
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-package
+                }
+            )
+
+            menu owner-quick-look (
+                label: Owner Quick Look
+                layout {
+                    sequence: 80
+                }
+                behavior {
+                    target: {
+                        page: 73
+                        items: {
+                            P73_TEAM_MEMBER_ID: &OWNER_ID.
+                        }
+                        clearCache: 73
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-user
+                }
+            )
+
+        )
+
+        action favorite (
+            position: primaryActions
+            template: button
+            label: Favorite
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #action$favoriteProject?id=&ID.
+            }
+            appearance {
+                displayType: icon
+                icon: &FAVORITE_ICON.
+                cssClasses: t-Button--noUI
+            }
+        )
+
+    )
+
     region my-initiatives (
         name: My Initiatives
         title: My &NOMENCLATURE_INITIATIVES.
@@ -858,6 +1360,10 @@ page 1 (
         }
         accessibility {
             landmarkType: region
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:HOME_PAGE_DISPLAY,':INIT:') > 0
         }
         componentAppearance {
             display: report
@@ -994,7 +1500,7 @@ page 1 (
             }
         )
 
-        action action (
+        action action-4 (
             position: titleLink
             layout {
                 sequence: 10
@@ -1011,7 +1517,7 @@ page 1 (
             }
         )
 
-        action actions (
+        action actions-5 (
             position: primaryActions
             template: menu
             label: Actions
@@ -1054,11 +1560,11 @@ page 1 (
                 }
                 behavior {
                     target: {
-                        page: 160
+                        page: 158
                         items: {
-                            P160_INITIATIVE_ID: &ID.
+                            P158_INITIATIVE_ID: &ID.
                         }
-                        clearCache: 160
+                        clearCache: 158
                         action: resetPagination
                     }
                 }
@@ -1138,11 +1644,11 @@ page 1 (
             }
             behavior {
                 target: {
-                    page: 160
+                    page: 158
                     items: {
-                        P160_INITIATIVE_ID: &ID.
+                        P158_INITIATIVE_ID: &ID.
                     }
-                    clearCache: 160
+                    clearCache: 158
                     action: resetPagination
                 }
             }
@@ -1190,10 +1696,16 @@ page 1 (
                        case when p.release_id is not null
                             then (select t.release_train||' '||t.release from SP_RELEASE_TRAINS t where t.id = p.release_id)
                             when p.target_complete is not null
-                            then to_char(p.target_complete,'Mon-RR')
+                            then to_char(p.target_complete,'Mon YYYY')
                             else 'No Target'
                             end target,
-                       case when p.release_id is not null then 'success' else 'info' end target_badge_class,
+                       case when p.target_complete < sysdate
+                            then 'danger'
+                            when p.target_complete is null
+                            then 'warning'
+                            when p.PCT_COMPLETE >= 90
+                            then 'success' 
+                            else 'info' end target_badge_class,
                        --
                        -- Project favorites
                        --
@@ -1215,7 +1727,8 @@ page 1 (
                        (select '<span class="fa fa-badge-check" aria-hidden="true" title="Active Activity"></span> ' from dual where exists (
                            select 1 
                            from SP_ACTIVITIES ap 
-                           where ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))) active_activity_icon
+                           where (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID)
+                             and ap.project_id = p.id and trunc(sysdate) between trunc(ap.start_date) and trunc(ap.end_date))) active_activity_icon
                   from SP_PROJECTS p, 
                        SP_INITIATIVES i,
                        sp_team_members t  
@@ -1262,6 +1775,10 @@ page 1 (
         }
         accessibility {
             landmarkType: region
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:HOME_PAGE_DISPLAY,':PROJ:') > 0
         }
         security {
             authorizationScheme: @contribution-rights
@@ -1501,7 +2018,7 @@ page 1 (
             }
         )
 
-        action action (
+        action action-2 (
             position: titleLink
             layout {
                 sequence: 40
@@ -1519,7 +2036,7 @@ page 1 (
             }
         )
 
-        action actions (
+        action actions-3 (
             position: primaryActions
             template: menu
             label: Actions
@@ -1620,7 +2137,7 @@ page 1 (
                     icon: fa-ai-sparkle-generate-text
                 }
                 config {
-                    buildOption: @ai-project-summaries
+                    buildOption: @ai-project-summaries-view
                 }
             )
 
@@ -1736,7 +2253,7 @@ page 1 (
 
         )
 
-        action favorite (
+        action favorite-2 (
             position: primaryActions
             template: button
             label: Favorite
@@ -1907,7 +2424,8 @@ page 1 (
                        (select count(p.id)
                           from SP_ACTIVITIES dap, 
                                sp_projects p 
-                         where dap.project_id = p.id
+                         where (nvl(dap.private_yn,'N') = 'N' or dap.team_member_id = :APP_USER_ID)
+                           and dap.project_id = p.id
                            and dap.TEAM_MEMBER_ID = :APP_USER_ID
                            and p.release_id = r.id
                            and p.ARCHIVED_YN = 'N'  
@@ -1927,7 +2445,8 @@ page 1 (
                 )
                  where (identified_as_task_owner > 0 or 
                         project_activivity_contributor > 0 or 
-                        project_owner_count > 0)
+                        project_owner_count > 0 or
+                        release_owner_id = :APP_USER_ID)
                 ```
         }
         orderBy {
@@ -1935,7 +2454,7 @@ page 1 (
             orderByClause: last_updated desc
         }
         layout {
-            sequence: 61
+            sequence: 71
             slot: body
         }
         appearance {
@@ -1948,6 +2467,10 @@ page 1 (
         }
         accessibility {
             landmarkType: region
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: instr(:HOME_PAGE_DISPLAY,':REL:') > 0
         }
         config {
             buildOption: @releases
@@ -2226,7 +2749,7 @@ page 1 (
             }
         )
 
-        action action (
+        action action-3 (
             position: titleLink
             layout {
                 sequence: 10
@@ -2243,7 +2766,7 @@ page 1 (
             }
         )
 
-        action actions (
+        action actions-4 (
             position: primaryActions
             template: menu
             label: Actions
@@ -2255,13 +2778,6 @@ page 1 (
                 icon: fa-ellipsis-v
                 cssClasses: t-Button--noUI
             }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 30
-                }
-            )
 
             menu edit-release (
                 label: Edit Release
@@ -2303,25 +2819,6 @@ page 1 (
                 }
                 appearance {
                     icon: fa-ship
-                }
-            )
-
-            menu release-nomenclature-projects (
-                label: "Release &NOMENCLATURE_PROJECTS. "
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 300
-                        items: {
-                            P300_RELEASE_ID: &ID.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-package
                 }
             )
 
@@ -2467,7 +2964,7 @@ page 1 (
                 ```
         }
         layout {
-            sequence: 71
+            sequence: 81
             slot: body
         }
         appearance {
@@ -2499,6 +2996,9 @@ page 1 (
                 h380
                 resize-region
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ARCHIVED_YN (
@@ -2774,18 +3274,7 @@ page 1 (
     pageItem P1_AREAS (
         type: hidden
         layout {
-            sequence: 81
-            slot: body
-        }
-        security {
-            sessionStateProtection: restricted
-        }
-    )
-
-    pageItem P1_GROUPS (
-        type: hidden
-        layout {
-            sequence: 151
+            sequence: 91
             slot: body
         }
         security {
@@ -2796,7 +3285,7 @@ page 1 (
     pageItem P1_INITIATIVES (
         type: hidden
         layout {
-            sequence: 91
+            sequence: 101
             slot: body
         }
         security {
@@ -2819,17 +3308,6 @@ page 1 (
         type: hidden
         layout {
             sequence: 121
-            slot: body
-        }
-        security {
-            sessionStateProtection: restricted
-        }
-    )
-
-    pageItem P1_PROJECT_GROUPS (
-        type: hidden
-        layout {
-            sequence: 161
             slot: body
         }
         security {
@@ -2965,6 +3443,36 @@ page 1 (
     )
 
     button add-project (
+        buttonName: add_project2
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @my-favorite-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+                clearCache: 104
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-project-2 (
         buttonName: add_project
         label: Add &NOMENCLATURE_PROJECT.
         layout {
@@ -2994,6 +3502,119 @@ page 1 (
         }
     )
 
+    button chat (
+        buttonName: chat
+        label: Chat
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ai-sparkle-message
+        }
+        behavior {
+            action: definedByDynamicAction
+            executeValidations: false
+        }
+        config {
+            buildOption: @ir-catalog
+        }
+    )
+
+    button home-actions (
+        buttonName: home_actions
+        label: Actions
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 1
+                    clearCache: 1
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+    )
+
+    button my-favorites_1 (
+        buttonName: my_favorites
+        label: My Favorites
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-heart
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+                items: {
+                    P23_FAVORITE: Yes
+                }
+                clearCache: 23
+            }
+        }
+    )
+
+    button view-fav-projects (
+        buttonName: view_fav_projects
+        label: View Favorite &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 10
+            region: @my-favorite-nomenclature-projects
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-chevron-right
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+                items: {
+                    P23_FAVORITE: Yes
+                }
+                clearCache: 23
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
     button view-my-activities (
         buttonName: view_my_activities
         label: View My Activities
@@ -3015,7 +3636,7 @@ page 1 (
             target: {
                 page: 102
                 items: {
-                    P102_PERSON: &APP_USER_FIRST_LAST_NAME.
+                    P102_PERSON: I&APP_USER_FIRST_LAST_NAME.
                 }
                 clearCache: 102
                 action: resetPagination
@@ -3072,7 +3693,7 @@ page 1 (
             target: {
                 page: 8
                 items: {
-                    P8_WINDOW: Open
+                    P8_WINDOW: IOpen
                 }
                 clearCache: 8
             }
@@ -3106,6 +3727,27 @@ page 1 (
         }
     )
 
+    button view-projects (
+        buttonName: view_projects
+        label: View &NOMENCLATURE_PROJECTS.
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 23
+            }
+        }
+    )
+
     button view-requests (
         buttonName: VIEW-REQUESTS
         label: View Requests
@@ -3132,6 +3774,34 @@ page 1 (
         config {
             buildOption: @approvals
         }
+    )
+
+    dynamicAction chat (
+        name: chat
+        execution {
+            sequence: 110
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @chat
+        }
+
+        action native-open-ai-assistant (
+            action: showAiAssistant
+            genAI {
+                agent: @all-interactive-reports
+                itemsToSubmit: APP_ID
+            }
+            appearance {
+                title: &NOMENCLATURE_STRATEGIC_PLANNER. Assistant
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
     )
 
     dynamicAction dismiss-notif (

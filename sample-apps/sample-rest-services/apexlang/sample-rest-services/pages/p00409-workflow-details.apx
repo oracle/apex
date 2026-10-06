@@ -10,13 +10,8 @@ page 409 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -831,6 +826,7 @@ page 409 (
         }
         settings {
             workflowId: P409_WORKFLOW_ID
+            enableExport: false
         }
     )
 

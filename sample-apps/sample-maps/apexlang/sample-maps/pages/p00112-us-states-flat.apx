@@ -6,13 +6,6 @@ page 112 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region about-this-page (
         name: About This Page
@@ -97,6 +90,7 @@ page 112 (
                            geometry
                       from EBA_SAMPLE_MAP_SIMPLE_STATES
                     ```
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY

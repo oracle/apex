@@ -1,0 +1,97 @@
+list ut-sample-menu-popup (
+    name: UT - Sample Menu Popup
+
+    entry action-a (
+        label: Action A
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry action-b (
+        label: Action B
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry action-c (
+        label: Action C
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry action-d (
+        label: Action D
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-item-a (
+        label: Sub Item A
+        layout {
+            sequence: 50
+            parentEntry: @action-b
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-item-b (
+        label: Sub Item B
+        layout {
+            sequence: 60
+            parentEntry: @action-b
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

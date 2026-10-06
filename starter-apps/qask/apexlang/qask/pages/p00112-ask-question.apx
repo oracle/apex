@@ -7,9 +7,6 @@ page 112 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#jquery.qrcode.min.js
         executeWhenPageLoads:
@@ -78,8 +75,6 @@ page 112 (
     security {
         authorizationScheme: @host
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region button-container (
@@ -356,9 +351,6 @@ page 112 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @question-p112-question-number

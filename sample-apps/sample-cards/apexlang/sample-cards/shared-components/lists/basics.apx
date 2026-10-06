@@ -1,0 +1,77 @@
+list basics (
+    name: Basics
+
+    entry color-coded-cards (
+        label: Color Coded Cards
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to color code cards based on a column value
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to combine a Cards region with a Faceted Search
+        }
+    )
+
+    entry star-icons (
+        label: Star Icons
+        icon {
+            imageIconCssClasses: fa-star-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use CSS styling to change the default shape of each card's icon initials
+        }
+    )
+
+    entry styles (
+        label: Styles
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to use the A, B, and C styles of a Cards region display
+        }
+    )
+
+)
+

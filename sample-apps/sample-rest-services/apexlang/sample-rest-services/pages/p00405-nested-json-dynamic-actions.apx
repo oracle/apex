@@ -6,13 +6,8 @@ page 405 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -66,6 +61,9 @@ page 405 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -237,7 +235,7 @@ page 405 (
                 linkAttributes: class="po-link t-Button t-Button--hot t-Button--small t-Button--primary t-Button--simple t-Button--gapLeft" data-po-number="#PO_PONUMBER#"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -253,7 +251,7 @@ page 405 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -269,7 +267,7 @@ page 405 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -288,7 +286,7 @@ page 405 (
                 valueIdentifiesRow: true
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A

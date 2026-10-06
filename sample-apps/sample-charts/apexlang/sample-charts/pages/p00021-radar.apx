@@ -7,12 +7,7 @@ page 21 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -72,7 +67,7 @@ page 21 (
                 This example demonstrates a Radar chart with varying line types and styles.<p/>
                 <strong>Maximum Width & Height</strong> - Chart-level attributes Maximum Width and Height have been set to 500px and 450px respectively, to size the chart within its region.  If you wish to default to using 100% width and height of the given region, simply remove these values, and utilitize the Template Options of the region to control the height as you wish.<p/> 
                 <strong>Grid Shape</strong> - our native Radar chart corresponds with Oracle JET's polygon polar grid shape and polar coordinate system.<p/>
-                For more information on the Radar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank">Polar Chart: Basic</a> example and select the <strong>Polygon</strong> option.
+                For more information on the Radar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank" rel="noopener noreferrer external">Polar Chart: Basic</a> example and select the <strong>Polygon</strong> option.
                 ```
         }
         layout {
@@ -114,8 +109,10 @@ page 21 (
             maxWidth: 600
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {

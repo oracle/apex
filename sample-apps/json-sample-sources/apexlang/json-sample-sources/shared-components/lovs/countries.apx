@@ -1,0 +1,23 @@
+lov countries (
+    name: COUNTRIES
+    source {
+        location: jsonDualityView
+        jsonDualityView: @eba_demo_json_store_dv
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct 
+                   COUNTRY,
+                   COUNTRY_CODE
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: COUNTRY_CODE
+        display: COUNTRY
+        defaultSort: COUNTRY
+    }
+)
+

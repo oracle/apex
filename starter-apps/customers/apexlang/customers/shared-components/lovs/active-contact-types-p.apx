@@ -1,0 +1,15 @@
+lov active-contact-types-p (
+    name: ACTIVE_CONTACT_TYPES_P20
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select contact_type d, id r
+              from EBA_CUST_CONTACT_TYPES
+             where is_active = 'Y'
+                or ID = :P20_CONTACT_TYPE_ID
+            order by 1
+            ```
+    }
+)
+

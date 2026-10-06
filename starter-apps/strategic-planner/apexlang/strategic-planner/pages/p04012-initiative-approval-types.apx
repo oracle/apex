@@ -8,13 +8,8 @@ page 4012 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -70,7 +65,7 @@ page 4012 (
                                                         from sp_team_members
                                                        where id = c.alternate_team_member_id)
                                                 else tm.first_name||' '||tm.last_name
-                                                end ,', ')
+                                                end ,', ' on overflow truncate with count)
                                    within group (order by approval_seq)
                               from sp_initiative_approval_chain c,
                                    sp_team_members tm
@@ -128,7 +123,7 @@ page 4012 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -144,7 +139,7 @@ page 4012 (
                 sequence: 100
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -174,7 +169,7 @@ page 4012 (
                 linkText: #APPROVERS#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -193,7 +188,7 @@ page 4012 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: C
@@ -209,7 +204,7 @@ page 4012 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -226,7 +221,7 @@ page 4012 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -242,7 +237,7 @@ page 4012 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -259,8 +254,11 @@ page 4012 (
                 sequence: 30
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -276,7 +274,7 @@ page 4012 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -295,7 +293,7 @@ page 4012 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -311,7 +309,7 @@ page 4012 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F

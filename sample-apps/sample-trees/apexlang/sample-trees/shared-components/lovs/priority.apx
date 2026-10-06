@@ -1,0 +1,38 @@
+lov priority (
+    name: PRIORITY
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: 1
+        return: 1
+    )
+
+    entry lov_data-2 (
+        sequence: 2
+        display: 2
+        return: 2
+    )
+
+    entry lov_data-3 (
+        sequence: 3
+        display: 3
+        return: 3
+    )
+
+    entry lov_data-4 (
+        sequence: 4
+        display: 4
+        return: 4
+    )
+
+    entry lov_data-5 (
+        sequence: 5
+        display: 5
+        return: 5
+    )
+
+)
+

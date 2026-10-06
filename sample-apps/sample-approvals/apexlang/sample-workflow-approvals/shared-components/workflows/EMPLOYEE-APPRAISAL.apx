@@ -41,7 +41,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 20
             }
             advanced {
-                diagram: {"position":{"x":1020,"y":710},"z":-72}
+                diagram: "{\"position\":{\"x\":1020,\"y\":710},\"z\":-72}"
             }
             comments {
                 comments: Mark the appraisal as ORIGINATED.
@@ -93,7 +93,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 40
             }
             advanced {
-                diagram: {"position":{"x":1200,"y":840},"z":-73}
+                diagram: "{\"position\":{\"x\":1200,\"y\":840},\"z\":-73}"
             }
             comments {
                 comments: Mark the appraisal as SUBMITTED by the employee.
@@ -145,7 +145,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 110
             }
             advanced {
-                diagram: {"position":{"x":850,"y":1080},"z":-77}
+                diagram: "{\"position\":{\"x\":850,\"y\":1080},\"z\":-77}"
             }
 
             connection (
@@ -199,7 +199,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 50
             }
             advanced {
-                diagram: {"position":{"x":850,"y":960},"z":-75}
+                diagram: "{\"position\":{\"x\":850,\"y\":960},\"z\":-75}"
             }
             comments {
                 comments: Next, have the employee's manager add their evaluation.
@@ -228,7 +228,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 60
             }
             advanced {
-                diagram: {"position":{"x":1200,"y":960},"z":-76}
+                diagram: "{\"position\":{\"x\":1200,\"y\":960},\"z\":-76}"
             }
             comments {
                 comments: Mark the appraisal as MGR_SUBMITTED by the manager.
@@ -276,7 +276,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 10
             }
             advanced {
-                diagram: {"position":{"x":690,"y":710},"z":-83}
+                diagram: "{\"position\":{\"x\":690,\"y\":710},\"z\":-83}"
             }
 
             connection (
@@ -298,7 +298,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 100
             }
             advanced {
-                diagram: {"position":{"x":690,"y":1300},"z":-82}
+                diagram: "{\"position\":{\"x\":690,\"y\":1300},\"z\":-82}"
             }
         )
 
@@ -314,7 +314,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 120
             }
             advanced {
-                diagram: {"position":{"x":1200,"y":1080},"z":-78}
+                diagram: "{\"position\":{\"x\":1200,\"y\":1080},\"z\":-78}"
             }
 
             connection (
@@ -363,7 +363,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 30
             }
             advanced {
-                diagram: {"position":{"x":850,"y":840},"z":-74}
+                diagram: "{\"position\":{\"x\":850,\"y\":840},\"z\":-74}"
             }
             comments {
                 comments: Start with the employee's completing a self-evaluation.
@@ -395,7 +395,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 70
             }
             advanced {
-                diagram: {"position":{"x":850,"y":1210},"z":-79}
+                diagram: "{\"position\":{\"x\":850,\"y\":1210},\"z\":-79}"
             }
             comments {
                 comments: Finally, have the VP review the evaluation.
@@ -432,7 +432,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 80
             }
             advanced {
-                diagram: {"position":{"x":1200,"y":1210},"z":-80}
+                diagram: "{\"position\":{\"x\":1200,\"y\":1210},\"z\":-80}"
             }
             comments {
                 comments: Mark the appraisal as VP_REVIEWED by the VP.
@@ -484,7 +484,7 @@ workflow EMPLOYEE_APPRAISAL (
                 sequence: 90
             }
             advanced {
-                diagram: {"position":{"x":1020,"y":1300},"z":-81}
+                diagram: "{\"position\":{\"x\":1020,\"y\":1300},\"z\":-81}"
             }
             comments {
                 comments: Mark the appraisal as VP_REVIEWED by the VP.

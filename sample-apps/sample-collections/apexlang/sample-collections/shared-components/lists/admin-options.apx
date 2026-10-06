@@ -1,0 +1,61 @@
+list admin-options (
+    name: admin options
+
+    entry remove-collections (
+        label: Remove Collections
+        icon {
+            imageIconCssClasses: fa-ban
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: This application creates Oracle APEX collections.  Use this link to drop all collections resetting this application to factory defaults.
+            2: formIcon
+        }
+    )
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: This application uses the sample EBA_DEMO_CS_EMP table, use this link to reset the table to the original specification.
+            2: formIcon
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+

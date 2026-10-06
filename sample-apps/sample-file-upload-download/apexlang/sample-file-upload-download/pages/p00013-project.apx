@@ -7,6 +7,7 @@ page 13 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -32,10 +33,6 @@ page 13 (
             }
             </style>
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -230,6 +227,7 @@ page 13 (
             showNullValuesAs: " - "
         }
         pagination {
+            type: showAll
             partialPageRefresh: false
         }
         performance {
@@ -402,7 +400,7 @@ page 13 (
             htmlCode:
                 ```html
                 <ul style="margin: 8px 24px;">
-                  <li>Create a "File Browse" page item with a storage type of "Table APEX_APPLICATION_TEMP_FILES" (e.g. P13_FILE).  When APEX_APPLICATION_TEMP_FILES view used, Oracle Application Express automatically deletes the file at the end of the session or at the end of the upload request, depending on what you choose for Purge File At.</li>
+                  <li>Create a "File Browse" page item with a storage type of "Table APEX_APPLICATION_TEMP_FILES" (e.g. P13_FILE).  When APEX_APPLICATION_TEMP_FILES view used, Oracle APEX automatically deletes the file at the end of the session or at the end of the upload request, depending on what you choose for Purge File At.</li>
                   <li>If your application's files table has a description (or comments) column, add a textarea page item for capturing this information</li>
                   <li>To move the file from the APEX_APPLICATION_TEMP_FILES view to your application's "files" table, create a PL/SQL page process.</li>
                   <li>The process to move the record should select the necessary row from APEX_APPLICATION_TEMP_FILES view, insert that data into the application's "files" table (see "Upload file" process).</li>

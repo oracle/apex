@@ -1,0 +1,406 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+                8
+                15
+            ]
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry calendar-and-dynamic-actions (
+        label: Calendar and Dynamic Actions
+        icon {
+            imageIconCssClasses: fa-calendar-check-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+    )
+
+    entry calendar-and-javascript (
+        label: Calendar and Javascript
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 70
+            }
+        }
+    )
+
+    entry calendar-and-report (
+        label: Calendar and Report
+        layout {
+            sequence: 140
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 51
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+    )
+
+    entry calendar-client-events (
+        label: Calendar Client Events
+        layout {
+            sequence: 210
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 73
+        }
+        link {
+            target: {
+                page: 73
+            }
+        }
+    )
+
+    entry calendar-styling (
+        label: Calendar Styling
+        icon {
+            imageIconCssClasses: fa-paint-brush
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 90
+            }
+        }
+    )
+
+    entry copy-events-by-click (
+        label: Copy Events By Click
+        layout {
+            sequence: 170
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 54
+        }
+        link {
+            target: {
+                page: 54
+            }
+        }
+    )
+
+    entry create-calendar-events (
+        label: Create Calendar Events
+        layout {
+            sequence: 150
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 52
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+    )
+
+    entry custom-calendar-initialization (
+        label: Custom Calendar Initialization
+        icon {
+            imageIconCssClasses: fa-user-wrench
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+    entry custom-css-classes (
+        label: Custom CSS Classes
+        layout {
+            sequence: 230
+            parentEntry: @calendar-styling
+        }
+        isCurrent {
+            type: pages
+            pages: 91
+        }
+        link {
+            target: {
+                page: 91
+            }
+        }
+    )
+
+    entry custom-drag-drop-handlers (
+        label: Custom Drag & Drop Handlers
+        layout {
+            sequence: 180
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 112
+        }
+        link {
+            target: {
+                page: 112
+            }
+        }
+    )
+
+    entry custom-event-icons (
+        label: Custom Event Icons
+        layout {
+            sequence: 240
+            parentEntry: @calendar-styling
+        }
+        isCurrent {
+            type: pages
+            pages: 92
+        }
+        link {
+            target: {
+                page: 92
+            }
+        }
+    )
+
+    entry custom-navigation (
+        label: Custom Navigation
+        layout {
+            sequence: 190
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 71
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+    )
+
+    entry delete-events-by-click (
+        label: Delete Events By Click
+        layout {
+            sequence: 160
+            parentEntry: @calendar-and-dynamic-actions
+        }
+        isCurrent {
+            type: pages
+            pages: 53
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+    )
+
+    entry faceted-search-projects (
+        label: Faceted Search: Projects
+        layout {
+            sequence: 310
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 36
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry monthly-calendar-projects (
+        label: Monthly Calendar: Projects
+        layout {
+            sequence: 90
+            parentEntry: @standard-calendars
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+    )
+
+    entry query-calendar-status (
+        label: Query Calendar Status
+        layout {
+            sequence: 200
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 72
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+    )
+
+    entry schedule-builder (
+        label: Schedule Builder
+        layout {
+            sequence: 220
+            parentEntry: @calendar-and-javascript
+        }
+        isCurrent {
+            type: pages
+            pages: 74
+        }
+        link {
+            target: {
+                page: 74
+            }
+        }
+    )
+
+    entry standard-calendars (
+        label: Standard Calendars
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+    )
+
+    entry weekly-calendar-conference (
+        label: Weekly Calendar: Conference
+        layout {
+            sequence: 100
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+    )
+
+    entry weekly-calendar-drag-drop (
+        label: Weekly Calendar: Drag & Drop
+        layout {
+            sequence: 120
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 34
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+    )
+
+    entry weekly-calendar-edit-sessions (
+        label: Weekly Calendar: Edit Sessions
+        layout {
+            sequence: 110
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 33
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+    )
+
+    entry weekly-calendar-time-format (
+        label: Weekly Calendar: Time Format
+        layout {
+            sequence: 130
+            parentEntry: @standard-calendars
+        }
+        isCurrent {
+            type: pages
+            pages: 35
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+    )
+
+    entry weekly-schedule (
+        label: Weekly schedule
+        layout {
+            sequence: 300
+            parentEntry: @custom-calendar-initialization
+        }
+        isCurrent {
+            type: pages
+            pages: 111
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+    )
+
+)
+

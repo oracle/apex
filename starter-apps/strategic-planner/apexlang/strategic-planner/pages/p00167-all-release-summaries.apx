@@ -7,15 +7,11 @@ page 167 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: All the AI Summaries for all Releases.  This includes the data sent to the AI engine along with the JSON return, the summary and highlights extracted from the return.
     }
     config {
-        buildOption: @ai-release-summaries
+        buildOption: @ai-release-summaries-view
     }
 
     region breadcrumb (
@@ -81,6 +77,10 @@ page 167 (
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All the AI Summaries for all Releases.  This includes the data sent to the AI engine along with the JSON return, the summary and highlights extracted from the return.
+        }
         actionsMenu {
             controlBreak: false
             compute: false
@@ -108,7 +108,7 @@ page 167 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -124,7 +124,7 @@ page 167 (
                 sequence: 30
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -152,7 +152,7 @@ page 167 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -168,7 +168,7 @@ page 167 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -184,7 +184,7 @@ page 167 (
                 sequence: 0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -200,7 +200,7 @@ page 167 (
                 sequence: 20
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none
@@ -238,7 +238,7 @@ page 167 (
                 linkText: #RELEASE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -254,7 +254,7 @@ page 167 (
                 sequence: 80
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AA
@@ -270,7 +270,7 @@ page 167 (
                 sequence: 40
             }
             source {
-                dataType: CLOB
+                dataType: clob
             }
             columnFilter {
                 type: none

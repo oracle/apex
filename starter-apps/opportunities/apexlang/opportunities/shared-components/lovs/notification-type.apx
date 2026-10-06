@@ -1,0 +1,20 @@
+lov notification-type (
+    name: NOTIFICATION TYPE
+    source {
+        location: staticValues
+    }
+
+    entry red (
+        sequence: 20
+        display: Red
+        return: RED
+    )
+
+    entry yellow (
+        sequence: 10
+        display: Yellow
+        return: YELLOW
+    )
+
+)
+

@@ -9,12 +9,11 @@ page 1407 (
         cssClasses: dm-Page
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -88,9 +87,6 @@ page 1407 (
                 t-AVPList--leftAligned
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column D (
@@ -177,9 +173,6 @@ page 1407 (
                 t-Report--hideNoPagination
             ]
             cssClasses: dm-TemplateOption-previewTarget
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column ACTIONS (

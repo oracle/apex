@@ -1,0 +1,6 @@
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 1, 'Conference', 'Y', 'Y', 'orange', 'fa-users-chat', 'Y');
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 2, 'Customer Meeting', 'Y', 'Y', 'red', 'fa-users', 'Y');
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 3, 'Internal Meeting', 'Y', 'N', 'brown', 'fa-users-alt', 'Y');
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 4, 'Personal Time Off', 'N', 'Y', 'bluesky', 'fa-calendar-ban', 'Y');
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 5, 'Public Holiday', 'Y', 'Y', 'blue', 'fa-tree', 'Y');
+insert into SP_EVENT_TYPES (ID, EVENT_TYPE, GENERAL_EVENT_YN, QUICK_PICK_YN, CALENDAR_EVENT_COLOR, ICON_CLASS, ACTIVE_YN ) values ( 6, 'Sick Leave', 'N', 'Y', 'gray', 'fa-user-md', 'Y');

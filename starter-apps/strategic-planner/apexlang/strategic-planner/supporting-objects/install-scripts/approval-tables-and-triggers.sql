@@ -23,11 +23,14 @@ create or replace trigger sp_approval_types_biu
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
 end sp_approval_types_biu;
 /
 
@@ -64,15 +67,20 @@ declare
     l_new_value   varchar2(4000) := null;
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     -- touch parent table
     --
-    update sp_initiatives set updated = sysdate, updated_by = :new.updated_by where id = :new.initiative_id;
+    if sp_globals.g_audit_this then
+        update sp_initiatives set updated = sysdate, updated_by = :new.updated_by where id = :new.initiative_id;
+    end if;
     --
     -- history
     --
@@ -98,6 +106,7 @@ begin
     end if;
 end sp_initiative_approvals_biu;
 /
+
 create or replace trigger sp_initiative_approvals_bd
     before delete
     on sp_initiative_approvals
@@ -162,18 +171,23 @@ declare
     l_new_value      varchar2(4000) := null;
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     :new.alternate_start_date := trunc(:new.alternate_start_date);
     :new.alternate_end_date   := trunc(:new.alternate_end_date);
     --
     -- touch parent table
     --
-    update sp_initiative_approvals set updated = sysdate, updated_by = :old.updated_by where id = :old.initiative_approval_id;
+    if sp_globals.g_audit_this then
+        update sp_initiative_approvals set updated = sysdate, updated_by = :old.updated_by where id = :old.initiative_approval_id;
+    end if;
     --
     -- history
     --
@@ -222,6 +236,7 @@ begin
     end if;
 end sp_initiative_approval_chain_biu;
 /
+
 create or replace trigger sp_initiative_approval_chain_bd
     before delete
     on sp_initiative_approval_chain
@@ -294,14 +309,19 @@ declare
     l_new_value   varchar2(4000) := null;
 begin
     if inserting then
-        :new.submitted := sysdate;
+        :new.submitted  := nvl(:new.submitted,sysdate);
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     -- touch parent table
     --
-    update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
+    if sp_globals.g_audit_this then
+        update sp_projects set updated = sysdate, updated_by = :new.updated_by where id = :new.project_id;
+    end if;
     --
     -- history
     -- 
@@ -322,6 +342,7 @@ begin
     end if;
 end sp_project_approvals_biu;
 /
+
 create or replace trigger sp_project_approvals_bd
     before delete
     on sp_project_approvals
@@ -378,17 +399,21 @@ create index sp_project_approval_chain_i2 on sp_project_approval_chain (initiati
 create index sp_project_approval_chain_i3 on sp_project_approval_chain (team_member_id);
 create index sp_project_approval_chain_i4 on sp_project_approval_chain (response_by_team_member_id);
 
+-- protects against duplicate, active approvals
 create or replace trigger sp_project_approval_chain_biu
     before insert or update
     on sp_project_approval_chain
     for each row
 begin
     if inserting then
-        :new.created := sysdate;
-        :new.created_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
+        :new.created    := nvl(:new.created,sysdate);
+        :new.created_by := nvl(:new.created_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+        :new.updated    := nvl(:new.updated,sysdate);
+        :new.updated_by := nvl(:new.updated_by, coalesce(sys_context('APEX$SESSION','APP_USER'),user));
+    elsif updating then
+        :new.updated    := sysdate;
+        :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     end if;
-    :new.updated := sysdate;
-    :new.updated_by := coalesce(sys_context('APEX$SESSION','APP_USER'),user);
     --
     -- no need to update project table nor history
     --

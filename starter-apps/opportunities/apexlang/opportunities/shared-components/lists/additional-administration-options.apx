@@ -1,0 +1,168 @@
+list additional-administration-options (
+    name: Additional Administration Options
+
+    entry application-appearance (
+        label: Application Appearance
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 450
+        }
+        link {
+            target: {
+                page: 141
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface color scheme for all users.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 435
+        }
+        link {
+            target: {
+                page: 175
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: reportIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry closed-opportunities (
+        label: Closed Opportunities
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 420
+        }
+        link {
+            target: {
+                page: 81
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunities that are won or lost (0 or 100% probability) cannot be edited. Set the status to something other then 0 or 100% to reenable edit capabilities.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry fiscal-quarters (
+        label: Fiscal Quarters
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 200
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the fiscal quarters used for reporting.  Companies have different quarter start and end dates, click here to manage those dates.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry rename-application (
+        label: Rename Application
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 432
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: Change the application name, displayed on the top left of each page, to one of your choosing.  By default, the application name is "&APP_NAME.".
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry sample-data (
+        label: Sample Data
+        icon {
+            imageIconCssClasses: fa-database
+        }
+        layout {
+            sequence: 400
+        }
+        link {
+            target: {
+                page: 142
+            }
+        }
+        userDefinedAttributes {
+            1: Manage sample data for Accounts, &REP_TITLE.s, Products, Opportunities, Notes and Leads.  Options to remove, install, or re-install.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry svps (
+        label: SVPs
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 410
+        }
+        isCurrent {
+            type: pages
+            pages: 66
+        }
+        link {
+            target: {
+                page: 66
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Opportunities can be tracked by Senior Vice President (SVP).  Use these pages to define the domain of SVP's for use within this application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

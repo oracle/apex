@@ -7,11 +7,8 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -89,12 +86,14 @@ page 3 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         settings {
             showHorizontalGrid: true
             showVerticalGrid: true
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -244,10 +243,10 @@ page 3 (
                 <strong>Baseline CSS Classes</strong> - Use this series-level attribute to customize the color of baseline bars<br/>
                 
                 <p>
-                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.
+                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank" rel="noopener noreferrer external">ojGantt API</a>.
                 </p>
                 <p>
-                For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://apex.oracle.com/pls/apex/f?p=42:6302:::NO:::" target="_blank">Color and Status Modifiers</a> page.
+                For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://oracleapex.com/ords/r/apex_pm/ut/color-and-status-modifiers" target="_blank" rel="noopener noreferrer external">Color and Status Modifiers</a> page.
                 ```
         }
         layout {
@@ -314,7 +313,7 @@ page 3 (
                 <strong>Show Row Axis</strong> - set to <strong>Yes</strong>, to render the left section of the Gantt. For this example, the value of Task Name is displayed. The text rendered in this region is dependent upon the column mappings defined at series-level.  By default, the Task Name will be rendered.  However, if the Row Name column mapping is set, its associated text will be rendered for the given row of the chart.<p/>
                 <strong>Tooltip Settings</strong> - The new <strong>Show Row</strong> attribute has been set to No, to prevent a 'Row' entry being displayed in a task tooltip.  By default, a tooltip displays an entry for 'Row' and 'Label'.  The 'Label' displays the value for the Task Name column.  When the Row Name column mapping is set, 'Row' displays the value for the Row Name column.  However, when that column mapping is not set, 'Row' will display the value for the Task Name column. <p/>
                 
-                <strong>Task Appearance</strong> - the Tasks rendered on this example differ in appearance, with some being displayed as blue lines with start/end dates, while others are displayed as gray diamond-shaped markers.  The difference in appearance is due to how JET interprets the Task 'type'. Normal tasks are rendered as the blue lines, while Milestones are rendered as gray diamond-shaped markers. As outlined in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html#RowTask" target="_blank">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank">ojGantt</a> API, if Task Start Date and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>
+                <strong>Task Appearance</strong> - the Tasks rendered on this example differ in appearance, with some being displayed as blue lines with start/end dates, while others are displayed as gray diamond-shaped markers.  The difference in appearance is due to how JET interprets the Task 'type'. Normal tasks are rendered as the blue lines, while Milestones are rendered as gray diamond-shaped markers. As outlined in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html#RowTask" target="_blank" rel="noopener noreferrer external">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank" rel="noopener noreferrer external">ojGantt</a> API, if Task Start Date and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>
                 
                 <strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  Any chart initialization changes, to attributes such as the chart y-axis, type, or orientation, can also be made.  The JavaScript Code should follow a template similar to the following:<br/>
                 
@@ -333,10 +332,10 @@ page 3 (
                 </pre><p/>
                 <strong>Tooltip Options</strong> - Use the chart-level Tooltip attributes to declaratively choose what information should be displayed in the Gantt chart tooltip. This chart only displays the Row, Label, and Progress information, by setting the <strong>Show Row</strong>, <strong>Show Label</strong> and <strong>Show Progress</strong> attributes.<br/> 
                 <p>
-                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.
+                For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank" rel="noopener noreferrer external">ojGantt API</a>.
                 </p>
                 <p>
-                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank">Gantt Chart: Multiple Tasks Per Row</a> example.
+                For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank" rel="noopener noreferrer external">Gantt Chart: Multiple Tasks Per Row</a> example.
                 ```
         }
         layout {
@@ -379,12 +378,14 @@ page 3 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         settings {
             showHorizontalGrid: true
             showVerticalGrid: true
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -490,12 +491,14 @@ page 3 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         settings {
             showHorizontalGrid: true
             showVerticalGrid: true
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {

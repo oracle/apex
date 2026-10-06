@@ -7,13 +7,10 @@ page 72 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -25,18 +22,18 @@ page 72 (
         source {
             htmlCode:
                 ```html
-                <p>This page shows how to get the current calendar status with javascript methods. Upon switching the view type or navigating to the next or previous page, a dynamic action is being executed. The <a href="https://fullcalendar.io/docs/" target="_blank">FullCalendar API</a> <b>view</b> object is being used to get the current <i>calendar view</i> object. Its attributes can then be used to query the view type or start and end dates. Use a <b>Set Value</b> action to store this information in Application Express page items.</p>
+                <p>This page shows how to get the current calendar status with javascript methods. Upon switching the view type or navigating to the next or previous page, a dynamic action is being executed. The <a href="https://fullcalendar.io/docs/" target="_blank" rel="noopener noreferrer external">FullCalendar API</a> <strong>view</strong> object is being used to get the current <em>calendar view</em> object. Its attributes can then be used to query the view type or start and end dates. Use a <strong>Set Value</strong> action to store this information in APEX page items.</p>
                 <pre>
                 // get the view type (dayGridMonth, timeGridWeek, timeGridDay or list
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").view.type 
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").view.type 
                 
                 // get the start date of the view
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").view.activeStart
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").view.currentStart
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").view.activeStart
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").view.currentStart
                 
                 // get the end date of the view
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").view.activeEnd
-                apex.region("<i>{Region Static ID}</i>").widget().data("fullCalendar").view.currentEnd
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").view.activeEnd
+                apex.region("<em>{Region Static ID}</em>").widget().data("fullCalendar").view.currentEnd
                 </pre>
                 
                 ```

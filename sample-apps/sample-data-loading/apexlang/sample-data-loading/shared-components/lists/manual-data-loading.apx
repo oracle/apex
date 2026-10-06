@@ -1,0 +1,41 @@
+list manual-data-loading (
+    name: Manual Data Loading
+
+    entry pl-sql-load (
+        label: PL/SQL Load
+        icon {
+            imageIconCssClasses: fa-upload
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Use a SQL INSERT statement in combination with the APEX_DATA_PARSER.PARSE table function to upload a file directly into a table.
+        }
+    )
+
+    entry pl-sql-parser (
+        label: PL/SQL Parser
+        icon {
+            imageIconCssClasses: fa-file-sql
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Parse uploaded file and discover the columns manually using APEX_DATA_PARSER package.
+        }
+    )
+
+)
+

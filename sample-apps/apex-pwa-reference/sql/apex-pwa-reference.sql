@@ -24,8 +24,8 @@ whenever sqlerror exit sql.sqlcode rollback
 --------------------------------------------------------------------------------
 begin
 wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.0'
+ p_version_yyyy_mm_dd=>'2026.04.07'
+,p_release=>'26.2.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>9100
 ,p_default_id_offset=>1580934860364765
@@ -68,8 +68,8 @@ prompt APPLICATION 9100 - APEX PWA Reference
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---   Version:         26.1.0
---   Instance ID:     746015870406431
+--   Version:         26.2.0
+--   Instance ID:     745964864827421
 --
 
 prompt --application/delete_application
@@ -108,10 +108,11 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.2.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'S'
+,p_allow_bots=>'Y'
 ,p_pass_ecid=>'N'
 ,p_authorize_batch_job=>'N'
 ,p_rejoin_existing_sessions=>'P'
@@ -121,7 +122,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'APEX PWA Reference'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>413
-,p_version_scn=>'111092014'
+,p_version_scn=>'302287844'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -147,11 +148,11 @@ wwv_imp_workspace.create_flow(
 ,p_global_page_id=>0
 ,p_navigation_list_id=>wwv_flow_imp.id(16022627537592921125)
 ,p_navigation_list_position=>'SIDE'
-,p_navigation_list_template_id=>2469215554099805162
+,p_navigation_list_template_id=>2471166859590295591
 ,p_nav_list_template_options=>'#DEFAULT#:js-defaultCollapsed:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_nav_bar_type=>'LIST'
 ,p_nav_bar_list_id=>wwv_flow_imp.id(16022827846357921317)
-,p_nav_bar_list_template_id=>2849019392706229583
+,p_nav_bar_list_template_id=>2850970698196720012
 ,p_nav_bar_template_options=>'#DEFAULT#'
 );
 end;
@@ -252,7 +253,8 @@ wwv_flow_imp_shared.create_plugin_setting(
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_IR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'actions_menu_structure', 'IG')).to_clob
+  'actions_menu_structure', 'IG',
+  'auto_ir_reset_button', 'N')).to_clob
 ,p_version_scn=>'37166093944220'
 );
 wwv_flow_imp_shared.create_plugin_setting(
@@ -42243,47 +42245,47 @@ wwv_flow_imp_shared.create_theme(
 ,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
 ,p_theme_internal_name=>'UNIVERSAL_THEME'
-,p_version_identifier=>'26.1'
+,p_version_identifier=>'26.2'
 ,p_navigation_type=>'L'
 ,p_nav_bar_type=>'LIST'
 ,p_is_locked=>false
 ,p_current_theme_style_id=>wwv_flow_imp.id(1360959280316855639)
-,p_default_page_template=>4073832297226169690
-,p_default_dialog_template=>2101883943284197310
-,p_error_template=>2102634289808461002
-,p_printer_friendly_template=>4073832297226169690
-,p_login_template=>2102634289808461002
-,p_default_button_template=>4073839297780169708
-,p_default_region_template=>4073835273271169698
-,p_default_chart_template=>4073835273271169698
-,p_default_form_template=>4073835273271169698
-,p_default_reportr_template=>4073835273271169698
-,p_default_wizard_template=>4073835273271169698
-,p_default_menur_template=>2532939663579242476
-,p_default_listr_template=>4073835273271169698
-,p_default_irr_template=>2102002977963900996
-,p_default_report_template=>2540130677583398057
-,p_default_label_template=>1610598304472262251
-,p_default_menu_template=>4073839682315169711
-,p_default_list_template=>4073837480889169704
-,p_default_top_nav_list_temp=>2528231041045349458
-,p_default_side_nav_list_temp=>2469215554099805162
+,p_default_page_template=>4075783602716660119
+,p_default_dialog_template=>2103835248774687739
+,p_error_template=>2104585595298951431
+,p_printer_friendly_template=>4075783602716660119
+,p_login_template=>2104585595298951431
+,p_default_button_template=>4075790603270660137
+,p_default_region_template=>4075786578761660127
+,p_default_chart_template=>4075786578761660127
+,p_default_form_template=>4075786578761660127
+,p_default_reportr_template=>4075786578761660127
+,p_default_wizard_template=>4075786578761660127
+,p_default_menur_template=>2534890969069732905
+,p_default_listr_template=>4075786578761660127
+,p_default_irr_template=>2103954283454391425
+,p_default_report_template=>2542081983073888486
+,p_default_label_template=>1612549609962752680
+,p_default_menu_template=>4075790987805660140
+,p_default_list_template=>4075788786379660133
+,p_default_top_nav_list_temp=>2530182346535839887
+,p_default_side_nav_list_temp=>2471166859590295591
 ,p_default_nav_list_position=>'SIDE'
-,p_default_dialogbtnr_template=>2127905476394690047
-,p_default_dialogr_template=>4502917002193490937
-,p_default_option_label=>1610598304472262251
-,p_default_required_label=>1610598484065263269
-,p_default_navbar_list_template=>2849019392706229583
-,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
+,p_default_dialogbtnr_template=>2129856781885180476
+,p_default_dialogr_template=>4504868307683981366
+,p_default_option_label=>1612549609962752680
+,p_default_required_label=>1612549789555753698
+,p_default_navbar_list_template=>2850970698196720012
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.2/')
 ,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
-,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
-,p_version_scn=>'SH256:9l-0BQE7RBRNSrPC1v0hYJ4cTTUhI-PMSA4_9ptK9Q0'
-,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
+,p_reference_id=>wwv_imp_util.get_subscription_id(4075791579648660165,2000,'universal-theme',8842.262)
+,p_version_scn=>'SH256:6Qvdp5XHQIo3h-kcir-lVoBYc5Lfc1BEPhyQAVxifw4'
+,p_version_scn_master=>'SH256:S3Fh7S4ZMPpy-ID1j0RgxJIrTUyM6ZXOJB4KD7haOtc'
 );
 end;
 /
@@ -44976,9 +44978,9 @@ wwv_flow_imp_shared.create_authentication(
 ,p_static_id=>'oracle-apex-accounts'
 ,p_scheme_type=>'NATIVE_APEX_ACCOUNTS'
 ,p_invalid_session_type=>'LOGIN'
-,p_use_secure_cookie_yn=>'Y'
+,p_use_secure_cookie_yn=>'N'
 ,p_ras_mode=>0
-,p_version_scn=>'1089100510'
+,p_version_scn=>'SH256:MwlwV9vQNyvTGV3nRFfTrp5n7mJ1Ugme2lUrlsOYuxw'
 );
 end;
 /
@@ -45003,7 +45005,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'CSS'
 ,p_static_id=>'css'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_07'
 ,p_plug_item_display_point=>'ABOVE'
@@ -45041,7 +45043,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'HOME'
 ,p_step_title=>'Home - &APP_NAME.'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -45052,7 +45054,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'About'
 ,p_static_id=>'about'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2:margin-bottom-sm'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'col-lg-10 col-xl-8 col-xxl-8'
 ,p_plug_item_display_point=>'BELOW'
@@ -45078,20 +45080,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'explore'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
 ,p_component_template_options=>'#DEFAULT#:t-Cards--featured force-fa-lg:t-Cards--displayIcons:t-Cards--3cols:t-Cards--hideBody:t-Cards--iconsRounded:t-Cards--animColorFill'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_grid_column_css_classes=>'col-lg-10 col-xl-8 col-xxl-8'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(16022627537592921125)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2888245825625742894
+,p_list_template_id=>2890197131116233323
 );
 wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1247817139630399436)
 ,p_name=>'Features'
 ,p_static_id=>'features'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>20
 ,p_region_css_classes=>'col-lg-10 col-xl-8 col-xxl-8'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1:t-ContentBlock--lightBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
@@ -45178,9 +45180,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -45264,7 +45267,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Progressive Web Apps in APEX'
 ,p_static_id=>'progressive-web-apps-in-apex'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675494171183407654
+,p_plug_template=>2677445476673898083
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -45289,7 +45292,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'APPEARANCE'
 ,p_step_title=>'Appearance - &APP_NAME.'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -45300,7 +45303,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Background Color'
 ,p_static_id=>'background-color'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -45364,14 +45367,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15570144283919927034)
@@ -45379,7 +45382,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'browser'
 ,p_parent_plug_id=>wwv_flow_imp.id(15886221926889659146)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45392,7 +45395,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Custom Manifest'
 ,p_static_id=>'custom-manifest'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -45411,7 +45414,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'custom-manifest-example'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022862362576396618)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -45431,7 +45434,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'custom-theme-color-example'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022862768564396622)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45445,7 +45448,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'default'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022862563239396620)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -45461,7 +45464,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'default-theme-color-example'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022862768564396622)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45475,7 +45478,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'description'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570143750827927029)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc:margin-bottom-none'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45493,7 +45496,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'description-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144178591927033)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc:margin-bottom-none'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45513,7 +45516,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'description-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144283919927034)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc:margin-bottom-none'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45533,7 +45536,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'description-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(669283929937639938)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45550,7 +45553,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'description-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(669284032725639939)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45566,7 +45569,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Display'
 ,p_static_id=>'display'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -45638,7 +45641,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'full-screen-standalone'
 ,p_parent_plug_id=>wwv_flow_imp.id(15886221926889659146)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45652,7 +45655,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039065147577946416)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45667,7 +45670,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039065280264946418)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45682,7 +45685,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-desktop'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570143750827927029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>6
@@ -45701,7 +45704,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-desktop-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144178591927033)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>6
@@ -45719,7 +45722,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-desktop-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144283919927034)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>6
@@ -45737,7 +45740,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-desktop-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(669283929937639938)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45754,7 +45757,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-desktop-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(669284032725639939)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'u-flex u-align-items-center'
@@ -45771,7 +45774,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-mobile'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570143750827927029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>2
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -45788,7 +45791,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-mobile-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144178591927033)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>2
 ,p_plug_item_display_point=>'ABOVE'
@@ -45804,7 +45807,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-mobile-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570144283919927034)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>2
 ,p_plug_item_display_point=>'ABOVE'
@@ -45820,7 +45823,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-mobile-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(669283929937639938)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter:margin-left-lg:margin-right-lg'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>2
 ,p_plug_item_display_point=>'ABOVE'
@@ -45837,7 +45840,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-mobile-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(669284032725639939)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter:margin-left-lg:margin-right-lg'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>2
 ,p_plug_item_display_point=>'ABOVE'
@@ -45853,7 +45856,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'iOS Status Bar Style'
 ,p_static_id=>'ios-status-bar-style'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -45874,7 +45877,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'minimal-ui'
 ,p_parent_plug_id=>wwv_flow_imp.id(15886221926889659146)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>70
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -45887,7 +45890,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Orientation'
 ,p_static_id=>'orientation'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -45962,7 +45965,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -45984,7 +45987,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -46003,7 +46006,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Theme Color'
 ,p_static_id=>'theme-color'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -46066,7 +46069,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'translucent'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022862563239396620)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46087,7 +46090,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'PUSH-NOTIFICATIONS'
 ,p_step_title=>'Push Notifications'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -46099,7 +46102,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'apex-appl-push-subscriptions'
 ,p_parent_plug_id=>wwv_flow_imp.id(989408845199814209)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46123,7 +46126,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'apex-push-notifications-queue'
 ,p_parent_plug_id=>wwv_flow_imp.id(989408845199814209)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46140,7 +46143,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'apex-views'
 ,p_parent_plug_id=>wwv_flow_imp.id(815338367724877036)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>70
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46168,14 +46171,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1065995608150269023)
@@ -46183,7 +46186,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'changing-the-application-alias-blocks-future-delivery-of-push-notifications'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46205,7 +46208,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'code'
 ,p_parent_plug_id=>wwv_flow_imp.id(726773496882017738)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-Region--removeHeader js-removeLandmark'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46244,7 +46247,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'code-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(1065994526815269012)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-Region--removeHeader js-removeLandmark'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46260,7 +46263,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'code-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(1065994654346269013)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-Region--removeHeader js-removeLandmark'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46276,7 +46279,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'code-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409043627814211)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-Region--removeHeader js-removeLandmark'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46294,7 +46297,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Common Issues'
 ,p_static_id=>'common-issues'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>110
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -46309,7 +46312,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Compatibility'
 ,p_static_id=>'compatibility'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -46376,7 +46379,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Deploying Application'
 ,p_static_id=>'deploying-application'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -46428,7 +46431,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'enable-push-notifications-for-a-new-apex-application'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335314145877006)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -46443,7 +46446,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'enable-push-notifications-on-an-existing-apex-app'
 ,p_parent_plug_id=>wwv_flow_imp.id(726773856271017742)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46459,7 +46462,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'example-of-an-ios-device-subscribing-to-apex-push-notifications'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337417734877027)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -46473,7 +46476,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Existing Application'
 ,p_static_id=>'existing-application'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -46494,7 +46497,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335417973877007)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46511,7 +46514,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-10'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337614063877029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -46531,7 +46534,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-11'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337614063877029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -46551,7 +46554,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-12'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337614063877029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46570,7 +46573,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-13'
 ,p_parent_plug_id=>wwv_flow_imp.id(815338456603877037)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46587,7 +46590,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335242260877005)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>7
 ,p_plug_grid_column_css_classes=>'flex-center'
@@ -46605,7 +46608,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335242260877005)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>2
@@ -46624,7 +46627,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335242260877005)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>2
@@ -46643,7 +46646,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(726773359927017737)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46660,7 +46663,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-6'
 ,p_parent_plug_id=>wwv_flow_imp.id(815336798649877020)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46677,7 +46680,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-7'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337079884877023)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>6
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46695,7 +46698,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-8'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337270627877025)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>6
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46713,7 +46716,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-9'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337614063877029)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -46733,7 +46736,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(726773856271017742)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -46763,7 +46766,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(815335314145877006)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -46789,7 +46792,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(815337417734877027)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -46814,7 +46817,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'New Application'
 ,p_static_id=>'new-application'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -46836,7 +46839,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'notifications-are-not-being-delivered-to-my-device'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46881,7 +46884,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'on-ios-the-user-settings-page-shows-not-supported'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46908,7 +46911,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ora-24247-network-access-denied-by-access-control-list-acl'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46968,7 +46971,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ora-29024-certificate-validation-failure'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -46980,7 +46983,8 @@ wwv_flow_imp_page.create_page_plug(
 '   Apple, Microsoft, Mozilla, and Google sites hosting their respective',
 '   push notification delivery REST APIs. If you don''t currently have',
 '   a wallet configured, many APEX community users have reported a successful',
-'   experience using this <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open',
+'   experience using this <a target="_blank" rel="noopener noreferrer external" ',
+'   href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open',
 '   source certificate authority wallet generator script</a>,',
 '   whose README file explains how to use it and update APEX to ',
 '   point to the newly generated wallet. ',
@@ -46995,14 +46999,15 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ora-29106-cannot-import-pkcs-12-wallet'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>',
-'   Some APEX community user who have used the <a target="_blank" href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open',
+'   Some APEX community user who have used the <a target="_blank" rel="noopener noreferrer external"',
+'   href="https://github.com/Dani3lSun/oracle-ca-wallet-creator">open',
 '   source certificate authority wallet generator script</a> from the machine where',
 '   their Oracle Database is installed have encountered this error when trying to',
 '   use the wallet that it creates using the <tt>orapki</tt> utility. The solution they''ve',
@@ -47023,7 +47028,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ora-29260-network-error-tns-operation-timed-out'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>80
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47050,7 +47055,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47086,7 +47091,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'push-queue'
 ,p_parent_plug_id=>wwv_flow_imp.id(815338367724877036)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47115,7 +47120,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'receiving-an-apex-notification-on-a-wearable'
 ,p_parent_plug_id=>wwv_flow_imp.id(815336670190877019)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -47130,7 +47135,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'receiving-an-apex-notification-on-ios'
 ,p_parent_plug_id=>wwv_flow_imp.id(815336670190877019)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -47144,7 +47149,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'receiving-an-apex-notification-on-macos'
 ,p_parent_plug_id=>wwv_flow_imp.id(815336670190877019)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -47158,7 +47163,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Receiving Notifications'
 ,p_static_id=>'receiving-notifications'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47195,7 +47200,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -47216,7 +47221,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'send-using-api'
 ,p_parent_plug_id=>wwv_flow_imp.id(815338367724877036)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>60
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47237,7 +47242,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'send-using-page-process'
 ,p_parent_plug_id=>wwv_flow_imp.id(815338367724877036)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47265,7 +47270,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Sending Notifications'
 ,p_static_id=>'sending-notifications'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -47288,7 +47293,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Subscribing Devices'
 ,p_static_id=>'subscribing-devices'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -47323,7 +47328,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'this-device-failed-to-enable-push-notifications'
 ,p_parent_plug_id=>wwv_flow_imp.id(989409669948814217)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47382,7 +47387,7 @@ wwv_flow_imp_page.create_page(
 '    width: 100%;',
 '    border-radius: 5px;',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -47393,7 +47398,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'App Icon'
 ,p_static_id=>'app-icon'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -47428,14 +47433,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(29811567510206907509)
@@ -47443,7 +47448,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'compatibility'
 ,p_parent_plug_id=>wwv_flow_imp.id(17945898407636631395)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47504,7 +47509,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Examples'
 ,p_static_id=>'examples'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47520,7 +47525,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039064684125946412)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47537,7 +47542,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039064767757946413)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>4
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47555,7 +47560,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816376430399428)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47572,7 +47577,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570143347078927025)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -47589,7 +47594,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816039795399425)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -47612,7 +47617,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816039795399425)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>70
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -47635,7 +47640,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816265365399427)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -47660,7 +47665,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(17945898407636631395)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47688,7 +47693,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'managing-app-icon'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816265365399427)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -47703,7 +47708,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'managing-shortcuts'
 ,p_parent_plug_id=>wwv_flow_imp.id(17945898407636631395)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -47718,7 +47723,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47744,7 +47749,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'PWA Shortcuts'
 ,p_static_id=>'pwa-shortcuts'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -47788,7 +47793,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pwa-shortcuts-on-android'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816039795399425)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>60
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -47803,7 +47808,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pwa-shortcuts-on-macos'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816039795399425)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -47817,7 +47822,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -47841,7 +47846,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'SERVICE-WORKER'
 ,p_step_title=>'Service Worker - &APP_NAME.'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -47853,21 +47858,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16022863009885396624)
 ,p_plug_name=>'Default'
 ,p_static_id=>'default'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47890,7 +47895,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'File URL'
 ,p_static_id=>'file-url'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47907,7 +47912,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Hooks'
 ,p_static_id=>'hooks'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -47942,7 +47947,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -47958,7 +47963,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -47979,7 +47984,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'service-worker-interface'
 ,p_parent_plug_id=>wwv_flow_imp.id(16022863218047396626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -48022,7 +48027,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'GETTING-STARTED'
 ,p_step_title=>'Getting Started - &APP_NAME.'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -48034,14 +48039,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16024052410269986026)
@@ -48049,7 +48054,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'example'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024452298476174936)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>90
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -48065,7 +48070,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'example-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16662198570921320718)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -48080,7 +48085,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Existing Application'
 ,p_static_id=>'existing-application'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -48105,7 +48110,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024052410269986026)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48121,7 +48126,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16107212829908940807)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48137,7 +48142,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024452298476174936)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>100
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -48176,7 +48181,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16662198570921320718)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -48199,7 +48204,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'New Application'
 ,p_static_id=>'new-application'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -48221,7 +48226,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -48240,7 +48245,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Requirements'
 ,p_static_id=>'requirements'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -48266,7 +48271,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'INSTALLATION'
 ,p_step_title=>'Installation - &APP_NAME.'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -48277,7 +48282,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Advanced'
 ,p_static_id=>'advanced'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>1050
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -48302,7 +48307,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'android-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(1999882139048681915)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>80
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48316,14 +48321,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16322206293419207321)
@@ -48331,7 +48336,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'compatibility'
 ,p_parent_plug_id=>wwv_flow_imp.id(18056001000689582076)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48392,7 +48397,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Compatibility'
 ,p_static_id=>'compatibility-2'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -48459,7 +48464,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'desktop-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(1999882139048681915)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>60
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48473,7 +48478,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'edit-description'
 ,p_parent_plug_id=>wwv_flow_imp.id(3626863095291255933)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -48487,7 +48492,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Examples'
 ,p_static_id=>'examples'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>1040
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -48513,7 +48518,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16322207540390208786)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_item_display_point=>'ABOVE'
@@ -48530,7 +48535,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-10'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797458975974157)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48548,7 +48553,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-11'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797458975974157)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_item_display_point=>'ABOVE'
@@ -48565,7 +48570,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-12'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797458975974157)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48583,7 +48588,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(3626861718777255303)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48601,7 +48606,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797751506974160)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48619,7 +48624,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797751506974160)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48637,7 +48642,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797751506974160)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_item_display_point=>'ABOVE'
@@ -48654,7 +48659,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-6'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797751506974160)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48672,7 +48677,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-7'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024053131967986033)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -48689,7 +48694,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-8'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024053131967986033)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48705,7 +48710,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-9'
 ,p_parent_plug_id=>wwv_flow_imp.id(2874797458975974157)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -48723,7 +48728,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'installing-an-apex-pwa-on-android'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024052898694986031)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48740,7 +48745,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'installing-an-apex-pwa-on-desktop'
 ,p_parent_plug_id=>wwv_flow_imp.id(16695014406308518302)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48757,7 +48762,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'installing-an-apex-pwa-on-ios'
 ,p_parent_plug_id=>wwv_flow_imp.id(16695014635720518304)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48774,7 +48779,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(3626863095291255933)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -48811,7 +48816,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(18056001000689582076)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48855,7 +48860,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(16024052898694986031)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48886,7 +48891,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(16695014406308518302)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48917,7 +48922,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-5'
 ,p_parent_plug_id=>wwv_flow_imp.id(16695014635720518304)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48951,7 +48956,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ios-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(1999882139048681915)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>70
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -48965,7 +48970,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'managing-screenshots'
 ,p_parent_plug_id=>wwv_flow_imp.id(18056001000689582076)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -48980,7 +48985,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -49008,7 +49013,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pwa-description-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816153836399426)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>1030
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -49022,7 +49027,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pwa-screenshots-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(1247816153836399426)
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>1020
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -49035,7 +49040,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -49061,7 +49066,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
 ,p_javascript_code=>'let lSpinner$;'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -49073,14 +49078,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(31599977063903262102)
@@ -49088,7 +49093,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'compatibility'
 ,p_parent_plug_id=>wwv_flow_imp.id(32771434154634293764)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49149,7 +49154,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Data Type'
 ,p_static_id=>'data-type'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>21
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -49170,7 +49175,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'demo'
 ,p_region_name=>'demo1'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>41
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -49187,7 +49192,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'edit-dynamic-action'
 ,p_parent_plug_id=>wwv_flow_imp.id(32771434154634293764)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49202,7 +49207,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Examples'
 ,p_static_id=>'examples'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>31
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -49218,7 +49223,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'geojson'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067836224946443)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -49234,7 +49239,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'geojson-code'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067933703946444)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -49258,7 +49263,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Get Current Position'
 ,p_static_id=>'get-current-position'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>1
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -49290,7 +49295,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741197592747484353)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49307,7 +49312,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(17415828553819641222)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49324,7 +49329,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(31599976321031262095)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49341,7 +49346,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(32771434154634293764)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49368,7 +49373,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ios-requesting-permission'
 ,p_parent_plug_id=>wwv_flow_imp.id(16588355450741197093)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -49383,7 +49388,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'ios-returning-geolocation'
 ,p_parent_plug_id=>wwv_flow_imp.id(16588355450741197093)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49399,7 +49404,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'item-container'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067090120946436)
 ,p_region_template_options=>'#DEFAULT#:t-ItemContainer--stackMobile:t-ItemContainer--alignStretch'
-,p_plug_template=>1571470918551430249
+,p_plug_template=>1573422224041920678
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -49414,7 +49419,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'javascript-function'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067836224946443)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49432,7 +49437,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'javascript-function-code'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039068123982946446)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -49450,7 +49455,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'latitude-and-longitude'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067836224946443)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49468,7 +49473,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'latitude-and-longitude-code'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039067986202946445)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -49485,7 +49490,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -49507,7 +49512,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'get-current-position'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--stretch'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Geolocate'
 ,p_button_position=>'BUTTON_END'
@@ -49522,7 +49527,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'Y',
@@ -49540,7 +49545,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>30
-,p_field_template=>1610598304472262251
+,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'disabled', 'Y',
@@ -49628,7 +49633,7 @@ wwv_flow_imp_page.create_page(
 '    width: 100%;',
 '    border-radius: 5px;',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -49640,14 +49645,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(15570145938358927051)
@@ -49655,7 +49660,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'compatibility'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741603029089958713)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>1
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49718,7 +49723,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Demo'
 ,p_static_id=>'demo'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -49734,7 +49739,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'edit-dynamic-action'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741603029089958713)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49750,7 +49755,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'edit-meta-tag'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039066622694946431)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>8
@@ -49765,7 +49770,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Examples'
 ,p_static_id=>'examples'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -49781,7 +49786,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570145398199927046)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49798,7 +49803,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570145195486927044)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -49815,7 +49820,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570146667249927058)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -49831,7 +49836,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(15570146757134927059)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49848,7 +49853,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039066622694946431)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -49871,7 +49876,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741603029089958713)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49898,7 +49903,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741604134907961273)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49921,7 +49926,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions-4'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741604134907961273)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49943,7 +49948,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Meta tags'
 ,p_static_id=>'meta-tags'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -49959,7 +49964,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -49979,7 +49984,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'sharing-an-apex-page-on-ios'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741604134907961273)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -49995,7 +50000,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'sharing-an-apex-page-on-safari-desktop'
 ,p_parent_plug_id=>wwv_flow_imp.id(16741604134907961273)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -50010,7 +50015,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Sharing APEX Content'
 ,p_static_id=>'sharing-apex-content'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -50034,7 +50039,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'share'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large:t-Button--stretch:t-Button--padLeft'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Share'
 ,p_warn_on_unsaved_changes=>null
@@ -50130,7 +50135,7 @@ wwv_flow_imp_page.create_page(
 '    width: 100%;',
 '    border-radius: 5px;',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -50142,7 +50147,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'apex-admin-instance'
 ,p_parent_plug_id=>wwv_flow_imp.id(18007279124119101115)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -50157,7 +50162,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'apex-authentication-login'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360459271771227107)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--padded:t-ContentBlock--h3:t-ContentBlock--shadowBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50178,21 +50183,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16039068761872946453)
 ,p_plug_name=>'Example'
 ,p_static_id=>'example'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -50210,7 +50215,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16087873823171546405)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>30
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_item_display_point=>'ABOVE'
@@ -50226,7 +50231,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(16087873901578546406)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_css_classes=>'padding-none'
 ,p_plug_item_display_point=>'ABOVE'
@@ -50242,7 +50247,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image-3'
 ,p_parent_plug_id=>wwv_flow_imp.id(17415828841545641225)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--rounded:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -50258,7 +50263,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'increased-engagement'
 ,p_parent_plug_id=>wwv_flow_imp.id(16721609946747378046)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -50274,7 +50279,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(18007279124119101115)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -50288,7 +50293,7 @@ wwv_flow_imp_page.create_page_plug(
 '    <li>Set the <strong>lifetime</strong> duration for the automatic session renewal, in days</li>',
 '</ol>',
 '<ul>',
-'    <li style="list-style-type: none;"><em class="u-flex">Note: apex.oracle.com has this enabled for demo purposes</em></li>',
+'    <li style="list-style-type: none;"><em class="u-flex">Note: oracleapex.com has this enabled for demo purposes</em></li>',
 '</ul>',
 ''))
 ,p_landmark_label=>'Persistent authentication Instructions'
@@ -50302,7 +50307,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'login-page-default'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039068761872946453)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_grid_column_span=>4
 ,p_plug_grid_column_css_classes=>'padding-none'
@@ -50319,7 +50324,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'login-page-with-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039068761872946453)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_grid_column_span=>4
@@ -50336,7 +50341,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Manage Instance'
 ,p_static_id=>'manage-instance'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -50351,7 +50356,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_grid_column_span=>8
@@ -50371,7 +50376,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -50391,7 +50396,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'secured-by-default'
 ,p_parent_plug_id=>wwv_flow_imp.id(16721609946747378046)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -50407,7 +50412,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'using-the-api'
 ,p_parent_plug_id=>wwv_flow_imp.id(16721609946747378046)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -50442,7 +50447,7 @@ wwv_flow_imp_page.create_page(
 '    width: 100%;',
 '    border-radius: 5px;',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -50454,14 +50459,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(17415829316350641230)
@@ -50469,7 +50474,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'image'
 ,p_parent_plug_id=>wwv_flow_imp.id(16729780910048038673)
 ,p_region_template_options=>'#DEFAULT#:t-ImageRegion--auto:t-ImageRegion--cover:t-ImageRegion--square:t-ImageRegion--noFilter'
-,p_plug_template=>1676876785387892020
+,p_plug_template=>1678828090878382449
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -50485,7 +50490,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'instructions'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039066306541946428)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:t-ContentBlock--shadowBG:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -50509,7 +50514,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'offline-preview'
 ,p_parent_plug_id=>wwv_flow_imp.id(16039066306541946428)
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h3:js-headingLevel-3'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>20
 ,p_plug_grid_column_span=>8
 ,p_plug_item_display_point=>'ABOVE'
@@ -50523,7 +50528,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Overview'
 ,p_static_id=>'overview'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:js-headingLevel-2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
@@ -50540,7 +50545,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -50564,7 +50569,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'ADVANCED'
 ,p_step_title=>'Advanced'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -50576,14 +50581,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'advanced'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h1:t-ContentBlock--lightBG:t-ContentBlock--hideHeader js-addHiddenHeadingRoleDesc'
 ,p_component_template_options=>'t-MediaList--showIcons'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>40
 ,p_plug_grid_column_css_classes=>'col-lg-10 col-xl-8 col-xxl-8'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(1372422230488158118)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16787048845188318656)
@@ -50591,14 +50596,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 end;
 /
@@ -50610,7 +50615,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'FAQ'
 ,p_step_title=>'FAQ'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -50621,7 +50626,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'APEX PWAs'
 ,p_static_id=>'apex-pwas'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>250
 ,p_plug_grid_column_span=>10
 ,p_plug_display_column=>2
@@ -50638,21 +50643,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_plug_name=>'Business'
 ,p_static_id=>'business'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>270
 ,p_plug_grid_column_span=>10
 ,p_plug_display_column=>2
@@ -50669,7 +50674,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-apex-pwas-use-operating-system-resources'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>90
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50704,7 +50709,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-i-track-how-many-times-my-pwa-was-installed'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50734,7 +50739,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-my-apex-pwa-detect-the-device-i-m-on'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166657732372936)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>210
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50772,7 +50777,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-my-apex-pwa-support-payment-methods'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50837,7 +50842,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-my-apex-pwa-use-geolocation'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166657732372936)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>100
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50871,7 +50876,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-my-existing-apex-app-become-a-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>70
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50895,7 +50900,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'can-my-pwa-be-installed-from-google-play-or-app-store'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -50948,7 +50953,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Development Tips'
 ,p_static_id=>'development-tips'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>260
 ,p_plug_grid_column_span=>10
 ,p_plug_display_column=>2
@@ -50965,7 +50970,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'do-users-need-to-sign-in-every-time-they-open-my-apex-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>80
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51001,7 +51006,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'General'
 ,p_static_id=>'general'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2'
-,p_plug_template=>2323592004483952560
+,p_plug_template=>2325543309974442989
 ,p_plug_display_sequence=>240
 ,p_plug_grid_column_span=>10
 ,p_plug_display_column=>2
@@ -51018,7 +51023,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'how-can-i-customize-the-ui-of-my-apex-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166657732372936)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>130
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51049,7 +51054,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'how-do-apex-pwas-use-caching-on-a-device'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>230
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51089,7 +51094,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'how-do-i-develop-an-apex-pwa-icon'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166657732372936)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>110
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51136,7 +51141,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'how-do-i-uninstall-a-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462682028227141)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>180
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51190,7 +51195,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'how-long-does-it-take-to-develop-an-apex-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51232,7 +51237,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'is-it-possible-to-generate-an-apk-of-my-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462682028227141)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>170
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51295,7 +51300,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'is-it-possible-to-have-apex-builder-become-a-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>240
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51325,7 +51330,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'is-it-possible-to-use-my-apex-pwa-offline'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51376,8 +51381,8 @@ wwv_flow_imp_page.create_page_plug(
 '    incremental offline data capabilities into future Oracle APEX',
 '    versions. You can do this by logging new ideas for targeted',
 '    offline capabilities based on your experiences',
-'    at <a target="_blank"',
-'    href="https://apex.oracle.com/ideas">apex.oracle.com/ideas</a>.',
+'    at <a target="_blank" rel="noopener noreferrer external"',
+'    href="https://oracleapex.com/ideas">oracleapex.com/ideas</a>.',
 '',
 '</p>',
 ''))
@@ -51391,7 +51396,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'is-pwa-a-native-mobile-app'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462682028227141)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51431,7 +51436,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'is-there-any-way-to-avoid-the-splash-screen-when-opening-the-app-after-some-idle-time'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166657732372936)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>220
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51462,7 +51467,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'what-apps-are-best-for-pwa-and-which-ones-are-not-recommended'
 ,p_parent_plug_id=>wwv_flow_imp.id(1370166729583372937)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51533,7 +51538,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'what-devices-and-browsers-are-compatible-with-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462682028227141)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51572,7 +51577,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'what-is-a-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462682028227141)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51623,7 +51628,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'what-is-an-apex-pwa'
 ,p_parent_plug_id=>wwv_flow_imp.id(1360462725579227142)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>40
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -51663,7 +51668,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'ROADMAP'
 ,p_step_title=>'Roadmap'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -51673,7 +51678,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(3399916521725184)
 ,p_name=>'APEX 23.2'
 ,p_static_id=>'apex'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -51709,9 +51714,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -51794,7 +51800,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(815334210035876995)
 ,p_name=>'APEX 23.1'
 ,p_static_id=>'apex-2'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -51830,9 +51836,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -51915,7 +51922,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1363441291859830523)
 ,p_name=>'APEX 21.2'
 ,p_static_id=>'apex-3'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -51977,9 +51984,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -52062,7 +52070,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1363442486423830535)
 ,p_name=>'APEX 22.1'
 ,p_static_id=>'apex-4'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -52137,9 +52145,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -52222,7 +52231,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1363443345088830544)
 ,p_name=>'APEX 22.2'
 ,p_static_id=>'apex-5'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -52323,9 +52332,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -52410,21 +52420,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(16022627005005921124)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1370897324083870812)
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -52442,7 +52452,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(1363441568577830526)
 ,p_name=>'Roadmap'
 ,p_static_id=>'roadmap'
-,p_template=>2323592004483952560
+,p_template=>2325543309974442989
 ,p_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_template_options=>'#DEFAULT#:t-ContentBlock--h2:t-ContentBlock--lightBG'
@@ -52543,9 +52553,10 @@ wwv_flow_imp_page.create_report_region(
 'order by id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>9999
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -52634,7 +52645,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'EMPTY'
 ,p_step_title=>'A PWA Page'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'

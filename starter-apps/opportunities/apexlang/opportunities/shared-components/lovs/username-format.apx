@@ -1,0 +1,20 @@
+lov username-format (
+    name: USERNAME_FORMAT
+    source {
+        location: staticValues
+    }
+
+    entry email-address (
+        sequence: 1
+        display: Email Address
+        return: EMAIL
+    )
+
+    entry non-email-address (
+        sequence: 2
+        display: Non-Email Address
+        return: STRING
+    )
+
+)
+

@@ -7,13 +7,10 @@ page 600 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feature-about-page
@@ -85,6 +82,9 @@ page 600 (
                 #DEFAULT#
                 t-AVPList--rightAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APP_VERSION (

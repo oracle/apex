@@ -1,0 +1,12 @@
+lov sp-project-scales-scale-name (
+    name: SP_PROJECT_SCALES.SCALE_NAME
+    source {
+        tableName: SP_PROJECT_SCALES
+    }
+    columnMapping {
+        return: SCALE_LETTER
+        display: SCALE_NAME
+        defaultSort: SCALE_NAME
+    }
+)
+

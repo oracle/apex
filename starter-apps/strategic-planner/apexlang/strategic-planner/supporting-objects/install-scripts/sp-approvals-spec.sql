@@ -39,6 +39,11 @@ function more_info_pending_cnt (
     p_team_member_id  in  number
 ) return number;
 
+procedure delegate (
+    p_project_approval_chain_id  in  number,
+    p_delegate_reason            in  varchar2, -- 'APPROVER-SET-INACTIVE','REASSIGNMENT'
+    p_delegate_comments          in  varchar2,
+    p_team_member_id             in  number );
 
 ---------------------------------
 -- only used within workflow
@@ -47,7 +52,7 @@ function more_info_pending_cnt (
 procedure identify_next_reviewer (
     p_project_approval_id        in   number,
     p_project_approval_chain_id  out  number,
-    p_reviewer_email             out  varchar2,
+--    p_reviewer_email             out  varchar2,
     p_reviewer_tm_id             out  number );
 
 procedure approve (

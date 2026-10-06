@@ -1,0 +1,159 @@
+list data-display-options (
+    name: Data Display Options
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 308
+            }
+        }
+        userDefinedAttributes {
+            1: Presents REST data in the APEX Calendar component for date-based visualization.
+        }
+    )
+
+    entry cards-layout (
+        label: Cards Layout
+        icon {
+            imageIconCssClasses: fa-address-card
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 304
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases how to use visual card regions to display REST data in a mobile-friendly format, offering an alternative presentation to traditional reports.
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 306
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to consume and display REST-sourced data using Faceted Search, with filtering by Job and Salary ranges.
+        }
+    )
+
+    entry map (
+        label: Map
+        icon {
+            imageIconCssClasses: fa-map-marker
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 307
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Displays REST data on a map using the built-in APEX Map component.
+                
+                
+                ```
+        }
+    )
+
+    entry oracle-jet-charts (
+        label: Oracle JET Charts
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 305
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Demonstrates how to build interactive, dynamic visualizations using Oracle JET.
+                
+                
+                ```
+        }
+    )
+
+    entry report-with-pagination (
+        label: Report with Pagination
+        icon {
+            imageIconCssClasses: fa-table-clock
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 302
+            }
+        }
+        userDefinedAttributes {
+            1: Highlights how to dynamically fetch and display subsets of data from a REST service using offset/limit parameters, making it suitable for large datasets.
+        }
+    )
+
+    entry report-with-query (
+        label: Report with Query
+        icon {
+            imageIconCssClasses: fa-database-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 303
+            }
+        }
+        userDefinedAttributes {
+            1: Illustrates how to create a report that handles larger REST service responses and offers built-in query capabilities.
+        }
+    )
+
+    entry simple-report (
+        label: Simple Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 301
+            }
+        }
+        userDefinedAttributes {
+            1: Shows how to consume a REST endpoint with automatic JSON conversion to present data without advanced features.
+        }
+    )
+
+)
+

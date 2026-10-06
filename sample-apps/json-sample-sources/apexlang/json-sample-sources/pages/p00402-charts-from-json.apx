@@ -7,13 +7,8 @@ page 402 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -61,6 +56,9 @@ page 402 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false
@@ -125,6 +123,9 @@ page 402 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             dimOnHover: false
@@ -230,6 +231,9 @@ page 402 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         value {
             format: decimal

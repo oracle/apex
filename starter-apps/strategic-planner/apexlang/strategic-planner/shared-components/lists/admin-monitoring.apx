@@ -1,0 +1,194 @@
+list admin-monitoring (
+    name: Admin - Monitoring
+
+    entry application-errors (
+        label: Application Errors
+        icon {
+            imageIconCssClasses: fa-bug
+        }
+        layout {
+            sequence: 45
+        }
+        link {
+            target: {
+                page: 10051
+            }
+        }
+        userDefinedAttributes {
+            1: Errors logged by APEX (not all are real errors, users hitting validations and sessions ending will also be logged)
+        }
+    )
+
+    entry application-log (
+        label: Application Log
+        icon {
+            imageIconCssClasses: fa-table-wrench
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Log of all changes to administrative data (users, settings, valid values)
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 16020
+                clearCache: 16020
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+        config {
+            buildOption: @email-configured
+        }
+    )
+
+    entry error-log (
+        label: Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 16000
+            }
+        }
+        userDefinedAttributes {
+            1: Errors raised by the packages used by this application
+        }
+    )
+
+    entry job-reporting (
+        label: Job Reporting
+        icon {
+            imageIconCssClasses: fa-user-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 16010
+                clearCache: 16010
+            }
+        }
+        userDefinedAttributes {
+            1: View status and run details of jobs supporting this application
+        }
+    )
+
+    entry page-performance (
+        label: Page Performance
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 71
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry page-views (
+        label: Page Views
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry page-views-by-user (
+        label: Page Views by User
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 72
+            }
+        }
+        userDefinedAttributes {
+            1: Application page view details
+        }
+    )
+
+    entry team-member-notifications (
+        label: Team Member Notifications
+        icon {
+            imageIconCssClasses: fa-bell
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 10790
+            }
+        }
+        userDefinedAttributes {
+            1: All notifications sent from this application.
+        }
+    )
+
+    entry workflow-console (
+        label: Workflow Console
+        icon {
+            imageIconCssClasses: fa-gears
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 4000
+            }
+        }
+        userDefinedAttributes {
+            1: Monitor the Workflow that manages approval of &NOMENCLATURE_PROJECTS.
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+)
+

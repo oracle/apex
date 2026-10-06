@@ -7,7 +7,6 @@ page 12 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     htmlHeader {
@@ -33,8 +32,6 @@ page 12 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -98,6 +95,9 @@ page 12 (
                 t-AVPList--rightAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column APP_VERSION (
@@ -181,32 +181,6 @@ page 12 (
         }
     )
 
-    region help (
-        name: Help
-        type: breadcrumb
-        source {
-            breadcrumb: @breadcrumb
-        }
-        layout {
-            sequence: 70
-            slot: breadcrumbBar
-        }
-        appearance {
-            template: @/title-bar
-            templateOptions: [
-                #DEFAULT#
-                t-BreadcrumbRegion--useBreadcrumbTitle
-            ]
-        }
-        serverSideCondition {
-            type: never
-        }
-        componentAppearance {
-            breadcrumbTemplate: @/breadcrumb
-            templateOptions: #DEFAULT#
-        }
-    )
-
     region help-container (
         name: Help Container
         type: staticContent
@@ -231,7 +205,7 @@ page 12 (
             htmlCode:
                 ```html
                 <H2>Getting Started</h2>
-                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Application Express Application Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
+                <p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the APEX Builder. Click on the "Edit Page X" button to see how the pages are defined.</p>
                 
                 ```
         }

@@ -7,13 +7,6 @@ page 103 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: Groups defined to group &NOMENCLATURE_USERS. together.  Each &NOMENCLATURE_USER. in the group is identified as full or part time and each group can have members identified as a Leader of that group (there can be more than one).  This allows viewing all the &NOMENCLATURE_PROJECTS. assigned to a group.
     }
@@ -139,7 +132,7 @@ page 103 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -155,7 +148,7 @@ page 103 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -171,7 +164,7 @@ page 103 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -189,7 +182,7 @@ page 103 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -207,7 +200,7 @@ page 103 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -225,7 +218,7 @@ page 103 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -251,7 +244,7 @@ page 103 (
                 linkText: #GROUP_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -267,7 +260,7 @@ page 103 (
                 sequence: 48
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -284,7 +277,7 @@ page 103 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -303,7 +296,7 @@ page 103 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -319,7 +312,7 @@ page 103 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -376,174 +369,148 @@ page 103 (
 
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
+    button actions (
+        buttonName: actions
+        label: Actions
         layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
+            sequence: 20
+            region: @breadcrumb
+            slot: next
         }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
         }
 
-        column ACTIONS (
+        menu about-users (
+            label: About Groups
             layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu about-groups (
-                label: About Groups
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 145
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-info
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 60
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 30
-                }
-            )
-
-            menu nomenclature-users-details (
-                label: &NOMENCLATURE_USERS. Details
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 19
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 70
-                }
-                behavior {
-                    target: {
-                        page: 103
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 103
-                        clearCache: [
-                            103
-                            CIR
-                            RIR
-                        ]
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-            menu view-nomenclature-users (
-                label: View &NOMENCLATURE_USERS.
-                layout {
-                    sequence: 20
-                }
-                behavior {
-                    target: {
-                        page: 74
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-users
-                }
-                security {
-                    authorizationScheme: @contribution-rights
-                }
-            )
-
-        )
-
-        action add-group (
-            position: primaryActions
-            template: button
-            label: Add Group
-            layout {
-                sequence: 10
+                sequence: 50
             }
             behavior {
                 target: {
-                    page: 150
-                    clearCache: 150
+                    page: 145
                     action: resetPagination
                 }
             }
             appearance {
-                displayType: textWithIcon
-                icon: fa-plus
-                hot: true
-            }
-            security {
-                authorizationScheme: @contribution-rights
+                icon: fa-info
             }
         )
 
+        menu groups (
+            label: View &NOMENCLATURE_USERS.
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 74
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users
+            }
+        )
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 103
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 80
+            }
+            behavior {
+                target: {
+                    page: 103
+                    clearCache: 103
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 30
+            }
+        )
+
+        menu sep2 (
+            type: separator
+            layout {
+                sequence: 60
+            }
+        )
+
+        menu user-details (
+            label: &NOMENCLATURE_USERS. Details
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 19
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users
+            }
+        )
+
+    )
+
+    button add-group (
+        buttonName: add_group
+        label: Add Group
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 150
+                clearCache: 150
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
     )
 
     button up (

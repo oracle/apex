@@ -7,13 +7,11 @@ page 101 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
         pageAccessProtection: noArgumentsSupported
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always

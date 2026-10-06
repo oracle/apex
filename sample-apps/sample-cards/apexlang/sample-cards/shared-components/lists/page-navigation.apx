@@ -1,0 +1,20 @@
+list page-navigation (
+    name: Page Navigation
+
+    entry cards-demo (
+        label: Cards Demo
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

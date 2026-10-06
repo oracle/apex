@@ -1,0 +1,33 @@
+searchConfig customer (
+    name: Customer Search Configuration
+    source {
+        tableName: EBA_DEMO_SEARCH_CUSTOMERS
+        searchableColumns: [
+            FULL_NAME
+            EMAIL_ADDRESS
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: CUSTOMER_ID
+        titleColumn: FULL_NAME
+        descriptionColumn: EMAIL_ADDRESS
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 203
+            items: {
+                P203_CUSTOMER_ID: &CUSTOMER_ID.
+            }
+            clearCache: 203
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-user u-color-10-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

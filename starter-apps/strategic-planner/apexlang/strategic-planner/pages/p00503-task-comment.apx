@@ -14,16 +14,11 @@ page 503 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -101,6 +96,14 @@ page 503 (
                             data: {
                                 imageRefId: apex.item('P503_NEW_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'TASK',
+                            objectId: apex.items.P503_TASK_ID.value
+                        },
+                        docs: {
+                            scope: 'TASK',
+                            objectId: apex.items.P503_TASK_ID.value
                         }
                     });
                 }

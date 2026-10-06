@@ -8,12 +8,7 @@ page 50 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -124,9 +119,6 @@ page 50 (
                 t-Report--rowHighlight
                 t-Report--inline
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column DATE_OF_SALE (

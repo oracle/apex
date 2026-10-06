@@ -1,0 +1,14 @@
+lov is-active (
+    name: IS ACTIVE
+    source {
+        location: staticValues
+    }
+
+    entry active (
+        sequence: 10
+        display: Active
+        return: Y
+    )
+
+)
+

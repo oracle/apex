@@ -7,12 +7,7 @@ page 110 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -111,6 +106,7 @@ page 110 (
                     and airport_type = 'HELIPORT' 
                     ```
                 pageItemsToSubmit: P110_STATE
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY
@@ -132,6 +128,7 @@ page 110 (
                 tableName: EBA_SAMPLE_MAP_STATES
                 whereClause: upper(NAME) = :P110_STATE
                 pageItemsToSubmit: P110_STATE
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY

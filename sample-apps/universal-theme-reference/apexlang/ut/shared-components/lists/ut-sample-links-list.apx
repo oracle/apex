@@ -1,0 +1,116 @@
+list ut-sample-links-list (
+    name: UT - Sample Links List
+
+    entry amet-incorporated (
+        label: Amet Incorporated
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 4
+        }
+    )
+
+    entry cras-interdum-consulting (
+        label: Cras Interdum Consulting
+        icon {
+            imageIconCssClasses: fa-envelope
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 431
+        }
+    )
+
+    entry eros-nec-corporation (
+        label: Eros Nec Corporation
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry felis-associates (
+        label: Felis Associates
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: Pending
+        }
+    )
+
+    entry ridiculus-llp (
+        label: Ridiculus LLP
+        icon {
+            imageIconCssClasses: fa-comments
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 12
+        }
+    )
+
+    entry tristique-llc (
+        label: Tristique LLC
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            1: 4
+        }
+    )
+
+)
+

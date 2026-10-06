@@ -1,0 +1,13 @@
+lov statuses (
+    name: STATUSES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select status d, id r
+            from   EBA_CUST_STATUS
+            order by 1
+            ```
+    }
+)
+

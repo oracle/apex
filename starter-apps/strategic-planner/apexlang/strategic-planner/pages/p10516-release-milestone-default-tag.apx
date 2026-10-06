@@ -14,13 +14,8 @@ page 10516 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @releases
@@ -145,10 +140,11 @@ page 10516 (
         type: textField
         label {
             label: Tag
-            alignment: right
+            alignment: left
         }
         settings {
             trimSpaces: none
+            textCase: upper
         }
         layout {
             sequence: 30

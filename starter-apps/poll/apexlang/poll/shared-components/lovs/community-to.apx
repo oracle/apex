@@ -1,0 +1,14 @@
+lov community-to (
+    name: COMMUNITY TO
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name, id
+            from EBA_QPOLL_RESP_COMMUNITIES
+            where id <> nvl(:P70_COMMUNITY_ID,-1)
+            order by 1
+            ```
+    }
+)
+

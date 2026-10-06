@@ -7,6 +7,7 @@ create table sp_project_ai_summaries (
    summary_type       varchar2(30),  -- full or update
    prompt_sent        clob, 
    details_sent       clob,
+   details_json       clob,
    data_received      clob,
    --
    summary            clob,

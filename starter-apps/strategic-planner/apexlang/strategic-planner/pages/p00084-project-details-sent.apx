@@ -10,15 +10,8 @@ page 84 (
     dialog {
         chained: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
-        buildOption: @ai-project-summaries
+        buildOption: @ai-project-summaries-view
     }
 
     region details-sent (

@@ -1,0 +1,13 @@
+lov stores (
+    name: STORES
+    source {
+        location: jsonDualityView
+        jsonDualityView: @eba_demo_json_store_dv
+    }
+    columnMapping {
+        return: ID
+        display: STORENAME
+        defaultSort: STORENAME
+    }
+)
+

@@ -1,0 +1,24 @@
+lov email-groups-with-cnt (
+    name: EMAIL GROUPS WITH CNT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' (' || cnt  || 
+                      case when cnt = 1 then ' member)'
+                           else ' members)' end d, 
+                   group_id r 
+              from (
+            select g.group_id,
+                   g.group_name name,
+                   count(*) cnt    
+              from EBA_ca_email_groups g, 
+                   EBA_ca_email_group_mbrs m
+             where m.group_id = g.group_id
+             group by g.group_id, g.group_name
+            )
+            order by name
+            ```
+    }
+)
+

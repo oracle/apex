@@ -8,12 +8,7 @@ page 42 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -102,6 +97,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PRODUCT
@@ -132,6 +128,7 @@ page 42 (
             listEntries {
                 sortByTopCounts: false
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: THE_MONTH

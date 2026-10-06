@@ -1,0 +1,32 @@
+searchConfig ORACLE_TEXT_SEARCH_AND_VECTOR (
+    name: ORACLE-TEXT-SEARCH-AND-VECTOR-MOVIEDATA
+    type: text
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+        oracleTextIndexColumn: MOVIEDESCRIPTION
+    }
+    orderBy {
+        orderByClause:
+            ```sql
+            VECTOR_DISTANCE(embedding_vector, 
+                apex_ai.get_vector_embeddings(
+                    p_value =>             :P17_SEARCH, 
+                    p_service_static_id => case when :CURRENT_AI_PROVIDER = 'OCI' then 'EBA_VECTOR_OCI' else 'EBA_VECTOR_OPENAI' end), DOT) ASC
+            ```
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

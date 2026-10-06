@@ -1,0 +1,598 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                36
+                4
+                34
+            ]
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+    )
+
+    entry analytic-functions (
+        label: Analytic Functions
+        icon {
+            imageIconCssClasses: fa-flash
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry bind-variables (
+        label: Bind Variables
+        layout {
+            sequence: 140
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+                action: resetPagination
+            }
+        }
+    )
+
+    entry cards (
+        label: Cards
+        layout {
+            sequence: 65
+            parentEntry: @sample-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 41
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry case-statements (
+        label: CASE Statements
+        layout {
+            sequence: 200
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 19
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Highlights the Oracle CASE statement which can be used to perform IF-THEN-ELSE logic in queries.
+        }
+    )
+
+    entry classic-report (
+        label: Classic Report
+        layout {
+            sequence: 70
+            parentEntry: @sample-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry column-format-masks (
+        label: Column Format Masks
+        layout {
+            sequence: 170
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 8
+                action: resetPagination
+            }
+        }
+    )
+
+    entry connect-by (
+        label: Connect By
+        layout {
+            sequence: 210
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates a hierarchy query using connect by and the sys connect by path.
+        }
+    )
+
+    entry custom-buttons (
+        label: Custom Buttons
+        layout {
+            sequence: 180
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry drill-down-interactive-grid (
+        label: Drill Down Interactive Grid
+        layout {
+            sequence: 105
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 40
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+    )
+
+    entry drill-down-interactive-report (
+        label: Drill Down Interactive Report
+        layout {
+            sequence: 100
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 6
+                action: resetPagination
+            }
+        }
+    )
+
+    entry faceted-search (
+        label: Faceted Search
+        layout {
+            sequence: 63
+            parentEntry: @sample-reports
+        }
+        isCurrent {
+            type: pages
+            pages: 42
+        }
+        link {
+            target: {
+                page: 42
+            }
+        }
+    )
+
+    entry filtering (
+        label: Filtering
+        layout {
+            sequence: 150
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry group-by (
+        label: Group By
+        layout {
+            sequence: 260
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 23
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: The GROUP BY clause allows a developer to use SQL aggregate functions (AVG, COUNT, MAX, MIN, STDDEV, SUM and VARIANCE).
+        }
+    )
+
+    entry inline-views (
+        label: Inline Views
+        layout {
+            sequence: 270
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: Inline views are commonly used to simplify complex queries by removing join operations.
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        layout {
+            sequence: 60
+            parentEntry: @sample-reports
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        layout {
+            sequence: 55
+            parentEntry: @sample-reports
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                2
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-report-query-api (
+        label: Interactive Report Query API
+        layout {
+            sequence: 120
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry lead-and-lag (
+        label: LEAD and LAG
+        layout {
+            sequence: 290
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates use of LEAD and LAG functions to get next and previous data.
+        }
+    )
+
+    entry linking-to-interactive-grids (
+        label: Linking to Interactive Grids
+        layout {
+            sequence: 135
+            parentEntry: @use-cases
+        }
+        isCurrent {
+            type: pages
+            pages: 37
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+    )
+
+    entry linking-to-interactive-reports (
+        label: Linking to Interactive Reports
+        layout {
+            sequence: 130
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry listagg (
+        label: LISTAGG
+        layout {
+            sequence: 300
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates ordering data within each group and concatenate the values in a comma delimited list.
+        }
+    )
+
+    entry non-tabular-templates (
+        label: Non-Tabular Templates
+        layout {
+            sequence: 160
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry pipelined-functions (
+        label: Pipelined Functions
+        layout {
+            sequence: 280
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Pipelined functions provide the ability to reference the data returned by a PL/SQL process as a table in a SQL statement.
+        }
+    )
+
+    entry pivot (
+        label: Pivot
+        layout {
+            sequence: 220
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: "Highlights the use of the PIVOT operator. This operator takes data in separate rows, aggregates it, and converts it into columns. "
+        }
+    )
+
+    entry rank-and-dense-rank (
+        label: RANK and DENSE_RANK
+        layout {
+            sequence: 310
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to rank the records based on a column value or expression.
+        }
+    )
+
+    entry ratio-to-report (
+        label: RATIO_TO_REPORT
+        layout {
+            sequence: 320
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to compare the current value against the sum of another set of values.
+        }
+    )
+
+    entry regular-expressions (
+        label: Regular Expressions
+        layout {
+            sequence: 230
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Regular expressions enable you to search for patterns in string data by using standardized syntax conventions.
+        }
+    )
+
+    entry report-highlighting (
+        label: Report Highlighting
+        layout {
+            sequence: 110
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 7
+                action: resetPagination
+            }
+        }
+    )
+
+    entry reporting-from-collections (
+        label: Reporting from Collections
+        layout {
+            sequence: 190
+            parentEntry: @use-cases
+        }
+        link {
+            target: {
+                page: 38
+                clearCache: 38
+                action: resetPagination
+            }
+        }
+    )
+
+    entry row-number (
+        label: ROW_NUMBER
+        layout {
+            sequence: 330
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to assign a serial number to a partition of records. This is very useful in reporting, especially in places where different partitions have their own serial numbers.
+        }
+    )
+
+    entry sample-reports (
+        label: Sample Reports
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10
+                14
+                41
+                42
+            ]
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry soundex (
+        label: Soundex
+        layout {
+            sequence: 240
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+        userDefinedAttributes {
+            1: This function lets you compare words that are spelled differently, but sound alike in English.
+        }
+    )
+
+    entry sql-examples (
+        label: SQL Examples
+        icon {
+            imageIconCssClasses: fa-search-plus
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 39
+            }
+        }
+    )
+
+    entry string-functions (
+        label: String Functions
+        layout {
+            sequence: 250
+            parentEntry: @sql-examples
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_FUNCTION: SUBSTR
+                }
+                clearCache: 27
+            }
+        }
+        userDefinedAttributes {
+            1: Examples of substr, instr, nvl, nvl2, coalesce, replace, and trim SQL functions.
+        }
+    )
+
+    entry top-n-queries (
+        label: Top N Queries
+        layout {
+            sequence: 340
+            parentEntry: @analytic-functions
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Top-N queries provide a method for limiting the number of rows returned from ordered sets of data.
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-briefcase
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+)
+

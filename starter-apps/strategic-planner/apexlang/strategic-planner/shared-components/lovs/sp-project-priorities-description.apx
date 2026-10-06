@@ -1,0 +1,12 @@
+lov sp-project-priorities-description (
+    name: SP_PROJECT_PRIORITIES.DESCRIPTION
+    source {
+        tableName: SP_PROJECT_PRIORITIES
+    }
+    columnMapping {
+        return: ID
+        display: DESCRIPTION
+        defaultSort: DESCRIPTION
+    }
+)
+

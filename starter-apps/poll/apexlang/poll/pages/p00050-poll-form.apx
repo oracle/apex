@@ -11,6 +11,7 @@ page 50 (
         overrideUserInterfaceLevel: true
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -128,7 +129,7 @@ page 50 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -264,7 +265,7 @@ page 50 (
         name: hide nobody
         type: staticContent
         source {
-            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+            htmlCode: "<style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>"
         }
         layout {
             sequence: 10

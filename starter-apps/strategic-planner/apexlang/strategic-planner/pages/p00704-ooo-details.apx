@@ -1,0 +1,1622 @@
+page 704 (
+    name: Out of Office Details
+    alias: OOO-DETAILS
+    title: Out of Office Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    config {
+        buildOption: @team-calendar
+    }
+
+    region audit-info (
+        name: audit info
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                sys.htp.p('<br/>created by '||apex_escape.html(lower(:P704_CREATED_BY))||' '||apex_escape.html(:P704_CREATED_SINCE));
+                
+                if :P704_CREATED_SINCE != :P704_UPDATED_SINCE then
+                    sys.htp.p('<br/>last updated by '||apex_escape.html(lower(:P704_UPDATED_BY))||' '||apex_escape.html(:P704_UPDATED_SINCE));
+                end if;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P704_ID is not null and
+                (:P704_CREATED_BY != :APP_USER or
+                 :P704_UPDATED_BY != :APP_USER)
+                ```
+        }
+    )
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region event-details (
+        name: Event Details
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_EVENTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    region recurrence (
+        name: recurrence
+        type: staticContent
+        layout {
+            sequence: 20
+            parentRegion: @event-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region (
+        name: region 1
+        type: staticContent
+        layout {
+            sequence: 10
+            parentRegion: @event-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region region-2 (
+        name: region 4
+        type: staticContent
+        layout {
+            sequence: 40
+            parentRegion: @event-details
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region user-timezone (
+        name: user timezone
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select nvl(timezone,'UTC') user_timezone
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    sys.htp.p('Your timezone is '||apex_escape.html(c1.user_timezone)||'. This is set under your profile.');
+                end loop;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 50
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P704_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_CREATED_SINCE (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_END_DATE (
+        type: datePicker
+        label {
+            label: End Date
+            alignment: left
+        }
+        settings {
+            minDate: item
+            minItem: P704_START_DATE
+        }
+        layout {
+            sequence: 70
+            region: @recurrence
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_EVENT_DATE (
+        type: datePicker
+        label {
+            label: Event Date
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @region
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+    )
+
+    pageItem P704_EVENT_DETAILS (
+        type: textarea
+        label {
+            label: Event Details
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @region-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 60
+            height: 4
+        }
+        validation {
+            maxLength: 4000
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_EVENT_FOR (
+        type: radioGroup
+        label {
+            label: Event For
+            alignment: left
+        }
+        settings {
+            noOfCols: 3
+        }
+        lov {
+            type: sharedComponent
+            lov: @p704-event-for
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 20
+            region: @region-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        default {
+            type: static
+            staticValue: M
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_EVENT_NAME (
+        type: textField
+        label {
+            label: Event Name
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @region-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_EVENT_TYPE_ID (
+        type: selectList
+        label {
+            label: Event Type
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select event_type d, id r   
+                  from sp_event_types
+                 where active_yn = 'Y'
+                    or :P704_EVENT_TYPE_ID = id    
+                 order by event_type
+                ```
+        }
+        layout {
+            sequence: 10
+            region: @region
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        quickPicks {
+            type: static
+            label1: &P704_QP1.
+            value1: &P704_QP1_ID.
+            label2: &P704_QP2.
+            value2: &P704_QP2_ID.
+            label3: &P704_QP3.
+            value3: &P704_QP3_ID.
+            label4: &P704_QP4.
+            value4: &P704_QP4_ID.
+            label5: &P704_QP5.
+            value5: &P704_QP5_ID.
+        }
+    )
+
+    pageItem P704_FOR_USER_ID (
+        type: selectOne
+        label {
+            label: For Team Member
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @sp-team-members-current-only
+        }
+        layout {
+            sequence: 40
+            region: @region-2
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        readOnly {
+            type: expression
+            plsqlExpression: not apex_authorization.is_authorized('Contribution Rights')
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_GENERAL_EVENT_YN (
+        type: hidden
+        settings {
+            valueProtected: false
+        }
+        layout {
+            sequence: 20
+            region: @region
+            slot: regionBody
+        }
+    )
+
+    pageItem P704_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @region
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_PREVIOUS_FOR_USER_ID (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP1 (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP1_ID (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP2 (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP2_ID (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP3 (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP3_ID (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP4 (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP4_ID (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP5 (
+        type: hidden
+        layout {
+            sequence: 130
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_QP5_ID (
+        type: hidden
+        layout {
+            sequence: 140
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_RECURS (
+        type: checkbox
+        label {
+            label: Repeats?
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @region
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_RECUR_FREQ (
+        type: selectList
+        label {
+            label: Repeats
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @event-recurrence
+            displayNullValue: false
+        }
+        layout {
+            sequence: 50
+            region: @recurrence
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_SERIES_ID (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_START_DATE (
+        type: datePicker
+        label {
+            label: Start Date
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @recurrence
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: DD-Mon-YYYY
+            width: 32
+        }
+        validation {
+            maxLength: 255
+        }
+    )
+
+    pageItem P704_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P704_UPDATED_SINCE (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @region-2
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P704_ID
+        }
+    )
+
+    button delete-recur (
+        buttonName: DELETE_RECUR
+        label: Delete
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 706
+                items: {
+                    P706_EVENT_ID: &P704_ID.
+                }
+                clearCache: 706
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P704_ID is not null and
+                :P704_SERIES_ID is not null
+                ```
+        }
+    )
+
+    button delete-single (
+        buttonName: DELETE_SINGLE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P704_ID is not null and
+                :P704_SERIES_ID is null
+                ```
+        }
+    )
+
+    button save-recur (
+        buttonName: SAVE_RECUR
+        label: Apply Changes
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P704_ID is not null and
+                :P704_SERIES_ID is not null
+                ```
+        }
+    )
+
+    button save-single (
+        buttonName: SAVE_SINGLE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                :P704_ID is not null and
+                :P704_SERIES_ID is null
+                ```
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-event-type (
+        name: change event type
+        execution {
+            sequence: 40
+        }
+        when {
+            selectionType: items
+            items: P704_EVENT_TYPE_ID
+        }
+
+        action fetch-general-yn (
+            name: fetch GENERAL_YN
+            action: setValue
+            settings {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select general_event_yn
+                      from sp_event_types
+                     where id = :P704_EVENT_TYPE_ID
+                    ```
+                itemsToSubmit: P704_EVENT_TYPE_ID
+            }
+            affectedElements {
+                selectionType: items
+                items: P704_GENERAL_EVENT_YN
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action hide-event-name-when-not-general (
+            name: hide event name when not general
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_NAME
+            }
+            execution {
+                sequence: 80
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_GENERAL_EVENT_YN
+                value: N
+            }
+        )
+
+        action refresh-for-to-refresh-lov (
+            name: refresh for (to refresh lov)
+            action: refresh
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_FOR
+            }
+            execution {
+                sequence: 60
+                fireOnInit: false
+            }
+        )
+
+        action set-p704-general-event-yn-on-server (
+            name: set P704_GENERAL_EVENT_YN on server
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P704_GENERAL_EVENT_YN
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action show-event-for-if-event-for-o (
+            name: show event_for, if event_for O
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_FOR
+            }
+            execution {
+                sequence: 90
+            }
+            clientSideCondition {
+                type: itemIsNotNull
+                item: P704_EVENT_TYPE_ID
+            }
+        )
+
+        action show-event-name-for-general (
+            name: show event name for general
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_NAME
+            }
+            execution {
+                sequence: 70
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_GENERAL_EVENT_YN
+                value: Y
+            }
+        )
+
+    )
+
+    dynamicAction change-recur (
+        name: change recur
+        execution {
+            sequence: 30
+        }
+        when {
+            selectionType: items
+            items: P704_RECURS
+        }
+
+        action hide-event-date-for-recur (
+            name: hide event date for recur
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_DATE
+            }
+            execution {
+                sequence: 40
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+        action hide-recurrence-when-not-recur (
+            name: hide recurrence when not recur
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @recurrence
+            }
+            execution {
+                sequence: 70
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+        action set-event-date-when-not-recur (
+            name: set event date when not recur
+            action: setValue
+            settings {
+                type: plsqlExpression
+                plsqlExpression: nvl(v('P704_EVENT_DATE'),v('P704_START_DATE'))
+                itemsToSubmit: [
+                    P704_EVENT_DATE
+                    P704_START_DATE
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_DATE
+            }
+            execution {
+                sequence: 60
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+        action set-start-date-for-recur (
+            name: set start date for recur
+            action: setValue
+            settings {
+                type: plsqlExpression
+                plsqlExpression: nvl(v('P704_START_DATE'),v('P704_EVENT_DATE'))
+                itemsToSubmit: [
+                    P704_START_DATE
+                    P704_EVENT_DATE
+                ]
+            }
+            affectedElements {
+                selectionType: items
+                items: P704_START_DATE
+            }
+            execution {
+                sequence: 20
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+        action show-event-date-when-not-recur (
+            name: show event date when not recur
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_DATE
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: item!=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+        action show-recurrence-details-for-recur (
+            name: show recurrence details for recur
+            action: show
+            affectedElements {
+                selectionType: region
+                region: @recurrence
+            }
+            execution {
+                sequence: 10
+            }
+            clientSideCondition {
+                type: item=value
+                item: P704_RECURS
+                value: Y
+            }
+        )
+
+    )
+
+    dynamicAction hide-by-default (
+        name: hide by default
+        execution {
+            sequence: 20
+        }
+        when {
+            event: ready
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: region
+                region: @recurrence
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+        action native-hide-2 (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_NAME
+            }
+            execution {
+                sequence: 40
+            }
+        )
+
+        action native-hide-3 (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_EVENT_FOR
+            }
+            execution {
+                sequence: 50
+            }
+        )
+
+        action native-hide-4 (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_FOR_USER_ID
+            }
+            execution {
+                sequence: 60
+            }
+        )
+
+    )
+
+    dynamicAction when-event-for-e-show-for-user-id (
+        name: when event_for E, show for_user_id
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P704_EVENT_FOR
+        }
+        clientSideCondition {
+            type: item=value
+            item: P704_EVENT_FOR
+            value: E
+        }
+
+        action native-hide (
+            action: hide
+            affectedElements {
+                selectionType: items
+                items: P704_FOR_USER_ID
+            }
+            execution {
+                sequence: 10
+                fireWhenEventResultIs: false
+            }
+        )
+
+        action native-show (
+            action: show
+            affectedElements {
+                selectionType: items
+                items: P704_FOR_USER_ID
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    validation end-date-when-not-recur (
+        name: end date when not recur
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: itemIsNotNull
+            item: P704_EVENT_DATE
+        }
+        error {
+            errorMessage: Event date must be provided.
+            associatedItem: @P704_EVENT_DATE
+        }
+        serverSideCondition {
+            type: item=value
+            item: P704_RECURS
+            value: N
+        }
+    )
+
+    validation if-event-for-e-someone-else-must-select-person (
+        name: if event_for E (someone else), must select person
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: itemIsNotNull
+            item: P704_FOR_USER_ID
+        }
+        error {
+            errorMessage: Must provide user for this event.
+            associatedItem: @P704_FOR_USER_ID
+        }
+        serverSideCondition {
+            type: item=value
+            item: P704_EVENT_FOR
+            value: E
+        }
+    )
+
+    validation if-general-event-and-for-all-must-enter-event-name (
+        name: if general event and for all - must enter event name
+        execution {
+            sequence: 40
+        }
+        validation {
+            type: itemIsNotNull
+            item: P704_EVENT_NAME
+        }
+        error {
+            errorMessage: Must provide Event Name for this type of event
+            associatedItem: @P704_EVENT_NAME
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P704_GENERAL_EVENT_YN = 'Y' and :P704_EVENT_FOR = 'A'
+        }
+    )
+
+    validation start-and-end-for-recur (
+        name: start and end for recur
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                :P704_START_DATE is not null and
+                :P704_END_DATE is not null
+                ```
+        }
+        error {
+            errorMessage: Start and End Dates must be provided for recurring events.
+        }
+        serverSideCondition {
+            type: item=value
+            item: P704_RECURS
+            value: Y
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 70
+        }
+        advanced {
+            executionMappingIdentifier: 31822905641288727910
+        }
+    )
+
+    process create (
+        name: Create
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.create_event ( 
+                    p_event_type_id  => :P704_EVENT_TYPE_ID, 
+                    p_event_date     => case when :P704_RECURS = 'N' then to_date(:P704_EVENT_DATE,'DD-Mon-YYYY') else to_date(:P704_START_DATE,'DD-Mon-YYYY') end, 
+                    p_event_name     => case when :P704_GENERAL_EVENT_YN = 'Y' then :P704_EVENT_NAME end, 
+                    p_for_user_id    => case :P704_EVENT_FOR when 'E' 
+                                                             then :P704_FOR_USER_ID
+                                                             when 'M'
+                                                             then :APP_USER_ID
+                                                             end,
+                    p_event_details  => :P704_EVENT_DETAILS, 
+                    p_recur_freq     => case when :P704_RECURS = 'Y' then :P704_RECUR_FREQ end, 
+                    p_recur_end_date => case when :P704_RECURS = 'Y' then to_date(:P704_END_DATE,'DD-Mon-YYYY') end ); 
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) created.
+        }
+        advanced {
+            executionMappingIdentifier: 31820575230609549741
+        }
+        serverSideCondition {
+            whenButtonPressed: @create
+        }
+    )
+
+    process delete-no-recur (
+        name: Delete, no recur
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.delete_event (
+                    p_event_id => :P704_ID,
+                    p_delete_type => 'ONLY' );
+                ```
+        }
+        execution {
+            sequence: 50
+        }
+        successMessage {
+            successMessage: Event deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 31842513700530726826
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete-single
+            type: itemIsNull
+            item: P704_SERIES_ID
+        }
+    )
+
+    process load-data-for-edit (
+        name: Load data for edit
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select event_type_id,
+                           (select general_event_yn from sp_event_types
+                             where id = e.event_type_id) general_event_yn,
+                           event_date,
+                           event_name,
+                           event_details,
+                           for_user_id,
+                           series_id,
+                           created_by,
+                           apex_util.get_since(created) created_since,
+                           updated_by,
+                           apex_util.get_since(updated) updated_since
+                      from sp_events e
+                     where id = :P704_ID
+                ) loop
+                    :P704_EVENT_TYPE_ID    := c1.event_type_id;
+                    :P704_GENERAL_EVENT_YN := c1.general_event_yn;
+                    :P704_EVENT_DETAILS    := c1.event_details;
+                    :P704_EVENT_NAME       := c1.event_name;
+                    :P704_CREATED_BY       := c1.created_by;
+                    :P704_CREATED_SINCE    := c1.created_since;
+                    :P704_UPDATED_BY       := c1.updated_by;
+                    :P704_UPDATED_SINCE    := c1.updated_since;
+                
+                    if c1.for_user_id is null then
+                       :P704_EVENT_FOR := 'A';
+                    elsif sp_util.get_user_id(c1.created_by) = c1.for_user_id then
+                        :P704_EVENT_FOR := 'M';
+                    else   
+                        :P704_EVENT_FOR := 'E';    
+                    end if;
+                
+                    if c1.for_user_id is not null then
+                        :P704_FOR_USER_ID := c1.for_user_id;
+                        :P704_PREVIOUS_FOR_USER_ID := c1.for_user_id;
+                    end if;
+                
+                    :P704_EVENT_DATE := c1.event_date;
+                
+                    if c1.series_id is not null then
+                        for c2 in (
+                            select recur_freq, start_date, end_date
+                              from sp_event_series
+                             where id = c1.series_id
+                        ) loop
+                            :P704_RECURS     := 'Y';
+                            :P704_RECUR_FREQ := c2.recur_freq;
+                            :P704_START_DATE := c2.start_date;
+                            :P704_END_DATE   := c2.end_date;
+                            :P704_SERIES_ID  := c1.series_id;
+                        end loop;
+                    end if;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 31842513680999726825
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P704_ID
+        }
+    )
+
+    process load-quick-picks (
+        name: Load Quick Picks
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                   l_cnt  number := 1;
+                begin
+                
+                for c1 in (
+                    select event_type, id
+                      from sp_event_types
+                     where active_yn = 'Y'
+                 --      and general_event_yn = 'N'
+                       and quick_pick_yn = 'Y'
+                      order by event_type desc
+                ) loop
+                    if l_cnt = 1 then
+                        :P704_QP1    := c1.event_type;
+                        :P704_QP1_ID := c1.id;
+                    elsif l_cnt = 2 then
+                        :P704_QP2    := c1.event_type;
+                        :P704_QP2_ID := c1.id;
+                    elsif l_cnt = 3 then
+                        :P704_QP3    := c1.event_type;
+                        :P704_QP3_ID := c1.id;
+                    elsif l_cnt = 4 then
+                        :P704_QP4    := c1.event_type;
+                        :P704_QP4_ID := c1.id;
+                    elsif l_cnt = 5 then
+                        :P704_QP5    := c1.event_type;
+                        :P704_QP5_ID := c1.id;
+                    end if;
+                
+                    l_cnt := l_cnt + 1;
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 35903689271131405423
+        }
+    )
+
+    process reload-ooo-summary-if-necessary (
+        name: reload OOO Summary, if necessary
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_for_user_id  number;
+                    l_updated_yn   varchar2(1);
+                begin
+                
+                l_for_user_id := case :P704_EVENT_FOR when 'E' 
+                                                      then :P704_FOR_USER_ID
+                                                      when 'M'
+                                                      then :APP_USER_ID
+                                                      end;
+                
+                if :P704_PREVIOUS_FOR_USER_ID != l_for_user_id then
+                    sp_event_util.load_one_ooo (
+                        p_team_member_id => :P704_PREVIOUS_FOR_USER_ID,
+                        p_updated_yn     => l_updated_yn );
+                end if;
+                
+                if l_for_user_id is not null then
+                    sp_event_util.load_one_ooo (
+                        p_team_member_id => l_for_user_id,
+                        p_updated_yn     => l_updated_yn );
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 60
+        }
+        advanced {
+            executionMappingIdentifier: 33518813618354200426
+        }
+    )
+
+    process update-no-recur (
+        name: Update, no recur
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.update_event ( 
+                    p_event_id       => :P704_ID, 
+                    p_event_type_id  => :P704_EVENT_TYPE_ID, 
+                    p_event_date     => to_date(:P704_EVENT_DATE,'DD-Mon-YYYY'), 
+                    p_event_name     => :P704_EVENT_NAME, 
+                    p_for_user_id    => case :P704_EVENT_FOR when 'E' 
+                                                             then :P704_FOR_USER_ID
+                                                             when 'M'
+                                                             then :APP_USER_ID
+                                                             end,
+                    p_event_details  => :P704_EVENT_DETAILS, 
+                    p_recur_freq     => case when :P704_RECURS = 'N'
+                                             then null
+                                             else :P704_RECUR_FREQ
+                                             end, 
+                    p_recur_end_date => case when :P704_RECURS = 'N'
+                                             then null
+                                             else to_date(:P704_END_DATE,'DD-Mon-YYYY')
+                                             end, 
+                    p_update_type    => 'ONLY' 
+                );
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Event(s) updated.
+        }
+        advanced {
+            executionMappingIdentifier: 32733524255181472602
+        }
+        serverSideCondition {
+            whenButtonPressed: @save-single
+        }
+    )
+
+    process update-recur-no-recur-change (
+        name: Update recur, no recur change
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.update_event ( 
+                    p_event_id       => :P704_ID, 
+                    p_event_type_id  => :P704_EVENT_TYPE_ID, 
+                    p_event_date     => to_date(:P704_START_DATE,'DD-Mon-YYYY'), 
+                    p_event_name     => :P704_EVENT_NAME, 
+                    p_for_user_id    => case :P704_EVENT_FOR when 'E' 
+                                                             then :P704_FOR_USER_ID
+                                                             when 'M'
+                                                             then :APP_USER_ID
+                                                             end,
+                    p_event_details  => :P704_EVENT_DETAILS, 
+                    p_recur_freq     => case when :P704_RECURS = 'N'
+                                             then null
+                                             else :P704_RECUR_FREQ
+                                             end, 
+                    p_recur_end_date => case when :P704_RECURS = 'N'
+                                             then null
+                                             else to_date(:P704_END_DATE,'DD-Mon-YYYY')
+                                             end, 
+                    p_update_type    => 'ALL' 
+                );
+                ```
+        }
+        execution {
+            sequence: 30
+        }
+        successMessage {
+            successMessage: Event(s) updated.
+        }
+        advanced {
+            executionMappingIdentifier: 32733524352278472603
+        }
+        serverSideCondition {
+            whenButtonPressed: @save-recur
+        }
+    )
+
+    branch (
+        name: Update, recurring, other than just date change
+        execution {
+            sequence: 10
+            point: processing
+        }
+        behavior {
+            target: {
+                page: 705
+                items: {
+                    P705_EVENT_ID: &P704_ID.
+                }
+                clearCache: 705
+                successMessage: false
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @save-recur
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_events e,
+                       sp_event_series s
+                 where e.id = :P704_ID
+                   and e.series_id = s.id
+                   and :P704_RECURS = 'Y'
+                   and --( e.event_type_id != :P704_EVENT_TYPE_ID or
+                        -- nvl(e.event_name,'~') != nvl(:P704_EVENT_NAME,'~') or
+                        -- nvl(e.event_details,'~') != nvl(:P704_EVENT_DETAILS,'~') or
+                         s.recur_freq != nvl(:P704_RECUR_FREQ,'~') --)
+                ```
+        }
+    )
+
+)
+

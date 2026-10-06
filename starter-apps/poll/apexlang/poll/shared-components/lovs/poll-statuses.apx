@@ -1,0 +1,50 @@
+lov poll-statuses (
+    name: POLL STATUSES
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 1
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 3
+        display: Published
+        return: 3
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_questions
+                 where poll_id = :POLL_ID
+                ```
+        }
+    )
+
+    entry testing-contributors-only (
+        sequence: 2
+        display: Testing, Contributors only
+        return: 2
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_questions
+                 where poll_id = :POLL_ID
+                ```
+        }
+    )
+
+)
+

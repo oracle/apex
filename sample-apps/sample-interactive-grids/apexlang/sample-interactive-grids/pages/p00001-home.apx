@@ -6,9 +6,6 @@ page 1 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -67,10 +64,6 @@ page 1 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: No help is available for this page.
     }
@@ -79,7 +72,7 @@ page 1 (
         name: About this Application
         type: staticContent
         source {
-            htmlCode: <p>This application highlights the features and capabilities of Interactive Grids in Oracle Application Express.  Use this application to better understand the native and declarative functionality of Interactive Grids.</p>
+            htmlCode: <p>This application highlights the features and capabilities of Interactive Grids in Oracle APEX.  Use this application to better understand the native and declarative functionality of Interactive Grids.</p>
         }
         layout {
             sequence: 10
@@ -104,7 +97,7 @@ page 1 (
         name: &APP_NAME.
         type: staticContent
         source {
-            htmlCode: <p>Demonstration of Interactive Grids in Oracle Application Express</p>
+            htmlCode: <p>Demonstration of Interactive Grids in Oracle APEX</p>
         }
         layout {
             sequence: 10

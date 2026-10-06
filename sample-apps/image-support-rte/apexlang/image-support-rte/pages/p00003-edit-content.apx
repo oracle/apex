@@ -13,13 +13,14 @@ page 3 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         fileUrls: #APP_FILES#exContent#MIN#.js
     }
     security {
         authorizationScheme: @access-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

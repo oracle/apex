@@ -1,0 +1,23 @@
+list jet-plug-in-components (
+    name: JET Plug-in Components
+
+    entry oracle-jet-legend-component-as-a-plug-in-page (
+        label: Oracle JET Legend Component as a Plug-in - Page 26
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the Oracle JET Legend, as an APEX plug-in
+        }
+    )
+
+)
+

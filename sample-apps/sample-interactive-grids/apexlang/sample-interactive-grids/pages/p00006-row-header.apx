@@ -7,7 +7,6 @@ page 6 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -17,10 +16,6 @@ page 6 (
               font-weight: bold;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -445,9 +440,6 @@ page 6 (
             layout {
                 sequence: 100
                 columnAlignment: center
-            }
-            validation {
-                valueRequired: true
             }
             source {
                 databaseColumn: ONLEAVE

@@ -1,0 +1,414 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry about (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry ai-chat (
+        label: AI Chat
+        layout {
+            sequence: 230
+            parentEntry: @reports
+        }
+        isCurrent {
+            type: pages
+            pages: 250
+        }
+        link {
+            target: {
+                page: 250
+            }
+        }
+    )
+
+    entry ai-search (
+        label: Search - Full Page
+        layout {
+            sequence: 210
+            parentEntry: @reports
+        }
+        isCurrent {
+            type: pages
+            pages: 240
+        }
+        link {
+            target: {
+                page: 240
+            }
+        }
+    )
+
+    entry browse-cards (
+        label: Browse - Cards
+        layout {
+            sequence: 40
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 210
+            }
+        }
+    )
+
+    entry browse-content-row (
+        label: Browse - Content Row
+        layout {
+            sequence: 50
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 220
+            }
+        }
+    )
+
+    entry browse-tree (
+        label: Tree Selection
+        layout {
+            sequence: 200
+            parentEntry: @item-details
+        }
+        isCurrent {
+            type: pages
+            pages: 340
+        }
+        link {
+            target: {
+                page: 340
+            }
+        }
+    )
+
+    entry cards (
+        label: Cards
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 190
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1110
+            }
+        }
+    )
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 250
+            parentEntry: @component-primitives
+        }
+        isCurrent {
+            type: pages
+            pages: 1130
+        }
+        link {
+            target: {
+                page: 1130
+            }
+        }
+    )
+
+    entry complex-dashboard (
+        label: Advanced
+        layout {
+            sequence: 80
+            parentEntry: @dashboards
+        }
+        link {
+            target: {
+                page: 120
+            }
+        }
+    )
+
+    entry component-primitives (
+        label: Component Primitives
+        icon {
+            imageIconCssClasses: fa-shapes
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry content-rows (
+        label: Content Rows
+        icon {
+            imageIconCssClasses: fa-media-list
+        }
+        layout {
+            sequence: 180
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1100
+            }
+        }
+    )
+
+    entry dashboards (
+        label: Dashboards
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 20
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+    )
+
+    entry data-entry (
+        label: Data Entry
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 100
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+    )
+
+    entry data-entry-drawer-form (
+        label: Data Entry - Drawer Form
+        layout {
+            sequence: 90
+            parentEntry: @data-entry
+        }
+        link {
+            target: {
+                page: 420
+            }
+        }
+    )
+
+    entry data-entry-simple-form (
+        label: Data Entry - Simple Form
+        layout {
+            sequence: 140
+            parentEntry: @data-entry
+        }
+        link {
+            target: {
+                page: 410
+            }
+        }
+    )
+
+    entry executive (
+        label: Executive
+        layout {
+            sequence: 220
+            parentEntry: @dashboards
+        }
+        isCurrent {
+            type: pages
+            pages: 130
+        }
+        link {
+            target: {
+                page: 130
+            }
+        }
+    )
+
+    entry home (
+        label: Getting Started
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry interactive-report (
+        label: Browse - Interactive Report
+        layout {
+            sequence: 60
+            parentEntry: @reports
+        }
+        link {
+            target: {
+                page: 230
+            }
+        }
+    )
+
+    entry item-detail-full (
+        label: Item Detail - Full
+        layout {
+            sequence: 130
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 320
+            }
+        }
+    )
+
+    entry item-detail-summary (
+        label: Item Detail - Summary
+        layout {
+            sequence: 120
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 310
+            }
+        }
+    )
+
+    entry item-details (
+        label: Item Details
+        icon {
+            imageIconCssClasses: fa-id-card-o
+        }
+        layout {
+            sequence: 90
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+    )
+
+    entry item-selection-and-details (
+        label: Item Selection
+        layout {
+            sequence: 170
+            parentEntry: @item-details
+        }
+        link {
+            target: {
+                page: 330
+            }
+        }
+    )
+
+    entry master-detail (
+        label: Master Detail
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 110
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        serverSideCondition {
+            type: never
+        }
+    )
+
+    entry metrics (
+        label: Metrics
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 240
+            parentEntry: @component-primitives
+        }
+        link {
+            target: {
+                page: 1120
+            }
+        }
+    )
+
+    entry patterns (
+        label: Page Patterns
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry reports (
+        label: Browse and Search
+        icon {
+            imageIconCssClasses: fa-mouse-pointer
+        }
+        layout {
+            sequence: 30
+            parentEntry: @patterns
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+    )
+
+    entry simple-dashboard (
+        label: Simple
+        layout {
+            sequence: 70
+            parentEntry: @dashboards
+        }
+        link {
+            target: {
+                page: 110
+            }
+        }
+    )
+
+)
+

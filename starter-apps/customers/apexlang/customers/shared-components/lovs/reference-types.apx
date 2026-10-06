@@ -1,0 +1,14 @@
+lov reference-types (
+    name: REFERENCE_TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select reference_type d, id r
+            from eba_cust_reference_types
+            where is_active = 'Y'
+            order by upper(reference_type)
+            ```
+    }
+)
+

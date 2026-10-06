@@ -1,6 +1,6 @@
 app IMAGE-SUPPORT-RTE (
     name: Image Support for Rich Text Editor
-    version: 26.1.0
+    version: 26.2.0
     logo {
         type: text
         text: Image Support for Rich Text Editor
@@ -45,9 +45,7 @@ app IMAGE-SUPPORT-RTE (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
-    }
-    sessionStateProtection {
-        checksumSalt: B61062F1C2E27E6C72E0C62E994FAC35563052254D4A5925F515C4FCD43084EA
+        allowBotAccess: true
     }
     sessionManagement {
         maxSessionLength: 43200

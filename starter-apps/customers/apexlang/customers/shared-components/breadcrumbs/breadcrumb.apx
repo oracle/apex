@@ -1,0 +1,37 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb1
+
+    entry customer-details (
+        name: Customer Details
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        appearance {
+            parentEntry: @customers
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: 7
+                action: resetPagination
+                request: HOME_CUSTOMER_DETAILS
+            }
+        }
+    )
+
+    entry customers (
+        name: Customers
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

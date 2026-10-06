@@ -1,0 +1,29 @@
+lov dynamic-answer-type (
+    name: DYNAMIC ANSWER TYPE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select d, r
+            from
+            (
+            select 'Pick one' d, 'RADIO_GROUP' r, 1 sort_order
+            from dual
+            union all
+            select 'Pick many' d, 'CHECKBOX' r, 3 sort_order
+            from dual
+            union all
+            select 'Stack Rank' d, 'STACK' r, 4 sort_order
+            from dual
+            union all
+            select 'Allocate $100' d, 'ALLOCATION' r, 5 sort_order
+            from dual
+            union all
+            select name d, code r, sort_order
+            from   EBA_QPOLL_CANNED_ANSWERS
+            )
+            order by sort_order, d
+            ```
+    }
+)
+

@@ -6,13 +6,10 @@ page 9000 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @access-rights
         deepLinking: true
-        formAutoComplete: false
+        pageAccessProtection: unrestricted
     }
     sessionManagement {
         rejoinSessions: allSessions

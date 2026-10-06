@@ -8,12 +8,7 @@ page 45 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -97,6 +92,9 @@ page 45 (
             layout {
                 sequence: 40
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -115,6 +113,9 @@ page 45 (
             }
             layout {
                 sequence: 20
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -145,6 +146,9 @@ page 45 (
             layout {
                 sequence: 30
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -163,6 +167,9 @@ page 45 (
             }
             layout {
                 sequence: 50
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

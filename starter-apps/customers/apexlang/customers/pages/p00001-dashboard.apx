@@ -8,12 +8,11 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         deepLinking: true
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -893,6 +892,9 @@ page 1 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 20
         }
@@ -998,11 +1000,13 @@ page 1 (
         customization {
             customizable: shownByDefault
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -1174,11 +1178,13 @@ page 1 (
         config {
             buildOption: @geography
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -1347,11 +1353,13 @@ page 1 (
         chartAppearance {
             orientation: horizontal
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -1813,6 +1821,9 @@ page 1 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 50
         }
@@ -2091,6 +2102,9 @@ page 1 (
                 t-AVPList--rightAligned
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

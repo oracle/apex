@@ -9,7 +9,7 @@ create table sp_activities (
     project_id                     number 
                                    constraint sp_activities_project_fk
                                    references sp_projects (id),
-    team_member_id                 number
+    team_member_id                 number  not null
                                    constraint sp_activities_person_fk
                                    references sp_team_members (id),
     initiative_id                  number
@@ -18,10 +18,10 @@ create table sp_activities (
     --
     start_date                     date not null,
     end_date                       date not null,
+    activity                       varchar2(255 char) not null,
     comments                       varchar2(4000 char),
-    ticket_number                  varchar2(50 char),
     url                            varchar2(500 char),
-    activity_status                varchar2(30 char),
+    private_yn                     varchar2(1 char),
     --
     tags                           varchar2(4000 char),
     --
@@ -29,8 +29,7 @@ create table sp_activities (
     created_by                     varchar2(255 char) not null,
     updated                        date not null,
     updated_by                     varchar2(255 char) not null
-)
-;
+);
 
 create index sp_activities_i1 on sp_activities (activity_type_id);
 create index sp_activities_i2 on sp_activities (project_id);
@@ -38,3 +37,4 @@ create index sp_activities_i3 on sp_activities (team_member_id);
 create index sp_activities_i4 on sp_activities (end_date);
 create index sp_activities_i5 on sp_activities (start_date);
 create index sp_activities_i6 on sp_activities (initiative_id);
+create index sp_activities_i7 on sp_activities (activity);

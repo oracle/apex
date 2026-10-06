@@ -1,0 +1,420 @@
+list reports (
+    name: Reports
+
+    entry activities (
+        label: Activities
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Activities added to the system
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry ai-nomenclature-project-summaries (
+        label: AI &NOMENCLATURE_PROJECT. Summaries
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 105
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: All the AI Summaries for all &NOMENCLATURE_PROJECTS.
+        }
+        config {
+            buildOption: @ai-project-summaries-view
+        }
+    )
+
+    entry all-nomenclature-project-approvals (
+        label: All &NOMENCLATURE_PROJECT. Approvals
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 134
+            }
+        }
+        userDefinedAttributes {
+            1: Cross &NOMENCLATURE_PROJECT. Approvals with current workflow status
+        }
+        config {
+            buildOption: @approvals
+        }
+    )
+
+    entry archived-nomenclature-projects (
+        label: Archived &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-package
+        }
+        layout {
+            sequence: 170
+        }
+        link {
+            target: {
+                page: 45
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. that are archived
+        }
+    )
+
+    entry change-history (
+        label: Change History
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 79
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change reporting across &NOMENCLATURE_INITIATIVES., &NOMENCLATURE_PROJECTS. and Releases
+        }
+    )
+
+    entry comments (
+        label: Comments
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 7
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All comments added to this system
+        }
+    )
+
+    entry cross-release-milestone-calendar (
+        label: Cross-Release Milestone Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 190
+        }
+        link {
+            target: {
+                page: 55
+            }
+        }
+        userDefinedAttributes {
+            1: Filterable calendar of Milestones across All Releases
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry documents (
+        label: Documents
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 156
+        }
+        link {
+            target: {
+                page: 156
+            }
+        }
+        userDefinedAttributes {
+            1: Documents added to the system
+            8: documents, images
+        }
+    )
+
+    entry duplicate-nomenclature-projects (
+        label: Duplicate &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-copy
+        }
+        layout {
+            sequence: 160
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECTS. marked as duplicates
+        }
+    )
+
+    entry focus-areas-by-release (
+        label: Focus Area Project Count by Release
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 195
+        }
+        link {
+            target: {
+                page: 66
+                clearCache: 66
+            }
+        }
+        userDefinedAttributes {
+            1: Project count by Focus Areas per Release for selected Release Train
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry images-in-comments-graph (
+        label: Images in Comments Graph
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 157
+            }
+        }
+        userDefinedAttributes {
+            1: Count of images in comments vs count of comments with images, per month
+        }
+    )
+
+    entry links (
+        label: Links
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 146
+            }
+        }
+        userDefinedAttributes {
+            1: Links added to the system
+            8: documents, images
+        }
+    )
+
+    entry nomenclature-project-contributors (
+        label: &NOMENCLATURE_PROJECT. Contributors
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 159
+            }
+        }
+        userDefinedAttributes {
+            1: Cross &NOMENCLATURE_PROJECT. Contributor report
+        }
+    )
+
+    entry nomenclature-project-milestone-calendar (
+        label: &NOMENCLATURE_PROJECT. Milestone Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 111
+            }
+        }
+        userDefinedAttributes {
+            1: Filterable calendar of &NOMENCLATURE_PROJECT. Milestones
+        }
+    )
+
+    entry nomenclature-project-milestones-reviews-and-tasks (
+        label: &NOMENCLATURE_PROJECT. Milestones, Reviews and Tasks
+        icon {
+            imageIconCssClasses: fa-clipboard-search
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 65
+            }
+        }
+        userDefinedAttributes {
+            1: Milestones, Reviews and Tasks across all unarchived &NOMENCLATURE_PROJECTS.
+        }
+    )
+
+    entry nomenclature-projects (
+        label: &NOMENCLATURE_PROJECTS.
+        icon {
+            imageIconCssClasses: fa-table-arrow-down
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 86
+            }
+        }
+        userDefinedAttributes {
+            1: All active &NOMENCLATURE_PROJECTS. (not archived and not marked as duplicates)
+        }
+    )
+
+    entry nomenclature-users-screen-names (
+        label: &NOMENCLATURE_USERS.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 122
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_USERS. and their screen names, tags, and other details
+        }
+    )
+
+    entry out-of-office-events (
+        label: Out of Office Events
+        icon {
+            imageIconCssClasses: fa-calendar-month
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 710
+            }
+        }
+        userDefinedAttributes {
+            1: All Out of the Office events
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
+    entry past-due-tasks-milestones-and-reviews (
+        label: Past Due Tasks, Milestones and Reviews
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 99
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: All &NOMENCLATURE_PROJECT. milestones, tasks and reviews that are past due
+        }
+    )
+
+    entry release-summaries (
+        label: Release Summaries
+        icon {
+            imageIconCssClasses: fa-ai-sparkle-generate-text
+        }
+        layout {
+            sequence: 200
+        }
+        link {
+            target: {
+                page: 167
+            }
+        }
+        userDefinedAttributes {
+            1: All AI Summaries generated for All Releases
+        }
+        config {
+            buildOption: @ai-release-summaries-view
+        }
+    )
+
+    entry releases (
+        label: Releases
+        icon {
+            imageIconCssClasses: fa-ship
+        }
+        layout {
+            sequence: 180
+        }
+        link {
+            target: {
+                page: 164
+            }
+        }
+        userDefinedAttributes {
+            1: All Releases along with owner, start and end dates and other summary details
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+)
+

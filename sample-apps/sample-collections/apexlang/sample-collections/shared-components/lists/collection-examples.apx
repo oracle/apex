@@ -1,0 +1,60 @@
+list collection-examples (
+    name: Collection Examples
+
+    entry api-examples (
+        label: API Examples
+        icon {
+            imageIconCssClasses: fa-keyboard-o
+        }
+        layout {
+            sequence: 22
+        }
+        link {
+            target: {
+                page: 12
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: View Oracle APEX API examples which you can use in your own application.
+        }
+    )
+
+    entry basic-collections (
+        label: Basic Collections
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+        userDefinedAttributes {
+            1: Creating a Basic Collection.  Create a user defined collection name on a simple Employee table structure.
+        }
+    )
+
+    entry data-synchronization (
+        label: Data Synchronization
+        icon {
+            imageIconCssClasses: fa-spinner
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Populate a collection from a sample Employees table, update the collection, and then synchronize the data in the collection with the base table.
+        }
+    )
+
+)
+

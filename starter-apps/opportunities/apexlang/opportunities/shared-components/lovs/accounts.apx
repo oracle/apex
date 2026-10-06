@@ -1,0 +1,13 @@
+lov accounts (
+    name: ACCOUNTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select CUSTOMER_NAME display_value, ID return_value 
+            from eba_sales_CUSTOMERS
+            order by 1
+            ```
+    }
+)
+

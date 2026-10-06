@@ -1,0 +1,58 @@
+searchConfig product (
+    name: Product Search Configuration
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        searchableColumns: [
+            PRODUCT_NAME
+            DESCRIPTION
+            GENDER
+            COLOUR
+            BRAND
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+        badgeColumn: UNIT_PRICE
+        customColumn1: COLOUR
+        customColumn2: GENDER
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 205
+            items: {
+                P205_PRODUCT_ID: &PRODUCT_ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+    performance {
+        maxRowsToReturn: 5
+    }
+)
+

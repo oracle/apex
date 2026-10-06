@@ -7,11 +7,10 @@ page 5 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -83,7 +82,7 @@ page 5 (
             regionDisplaySelector: true
         }
         headerAndFooter {
-            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeCircular" target="_blank">Status Meter Gauge - Circular</a> example.</strong>
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeCircular" target="_blank" rel="noopener noreferrer external">Status Meter Gauge - Circular</a> example.</strong>
         }
     )
 
@@ -105,7 +104,7 @@ page 5 (
             regionDisplaySelector: true
         }
         headerAndFooter {
-            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeHorizontal" target="_blank">Status Meter Gauge - Horizontal</a> example.</strong>
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeHorizontal" target="_blank" rel="noopener noreferrer external">Status Meter Gauge - Horizontal</a> example.</strong>
         }
     )
 
@@ -130,6 +129,9 @@ page 5 (
         }
         chartLayout {
             maxWidth: 300
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: horizontal
@@ -196,6 +198,9 @@ page 5 (
             maxWidth: 21
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: vertical
             indicatorSize: 10
@@ -260,6 +265,9 @@ page 5 (
         chartLayout {
             maxWidth: 90
             height: 100
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             indicatorSize: 0.5
@@ -380,6 +388,9 @@ page 5 (
             maxWidth: 90
             height: 100
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             indicatorSize: 0.5
             innerRadius: 0.9
@@ -476,6 +487,9 @@ page 5 (
             maxWidth: 21
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: vertical
         }
@@ -546,6 +560,9 @@ page 5 (
         chartLayout {
             maxWidth: 90
             height: 100
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             innerRadius: 0.7
@@ -638,6 +655,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
             indicatorSize: 0.8
@@ -708,6 +728,9 @@ page 5 (
             maxWidth: 30
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: vertical
             indicatorSize: 0.8
@@ -777,6 +800,9 @@ page 5 (
         chartLayout {
             maxWidth: 90
             height: 100
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             innerRadius: 0.6
@@ -904,6 +930,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
             indicatorSize: 0.5
@@ -969,6 +998,9 @@ page 5 (
         chartLayout {
             maxWidth: 21
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: vertical
@@ -1061,6 +1093,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
             indicatorSize: 0.4
@@ -1132,6 +1167,9 @@ page 5 (
         chartLayout {
             maxWidth: 21
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: vertical
@@ -1253,6 +1291,9 @@ page 5 (
             maxWidth: 90
             height: 100
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             innerRadius: 0.7
             startAngle: 180
@@ -1355,6 +1396,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
             indicatorSize: 0.9
@@ -1422,6 +1466,9 @@ page 5 (
             maxWidth: 21
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: vertical
             indicatorSize: 0.9
@@ -1486,6 +1533,9 @@ page 5 (
         }
         chartLayout {
             maxWidth: 300
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: horizontal
@@ -1553,6 +1603,9 @@ page 5 (
         chartLayout {
             maxWidth: 21
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: vertical
@@ -1712,6 +1765,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
             indicatorSize: 0.9
@@ -1778,6 +1834,9 @@ page 5 (
         chartLayout {
             maxWidth: 21
             height: 200
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             orientation: vertical
@@ -1876,6 +1935,9 @@ page 5 (
         chartLayout {
             maxWidth: 90
             height: 100
+        }
+        performance {
+            lazyLoading: true
         }
         gauge {
             indicatorSize: 0.5
@@ -1981,6 +2043,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
         }
@@ -2076,6 +2141,9 @@ page 5 (
         chartLayout {
             maxWidth: 300
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: horizontal
         }
@@ -2148,6 +2216,9 @@ page 5 (
             maxWidth: 21
             height: 200
         }
+        performance {
+            lazyLoading: true
+        }
         gauge {
             orientation: vertical
         }
@@ -2213,7 +2284,7 @@ page 5 (
             regionDisplaySelector: true
         }
         headerAndFooter {
-            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeVertical" target="_blank">Status Meter Gauge - Vertical</a> example.</strong>
+            headerText: <strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeVertical" target="_blank" rel="noopener noreferrer external">Status Meter Gauge - Vertical</a> example.</strong>
         }
     )
 

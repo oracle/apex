@@ -6,16 +6,11 @@ page 3110 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
-        inline: .te_padding {padding: 8px 0px 8px 8px;}
+        inline: ".te_padding {padding: 8px 0px 8px 8px;}"
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region all-settings-cards (

@@ -1,0 +1,418 @@
+list manage-code-tables-xx (
+    name: Manage Code Tables XX
+
+    entry agreement-types (
+        label: Agreement Types
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 58
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the various agreement types that will be used throughout the application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry agreements (
+        label: Agreements
+        icon {
+            imageIconCssClasses: fa-handshake-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 84
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the agreements that will be used throughout the application.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_agreement_types;
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @agreements
+        }
+    )
+
+    entry competitor-threats (
+        label: Competitor Threats
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 59
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Competitor Threats that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry countries (
+        label: Countries
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Countries that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry currencies (
+        label: Currencies
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 111
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Currencies that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry financial-assessments (
+        label: Financial Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 57
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Financial Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry industries (
+        label: Industries
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 64
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Industries that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lead-sources (
+        label: Lead Sources
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 69
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Lead Sources that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lead-status-codes (
+        label: Lead Status Codes
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 37
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Lead Status Codes that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry opportunity-stages (
+        label: Opportunity Stages
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 100
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 10
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Opportunity Stages that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry risk-assessments (
+        label: Risk Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 110
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 53
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Risk Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry states (
+        label: States
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 83
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of States that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry status-assessments (
+        label: Status Assessments
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 140
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 55
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Status Assessments that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry support-amount-types (
+        label: Support Amount Types
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            1:
+                ```
+                Manage the support amount types that will be used throughout the application.
+                
+                ```
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+    entry support-amounts (
+        label: Support Amounts
+        icon {
+            imageIconCssClasses: fa-money
+        }
+        layout {
+            sequence: 160
+        }
+        link {
+            target: {
+                page: 118
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the support amounts that will be used throughout the application.
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select null from eba_sales_suprt_amt_types;
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @support-amounts
+        }
+    )
+
+    entry team-roles (
+        label: Team Roles
+        icon {
+            imageIconCssClasses: fa-pencil
+        }
+        layout {
+            sequence: 120
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the list of Team Roles that will be available to end-users for selection in the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

@@ -7,6 +7,7 @@ page 101 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -37,7 +38,6 @@ page 101 (
     security {
         authentication: public
         pageAccessProtection: noArgumentsSupported
-        formAutoComplete: false
     }
 
     region sample-interactive-grids (

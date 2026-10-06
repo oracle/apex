@@ -1,6 +1,5 @@
 appProcess breadcrumb-for-account (
     name: Breadcrumb for Account
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -34,7 +33,6 @@ appProcess breadcrumb-for-account (
 
 appProcess breadcrumb-for-contact (
     name: Breadcrumb for Contact
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -68,7 +66,6 @@ appProcess breadcrumb-for-contact (
 
 appProcess breadcrumb-for-lead (
     name: Breadcrumb for Lead
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -102,7 +99,6 @@ appProcess breadcrumb-for-lead (
 
 appProcess breadcrumb-for-opportunity (
     name: Breadcrumb for Opportunity
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -140,7 +136,6 @@ appProcess breadcrumb-for-opportunity (
 
 appProcess breadcrumb-for-product (
     name: Breadcrumb for Product
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -174,7 +169,6 @@ appProcess breadcrumb-for-product (
 
 appProcess breadcrumb-for-territory (
     name: Breadcrumb for Territory
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -214,7 +208,6 @@ appProcess breadcrumb-for-territory (
 
 appProcess set-counts (
     name: set counts
-    type: executeCode
     source {
         plsqlCode:
             ```plsql
@@ -254,7 +247,6 @@ appProcess set-counts (
 
 appProcess set-time-zone (
     name: set Time Zone
-    type: executeCode
     source {
         plsqlCode: eba_sales_tz_init;
     }
@@ -269,7 +261,6 @@ appProcess set-time-zone (
 
 appProcess trim-all-page-items (
     name: Trim All Page Items
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

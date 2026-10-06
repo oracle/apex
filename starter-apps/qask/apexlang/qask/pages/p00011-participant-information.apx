@@ -10,6 +10,9 @@ page 11 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     css {
         inline:
             ```css
@@ -35,7 +38,6 @@ page 11 (
         authentication: public
         deepLinking: true
         pageAccessProtection: noArgumentsSupported
-        formAutoComplete: false
     }
 
     region welcome-to-qask (

@@ -1,0 +1,12 @@
+lov product-colors (
+    name: PRODUCT COLORS
+    source {
+        type: sqlQuery
+        sqlQuery: select distinct json_value(product_details,'$.colour') product_color from eba_demo_search_products
+    }
+    columnMapping {
+        return: PRODUCT_COLOR
+        display: PRODUCT_COLOR
+    }
+)
+

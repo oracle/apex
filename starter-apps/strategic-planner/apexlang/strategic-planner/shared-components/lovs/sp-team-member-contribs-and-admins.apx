@@ -1,0 +1,21 @@
+lov sp-team-member-contribs-and-admins (
+    name: SP_TEAM_MEMBER - CONTRIBS AND ADMINS
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            where upper(email) in (select user_name
+                                     from apex_appl_acl_user_roles
+                                    where application_id = :APP_ID
+                                      and role_static_id in ('ADMINISTRATOR','CONTRIBUTOR'))
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+

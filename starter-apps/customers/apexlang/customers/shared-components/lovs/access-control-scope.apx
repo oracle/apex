@@ -1,0 +1,26 @@
+lov access-control-scope (
+    name: ACCESS CONTROL SCOPE
+    source {
+        location: staticValues
+    }
+
+    entry contributor-access-for-any-authenticated-user (
+        sequence: 2
+        display: Contributor access for any authenticated user
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry reader-access-for-any-authenticated-user (
+        sequence: 1
+        display: Reader access for any authenticated user
+        return: PUBLIC_READONLY
+    )
+
+    entry restricted-to-users-defined-in-access-control-list (
+        sequence: 3
+        display: Restricted to users defined in access control list
+        return: ACL_ONLY
+    )
+
+)
+

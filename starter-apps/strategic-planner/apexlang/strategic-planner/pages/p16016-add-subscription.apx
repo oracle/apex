@@ -13,13 +13,8 @@ page 16016 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @subscriptions
@@ -85,6 +80,9 @@ page 16016 (
                 t-Report--rowHighlightOff
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CREATED (

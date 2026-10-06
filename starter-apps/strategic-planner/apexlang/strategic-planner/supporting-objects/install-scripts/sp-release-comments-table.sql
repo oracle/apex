@@ -5,6 +5,7 @@ create table sp_release_comments (
                                    constraint sp_release_comm_proj_id_fk
                                    references SP_RELEASE_TRAINS on delete cascade,
     --
+    comment_nbr                    number,
     body                           clob,
     body_html                      clob,
     body_no_images                 clob,

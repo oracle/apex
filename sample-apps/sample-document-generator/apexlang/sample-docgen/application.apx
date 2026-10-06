@@ -1,6 +1,6 @@
 app SAMPLE-DOCGEN (
     name: Sample Document Generator
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -41,8 +41,8 @@ app SAMPLE-DOCGEN (
     authentication {
         scheme: @oracle-apex-accounts
     }
-    sessionStateProtection {
-        checksumSalt: 45485B8F725E36C78432C4563202D64F7EFEC1509FAFABE58BFCC63BC197A9AB
+    security {
+        allowBotAccess: true
     }
     globalization {
         documentDirection: leftToRight

@@ -1,0 +1,32 @@
+lov feedback-statuses (
+    name: FEEDBACK STATUSES
+    source {
+        location: staticValues
+    }
+
+    entry in-progress (
+        sequence: 1
+        display: In Progress
+        return: IN_PROGRESS
+    )
+
+    entry no-action (
+        sequence: 2
+        display: No Action
+        return: NO_ACTION
+    )
+
+    entry open (
+        sequence: 3
+        display: Open
+        return: OPEN
+    )
+
+    entry resolved (
+        sequence: 4
+        display: Resolved
+        return: RESOLVED
+    )
+
+)
+

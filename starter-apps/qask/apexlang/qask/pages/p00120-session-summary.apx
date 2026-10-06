@@ -6,9 +6,6 @@ page 120 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -20,8 +17,6 @@ page 120 (
     security {
         authorizationScheme: @host
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region actions-menu (
@@ -139,6 +134,9 @@ page 120 (
                 t-ContextualInfo-label--stacked
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column CREATED (
@@ -493,7 +491,7 @@ page 120 (
                 sequence: 30
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -512,7 +510,7 @@ page 120 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -528,7 +526,7 @@ page 120 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -544,7 +542,7 @@ page 120 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -569,7 +567,7 @@ page 120 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -585,7 +583,7 @@ page 120 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -611,7 +609,7 @@ page 120 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -627,7 +625,7 @@ page 120 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -643,7 +641,7 @@ page 120 (
                 sequence: 110
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -659,7 +657,7 @@ page 120 (
                 sequence: 160
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: M
@@ -675,7 +673,7 @@ page 120 (
                 sequence: 140
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: K
@@ -691,7 +689,7 @@ page 120 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -707,7 +705,7 @@ page 120 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -723,7 +721,7 @@ page 120 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -872,7 +870,7 @@ page 120 (
         }
         settings {
             title: &QUESTION_NUMBER.. &QUESTION.
-            description: {if QUESTION_EXPLANATION/}&QUESTION_EXPLANATION.<br/>{endif/} &ANSWER_TYPE. &ANSWERS. {if ASK_FOR_COMMENTS/}<br/>&ASK_FOR_COMMENTS.{endif/}
+            description: "{if QUESTION_EXPLANATION/}&QUESTION_EXPLANATION.<br/>{endif/} &ANSWER_TYPE. &ANSWERS. {if ASK_FOR_COMMENTS/}<br/>&ASK_FOR_COMMENTS.{endif/}"
             miscellaneous: &LENGTH.<br/>&RESPONSES.
         }
         plugin-appearance {

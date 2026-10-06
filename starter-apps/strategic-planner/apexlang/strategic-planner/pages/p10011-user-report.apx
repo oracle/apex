@@ -9,13 +9,10 @@ page 10011 (
         cssClasses: rw-pillar--sienna
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -62,11 +59,17 @@ page 10011 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select id,
-                   user_name_lc USERNAME,
-                   role_names ACCESS_ROLE
-                from APEX_APPL_ACL_USERS
-                where APPLICATION_ID = :APP_ID
+                with t as (select id, lower(email) lower_email
+                             from sp_team_members)
+                select u.id,
+                       u.user_name_lc USERNAME,
+                       u.role_names ACCESS_ROLE, 
+                       case when t.id is not null then 'Yes' else 'No' end is_team_member,
+                       t.id team_member_id
+                  from APEX_APPL_ACL_USERS u,
+                       t
+                 where u.APPLICATION_ID = :APP_ID
+                   and u.user_name_lc = t.lower_email (+)
                 ```
         }
         layout {
@@ -114,7 +117,7 @@ page 10011 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -130,10 +133,52 @@ page 10011 (
                 sequence: 0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
+            }
+        )
+
+        column IS_TEAM_MEMBER (
+            type: link
+            heading {
+                heading: Is Team Member
+            }
+            layout {
+                sequence: 13
+            }
+            link {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: #TEAM_MEMBER_ID#
+                    }
+                    clearCache: 73
+                }
+                linkText: #IS_TEAM_MEMBER#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            type: hidden
+            heading {
+                heading: Team Member Id
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: E
             }
         )
 
@@ -146,7 +191,7 @@ page 10011 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B

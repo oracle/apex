@@ -1,6 +1,6 @@
 app SAMPLE-COLLECTIONS (
     name: Sample Collections
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -47,11 +47,8 @@ app SAMPLE-COLLECTIONS (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 788FC081470B0A8D0D6DCB01693DD279F3A2C19585D459B112454FD66C998B26
     }
     sessionManagement {
         rejoinSessions: publicSessions

@@ -15,13 +15,8 @@ page 10151 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -72,7 +67,7 @@ page 10151 (
             alignment: left
         }
         layout {
-            sequence: 40
+            sequence: 50
             region: @initiative-focus-area
             slot: regionBody
             alignment: left
@@ -80,9 +75,6 @@ page 10151 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @initiative-focus-area
@@ -98,7 +90,7 @@ page 10151 (
     pageItem P10151_CREATED (
         type: hidden
         layout {
-            sequence: 130
+            sequence: 110
             region: @initiative-focus-area
             slot: regionBody
         }
@@ -106,6 +98,7 @@ page 10151 (
             formRegion: @initiative-focus-area
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -115,7 +108,7 @@ page 10151 (
     pageItem P10151_CREATED_BY (
         type: hidden
         layout {
-            sequence: 140
+            sequence: 120
             region: @initiative-focus-area
             slot: regionBody
         }
@@ -123,6 +116,7 @@ page 10151 (
             formRegion: @initiative-focus-area
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -136,7 +130,7 @@ page 10151 (
             alignment: left
         }
         layout {
-            sequence: 110
+            sequence: 70
             region: @initiative-focus-area
             slot: regionBody
             alignment: left
@@ -171,7 +165,7 @@ page 10151 (
             lov: @sp-team-members
         }
         layout {
-            sequence: 90
+            sequence: 60
             region: @initiative-focus-area
             slot: regionBody
             alignment: left
@@ -198,7 +192,7 @@ page 10151 (
             minValue: 0
         }
         layout {
-            sequence: 120
+            sequence: 90
             region: @initiative-focus-area
             slot: regionBody
             alignment: left
@@ -219,6 +213,34 @@ page 10151 (
         }
     )
 
+    pageItem P10151_EXTERNAL_KEY (
+        type: textField
+        label {
+            label: External Key
+            alignment: left
+        }
+        layout {
+            sequence: 100
+            region: @initiative-focus-area
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @initiative-focus-area
+            column: EXTERNAL_KEY
+            dataType: varchar2
+        }
+    )
+
     pageItem P10151_FOCUS_AREA (
         type: textField
         label {
@@ -232,7 +254,7 @@ page 10151 (
             alignment: left
         }
         appearance {
-            template: @/optional-floating
+            template: @/required-floating
             templateOptions: #DEFAULT#
             width: 30
         }
@@ -306,10 +328,22 @@ page 10151 (
         }
     )
 
-    pageItem P10151_UPDATED (
+    pageItem P10151_PREV_PAGE (
         type: hidden
         layout {
             sequence: 150
+            region: @initiative-focus-area
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10151_UPDATED (
+        type: hidden
+        layout {
+            sequence: 130
             region: @initiative-focus-area
             slot: regionBody
         }
@@ -317,6 +351,7 @@ page 10151 (
             formRegion: @initiative-focus-area
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -326,7 +361,7 @@ page 10151 (
     pageItem P10151_UPDATED_BY (
         type: hidden
         layout {
-            sequence: 160
+            sequence: 140
             region: @initiative-focus-area
             slot: regionBody
         }
@@ -334,6 +369,7 @@ page 10151 (
             formRegion: @initiative-focus-area
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -478,6 +514,27 @@ page 10151 (
 
     )
 
+    validation dup-external-key (
+        name: dup external key
+        execution {
+            sequence: 30
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_initiative_focus_areas
+                 where lower(external_key) = lower(:P10151_EXTERNAL_KEY)
+                   and (:P10151_ID is null or id != :P10151_ID)
+                ```
+        }
+        error {
+            errorMessage: This External Key already exists.
+            associatedItem: @P10151_EXTERNAL_KEY
+        }
+    )
+
     validation dups (
         name: dups
         execution {
@@ -529,7 +586,24 @@ page 10151 (
         }
         serverSideCondition {
             type: requestIsContainedInValue
-            value: CREATE,SAVE,DELETE
+            value: CREATE,SAVE
+        }
+    )
+
+    process close-dialog-del (
+        name: Close Dialog on del
+        type: closeDialog
+        execution {
+            sequence: 40
+        }
+        advanced {
+            executionMappingIdentifier: 18046116646013768046
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P10151_PREV_PAGE
+            value: 10150
         }
     )
 
@@ -562,9 +636,27 @@ page 10151 (
     )
 
     branch (
-        name: Add Another
+        name: on delete, not from admin page
         execution {
             sequence: 10
+        }
+        behavior {
+            target: {
+                page: 94
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item!=value
+            item: P10151_PREV_PAGE
+            value: 10150
+        }
+    )
+
+    branch (
+        name: Add Another
+        execution {
+            sequence: 20
         }
         behavior {
             target: {

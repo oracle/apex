@@ -1,0 +1,30 @@
+emailTemplate ACCESS_REQUEST_DECLINED (
+    name: Access Request Declined
+    emailSubject: #APPLICATION_TITLE# Access Request
+    htmlFormat {
+        header: #APPLICATION_TITLE#
+        body:
+            ```html
+            <p>You recently requested access to #APPLICATION_TITLE#.</p> 
+            <p>Your request was declined.</p> 
+            <p>  
+              Reason: #ACTION_REASON# 
+            </p>
+            ```
+        footer: <div style="color: #707070;font-family: Arial;font-size: 12px;line-height: 125%;text-align:center;"> This is a system generated email. Please do not reply to this message.</div>
+    }
+    plainTextFormat {
+        content:
+            ```html
+            You recently requested access to #APPLICATION_TITLE#.
+            Your request was declined.
+               
+              Reason: #ACTION_REASON# 
+            
+            ```
+    }
+    advanced {
+        versionNumber: 1
+    }
+)
+

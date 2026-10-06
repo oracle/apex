@@ -7,11 +7,8 @@ page 20 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -24,7 +21,7 @@ page 20 (
         name: About this page
         type: staticContent
         source {
-            htmlCode: <p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, can be customized to render as a <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=pareto" target="_blank">Pareto</a> chart. Pareto charts are useful for displaying categories of data in descending order of frequency.</p>
+            htmlCode: <p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, can be customized to render as a <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=pareto" target="_blank" rel="noopener noreferrer external">Pareto</a> chart. Pareto charts are useful for displaying categories of data in descending order of frequency.</p>
         }
         layout {
             sequence: 10
@@ -92,6 +89,9 @@ page 20 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false
@@ -205,7 +205,7 @@ page 20 (
         source {
             htmlCode:
                 ```html
-                This example demonstrates how to render a Pareto chart, based upon a declaratively created Combination chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line. The Oracle PL/SQL <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/RATIO_TO_REPORT.html#GUID-9D10C275-4341-435F-ACF4-767B9CCB7390" target="_blank">RATIO_TO_REPORT</a> function is an analytic function which returns the proportion of a value over the total set of values, and is used in the calculation of the <i>Cumulative</i> line series of the Pareto chart.<p/><br/>
+                This example demonstrates how to render a Pareto chart, based upon a declaratively created Combination chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line. The Oracle PL/SQL <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/RATIO_TO_REPORT.html#GUID-9D10C275-4341-435F-ACF4-767B9CCB7390" target="_blank" rel="noopener noreferrer external">RATIO_TO_REPORT</a> function is an analytic function which returns the proportion of a value over the total set of values, and is used in the calculation of the <i>Cumulative</i> line series of the Pareto chart.<p/><br/>
                 
                 <strong>Region Source</strong> - set the chart query at region-level, using a query similar to the following:<br/>
                 <pre>
@@ -280,7 +280,7 @@ page 20 (
                 </ul>
                 <p/>
                 
-                For more information on the Pareto chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=pareto" target="_blank">Pareto</a> example.
+                For more information on the Pareto chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=pareto" target="_blank" rel="noopener noreferrer external">Pareto</a> example.
                 ```
         }
         layout {

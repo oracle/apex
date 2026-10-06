@@ -1,0 +1,32 @@
+lov poll-statuses-short (
+    name: POLL STATUSES (SHORT)
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 1
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 3
+        display: Published
+        return: 3
+    )
+
+    entry testing (
+        sequence: 2
+        display: Testing
+        return: 2
+    )
+
+)
+

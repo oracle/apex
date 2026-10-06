@@ -1,0 +1,110 @@
+list access-control (
+    name: Access Control
+
+    entry access-control (
+        label: Access Control
+        icon {
+            imageIconCssClasses: fa-key
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 151
+            }
+        }
+        userDefinedAttributes {
+            1: Use to change the Access Control Scope or to disable Access Control.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry territory-access-control-list (
+        label: Territory Access Control List
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 104
+                clearCache: 104
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage application users by sales territory. Administrators can see all territories, contributors are limited to the assignments defined on these pages.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry username-format (
+        label: Username Format
+        icon {
+            imageIconCssClasses: fa-at
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Define the username format for new users in this application.
+            2: formIcon
+        }
+        serverSideCondition {
+            type: never
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry users (
+        label: Users
+        icon {
+            imageIconCssClasses: fa-users
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 115
+                clearCache: [
+                    115
+                    RIR
+                ]
+            }
+        }
+        userDefinedAttributes {
+            1: Administrators can define the domain of users and assign each a role.
+            2: userIcon
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sales_acl_api.get_preference_value('ACCESS_CONTROL_ENABLED') = 'Y'
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

@@ -1,0 +1,20 @@
+lov p1-contrib-reader-view (
+    name: P1_CONTRIB_READER_VIEW
+    source {
+        location: staticValues
+    }
+
+    entry contributor-view (
+        sequence: 1
+        display: Contributor View
+        return: C
+    )
+
+    entry reader-view (
+        sequence: 2
+        display: Reader View
+        return: R
+    )
+
+)
+

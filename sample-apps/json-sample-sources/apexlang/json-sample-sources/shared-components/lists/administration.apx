@@ -1,0 +1,41 @@
+list administration (
+    name: Administration
+
+    entry reset-data (
+        label: Reset Data
+        icon {
+            imageIconCssClasses: fa-refresh
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 602
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data. You can reset the sample data using this administrative page.
+        }
+    )
+
+    entry theme-style-selection (
+        label: Theme Style Selection
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 601
+            }
+        }
+        userDefinedAttributes {
+            1: Set the default application look and feel
+        }
+    )
+
+)
+

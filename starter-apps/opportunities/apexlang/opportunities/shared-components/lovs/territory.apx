@@ -1,0 +1,13 @@
+lov territory (
+    name: TERRITORY
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select TERRITORY_NAME display_value, ID return_value 
+            from eba_sales_TERRITORIES
+            order by 1
+            ```
+    }
+)
+

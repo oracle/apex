@@ -1,0 +1,12 @@
+lov sp-initiatives-initiative (
+    name: SP_INITIATIVES.INITIATIVE
+    source {
+        tableName: SP_INITIATIVES
+    }
+    columnMapping {
+        return: ID
+        display: INITIATIVE
+        defaultSort: INITIATIVE
+    }
+)
+

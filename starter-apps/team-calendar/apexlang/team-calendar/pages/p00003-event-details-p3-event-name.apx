@@ -8,11 +8,8 @@ page 3 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -142,6 +139,9 @@ page 3 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 5000
@@ -364,6 +364,9 @@ page 3 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column CALENDAR_ID (
@@ -867,6 +870,9 @@ page 3 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -1078,6 +1084,9 @@ page 3 (
                 t-Comments--chat
             ]
             showNullValuesAs: " "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 50

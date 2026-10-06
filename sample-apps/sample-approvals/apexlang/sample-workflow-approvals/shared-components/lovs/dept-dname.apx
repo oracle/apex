@@ -1,0 +1,12 @@
+lov dept-dname (
+    name: DEPT.DNAME
+    source {
+        tableName: DEPT
+    }
+    columnMapping {
+        return: DEPTNO
+        display: DNAME
+        defaultSort: DNAME
+    }
+)
+

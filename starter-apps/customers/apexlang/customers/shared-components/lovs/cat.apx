@@ -1,0 +1,14 @@
+lov cat (
+    name: CAT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select category d, id r
+              from EBA_CUST_CATEGORIES
+             where is_active = 'Y'
+             order by 1
+            ```
+    }
+)
+

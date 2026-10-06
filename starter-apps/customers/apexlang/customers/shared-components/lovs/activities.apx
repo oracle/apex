@@ -1,0 +1,13 @@
+lov activities (
+    name: ACTIVITIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name d, id r
+            from eba_cust_activities
+            order by lower(name)
+            ```
+    }
+)
+

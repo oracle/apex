@@ -1,0 +1,25 @@
+list preferences (
+    name: Preferences
+
+    entry time-zone (
+        label: Time Zone
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 76
+            }
+        }
+        userDefinedAttributes {
+            1: Set my time zone preference for this application.
+            2: switchIcon
+            3: &TZ.
+        }
+    )
+
+)
+

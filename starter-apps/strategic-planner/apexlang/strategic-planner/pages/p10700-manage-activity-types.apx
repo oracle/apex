@@ -8,13 +8,8 @@ page 10700 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region activity-types (
@@ -29,7 +24,6 @@ page 10700 (
                        DISPLAY_SEQUENCE,
                        ACTIVITY_TYPE,
                        ACTIVITY_TYPE_DESCRIPTION,
-                       decode(is_project_yn,'Y','Yes','N','No','Unknown') is_project_related,
                        static_id,
                        decode(is_default_yn,'Y','Yes','N','No','Unknown') is_default,
                        decode(is_active_yn,'Y','Yes','N','No','Unknown') is_active,
@@ -81,8 +75,11 @@ page 10700 (
                 sequence: 48
                 columnAlignment: end
             }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -98,7 +95,7 @@ page 10700 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -114,7 +111,7 @@ page 10700 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -133,7 +130,7 @@ page 10700 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -149,7 +146,7 @@ page 10700 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -167,7 +164,7 @@ page 10700 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -184,7 +181,7 @@ page 10700 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -200,7 +197,7 @@ page 10700 (
                 sequence: 68
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -216,26 +213,10 @@ page 10700 (
                 sequence: 38
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
-            }
-        )
-
-        column IS_PROJECT_RELATED (
-            type: plainText
-            heading {
-                heading: Is Project Related
-            }
-            layout {
-                sequence: 58
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: M
             }
         )
 
@@ -248,7 +229,7 @@ page 10700 (
                 sequence: 28
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -267,7 +248,7 @@ page 10700 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -283,7 +264,7 @@ page 10700 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -305,7 +286,7 @@ page 10700 (
             }
 
             displayColumn ACTIVITIES (
-                sequence: 7
+                sequence: 6
             )
 
             displayColumn ACTIVITY_TYPE (
@@ -324,16 +305,12 @@ page 10700 (
                 sequence: 5
             )
 
-            displayColumn IS_PROJECT_RELATED (
-                sequence: 6
-            )
-
             displayColumn STATIC_ID (
                 sequence: 3
             )
 
             displayColumn UPDATED (
-                sequence: 8
+                sequence: 7
             )
 
             sort (
@@ -423,9 +400,6 @@ page 10700 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column SQL (

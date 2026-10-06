@@ -1,51 +1,24 @@
+installScript " sp_activity_types triggers" (
+    execution {
+        sequence: 4170
+    }
+    script {
+        contentFile: -sp-activity-types-triggers.sql
+    }
+)
+
 installScript "Approval tables and triggers" (
     execution {
-        sequence: 732
+        sequence: 3510
     }
     script {
         contentFile: approval-tables-and-triggers.sql
     }
 )
 
-installScript "INITIATIVE_LINKS table and trigger" (
-    execution {
-        sequence: 690
-    }
-    script {
-        contentFile: initiative-links-table-and-trigger.sql
-    }
-)
-
-installScript "Initiative Focus Area triggers" (
-    execution {
-        sequence: 450
-    }
-    script {
-        contentFile: initiative-focus-area-triggers.sql
-    }
-)
-
-installScript "Initiatives triggers" (
-    execution {
-        sequence: 440
-    }
-    script {
-        contentFile: initiatives-triggers.sql
-    }
-)
-
-installScript "Notifications job" (
-    execution {
-        sequence: 910
-    }
-    script {
-        contentFile: notifications-job.sql
-    }
-)
-
 installScript "Project Task tables" (
     execution {
-        sequence: 710
+        sequence: 3500
     }
     script {
         contentFile: project-task-tables.sql
@@ -54,64 +27,37 @@ installScript "Project Task tables" (
 
 installScript "Project Task triggers" (
     execution {
-        sequence: 720
+        sequence: 4200
     }
     script {
         contentFile: project-task-triggers.sql
     }
 )
 
-installScript "SP_DEFAULT_PEOPLE_TAGS table" (
+installScript "SP_GENERATE_AI_PROJECT_SUMMARIES_JOB job" (
     execution {
-        sequence: 640
+        sequence: 8020
     }
     script {
-        contentFile: sp-default-people-tags-table.sql
+        contentFile: sp-generate-ai-project-summaries-job-job.sql
     }
 )
 
-installScript "SP_DEFAULT_PEOPLE_TAGS trigger" (
+installScript "SP_LOAD_OOO_JOB job" (
     execution {
-        sequence: 650
+        sequence: 8030
     }
     script {
-        contentFile: sp-default-people-tags-trigger.sql
+        contentFile: sp-load-ooo-job-job.sql
     }
 )
 
-installScript SP_GENERATE_AI_PROJECT_SUMMARIES_JOB (
+installScript "SP_NOTIF_SUBSCRIPTIONS job" (
     execution {
-        sequence: 915
+        sequence: 8010
     }
     script {
-        contentFile: sp-generate-ai-project-summaries-job.sql
-    }
-)
-
-installScript "SP_GROUPS trigger" (
-    execution {
-        sequence: 430
-    }
-    script {
-        contentFile: sp-groups-trigger.sql
-    }
-)
-
-installScript "SP_GROUP_MEMBERS trigger" (
-    execution {
-        sequence: 410
-    }
-    script {
-        contentFile: sp-group-members-trigger.sql
-    }
-)
-
-installScript "Seed Task Types and Statuses" (
-    execution {
-        sequence: 890
-    }
-    script {
-        contentFile: seed-task-types-and-statuses.sql
+        contentFile: sp-notif-subscriptions-job.sql
     }
 )
 
@@ -124,306 +70,189 @@ installScript Sequences (
     }
 )
 
-installScript "activity types table" (
+installScript "Table Comments" (
     execution {
-        sequence: 550
+        sequence: 8500
     }
     script {
-        contentFile: activity-types-table.sql
-    }
-)
-
-installScript "activity_types triggers" (
-    execution {
-        sequence: 560
-    }
-    script {
-        contentFile: activity-types-triggers.sql
+        contentFile: table-comments.sql
     }
 )
 
 installScript "ai summary tables" (
     execution {
-        sequence: 735
+        sequence: 3520
     }
     script {
         contentFile: ai-summary-tables.sql
     }
 )
 
-installScript "ai_prompts table and trigger" (
-    execution {
-        sequence: 75
-    }
-    script {
-        contentFile: ai-prompts-table-and-trigger.sql
-    }
-)
-
 installScript "comment views" (
     execution {
-        sequence: 736
+        sequence: 5010
     }
     script {
         contentFile: comment-views.sql
     }
 )
 
-installScript "configurable_text table" (
-    execution {
-        sequence: 630
-    }
-    script {
-        contentFile: configurable-text-table.sql
-    }
-)
-
-installScript "countries table" (
-    execution {
-        sequence: 330
-    }
-    script {
-        contentFile: countries-table.sql
-    }
-)
-
-installScript "create SP_APPLICATION_NOTIFICATIONS" (
-    execution {
-        sequence: 660
-    }
-    script {
-        contentFile: create-sp-application-notifications.sql
-    }
-)
-
-installScript "create sample data" (
-    execution {
-        sequence: 900
-    }
-    script {
-        contentFile: create-sample-data.sql
-    }
-)
-
-installScript "create sp_areas trigger" (
-    execution {
-        sequence: 380
-    }
-    script {
-        contentFile: create-sp-areas-trigger.sql
-    }
-)
-
-installScript "create sp_team_members trigger" (
-    execution {
-        sequence: 400
-    }
-    script {
-        contentFile: create-sp-team-members-trigger.sql
-    }
-)
-
-installScript "create table sp_release_links" (
-    execution {
-        sequence: 680
-    }
-    script {
-        contentFile: create-table-sp-release-links.sql
-    }
-)
-
-installScript "external system names" (
-    execution {
-        sequence: 340
-    }
-    script {
-        contentFile: external-system-names.sql
-    }
-)
-
 installScript "favorite_toggle procedure" (
     execution {
-        sequence: 620
+        sequence: 6120
     }
     script {
         contentFile: favorite-toggle-procedure.sql
     }
 )
 
-installScript "favorites table" (
+installScript "object details view comments" (
     execution {
-        sequence: 610
+        sequence: 5040
     }
     script {
-        contentFile: favorites-table.sql
+        contentFile: object-details-view-comments.sql
     }
 )
 
-installScript "initiative_comments table and trigger" (
+installScript "object details views" (
     execution {
-        sequence: 670
+        sequence: 5030
     }
     script {
-        contentFile: initiative-comments-table-and-trigger.sql
+        contentFile: object-details-views.sql
     }
 )
 
-installScript "initiative_documents table and trigger" (
+installScript "sample data - approvals" (
     execution {
-        sequence: 700
+        sequence: 9280
     }
     script {
-        contentFile: initiative-documents-table-and-trigger.sql
+        contentFile: sample-data---approvals.sql
     }
 )
 
-installScript "package sp_value_compare" (
+installScript "sample data - areas and initiatives" (
     execution {
-        sequence: 320
+        sequence: 9220
     }
     script {
-        contentFile: package-sp-value-compare.sql
+        contentFile: sample-data---areas-and-initiatives.sql
     }
 )
 
-installScript "proj_interactions_log table" (
+installScript "sample data - cust hub 1.0" (
     execution {
-        sequence: 540
+        sequence: 9240
     }
     script {
-        contentFile: proj-interactions-log-table.sql
+        contentFile: sample-data---cust-hub-1-0.sql
     }
 )
 
-installScript "project comments triggers" (
+installScript "sample data - insight 1.0" (
     execution {
-        sequence: 460
+        sequence: 9250
     }
     script {
-        contentFile: project-comments-triggers.sql
+        contentFile: sample-data---insight-1-0.sql
     }
 )
 
-installScript "project documents triggers" (
+installScript "sample data - insight 1.1" (
     execution {
-        sequence: 490
+        sequence: 9260
     }
     script {
-        contentFile: project-documents-triggers.sql
+        contentFile: sample-data---insight-1-1.sql
     }
 )
 
-installScript "project links triggers" (
+installScript "sample data - insight 2.0" (
     execution {
-        sequence: 500
+        sequence: 9270
     }
     script {
-        contentFile: project-links-triggers.sql
+        contentFile: sample-data---insight-2-0.sql
     }
 )
 
-installScript "project_contributors triggers" (
+installScript "sample data - mobile comp 1.0" (
     execution {
-        sequence: 470
+        sequence: 9230
     }
     script {
-        contentFile: project-contributors-triggers.sql
+        contentFile: sample-data---mobile-comp-1-0.sql
     }
 )
 
-installScript "projects triggers" (
+installScript "sample data - releases" (
     execution {
-        sequence: 520
+        sequence: 9210
     }
     script {
-        contentFile: projects-triggers.sql
+        contentFile: sample-data---releases.sql
     }
 )
 
-installScript "related projects trigger" (
+installScript "sample data - team member avatars" (
     execution {
-        sequence: 510
+        sequence: 9205
     }
     script {
-        contentFile: related-projects-trigger.sql
+        contentFile: sample-data---team-member-avatars.sql
     }
 )
 
-installScript "release comments triggers" (
+installScript "sample data - team members" (
     execution {
-        sequence: 480
+        sequence: 9200
     }
     script {
-        contentFile: release-comments-triggers.sql
-    }
-)
-
-installScript "release milestone triggers" (
-    execution {
-        sequence: 530
-    }
-    script {
-        contentFile: release-milestone-triggers.sql
-    }
-)
-
-installScript "release milestones table" (
-    execution {
-        sequence: 300
-    }
-    script {
-        contentFile: release-milestones-table.sql
-    }
-)
-
-installScript "release trains triggers" (
-    execution {
-        sequence: 390
-    }
-    script {
-        contentFile: release-trains-triggers.sql
-    }
-)
-
-installScript "release_documents table and triggr" (
-    execution {
-        sequence: 310
-    }
-    script {
-        contentFile: release-documents-table-and-triggr.sql
-    }
-)
-
-installScript "release_milestone_default_tags table and trigger" (
-    execution {
-        sequence: 305
-    }
-    script {
-        contentFile: release-milestone-default-tags-table-and-trigger.sql
+        contentFile: sample-data---team-members.sql
     }
 )
 
 installScript "seed activity_types" (
     execution {
-        sequence: 850
+        sequence: 9090
     }
     script {
         contentFile: seed-activity-types.sql
     }
 )
 
+installScript "seed ai_prompts" (
+    execution {
+        sequence: 9140
+    }
+    script {
+        contentFile: seed-ai-prompts.sql
+    }
+)
+
 installScript "seed competencies" (
     execution {
-        sequence: 880
+        sequence: 9110
     }
     script {
         contentFile: seed-competencies.sql
     }
 )
 
+installScript "seed configurable text" (
+    execution {
+        sequence: 9012
+    }
+    script {
+        contentFile: seed-configurable-text.sql
+    }
+)
+
 installScript "seed countries" (
     execution {
-        sequence: 770
+        sequence: 9020
     }
     script {
         contentFile: seed-countries.sql
@@ -432,16 +261,25 @@ installScript "seed countries" (
 
 installScript "seed default tags" (
     execution {
-        sequence: 820
+        sequence: 9070
     }
     script {
         contentFile: seed-default-tags.sql
     }
 )
 
+installScript "seed event_types" (
+    execution {
+        sequence: 9150
+    }
+    script {
+        contentFile: seed-event-types.sql
+    }
+)
+
 installScript "seed external_ticketing_systems" (
     execution {
-        sequence: 790
+        sequence: 9030
     }
     script {
         contentFile: seed-external-ticketing-systems.sql
@@ -450,7 +288,7 @@ installScript "seed external_ticketing_systems" (
 
 installScript "seed first user" (
     execution {
-        sequence: 920
+        sequence: 9900
     }
     script {
         contentFile: seed-first-user.sql
@@ -459,7 +297,7 @@ installScript "seed first user" (
 
 installScript "seed nomenclature" (
     execution {
-        sequence: 780
+        sequence: 9010
     }
     script {
         contentFile: seed-nomenclature.sql
@@ -468,7 +306,7 @@ installScript "seed nomenclature" (
 
 installScript "seed notifications" (
     execution {
-        sequence: 870
+        sequence: 9017
     }
     script {
         contentFile: seed-notifications.sql
@@ -477,7 +315,7 @@ installScript "seed notifications" (
 
 installScript "seed project priorities" (
     execution {
-        sequence: 830
+        sequence: 9130
     }
     script {
         contentFile: seed-project-priorities.sql
@@ -486,7 +324,7 @@ installScript "seed project priorities" (
 
 installScript "seed project scales" (
     execution {
-        sequence: 810
+        sequence: 9050
     }
     script {
         contentFile: seed-project-scales.sql
@@ -495,7 +333,7 @@ installScript "seed project scales" (
 
 installScript "seed project sizes" (
     execution {
-        sequence: 840
+        sequence: 9080
     }
     script {
         contentFile: seed-project-sizes.sql
@@ -504,7 +342,7 @@ installScript "seed project sizes" (
 
 installScript "seed project statuses" (
     execution {
-        sequence: 815
+        sequence: 9060
     }
     script {
         contentFile: seed-project-statuses.sql
@@ -513,7 +351,7 @@ installScript "seed project statuses" (
 
 installScript "seed release_milestone_types" (
     execution {
-        sequence: 855
+        sequence: 9100
     }
     script {
         contentFile: seed-release-milestone-types.sql
@@ -522,25 +360,34 @@ installScript "seed release_milestone_types" (
 
 installScript "seed resource types" (
     execution {
-        sequence: 800
+        sequence: 9040
     }
     script {
         contentFile: seed-resource-types.sql
     }
 )
 
-installScript "seed settings and prompts" (
+installScript "seed settings" (
     execution {
-        sequence: 860
+        sequence: 9015
     }
     script {
-        contentFile: seed-settings-and-prompts.sql
+        contentFile: seed-settings.sql
+    }
+)
+
+installScript "seed task types, statuses and relations" (
+    execution {
+        sequence: 9120
+    }
+    script {
+        contentFile: seed-task-types-statuses-and-relations.sql
     }
 )
 
 installScript "sp_activities table" (
     execution {
-        sequence: 570
+        sequence: 3410
     }
     script {
         contentFile: sp-activities-table.sql
@@ -549,43 +396,79 @@ installScript "sp_activities table" (
 
 installScript "sp_activities trigger" (
     execution {
-        sequence: 580
+        sequence: 4180
     }
     script {
         contentFile: sp-activities-trigger.sql
     }
 )
 
+installScript "sp_activity_comments table and trigger" (
+    execution {
+        sequence: 3415
+    }
+    script {
+        contentFile: sp-activity-comments-table-and-trigger.sql
+    }
+)
+
+installScript "sp_activity_types table" (
+    execution {
+        sequence: 3400
+    }
+    script {
+        contentFile: sp-activity-types-table.sql
+    }
+)
+
+installScript "sp_ai_prompts table and trigger" (
+    execution {
+        sequence: 3040
+    }
+    script {
+        contentFile: sp-ai-prompts-table-and-trigger.sql
+    }
+)
+
 installScript "sp_app_log table" (
     execution {
-        sequence: 60
+        sequence: 3010
     }
     script {
         contentFile: sp-app-log-table.sql
     }
 )
 
-installScript "sp_app_nomenclature table" (
+installScript "sp_app_nomenclature table and trigger" (
     execution {
-        sequence: 90
+        sequence: 3100
     }
     script {
-        contentFile: sp-app-nomenclature-table.sql
+        contentFile: sp-app-nomenclature-table-and-trigger.sql
     }
 )
 
-installScript sp_app_settings (
+installScript "sp_app_settings table" (
     execution {
-        sequence: 70
+        sequence: 3030
     }
     script {
-        contentFile: sp-app-settings.sql
+        contentFile: sp-app-settings-table.sql
+    }
+)
+
+installScript "sp_application_notifications table and trigger" (
+    execution {
+        sequence: 3540
+    }
+    script {
+        contentFile: sp-application-notifications-table-and-trigger.sql
     }
 )
 
 installScript "sp_approvals body" (
     execution {
-        sequence: 765
+        sequence: 7060
     }
     script {
         contentFile: sp-approvals-body.sql
@@ -594,7 +477,7 @@ installScript "sp_approvals body" (
 
 installScript "sp_approvals spec" (
     execution {
-        sequence: 55
+        sequence: 2090
     }
     script {
         contentFile: sp-approvals-spec.sql
@@ -603,25 +486,34 @@ installScript "sp_approvals spec" (
 
 installScript "sp_areas table" (
     execution {
-        sequence: 170
+        sequence: 3180
     }
     script {
         contentFile: sp-areas-table.sql
     }
 )
 
-installScript "sp_comment_images table and trigger" (
+installScript "sp_areas trigger" (
     execution {
-        sequence: 285
+        sequence: 4010
     }
     script {
-        contentFile: sp-comment-images-table-and-trigger.sql
+        contentFile: sp-areas-trigger.sql
+    }
+)
+
+installScript "sp_comment_images table" (
+    execution {
+        sequence: 3310
+    }
+    script {
+        contentFile: sp-comment-images-table.sql
     }
 )
 
 installScript "sp_comment_util body" (
     execution {
-        sequence: 765
+        sequence: 7070
     }
     script {
         contentFile: sp-comment-util-body.sql
@@ -630,7 +522,7 @@ installScript "sp_comment_util body" (
 
 installScript "sp_comment_util spec" (
     execution {
-        sequence: 35
+        sequence: 2050
     }
     script {
         contentFile: sp-comment-util-spec.sql
@@ -639,7 +531,7 @@ installScript "sp_comment_util spec" (
 
 installScript "sp_competencies table" (
     execution {
-        sequence: 110
+        sequence: 3130
     }
     script {
         contentFile: sp-competencies-table.sql
@@ -648,16 +540,25 @@ installScript "sp_competencies table" (
 
 installScript "sp_competencies trigger" (
     execution {
-        sequence: 420
+        sequence: 4050
     }
     script {
         contentFile: sp-competencies-trigger.sql
     }
 )
 
+installScript "sp_configurable_text table and trigger" (
+    execution {
+        sequence: 3430
+    }
+    script {
+        contentFile: sp-configurable-text-table-and-trigger.sql
+    }
+)
+
 installScript "sp_contributor_summary body" (
     execution {
-        sequence: 740
+        sequence: 7040
     }
     script {
         contentFile: sp-contributor-summary-body.sql
@@ -666,34 +567,61 @@ installScript "sp_contributor_summary body" (
 
 installScript "sp_contributor_summary spec" (
     execution {
-        sequence: 40
+        sequence: 2070
     }
     script {
         contentFile: sp-contributor-summary-spec.sql
     }
 )
 
+installScript "sp_countries table and trigger" (
+    execution {
+        sequence: 3360
+    }
+    script {
+        contentFile: sp-countries-table-and-trigger.sql
+    }
+)
+
 installScript "sp_date_range_pct_comp function" (
     execution {
-        sequence: 590
+        sequence: 6100
     }
     script {
         contentFile: sp-date-range-pct-comp-function.sql
     }
 )
 
-installScript "sp_default_tags table" (
+installScript "sp_default_people_tags table" (
     execution {
-        sequence: 80
+        sequence: 3450
     }
     script {
-        contentFile: sp-default-tags-table.sql
+        contentFile: sp-default-people-tags-table.sql
+    }
+)
+
+installScript "sp_default_people_tags trigger" (
+    execution {
+        sequence: 4190
+    }
+    script {
+        contentFile: sp-default-people-tags-trigger.sql
+    }
+)
+
+installScript "sp_default_tags table and trigger" (
+    execution {
+        sequence: 3060
+    }
+    script {
+        contentFile: sp-default-tags-table-and-trigger.sql
     }
 )
 
 installScript "sp_documents_v view" (
     execution {
-        sequence: 738
+        sequence: 5020
     }
     script {
         contentFile: sp-documents-v-view.sql
@@ -702,16 +630,79 @@ installScript "sp_documents_v view" (
 
 installScript "sp_error_log table and trigger" (
     execution {
-        sequence: 65
+        sequence: 3020
     }
     script {
         contentFile: sp-error-log-table-and-trigger.sql
     }
 )
 
+installScript "sp_event_series table and trigger" (
+    execution {
+        sequence: 3090
+    }
+    script {
+        contentFile: sp-event-series-table-and-trigger.sql
+    }
+)
+
+installScript "sp_event_types table and trigger" (
+    execution {
+        sequence: 3080
+    }
+    script {
+        contentFile: sp-event-types-table-and-trigger.sql
+    }
+)
+
+installScript "sp_event_util body" (
+    execution {
+        sequence: 7100
+    }
+    script {
+        contentFile: sp-event-util-body.sql
+    }
+)
+
+installScript "sp_event_util spec" (
+    execution {
+        sequence: 2100
+    }
+    script {
+        contentFile: sp-event-util-spec.sql
+    }
+)
+
+installScript "sp_events table and trigger" (
+    execution {
+        sequence: 3110
+    }
+    script {
+        contentFile: sp-events-table-and-trigger.sql
+    }
+)
+
+installScript "sp_external_ticketing_systems table and trigger" (
+    execution {
+        sequence: 3370
+    }
+    script {
+        contentFile: sp-external-ticketing-systems-table-and-trigger.sql
+    }
+)
+
+installScript "sp_favorites table and trigger" (
+    execution {
+        sequence: 3420
+    }
+    script {
+        contentFile: sp-favorites-table-and-trigger.sql
+    }
+)
+
 installScript "sp_globals spec" (
     execution {
-        sequence: 20
+        sequence: 2010
     }
     script {
         contentFile: sp-globals-spec.sql
@@ -720,79 +711,196 @@ installScript "sp_globals spec" (
 
 installScript "sp_group_members table" (
     execution {
-        sequence: 140
+        sequence: 3150
     }
     script {
         contentFile: sp-group-members-table.sql
     }
 )
 
+installScript "sp_group_members trigger" (
+    execution {
+        sequence: 4040
+    }
+    script {
+        contentFile: sp-group-members-trigger.sql
+    }
+)
+
 installScript "sp_groups table" (
     execution {
-        sequence: 120
+        sequence: 3140
     }
     script {
         contentFile: sp-groups-table.sql
     }
 )
 
+installScript "sp_groups trigger" (
+    execution {
+        sequence: 4060
+    }
+    script {
+        contentFile: sp-groups-trigger.sql
+    }
+)
+
+installScript "sp_initiative_comments table and triggers" (
+    execution {
+        sequence: 3460
+    }
+    script {
+        contentFile: sp-initiative-comments-table-and-triggers.sql
+    }
+)
+
+installScript "sp_initiative_documents table and trigger" (
+    execution {
+        sequence: 3490
+    }
+    script {
+        contentFile: sp-initiative-documents-table-and-trigger.sql
+    }
+)
+
 installScript "sp_initiative_focus_areas tables" (
     execution {
-        sequence: 230
+        sequence: 3250
     }
     script {
         contentFile: sp-initiative-focus-areas-tables.sql
     }
 )
 
+installScript "sp_initiative_focus_areas triggers" (
+    execution {
+        sequence: 4080
+    }
+    script {
+        contentFile: sp-initiative-focus-areas-triggers.sql
+    }
+)
+
+installScript "sp_initiative_links table and trigger" (
+    execution {
+        sequence: 3480
+    }
+    script {
+        contentFile: sp-initiative-links-table-and-trigger.sql
+    }
+)
+
 installScript "sp_initiatives tables" (
     execution {
-        sequence: 190
+        sequence: 3200
     }
     script {
         contentFile: sp-initiatives-tables.sql
     }
 )
 
-installScript sp_notification_subscriptions (
+installScript "sp_initiatives triggers" (
     execution {
-        sequence: 370
+        sequence: 4070
     }
     script {
-        contentFile: sp-notification-subscriptions.sql
+        contentFile: sp-initiatives-triggers.sql
     }
 )
 
-installScript "sp_notifications table" (
+installScript "sp_log body" (
     execution {
-        sequence: 360
+        sequence: 7020
     }
     script {
-        contentFile: sp-notifications-table.sql
+        contentFile: sp-log-body.sql
+    }
+)
+
+installScript "sp_log spec" (
+    execution {
+        sequence: 2020
+    }
+    script {
+        contentFile: sp-log-spec.sql
+    }
+)
+
+installScript "sp_notification_subscriptions table and trigger" (
+    execution {
+        sequence: 3530
+    }
+    script {
+        contentFile: sp-notification-subscriptions-table-and-trigger.sql
+    }
+)
+
+installScript "sp_notifications table and trigger" (
+    execution {
+        sequence: 3380
+    }
+    script {
+        contentFile: sp-notifications-table-and-trigger.sql
+    }
+)
+
+installScript "sp_proj_interactions_log table and trigger" (
+    execution {
+        sequence: 3390
+    }
+    script {
+        contentFile: sp-proj-interactions-log-table-and-trigger.sql
     }
 )
 
 installScript "sp_project_comments table" (
     execution {
-        sequence: 270
+        sequence: 3290
     }
     script {
         contentFile: sp-project-comments-table.sql
     }
 )
 
-installScript "sp_project_groups table" (
+installScript "sp_project_comments triggers" (
     execution {
-        sequence: 220
+        sequence: 4090
     }
     script {
-        contentFile: sp-project-groups-table.sql
+        contentFile: sp-project-comments-triggers.sql
+    }
+)
+
+installScript "sp_project_contributors triggers" (
+    execution {
+        sequence: 4100
+    }
+    script {
+        contentFile: sp-project-contributors-triggers.sql
+    }
+)
+
+installScript "sp_project_documents triggers" (
+    execution {
+        sequence: 4120
+    }
+    script {
+        contentFile: sp-project-documents-triggers.sql
+    }
+)
+
+installScript "sp_project_groups table and trigger" (
+    execution {
+        sequence: 3240
+    }
+    script {
+        contentFile: sp-project-groups-table-and-trigger.sql
     }
 )
 
 installScript "sp_project_history table" (
     execution {
-        sequence: 250
+        sequence: 3270
     }
     script {
         contentFile: sp-project-history-table.sql
@@ -801,133 +909,223 @@ installScript "sp_project_history table" (
 
 installScript "sp_project_links table" (
     execution {
-        sequence: 260
+        sequence: 3280
     }
     script {
         contentFile: sp-project-links-table.sql
     }
 )
 
-installScript "sp_project_priorities table" (
+installScript "sp_project_links triggers" (
     execution {
-        sequence: 200
+        sequence: 4130
     }
     script {
-        contentFile: sp-project-priorities-table.sql
+        contentFile: sp-project-links-triggers.sql
     }
 )
 
-installScript "sp_project_scales table" (
+installScript "sp_project_priorities table and trigger" (
     execution {
-        sequence: 180
+        sequence: 3210
     }
     script {
-        contentFile: sp-project-scales-table.sql
+        contentFile: sp-project-priorities-table-and-trigger.sql
     }
 )
 
-installScript "sp_project_sizes table" (
+installScript "sp_project_related trigger" (
     execution {
-        sequence: 210
+        sequence: 4140
     }
     script {
-        contentFile: sp-project-sizes-table.sql
+        contentFile: sp-project-related-trigger.sql
     }
 )
 
-installScript "sp_project_statuses table" (
+installScript "sp_project_scales table and triggers" (
     execution {
-        sequence: 215
+        sequence: 3190
     }
     script {
-        contentFile: sp-project-statuses-table.sql
+        contentFile: sp-project-scales-table-and-triggers.sql
+    }
+)
+
+installScript "sp_project_sizes table and trigger" (
+    execution {
+        sequence: 3220
+    }
+    script {
+        contentFile: sp-project-sizes-table-and-trigger.sql
+    }
+)
+
+installScript "sp_project_statuses table and trigger" (
+    execution {
+        sequence: 3230
+    }
+    script {
+        contentFile: sp-project-statuses-table-and-trigger.sql
     }
 )
 
 installScript "sp_projects tables" (
     execution {
-        sequence: 240
+        sequence: 3260
     }
     script {
         contentFile: sp-projects-tables.sql
     }
 )
 
+installScript "sp_projects triggers" (
+    execution {
+        sequence: 4150
+    }
+    script {
+        contentFile: sp-projects-triggers.sql
+    }
+)
+
+installScript "sp_relation_types table and trigger" (
+    execution {
+        sequence: 3560
+    }
+    script {
+        contentFile: sp-relation-types-table-and-trigger.sql
+    }
+)
+
 installScript "sp_release_comments table" (
     execution {
-        sequence: 280
+        sequence: 3300
     }
     script {
         contentFile: sp-release-comments-table.sql
     }
 )
 
+installScript "sp_release_comments triggers" (
+    execution {
+        sequence: 4110
+    }
+    script {
+        contentFile: sp-release-comments-triggers.sql
+    }
+)
+
+installScript "sp_release_documents table and triggers" (
+    execution {
+        sequence: 3350
+    }
+    script {
+        contentFile: sp-release-documents-table-and-triggers.sql
+    }
+)
+
 installScript "sp_release_history table" (
     execution {
-        sequence: 160
+        sequence: 3170
     }
     script {
         contentFile: sp-release-history-table.sql
     }
 )
 
+installScript "sp_release_links table and triggers" (
+    execution {
+        sequence: 3470
+    }
+    script {
+        contentFile: sp-release-links-table-and-triggers.sql
+    }
+)
+
+installScript "sp_release_milestone_default_tags table and trigger" (
+    execution {
+        sequence: 3340
+    }
+    script {
+        contentFile: sp-release-milestone-default-tags-table-and-trigger.sql
+    }
+)
+
 installScript "sp_release_milestone_types table and trigger" (
     execution {
-        sequence: 295
+        sequence: 3320
     }
     script {
         contentFile: sp-release-milestone-types-table-and-trigger.sql
     }
 )
 
+installScript "sp_release_milestones table" (
+    execution {
+        sequence: 3330
+    }
+    script {
+        contentFile: sp-release-milestones-table.sql
+    }
+)
+
+installScript "sp_release_milestones triggers" (
+    execution {
+        sequence: 4160
+    }
+    script {
+        contentFile: sp-release-milestones-triggers.sql
+    }
+)
+
 installScript "sp_release_timeline package body" (
     execution {
-        sequence: 750
+        sequence: 7050
     }
     script {
         contentFile: sp-release-timeline-package-body.sql
     }
 )
 
-installScript "sp_release_timeline package spec" (
+installScript "sp_release_timeline spec" (
     execution {
-        sequence: 50
+        sequence: 2080
     }
     script {
-        contentFile: sp-release-timeline-package-spec.sql
+        contentFile: sp-release-timeline-spec.sql
     }
 )
 
 installScript "sp_release_trains table" (
     execution {
-        sequence: 150
+        sequence: 3160
     }
     script {
         contentFile: sp-release-trains-table.sql
     }
 )
 
-installScript "sp_report_questions table and trigger" (
+installScript "sp_release_trains triggers" (
     execution {
-        sequence: 77
+        sequence: 4020
     }
     script {
-        contentFile: sp-report-questions-table-and-trigger.sql
+        contentFile: sp-release-trains-triggers.sql
     }
 )
 
-installScript "sp_resource_types table" (
+installScript "sp_resource_types table and trigger" (
     execution {
-        sequence: 100
+        sequence: 3120
     }
     script {
-        contentFile: sp-resource-types-table.sql
+        contentFile: sp-resource-types-table-and-trigger.sql
     }
 )
 
 installScript "sp_summary_util body" (
     execution {
-        sequence: 768
+        sequence: 7080
     }
     script {
         contentFile: sp-summary-util-body.sql
@@ -936,7 +1134,7 @@ installScript "sp_summary_util body" (
 
 installScript "sp_summary_util spec" (
     execution {
-        sequence: 57
+        sequence: 2060
     }
     script {
         contentFile: sp-summary-util-spec.sql
@@ -945,25 +1143,52 @@ installScript "sp_summary_util spec" (
 
 installScript "sp_tag_diff function" (
     execution {
-        sequence: 600
+        sequence: 6110
     }
     script {
         contentFile: sp-tag-diff-function.sql
     }
 )
 
+installScript "sp_task_related table and triggers" (
+    execution {
+        sequence: 3570
+    }
+    script {
+        contentFile: sp-task-related-table-and-triggers.sql
+    }
+)
+
+installScript "sp_team_member_notifications table and trigger" (
+    execution {
+        sequence: 3550
+    }
+    script {
+        contentFile: sp-team-member-notifications-table-and-trigger.sql
+    }
+)
+
 installScript "sp_team_members table" (
     execution {
-        sequence: 130
+        sequence: 3070
     }
     script {
         contentFile: sp-team-members-table.sql
     }
 )
 
+installScript "sp_team_members trigger" (
+    execution {
+        sequence: 4030
+    }
+    script {
+        contentFile: sp-team-members-trigger.sql
+    }
+)
+
 installScript "sp_util body" (
     execution {
-        sequence: 760
+        sequence: 7010
     }
     script {
         contentFile: sp-util-body.sql
@@ -972,28 +1197,28 @@ installScript "sp_util body" (
 
 installScript "sp_util spec" (
     execution {
-        sequence: 30
+        sequence: 2040
     }
     script {
         contentFile: sp-util-spec.sql
     }
 )
 
-installScript team_member_notifications (
+installScript "sp_value_compare body" (
     execution {
-        sequence: 730
+        sequence: 7030
     }
     script {
-        contentFile: team-member-notifications.sql
+        contentFile: sp-value-compare-body.sql
     }
 )
 
-installScript triggers (
+installScript "sp_value_compare spec" (
     execution {
-        sequence: 350
+        sequence: 2030
     }
     script {
-        contentFile: triggers.sql
+        contentFile: sp-value-compare-spec.sql
     }
 )
 

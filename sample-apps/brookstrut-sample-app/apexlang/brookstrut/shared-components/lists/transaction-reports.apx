@@ -1,0 +1,62 @@
+list transaction-reports (
+    name: Transaction Reports
+
+    entry api-calls-per-hour (
+        label: API Calls Per Hour
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 35
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Summary report of API calls summarized by hour.
+            2: reportIcon
+        }
+    )
+
+    entry api-calls-per-minute (
+        label: API Calls Per Minute
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 34
+            }
+        }
+        userDefinedAttributes {
+            1: Summary report of API calls summarized by minute.
+        }
+    )
+
+    entry transactions-log (
+        label: Transactions Log
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Report listing each call made to the transaction generator.
+            2: reportIcon
+        }
+    )
+
+)
+

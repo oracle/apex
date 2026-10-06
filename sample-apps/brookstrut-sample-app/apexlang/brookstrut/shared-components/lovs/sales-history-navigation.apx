@@ -1,0 +1,62 @@
+lov sales-history-navigation (
+    name: SALES HISTORY NAVIGATION
+    source {
+        location: staticValues
+    }
+
+    entry classic-report (
+        sequence: 10
+        display: Classic Report
+        return: 50
+    )
+
+    entry faceted-calendar (
+        sequence: 28
+        display: Faceted Calendar
+        return: 42
+    )
+
+    entry faceted-classic-report (
+        sequence: 27
+        display: Faceted Classic Report
+        return: 13
+    )
+
+    entry faceted-content-row (
+        sequence: 30
+        display: Faceted Content Row
+        return: 2
+    )
+
+    entry faceted-content-row-with-menus (
+        sequence: 40
+        display: Faceted Content Row with Menus
+        return: 38
+    )
+
+    entry interactive-grid (
+        sequence: 25
+        display: Interactive Grid
+        return: 23
+    )
+
+    entry interactive-report (
+        sequence: 20
+        display: Interactive Report
+        return: 51
+    )
+
+    entry smart-search-content-row-with-menu (
+        sequence: 60
+        display: Smart Search Content Row with Menu
+        return: 45
+    )
+
+    entry smart-search-with-classic-cards (
+        sequence: 50
+        display: Smart Search with Classic Cards
+        return: 46
+    )
+
+)
+

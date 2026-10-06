@@ -1,0 +1,20 @@
+lov payment-method (
+    name: PAYMENT METHOD
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_orders
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct payment_method  
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: PAYMENT_METHOD
+        display: PAYMENT_METHOD
+    }
+)
+

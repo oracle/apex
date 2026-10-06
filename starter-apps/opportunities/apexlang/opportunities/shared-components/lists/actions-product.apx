@@ -1,0 +1,65 @@
+list actions-product (
+    name: Actions - Product
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: PRODUCT
+                    P99_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: PRODUCT
+                    P22_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: PRODUCT
+                    P114_ENTITY_ID: &P61_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+)
+

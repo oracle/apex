@@ -8,7 +8,6 @@ page 5 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -37,10 +36,6 @@ page 5 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region activity (
         name: Activity
@@ -52,25 +47,25 @@ page 5 (
                 ```sql
                 select ap.id, 
                        at.activity_type,
-                       ap.comments,
+                       ap.activity,
                        ap.start_date,
                        ap.end_date,
-                       to_char(ap.end_date,'Day DD-MON-YYYY') end_date_formatted,
-                       to_char(ap.start_date,'Day DD-MON-YYYY')||' to '||to_char(ap.end_date,'Day DD-MON-YYYY') TIMELINE,
+                       to_char(ap.end_date,'fmDay DD-Mon-YYYY') end_date_formatted,
+                       to_char(ap.start_date,'fmDay DD-Mon-YYYY')||' to '||to_char(ap.end_date,'fmDay DD-Mon-YYYY') TIMELINE,
                        ap.end_date - ap.start_date days,
                        round(ap.end_date - sysdate) days_remaining,
                        ap.url,
                        apex_util.get_since(ap.updated) last_updated,
-                       --
-                       -- team member info
-                       --
-                       tm.first_name||' '||tm.last_name name,
+                       decode(ap.private_yn,'Y','Private',null) private_label,
                        --
                        -- project info
                        --
                        p.project,
                        p.friendly_identifier,
                        p.PROJECT_URL_NAME,
+                       --
+                       decode(ap.initiative_id,null,null,
+                                               (select initiative from sp_initiatives where id = ap.initiative_id)) initiative,
                        --
                        -- badge status is red if past due and green if within begin and and dates
                        --
@@ -87,12 +82,11 @@ page 5 (
                        'fa-pie-chart-'||sp_date_range_pct_comp(ap.start_date, ap.end_date) icon
                 from sp_activities ap,
                      sp_projects p,
-                     sp_activity_types at,
-                     sp_team_members tm
+                     sp_activity_types at
                 where ap.project_id = p.id(+) and
                       ap.activity_type_id = at.id and
-                      tm.email = lower(:P5_EMAIL) and
-                      ap.team_member_id = tm.id and
+                      ap.team_member_id = :APP_USER_ID and
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
                       (p.id is null or p.DUPLICATE_OF_PROJECT_ID is null) and
                       (p.id is null or p.ARCHIVED_YN = 'N') and
                       --
@@ -103,9 +97,9 @@ page 5 (
                       )
                 ```
             pageItemsToSubmit: [
-                P5_EMAIL
                 P5_INCLUDE_FUTURE
                 P5_INCLUDE_PAST
+                APP_USER_ID
             ]
         }
         orderBy {
@@ -141,9 +135,13 @@ page 5 (
         }
         settings {
             overline: &TIMELINE.
-            title: &PROJECT.
-            description: &COMMENTS.
-            miscellaneous: &LAST_UPDATED.
+            title: &ACTIVITY!HTML.
+            description:
+                ```html
+                {if PROJECT/}<strong>&NOMENCLATURE_PROJECT!HTML.</strong>:&PROJECT!HTML.<br/>{endif/}
+                {if INITIATIVE/}<strong>&NOMENCLATURE_INITIATIVE!HTML.</strong>:&INITIATIVE!HTML.<br/>{endif/}
+                ```
+            miscellaneous: "{if PRIVATE_LABEL/}<strong class=\"u-danger-text\">&PRIVATE_LABEL.</strong><br/>{endif/}&LAST_UPDATED."
             displayAvatar: true
             displayBadge: true
         }
@@ -164,6 +162,16 @@ page 5 (
             whenNoDataFound: No activity found.
         }
 
+        column ACTIVITY (
+            layout {
+                sequence: 340
+            }
+            source {
+                databaseColumn: ACTIVITY
+                dataType: varchar2
+            }
+        )
+
         column ACTIVITY_TYPE (
             layout {
                 sequence: 190
@@ -180,16 +188,6 @@ page 5 (
             }
             source {
                 databaseColumn: BADGE_CLASS
-                dataType: varchar2
-            }
-        )
-
-        column COMMENTS (
-            layout {
-                sequence: 200
-            }
-            source {
-                databaseColumn: COMMENTS
                 dataType: varchar2
             }
         )
@@ -265,6 +263,16 @@ page 5 (
             }
         )
 
+        column INITIATIVE (
+            layout {
+                sequence: 350
+            }
+            source {
+                databaseColumn: INITIATIVE
+                dataType: varchar2
+            }
+        )
+
         column LAST_UPDATED (
             layout {
                 sequence: 300
@@ -275,12 +283,12 @@ page 5 (
             }
         )
 
-        column NAME (
+        column PRIVATE_LABEL (
             layout {
-                sequence: 250
+                sequence: 360
             }
             source {
-                databaseColumn: NAME
+                databaseColumn: PRIVATE_LABEL
                 dataType: varchar2
             }
         )
@@ -342,18 +350,17 @@ page 5 (
             }
             behavior {
                 target: {
-                    page: 3
+                    page: 129
                     items: {
-                        FI: &FRIENDLY_IDENTIFIER.
-                        PN: &PROJECT_URL_NAME.
+                        P129_ACTIVITY_ID: &ID.
                     }
-                    clearCache: 3
+                    clearCache: 129
                     action: resetPagination
                 }
             }
         )
 
-        action actions (
+        action actions-2 (
             position: primaryActions
             template: menu
             label: Actions
@@ -365,6 +372,26 @@ page 5 (
                 icon: fa-ellipsis-v
                 cssClasses: t-Button--noUI
             }
+
+            menu activity-quick-look (
+                label: Activity Quick Look
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    target: {
+                        page: 140
+                        items: {
+                            P140_ID: &ID.
+                        }
+                        clearCache: 140
+                        action: resetPagination
+                    }
+                }
+                appearance {
+                    icon: fa-badge-check
+                }
+            )
 
             menu edit-activity (
                 label: Edit Activity
@@ -386,29 +413,6 @@ page 5 (
                 }
                 security {
                     authorizationScheme: @contribution-rights
-                }
-            )
-
-            menu view-nomenclature-project (
-                label: View &NOMENCLATURE_PROJECT.
-                layout {
-                    sequence: 20
-                }
-                behavior {
-                    target: {
-                        page: 3
-                        items: {
-                            FI: &FRIENDLY_IDENTIFIER.
-                            PN: &PROJECT_URL_NAME.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-glasses
-                }
-                security {
-                    authorizationScheme: @reader-rights
                 }
             )
 
@@ -525,7 +529,7 @@ page 5 (
                 sequence: 80
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -551,7 +555,7 @@ page 5 (
                 linkText: #APPROVAL_TYPE#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -567,7 +571,7 @@ page 5 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -583,7 +587,7 @@ page 5 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -610,7 +614,7 @@ page 5 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -629,7 +633,7 @@ page 5 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -645,7 +649,7 @@ page 5 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -664,7 +668,7 @@ page 5 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -860,7 +864,7 @@ page 5 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: B
@@ -876,7 +880,7 @@ page 5 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -892,7 +896,7 @@ page 5 (
                 sequence: 30
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: C
@@ -919,7 +923,7 @@ page 5 (
                 linkText: #GROUP_NAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -935,7 +939,7 @@ page 5 (
                 sequence: 70
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -951,7 +955,7 @@ page 5 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -969,7 +973,7 @@ page 5 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -1018,195 +1022,6 @@ page 5 (
                 }
             )
 
-        )
-
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 60
-                }
-            )
-
-            menu edit-admin (
-                label: Edit (Admin)
-                layout {
-                    sequence: 10
-                }
-                behavior {
-                    target: {
-                        page: 20
-                        items: {
-                            P20_ID: &P5_ID.
-                        }
-                        clearCache: 20
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-edit
-                }
-                security {
-                    authorizationScheme: @administration-rights
-                }
-            )
-
-            menu manage-user-access (
-                label: Manage User Access
-                layout {
-                    sequence: 30
-                }
-                behavior {
-                    target: {
-                        page: 10012
-                        items: {
-                            P10012_USER_NAME: &P5_EMAIL.
-                        }
-                        clearCache: 10012
-                        action: resetPagination
-                        request: FROMPERSON
-                    }
-                }
-                appearance {
-                    icon: fa-lock
-                }
-                security {
-                    authorizationScheme: @administration-rights
-                }
-            )
-
-            menu nomenclature-project-exceptions (
-                label: &NOMENCLATURE_PROJECT. Exceptions
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 153
-                        items: {
-                            P153_ID: &P5_ID.
-                        }
-                        clearCache: 153
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-warning
-                }
-            )
-
-            menu quick-look (
-                label: Quick Look
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 73
-                        items: {
-                            P73_TEAM_MEMBER_ID: &P5_ID.
-                        }
-                        clearCache: 73
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-user
-                }
-            )
-
-            menu weekly-summary (
-                label: Weekly Summary
-                layout {
-                    sequence: 70
-                }
-                behavior {
-                    target: {
-                        page: 148
-                        items: {
-                            P148_ID: &P5_ID.
-                        }
-                        clearCache: 148
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-media-list
-                }
-            )
-
-        )
-
-        action edit-my-profile (
-            position: primaryActions
-            template: button
-            label: Edit My Profile
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 144
-                    items: {
-                        P144_ID: &P5_ID.
-                    }
-                    clearCache: 144
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            serverSideCondition {
-                type: rowsReturned
-                sqlQuery: select 1 from sp_team_members where email = lower(:APP_USER) and id = :P5_ID
-            }
-            security {
-                authorizationScheme: @reader-rights
-            }
         )
 
     )
@@ -1287,6 +1102,9 @@ page 5 (
                 t-Report--horizontalBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No open milestones found.
@@ -1602,7 +1420,8 @@ page 5 (
                        (select 'Current ' from dual where exists (
                            select 1 
                            from SP_ACTIVITIES a 
-                           where a.TEAM_MEMBER_ID = :P5_ID and 
+                           where (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID) and
+                                 a.TEAM_MEMBER_ID = :P5_ID and 
                                  a.project_id = p.id and 
                                  trunc(sysdate) between trunc(a.start_date) and trunc(a.end_date)
                            )
@@ -1610,7 +1429,8 @@ page 5 (
                         (select 'Future ' from dual where exists (
                            select 1 
                            from SP_ACTIVITIES a 
-                           where a.TEAM_MEMBER_ID = :P5_ID and 
+                           where (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID) and
+                                 a.TEAM_MEMBER_ID = :P5_ID and 
                                  a.project_id = p.id and 
                                  trunc(sysdate) < trunc(a.start_date)
                            )
@@ -1618,7 +1438,8 @@ page 5 (
                         (select 'Past ' from dual where exists (
                            select 1 
                            from SP_ACTIVITIES a 
-                           where a.TEAM_MEMBER_ID = :P5_ID and 
+                           where (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID) and
+                                 a.TEAM_MEMBER_ID = :P5_ID and 
                                  a.project_id = p.id and 
                                  trunc(sysdate) > trunc(a.end_date)
                            )
@@ -1654,7 +1475,10 @@ page 5 (
                                      from SP_PROJECT_CONTRIBUTORS c 
                                     where c.project_id = p.id) or
                         :P5_ID in (select t.owner_id from SP_TASKS t where t.project_id = p.id) or
-                        :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a where a.project_id = p.id) )
+                        :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a 
+                                    where a.project_id = p.id
+                                      and (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID)
+                                 ) )
                   and p.INITIATIVE_ID = i.id
                   and i.status_scale = s.scale_letter
                   and i.area_id = f.id
@@ -1696,7 +1520,7 @@ page 5 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -1712,7 +1536,7 @@ page 5 (
                 sequence: 190
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: S
@@ -1731,7 +1555,7 @@ page 5 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -1747,7 +1571,7 @@ page 5 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -1763,7 +1587,7 @@ page 5 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -1779,7 +1603,7 @@ page 5 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1795,7 +1619,7 @@ page 5 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1811,7 +1635,7 @@ page 5 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -1827,7 +1651,7 @@ page 5 (
                 sequence: 240
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: X
@@ -1843,7 +1667,7 @@ page 5 (
                 sequence: 220
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: V
@@ -1864,7 +1688,7 @@ page 5 (
                 htmlExpression: #PCT_COMPLETE#%
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -1880,7 +1704,7 @@ page 5 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -1908,7 +1732,7 @@ page 5 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -1924,7 +1748,7 @@ page 5 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -1940,7 +1764,7 @@ page 5 (
                 sequence: 170
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -1956,7 +1780,7 @@ page 5 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1972,7 +1796,7 @@ page 5 (
                 sequence: 250
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Y
@@ -1988,7 +1812,7 @@ page 5 (
                 sequence: 260
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -2004,7 +1828,7 @@ page 5 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -2020,7 +1844,7 @@ page 5 (
                 sequence: 230
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: W
@@ -2039,7 +1863,7 @@ page 5 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -2191,6 +2015,350 @@ page 5 (
         }
     )
 
+    region out-of-office (
+        name: Out of Office
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select e.id event_id,
+                       t.event_type, 
+                       e.event_date, e.event_name,
+                       case when s.recur_freq is not null
+                            then 'Repeats '||decode(s.recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                            '2W', 'Every 2 Weeks', 'M', 'Montly', s.recur_freq)||', '||
+                            case when to_char(s.start_date,'MONYYYY') = to_char(s.end_date,'MONYYYY') 
+                                 then to_char(s.start_date,'Mon fmDD')||'-'||to_char(s.end_date,'fmDD')
+                                    when to_char(s.start_date,'YYYY') = to_char(s.end_date,'YYYY') 
+                                 then to_char(s.start_date,'Mon fmDD')||' until '||to_char(s.end_date,'Mon fmDD')
+                                    else to_char(s.start_date,'Mon fmDD YYYY')||' until '||to_char(s.end_date,'Mon fmDD YYYY')
+                                    end
+                            end recur_frequency,
+                       e.event_details,
+                       lower(e.created_by) created_by,
+                       e.created,
+                       lower(e.updated_by) updated_by,
+                       e.updated,
+                       :APP_SYSDATE app_sysdate,
+                       case when e.for_user_id = :P5_ID then 'For Me'
+                            else 'General Event'
+                            end event_for
+                  from sp_events e,
+                       sp_event_types t,
+                       sp_event_series s
+                 where e.event_type_id = t.id
+                   and e.series_id = s.id (+)
+                   and (e.for_user_id = :P5_ID or (e.for_user_id is null and t.general_event_yn = 'Y'))
+                ```
+            pageItemsToSubmit: P5_ID
+        }
+        layout {
+            sequence: 140
+            slot: body
+            startNewRow: false
+            newColumn: false
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        config {
+            buildOption: @team-calendar
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 704
+                items: {
+                    P704_ID: #EVENT_ID#
+                }
+                clearCache: 704
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            conditionType: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from dual
+                 where :APP_USER_ID = :P5_ID
+                    or :IS_ADMIN = 'Y'
+                ```
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 32733525416783472614
+        }
+
+        column APP_SYSDATE (
+            type: plainText
+            heading {
+                heading: App Sysdate
+            }
+            layout {
+                sequence: 120
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 80
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column EVENT_DATE (
+            type: plainText
+            heading {
+                heading: Event Date
+            }
+            layout {
+                sequence: 30
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column EVENT_DETAILS (
+            type: plainText
+            heading {
+                heading: Event Details
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column EVENT_FOR (
+            type: plainText
+            heading {
+                heading: Event For
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        column EVENT_ID (
+            type: hidden
+            heading {
+                heading: Event ID
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column EVENT_NAME (
+            type: plainText
+            heading {
+                heading: Event Name
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column EVENT_TYPE (
+            type: plainText
+            heading {
+                heading: Event Type
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column RECUR_FREQUENCY (
+            type: plainText
+            heading {
+                heading: Repeat Frequency
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Groups
+        }
+
+        savedReport 335116686 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn EVENT_DATE (
+                sequence: 2
+            )
+
+            displayColumn EVENT_DETAILS (
+                sequence: 5
+            )
+
+            displayColumn EVENT_FOR (
+                sequence: 6
+            )
+
+            displayColumn EVENT_NAME (
+                sequence: 3
+            )
+
+            displayColumn EVENT_TYPE (
+                sequence: 1
+            )
+
+            displayColumn RECUR_FREQUENCY (
+                sequence: 4
+            )
+
+            sort (
+                column: EVENT_DATE
+                sort {
+                    sequence: 1
+                }
+            )
+
+            filter ir-condition (
+                column: EVENT_FOR
+                value: For Me
+            )
+
+            filter ir-condition-2 (
+                type: rowExpression
+                rowExpression: C >= to_date(K,'DD-Mon-YYYY')
+                identification {
+                    name: Today and future
+                }
+            )
+
+        )
+
+    )
+
     region profile (
         name: Profile
         type: staticContent
@@ -2231,6 +2399,11 @@ page 5 (
                             when comment_notif_pref = 'EMAIL' then 'Email'
                             when comment_notif_pref = 'NONE' then 'None'
                             end comment_pref,
+                       rtrim(case when hp_my_activities_yn = 'Y' then 'My Activities, ' end ||
+                             case when hp_my_initiatives_yn = 'Y' then 'My '||:NOMENCLATURE_INITIATIVES||', ' end ||
+                             case when hp_my_projects_yn = 'Y' then 'My '||:NOMENCLATURE_PROJECTS||', ' end ||
+                             case when hp_my_fav_projects_yn = 'Y' then 'My Favorite '||:NOMENCLATURE_PROJECTS||', ' end ||
+                             case when hp_my_open_releases_yn = 'Y' then 'My Open Releases' end,', ') homepage_display,
                        lower(tm.TAGS) tags,
                        competencies,
                        CREATED,
@@ -2238,6 +2411,7 @@ page 5 (
                        APP_ROLE,
                        location,
                        nvl((select country_Name from sp_countries c where c.id = tm.country_id),'Not Provided') Country,
+                       timezone,
                        --
                        -- active projects
                        --
@@ -2248,7 +2422,9 @@ page 5 (
                          :P5_ID in (select c.owner_id 
                                     from SP_TASKS c 
                                     where c.project_id = p.id) or
-                         :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a where a.PROJECT_ID = p.id)
+                         :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a 
+                                     where a.PROJECT_ID = p.id
+                                       and (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID))
                          )
                          and
                          p.ARCHIVED_YN = 'N' and 
@@ -2265,7 +2441,9 @@ page 5 (
                          :P5_ID in (select c.owner_id 
                                     from SP_TASKS c 
                                     where c.project_id = p.id) or
-                         :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a where a.PROJECT_ID = p.id)
+                         :P5_ID in (select a.TEAM_MEMBER_ID from SP_ACTIVITIES a 
+                                     where a.PROJECT_ID = p.id
+                                       and (nvl(a.private_yn,'N') = 'N' or a.team_member_id = :APP_USER_ID))
                          )
                          and
                          p.ARCHIVED_YN = 'N' and 
@@ -2307,16 +2485,19 @@ page 5 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column ACTIVE_PROJECTS (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Active &NOMENCLATURE_PROJECTS.
                 alignment: end
             }
             layout {
-                sequence: 110
+                sequence: 130
                 columnAlignment: end
             }
             appearance {
@@ -2325,13 +2506,13 @@ page 5 (
         )
 
         column APP_ROLE (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Application Role
             }
             layout {
-                sequence: 80
+                sequence: 90
             }
         )
 
@@ -2358,25 +2539,25 @@ page 5 (
         )
 
         column COMPETENCIES (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Competencies
             }
             layout {
-                sequence: 150
+                sequence: 170
             }
         )
 
         column COMPLETED_PROJECTS (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Completed &NOMENCLATURE_PROJECTS.
                 alignment: end
             }
             layout {
-                sequence: 120
+                sequence: 140
                 columnAlignment: end
             }
             appearance {
@@ -2385,24 +2566,24 @@ page 5 (
         )
 
         column COUNTRY (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Country
             }
             layout {
-                sequence: 100
+                sequence: 110
             }
         )
 
         column CREATED (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Created
             }
             layout {
-                sequence: 160
+                sequence: 180
             }
             appearance {
                 formatMask: SINCE
@@ -2421,18 +2602,29 @@ page 5 (
         )
 
         column GROUP_ASSOCIATIONS (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: Group Associations
                 alignment: end
             }
             layout {
-                sequence: 130
+                sequence: 150
                 columnAlignment: end
             }
             appearance {
                 formatMask: 999G999G999G999G999G999G990
+            }
+        )
+
+        column HOMEPAGE_DISPLAY (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Homepage Display
+            }
+            layout {
+                sequence: 80
             }
         )
 
@@ -2457,13 +2649,13 @@ page 5 (
         )
 
         column LOCATION (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Location
             }
             layout {
-                sequence: 90
+                sequence: 100
             }
             serverSideCondition {
                 type: rowsReturned
@@ -2500,24 +2692,48 @@ page 5 (
         )
 
         column TAGS (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Tags
             }
             layout {
-                sequence: 140
+                sequence: 160
+            }
+        )
+
+        column TIMEZONE (
+            reportColumnQueryId: 16
+            derivedColumn: N
+            heading {
+                heading: Timezone
+            }
+            layout {
+                sequence: 120
+            }
+            serverSideCondition {
+                type: rowsReturned
+                sqlQuery:
+                    ```sql
+                    select 1
+                      from sp_team_members
+                     where id = :P5_ID
+                       and timezone is not null
+                    ```
+            }
+            config {
+                buildOption: @team-calendar
             }
         )
 
         column UPDATED (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Last Updated
             }
             layout {
-                sequence: 170
+                sequence: 190
             }
             appearance {
                 formatMask: SINCE
@@ -2671,6 +2887,9 @@ page 5 (
                 t-Report--horizontalBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No open reviews found.
@@ -2987,6 +3206,9 @@ page 5 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: No open tasks found.
         }
@@ -3212,6 +3434,37 @@ page 5 (
 
     )
 
+    region user-timezone (
+        name: user timezone
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                    select nvl(timezone,'UTC') user_timezone
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    sys.htp.p('Your timezone is '||apex_escape.html(c1.user_timezone)||'. This is set under your profile.');
+                end loop;
+                
+                return null;
+                ```
+        }
+        layout {
+            sequence: 2020
+            parentRegion: @out-of-office
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
     pageItem P5_EMAIL (
         type: hidden
         layout {
@@ -3433,6 +3686,139 @@ page 5 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu edit-admin (
+            label: Edit (Admin)
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 20
+                    items: {
+                        P20_ID: &P5_ID.
+                    }
+                    clearCache: 20
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-edit
+            }
+            security {
+                authorizationScheme: @administration-rights
+            }
+        )
+
+        menu manage-user-access (
+            label: Manage User Access
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 10012
+                    items: {
+                        P10012_USER_NAME: &P5_EMAIL.
+                    }
+                    clearCache: 10012
+                    action: resetPagination
+                    request: FROMPERSON
+                }
+            }
+            appearance {
+                icon: fa-lock
+            }
+            security {
+                authorizationScheme: @administration-rights
+            }
+        )
+
+        menu new (
+            type: separator
+            layout {
+                sequence: 40
+            }
+        )
+
+        menu project-exceptions (
+            label: &NOMENCLATURE_PROJECT. Exceptions
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 153
+                    items: {
+                        P153_ID: &P5_ID.
+                    }
+                    clearCache: 153
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-warning
+            }
+        )
+
+        menu quick-look (
+            label: Quick Look
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 73
+                    items: {
+                        P73_TEAM_MEMBER_ID: &P5_ID.
+                    }
+                    clearCache: 73
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-user
+            }
+        )
+
+        menu weekly-summary (
+            label: Weekly Summary
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 148
+                    items: {
+                        P148_ID: &P5_ID.
+                    }
+                    clearCache: 148
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-media-list
+            }
+        )
+
+    )
+
     button add (
         buttonName: Add
         label: Add
@@ -3473,6 +3859,82 @@ page 5 (
                   from dual
                  where :IS_ADMIN = 'Y'
                 ```
+        }
+    )
+
+    button add-event (
+        buttonName: Add_event
+        label: Add
+        layout {
+            sequence: 20
+            region: @out-of-office
+            slot: rightOfInteractiveReportSearchBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 704
+                clearCache: 704
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1 
+                  from dual
+                 where :APP_USER_ID = :P5_ID
+                    or :IS_ADMIN = 'Y'
+                ```
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
+    button edit-my-profile_1 (
+        buttonName: edit-my-profile
+        label: Edit My Profile
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 144
+                items: {
+                    P144_ID: &P5_ID.
+                }
+                clearCache: 144
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from sp_team_members where email = lower(:APP_USER) and id = :P5_ID
+        }
+        security {
+            authorizationScheme: @reader-rights
         }
     )
 
@@ -3630,6 +4092,56 @@ page 5 (
         }
     )
 
+    dynamicAction after-event-create (
+        name: after event create
+        execution {
+            sequence: 90
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @add-event
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @out-of-office
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction after-event-edit (
+        name: after event edit
+        execution {
+            sequence: 80
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @out-of-office
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @out-of-office
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
     dynamicAction after-group-change (
         name: after group change
         execution {
@@ -3721,31 +4233,6 @@ page 5 (
             }
             execution {
                 sequence: 20
-                fireOnInit: false
-            }
-        )
-
-    )
-
-    dynamicAction refresh-on-modal-close (
-        name: refresh on modal close
-        execution {
-            sequence: 40
-        }
-        when {
-            event: apexafterclosedialog
-            selectionType: region
-            region: @menubar
-        }
-
-        action native-refresh (
-            action: refresh
-            affectedElements {
-                selectionType: region
-                region: @profile-details
-            }
-            execution {
-                sequence: 40
                 fireOnInit: false
             }
         )

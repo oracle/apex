@@ -1,0 +1,13 @@
+lov regions (
+    name: REGIONS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select region_name, id 
+            from OOW_DEMO_REGIONS 
+            order by 1
+            ```
+    }
+)
+

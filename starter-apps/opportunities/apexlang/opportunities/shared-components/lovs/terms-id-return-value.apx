@@ -1,0 +1,14 @@
+lov terms-id-return-value (
+    name: TERMS - ID RETURN VALUE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_terms
+             order by 2
+            ```
+    }
+)
+

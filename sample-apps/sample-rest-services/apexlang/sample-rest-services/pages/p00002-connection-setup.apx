@@ -6,13 +6,8 @@ page 2 (
         pageTemplate: @/minimal-no-navigation
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments: Use this items on this page to configure the app.
@@ -217,12 +212,12 @@ page 2 (
         help {
             helpText:
                 ```html
-                   <p>The <strong>Base URL</strong> is the portion of your ORDS URL that includes the protocol, host, port (if applicable), and the path up to (and including) <code>/ords/</code>. It does not include the schema or workspace name.</p>
-                   <p>Examples:</p>
-                   <ul>
-                      <li><strong>Dev Instance:</strong> For example: <code>http://yourserver.example.com:8084/ords/</code></li>
-                      <li><strong>apex.oracle.com:</strong> For example: <code>https://apex.oracle.com/pls/apex/</code></li>
-                   </ul>
+                <p>The <strong>Base URL</strong> is the portion of your ORDS URL that includes the protocol, host, port (if applicable), and the path up to (and including) <code>/ords/</code>. It does not include the schema or workspace name.</p>
+                <p>Examples:</p>
+                <ul>
+                    <li><strong>Dev Instance:</strong> For example: <code>http://yourserver.example.com:8084/ords/</code></li>
+                    <li><strong>oracleapex.com:</strong> For example: <code>https://oracleapex.com/pls/apex/</code></li>
+                </ul>
                 ```
         }
     )
@@ -341,11 +336,11 @@ page 2 (
         help {
             helpText:
                 ```html
-                   <p>The <strong>Schema</strong> is the workspace or schema name that appears in your ORDS URL immediately after <code>/ords/</code>. Examples:</p>
-                   <ul>
-                      <li><strong>Internal Instance:</strong> If your full URL is: <code>http://yourserver.example.com:8084/ords/r/myworkspace/…</code>, then the Schema is <em>myworkspace</em>.</li>
-                      <li><strong>apex.oracle.com:</strong> If your URL is: <code>https://apex.oracle.com/pls/apex/workspace/</code>, then the Schema is <em>workspace</em>.</li>
-                   </ul>
+                <p>The <strong>Schema</strong> is the workspace or schema name that appears in your ORDS URL immediately after <code>/ords/</code>. Examples:</p>
+                <ul>
+                    <li><strong>Internal Instance:</strong> If your full URL is: <code>http://yourserver.example.com:8084/ords/r/myworkspace/…</code>, then the Schema is <em>myworkspace</em>.</li>
+                    <li><strong>oracleapex.com:</strong> If your URL is: <code>https://oracleapex.com/pls/apex/workspace/</code>, then the Schema is <em>workspace</em>.</li>
+                </ul>
                 ```
         }
     )

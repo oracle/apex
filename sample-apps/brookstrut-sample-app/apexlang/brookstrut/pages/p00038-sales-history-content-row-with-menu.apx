@@ -8,12 +8,7 @@ page 38 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -102,6 +97,7 @@ page 38 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PRODUCT
@@ -121,6 +117,7 @@ page 38 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: REGION
@@ -150,6 +147,7 @@ page 38 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: STORE
@@ -170,6 +168,7 @@ page 38 (
             listEntries {
                 sortByTopCounts: false
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: THE_MONTH

@@ -11,6 +11,9 @@ page 16 (
         width: 400
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
@@ -35,12 +38,10 @@ page 16 (
             ```
     }
     css {
-        inline: .a-DatePicker { flex-grow: 1; }
+        inline: ".a-DatePicker { flex-grow: 1; }"
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (

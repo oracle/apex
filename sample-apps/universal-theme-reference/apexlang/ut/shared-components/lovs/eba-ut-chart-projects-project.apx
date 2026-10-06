@@ -1,0 +1,12 @@
+lov eba-ut-chart-projects-project (
+    name: EBA_UT_CHART_PROJECTS.PROJECT
+    source {
+        tableName: EBA_UT_CHART_PROJECTS
+    }
+    columnMapping {
+        return: ID
+        display: PROJECT
+        defaultSort: PROJECT
+    }
+)
+

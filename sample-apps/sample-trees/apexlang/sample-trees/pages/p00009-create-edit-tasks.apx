@@ -7,6 +7,7 @@ page 9 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -18,8 +19,6 @@ page 9 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -110,9 +109,6 @@ page 9 (
             ]
             showNullValuesAs: " - "
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         performance {
             maxRowsToProcess: 500
         }
@@ -128,7 +124,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 11
+                sequence: 110
             }
         )
 
@@ -137,7 +133,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 16
+                sequence: 160
             }
         )
 
@@ -146,7 +142,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 2
+                sequence: 20
             }
             sorting {
                 defaultSequence: 1
@@ -161,7 +157,7 @@ page 9 (
                 heading: Edit
             }
             layout {
-                sequence: 1
+                sequence: 10
             }
             link {
                 target: {
@@ -183,7 +179,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 15
+                sequence: 150
             }
         )
 
@@ -192,7 +188,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 13
+                sequence: 130
             }
         )
 
@@ -203,7 +199,7 @@ page 9 (
                 heading: Completed
             }
             layout {
-                sequence: 8
+                sequence: 80
             }
             sorting {
                 sortable: false
@@ -215,7 +211,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 14
+                sequence: 140
             }
         )
 
@@ -226,7 +222,7 @@ page 9 (
                 heading: Estimated Completion
             }
             layout {
-                sequence: 7
+                sequence: 70
             }
             sorting {
                 sortable: false
@@ -238,7 +234,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 4
+                sequence: 40
             }
         )
 
@@ -249,7 +245,7 @@ page 9 (
                 heading: Name
             }
             layout {
-                sequence: 5
+                sequence: 50
             }
             sorting {
                 sortable: false
@@ -263,7 +259,7 @@ page 9 (
                 heading: Priority
             }
             layout {
-                sequence: 9
+                sequence: 90
             }
             sorting {
                 sortable: false
@@ -277,7 +273,7 @@ page 9 (
                 heading: Start
             }
             layout {
-                sequence: 6
+                sequence: 60
             }
             sorting {
                 sortable: false
@@ -291,7 +287,7 @@ page 9 (
                 heading: Status
             }
             layout {
-                sequence: 10
+                sequence: 100
             }
             sorting {
                 sortable: false
@@ -303,7 +299,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 3
+                sequence: 30
             }
         )
 
@@ -312,7 +308,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 12
+                sequence: 120
             }
         )
 
@@ -321,7 +317,7 @@ page 9 (
             derivedColumn: N
             type: hidden
             layout {
-                sequence: 17
+                sequence: 170
             }
         )
 
@@ -352,9 +348,6 @@ page 9 (
         }
         validation {
             valueRequired: true
-        }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
         }
         source {
             type: databaseColumn
@@ -389,9 +382,6 @@ page 9 (
         validation {
             maxLength: 255
         }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
-        }
         source {
             type: databaseColumn
             databaseColumn: TASK_ASSIGN
@@ -421,9 +411,6 @@ page 9 (
         }
         validation {
             maxLength: 255
-        }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
         }
         source {
             type: databaseColumn
@@ -460,9 +447,6 @@ page 9 (
         validation {
             maxLength: 32000
         }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
-        }
         source {
             type: databaseColumn
             databaseColumn: TASK_DESC
@@ -492,9 +476,6 @@ page 9 (
         }
         validation {
             maxLength: 255
-        }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
         }
         source {
             type: databaseColumn
@@ -592,9 +573,6 @@ page 9 (
             valueRequired: true
             maxLength: 4000
         }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
-        }
         source {
             type: databaseColumn
             databaseColumn: TASK_NAME
@@ -627,9 +605,6 @@ page 9 (
             templateOptions: #DEFAULT#
             height: 1
         }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
-        }
         source {
             type: databaseColumn
             databaseColumn: TASK_PRIORITY
@@ -659,9 +634,6 @@ page 9 (
         }
         validation {
             maxLength: 255
-        }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
         }
         source {
             type: databaseColumn
@@ -695,9 +667,6 @@ page 9 (
             template: @/optional
             templateOptions: #DEFAULT#
             height: 1
-        }
-        advanced {
-            customAttributes: onchange="htmldb_item_change(this)"
         }
         source {
             type: databaseColumn
@@ -800,10 +769,8 @@ page 9 (
             ]
         }
         behavior {
-            action: redirectUrl
-            targetUrl: javascript:apex.confirm(htmldb_delete_message,'DELETE');
+            action: definedByDynamicAction
             executeValidations: false
-            warnOnUnsavedChanges: doNotCheck
             databaseAction: delete
         }
         serverSideCondition {
@@ -814,20 +781,26 @@ page 9 (
 
     button get-next-task-id (
         buttonName: GET_NEXT_TASK_ID
-        label: &gt;
+        label: NEXT
         layout {
             sequence: 10
             region: @breadcrumb
             slot: next
         }
         appearance {
-            buttonTemplate: @/text
+            buttonTemplate: @/icon
             templateOptions: #DEFAULT#
+            icon: fa-chevron-right
         }
         behavior {
-            action: redirectUrl
-            targetUrl: javascript:htmldb_goSubmit('GET_NEXT_TASK_ID')
-            warnOnUnsavedChanges: doNotCheck
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_TASK_ID: &P9_TASK_ID_NEXT.
+                }
+                request: T
+            }
         }
         serverSideCondition {
             type: itemIsNotNull
@@ -840,20 +813,26 @@ page 9 (
 
     button get-previous-task-id (
         buttonName: GET_PREVIOUS_TASK_ID
-        label: &lt;
+        label: PREVIOUS
         layout {
             sequence: 60
             region: @breadcrumb
             slot: previous
         }
         appearance {
-            buttonTemplate: @/text
+            buttonTemplate: @/icon
             templateOptions: #DEFAULT#
+            icon: fa-chevron-left
         }
         behavior {
-            action: redirectUrl
-            targetUrl: javascript:htmldb_goSubmit('GET_PREVIOUS_TASK_ID')
-            warnOnUnsavedChanges: doNotCheck
+            action: redirectThisApp
+            target: {
+                page: 9
+                items: {
+                    P9_TASK_ID: &P9_TASK_ID_PREV.
+                }
+                request: T
+            }
         }
         serverSideCondition {
             type: itemIsNotNull
@@ -885,6 +864,43 @@ page 9 (
             type: itemIsNotNull
             item: P9_TASK_ID
         }
+    )
+
+    dynamicAction delete-task (
+        name: Delete task
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @delete
+        }
+
+        action native-confirm (
+            action: confirm
+            settings {
+                title: Delete Task
+                message: Are you sure you want to delete this task?
+                style: danger
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-submit-page (
+            action: submitPage
+            settings {
+                requestButtonName: DELETE
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
     )
 
     validation completion-date-required (
@@ -1024,50 +1040,6 @@ page 9 (
             target: {
                 page: &LAST_VIEW.
             }
-        }
-    )
-
-    branch (
-        execution {
-            sequence: 10
-            point: afterSubmit
-        }
-        behavior {
-            target: {
-                page: 9
-                items: {
-                    P9_TASK_ID: &P9_TASK_ID_NEXT.
-                }
-                successMessage: false
-            }
-        }
-        serverSideCondition {
-            whenButtonPressed: @get-next-task-id
-        }
-        comments {
-            comments: This button is needed for Get Next or Previous Primary Key Value process.
-        }
-    )
-
-    branch (
-        execution {
-            sequence: 20
-            point: afterSubmit
-        }
-        behavior {
-            target: {
-                page: 9
-                items: {
-                    P9_TASK_ID: &P9_TASK_ID_PREV.
-                }
-                successMessage: false
-            }
-        }
-        serverSideCondition {
-            whenButtonPressed: @get-previous-task-id
-        }
-        comments {
-            comments: This button is needed for Get Next or Previous Primary Key Value process.
         }
     )
 

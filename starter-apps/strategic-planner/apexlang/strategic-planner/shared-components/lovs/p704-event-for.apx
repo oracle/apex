@@ -1,0 +1,30 @@
+lov p704-event-for (
+    name: P704_EVENT_FOR
+    source {
+        location: staticValues
+    }
+
+    entry a (
+        sequence: 3
+        display: For All
+        return: A
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P704_GENERAL_EVENT_YN = 'Y'
+        }
+    )
+
+    entry e (
+        sequence: 2
+        display: For Someone Else
+        return: E
+    )
+
+    entry m (
+        sequence: 1
+        display: For Me
+        return: M
+    )
+
+)
+

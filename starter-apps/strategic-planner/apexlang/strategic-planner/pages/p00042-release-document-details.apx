@@ -7,15 +7,11 @@ page 42 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #PRISMJS_DIRECTORY#prism#MIN#.js
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        pageAccessProtection: unrestricted
     }
     advanced {
         reloadOnSubmit: always
@@ -38,6 +34,15 @@ page 42 (
                 t-BreadcrumbRegion--useBreadcrumbTitle
             ]
         }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_RELEASE_DOCUMENTS
+                 where id = :P42_ID
+                ```
+        }
         componentAppearance {
             breadcrumbTemplate: @/breadcrumb
             templateOptions: #DEFAULT#
@@ -59,7 +64,7 @@ page 42 (
             pageItemsToSubmit: P42_ID
         }
         layout {
-            sequence: 10
+            sequence: 20
             slot: body
         }
         appearance {
@@ -92,6 +97,9 @@ page 42 (
                 t-Report--staticRowColors
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
         heading {
             type: none
@@ -148,12 +156,24 @@ page 42 (
         advanced {
             regionDisplaySelector: true
         }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_RELEASE_DOCUMENTS
+                 where id = :P42_ID
+                ```
+        }
         componentAppearance {
             template: @/contextual-info
             templateOptions: [
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column AUTHOR (
@@ -278,6 +298,36 @@ page 42 (
 
     )
 
+    region document-not-found (
+        name: Document Not Found
+        type: staticContent
+        source {
+            htmlCode: The selected document is no longer available and was likely deleted.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        serverSideCondition {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from SP_RELEASE_DOCUMENTS
+                 where id = :P42_ID
+                ```
+        }
+    )
+
     region html-display-of-markdown (
         name: HTML Display of Markdown
         type: dynamicContent
@@ -301,7 +351,7 @@ page 42 (
             pageItemsToSubmit: P42_ID
         }
         layout {
-            sequence: 53
+            sequence: 80
             slot: body
         }
         appearance {
@@ -356,7 +406,7 @@ page 42 (
                 ```
         }
         layout {
-            sequence: 100
+            sequence: 130
             slot: body
         }
         appearance {
@@ -411,7 +461,7 @@ page 42 (
                 ```
         }
         layout {
-            sequence: 80
+            sequence: 110
             slot: body
         }
         appearance {
@@ -468,7 +518,7 @@ page 42 (
             pageItemsToSubmit: P42_ID
         }
         layout {
-            sequence: 52
+            sequence: 70
             slot: body
         }
         appearance {
@@ -492,7 +542,7 @@ page 42 (
             htmlCode: This file type cannot be previewed.
         }
         layout {
-            sequence: 20
+            sequence: 30
             slot: body
         }
         appearance {
@@ -520,7 +570,7 @@ page 42 (
         name: &P42_FILE_NAME.
         type: staticContent
         layout {
-            sequence: 30
+            sequence: 40
             slot: body
         }
         appearance {
@@ -548,7 +598,7 @@ page 42 (
             htmlCode: &P42_PDF_LINK.
         }
         layout {
-            sequence: 120
+            sequence: 150
             slot: body
         }
         appearance {
@@ -601,7 +651,7 @@ page 42 (
             pageItemsToSubmit: P42_ID
         }
         layout {
-            sequence: 60
+            sequence: 90
             slot: body
         }
         appearance {
@@ -660,7 +710,7 @@ page 42 (
                 ```
         }
         layout {
-            sequence: 110
+            sequence: 140
             slot: body
         }
         appearance {
@@ -773,7 +823,7 @@ page 42 (
             pageItemsToSubmit: P42_ID
         }
         layout {
-            sequence: 51
+            sequence: 60
             slot: body
         }
         appearance {
@@ -828,7 +878,7 @@ page 42 (
                 ```
         }
         layout {
-            sequence: 90
+            sequence: 120
             slot: body
         }
         appearance {
@@ -883,7 +933,7 @@ page 42 (
                 ```
         }
         layout {
-            sequence: 70
+            sequence: 100
             slot: body
         }
         appearance {
@@ -991,7 +1041,6 @@ page 42 (
             slot: regionBody
         }
         security {
-            sessionStateProtection: checksumRequiredSessionLevel
             restrictedChars: alphanumWithSpace
         }
     )
@@ -1052,7 +1101,7 @@ page 42 (
         buttonName: download
         label: Download
         layout {
-            sequence: 40
+            sequence: 50
             region: @breadcrumb
             slot: edit
         }
@@ -1093,10 +1142,54 @@ page 42 (
                 page: 120
                 items: {
                     P120_ID: &P42_ID.
+                    P120_ON_DELETE: PREV_PAGE
+                    P120_PREV_PAGE: &P42_PREV_PAGE.
                 }
                 clearCache: 120
             }
             warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P42_PREV_PAGE
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-no-prev-page (
+        buttonName: Edit_no_prev_page
+        label: Edit
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: edit
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 120
+                items: {
+                    P120_ID: &P42_ID.
+                    P120_ON_DELETE: HOME
+                }
+                clearCache: 120
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P42_PREV_PAGE
         }
         security {
             authorizationScheme: @contribution-rights
@@ -1185,6 +1278,10 @@ page 42 (
                 page: &P42_PREV_PAGE.
             }
             warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P42_PREV_PAGE
         }
     )
 

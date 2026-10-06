@@ -1,0 +1,20 @@
+lov auto-refresh (
+    name: AUTO REFRESH
+    source {
+        location: staticValues
+    }
+
+    entry no-manual (
+        sequence: 20
+        display: No, Manual
+        return: N
+    )
+
+    entry yes-every-5-seconds (
+        sequence: 10
+        display: Yes, every 5 seconds
+        return: Y
+    )
+
+)
+

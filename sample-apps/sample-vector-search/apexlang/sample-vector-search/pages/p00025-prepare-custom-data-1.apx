@@ -10,13 +10,6 @@ page 25 (
     dialog {
         width: 1024px
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region about-this-page (
         name: About This Page

@@ -7,15 +7,11 @@ page 86 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
-        helpText: All active &NOMENCLATURE_PROJECTS., not archived and not marked as duplicates.   Includes owner, priority, completion status, size, last comment and other details.
+        helpText: All active &NOMENCLATURE_PROJECTS. (projects not archived and not marked as duplicates).
+    }
+    comments {
+        comments: Includes owner, priority, completion status, size, last comment, any approvals requested (along with the current status of the approval), count of comments in the last 28 days, list of Contributors and whether the project was favorited by the current user.
     }
 
     region breadcrumb (
@@ -40,135 +36,6 @@ page 86 (
             templateOptions: #DEFAULT#
             cssClasses: has-header-actions
         }
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu about-nomenclature-projects (
-                label: About &NOMENCLATURE_PROJECTS.
-                layout {
-                    sequence: 120
-                }
-                behavior {
-                    target: {
-                        page: 107
-                    }
-                }
-                appearance {
-                    icon: fa-info
-                }
-            )
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 60
-                }
-            )
-
-            menu nomenclature-projects-primary-report (
-                label: &NOMENCLATURE_PROJECTS. Primary Report
-                layout {
-                    sequence: 20
-                }
-                behavior {
-                    target: {
-                        page: 23
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-package
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 140
-                }
-                behavior {
-                    target: {
-                        page: 86
-                        clearCache: [
-                            CIR
-                            RIR
-                            86
-                        ]
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-        action add-nomenclature-project (
-            position: primaryActions
-            template: button
-            label: Add &NOMENCLATURE_PROJECT.
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 104
-                    clearCache: [
-                        104
-                        24
-                    ]
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-plus
-                hot: true
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
-        )
-
     )
 
     region projects-interactive-report (
@@ -206,8 +73,6 @@ page 86 (
                        (select group_name from sp_project_groups
                          where id = p.project_group_id) project_group,
                        --
-                       external_ticket_identifier,
-                       external_system_link,
                        sync_identifier,
                        sync_system_link,
                        last_synced_on,
@@ -229,7 +94,7 @@ page 86 (
                        --
                        -- contributors
                        --
-                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ' on overflow truncate with count) within group (order by 1) names
                           from SP_TASKS xpc, SP_TEAM_MEMBERS xtm
                          where xpc.project_id = p.id and
                                xpc.OWNER_ID = xtm.id
@@ -237,7 +102,7 @@ page 86 (
                        --
                        -- contributor emails
                        --
-                       (select listagg(distinct xtm.email, ', ') within group (order by 1) names
+                       (select listagg(distinct xtm.email, ', ' on overflow truncate with count) within group (order by 1) names
                           from SP_TASKS xpc, SP_TEAM_MEMBERS xtm
                          where xpc.project_id = p.id and
                                xpc.OWNER_ID = xtm.id
@@ -249,18 +114,28 @@ page 86 (
                          where t.project_id = p.id 
                            and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
                            and tt.static_id like 'REVIEW%') review_cnt,
-                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ') within group (order by 1) names
+                       (select listagg(distinct xtm.first_name||' '||xtm.last_name, ', ' on overflow truncate with count) within group (order by 1) names
                           from SP_TASKS xpc, SP_TEAM_MEMBERS xtm, sp_task_types tt
                          where xpc.project_id = p.id and
                                xpc.OWNER_ID = xtm.id and 
                                nvl(xpc.task_sub_type_id,xpc.task_type_id) = tt.id and 
                                tt.static_id like 'REVIEW%'
                                 ) reviewers,
-                       (select listagg(tt.task_type||' - '||nvl(to_char(t.target_complete,'DD-MON-YYYY'),'No date'), ', ') within group (order by t.target_complete nulls first) 
-                          from sp_tasks t, sp_task_types tt
+                       (select listagg(tt.task_type||' - '||
+                                       case when nvl(ts.indicates_complete_yn,'N')  = 'Y'
+                                            then case when t.target_complete is null
+                                                      then ts.status
+                                                      else to_char(t.target_complete,'DD-Mon-YYYY')
+                                                      end
+                                            when t.target_complete is null
+                                            then 'no date'
+                                            else ' targeted for '|| to_char(t.target_complete,'DD-Mon-YYYY')
+                                            end, ', ' on overflow truncate with count) within group (order by t.target_complete nulls first) 
+                          from sp_tasks t, sp_task_types tt, sp_task_statuses ts
                          where t.project_id = p.id 
                            and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
-                           and tt.static_id like 'REVIEW%') reviews,
+                           and tt.static_id like 'REVIEW%'
+                           and t.status_id = ts.id (+)) reviews,
                        --
                        -- milestones
                        --
@@ -268,15 +143,26 @@ page 86 (
                          where t.project_id = p.id 
                            and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
                            and tt.static_id like 'MILESTONE%') milestone_cnt,
-                       (select listagg(tt.task_type||' - '||nvl(to_char(t.target_complete,'DD-MON-YYYY'),'No date'), ', ') within group (order by t.target_complete nulls first) 
-                          from sp_tasks t, sp_task_types tt
+                       (select listagg(tt.task_type||' - '||
+                                       case when nvl(ts.indicates_complete_yn,'N')  = 'Y' 
+                                            then case when t.target_complete is null
+                                                      then ts.status
+                                                      else to_char(t.target_complete,'DD-Mon-YYYY')
+                                                      end
+                                            when t.target_complete is null
+                                            then 'no date'
+                                            else ' targeted for '|| to_char(t.target_complete,'DD-Mon-YYYY')
+                                            end, ', ' on overflow truncate with count) within group (order by t.target_complete nulls first) 
+                          from sp_tasks t, sp_task_types tt, sp_task_statuses ts
                          where t.project_id = p.id 
                            and nvl(t.task_sub_type_id,t.task_type_id) = tt.id    
-                           and tt.static_id like 'MILESTONE%') milestones,
+                           and tt.static_id like 'MILESTONE%'
+                           and t.status_id = ts.id (+)) milestones,
                        --
                        -- updated
                        --
                        p.UPDATED,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.created_by)),lower(p.created_by)) created_by,
                        P.CREATED,
                        nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by,
                        --
@@ -309,7 +195,9 @@ page 86 (
                        --
                        -- activity
                        --
-                       nvl((select count(*) from SP_ACTIVITIES ap where ap.project_id = p.id and trunc(sysdate) >= ap.start_date and trunc(sysdate) <= ap.end_date),0) current_activity_count,
+                       nvl((select count(*) from SP_ACTIVITIES ap 
+                             where ap.project_id = p.id and trunc(sysdate) >= ap.start_date and trunc(sysdate) <= ap.end_date
+                               and (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID)),0) current_activity_count,
                        --
                        -- release
                        --
@@ -335,7 +223,7 @@ page 86 (
                        -- quick look
                        --
                        null quick_look,
-                       nvl((select listagg(t.approval_type||' ('||initcap(replace(status,'-',' '))||')',', ')
+                       nvl((select listagg(t.approval_type||' ('||initcap(replace(status,'-',' '))||')',', ' on overflow truncate with count)
                                    within group (order by submitted)
                               from (select approval_type_id, status, submitted, max(submitted) over (partition by approval_type_id) last_submitted
                                       from sp_project_approvals
@@ -385,6 +273,10 @@ page 86 (
             whenNoDataFound: No data found.
             whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All active Projects, not archived and not marked as duplicates.   Includes owner, priority, completion status, size, last comment and other details.
+        }
         actionsMenu {
             savePublicReport: true
             savePublicReportAuthorization: @administration-rights
@@ -402,7 +294,7 @@ page 86 (
                 sequence: 394
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BJ
@@ -418,7 +310,7 @@ page 86 (
                 sequence: 94
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -436,10 +328,13 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AA
+            }
+            genAI {
+                columnContext: Count of Comments in the last 28 days
             }
         )
 
@@ -452,7 +347,7 @@ page 86 (
                 sequence: 114
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -468,7 +363,7 @@ page 86 (
                 sequence: 124
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AF
@@ -487,10 +382,26 @@ page 86 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: AM
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 404
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: BL
             }
         )
 
@@ -505,7 +416,7 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: R
@@ -523,7 +434,7 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AR
@@ -539,7 +450,7 @@ page 86 (
                 sequence: 154
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AI
@@ -555,7 +466,7 @@ page 86 (
                 sequence: 294
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AY
@@ -573,42 +484,10 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AQ
-            }
-        )
-
-        column EXTERNAL_SYSTEM_LINK (
-            type: plainText
-            heading {
-                heading: External System Link
-            }
-            layout {
-                sequence: 204
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: AO
-            }
-        )
-
-        column EXTERNAL_TICKET_IDENTIFIER (
-            type: plainText
-            heading {
-                heading: External Ticket Identifier
-            }
-            layout {
-                sequence: 194
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: AN
             }
         )
 
@@ -621,10 +500,13 @@ page 86 (
                 sequence: 164
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AJ
+            }
+            genAI {
+                columnContext: Yes if identified as a favorite project of the current user (otherwise No)
             }
         )
 
@@ -637,7 +519,7 @@ page 86 (
                 sequence: 304
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AZ
@@ -661,7 +543,7 @@ page 86 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -677,7 +559,7 @@ page 86 (
                 sequence: 64
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: S
@@ -693,7 +575,7 @@ page 86 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -709,7 +591,7 @@ page 86 (
                 sequence: 14
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -725,7 +607,7 @@ page 86 (
                 sequence: 34
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -744,7 +626,7 @@ page 86 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: P
@@ -763,42 +645,10 @@ page 86 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: M
-            }
-        )
-
-        column LAST_SYNCED_ON (
-            type: plainText
-            heading {
-                heading: Last Synced On
-            }
-            layout {
-                sequence: 344
-            }
-            source {
-                dataType: DATE
-            }
-            advanced {
-                endUserAlias: BD
-            }
-        )
-
-        column LAST_SYNC_STATUS (
-            type: plainText
-            heading {
-                heading: Last Sync Status
-            }
-            layout {
-                sequence: 354
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: BE
             }
         )
 
@@ -811,7 +661,7 @@ page 86 (
                 sequence: 244
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AT
@@ -829,7 +679,7 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AX
@@ -845,7 +695,7 @@ page 86 (
                 sequence: 2
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -861,7 +711,7 @@ page 86 (
                 sequence: 384
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BH
@@ -882,7 +732,7 @@ page 86 (
                 htmlExpression: #PCT_COMPLETE#%
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -898,10 +748,20 @@ page 86 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
+            }
+            genAI {
+                columnContext: Indicator of the importance of the project
+                referenceDataType: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select 'P'||priority d, 'P'||priority r
+                    from sp_project_priorities
+                    order by priority
+                    ```
             }
         )
 
@@ -926,10 +786,13 @@ page 86 (
                 linkText: #PROJECT#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
+            }
+            genAI {
+                columnContext: Name of the project
             }
         )
 
@@ -942,7 +805,7 @@ page 86 (
                 sequence: 364
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BF
@@ -958,7 +821,7 @@ page 86 (
                 sequence: 1
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -974,10 +837,21 @@ page 86 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
+            }
+            genAI {
+                columnContext: Size of the Project
+                referenceDataType: sqlQuery
+                sqlQuery:
+                    ```sql
+                    select project_size d, project_size r 
+                    from sp_project_sizes ps
+                    where include_yn = 'Y'
+                    order by EFFORT_DAYS
+                    ```
             }
         )
 
@@ -990,7 +864,7 @@ page 86 (
                 sequence: 9
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -1019,7 +893,7 @@ page 86 (
                 linkText: <span class="fa fa-align-justify" aria-hidden="true"></span>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AG
@@ -1035,7 +909,7 @@ page 86 (
                 sequence: 74
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -1054,7 +928,7 @@ page 86 (
                 sequence: 174
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AL
@@ -1073,7 +947,7 @@ page 86 (
                 sequence: 264
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AV
@@ -1092,7 +966,7 @@ page 86 (
                 sequence: 274
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AW
@@ -1113,7 +987,7 @@ page 86 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AU
@@ -1132,7 +1006,7 @@ page 86 (
                 sequence: 214
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AP
@@ -1148,42 +1022,13 @@ page 86 (
                 sequence: 374
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BG
             }
-        )
-
-        column SYNC_IDENTIFIER (
-            type: plainText
-            heading {
-                heading: Sync Identifier
-            }
-            layout {
-                sequence: 324
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: BB
-            }
-        )
-
-        column SYNC_SYSTEM_LINK (
-            type: plainText
-            heading {
-                heading: Sync System Link
-            }
-            layout {
-                sequence: 334
-            }
-            source {
-                dataType: STRING
-            }
-            advanced {
-                endUserAlias: BC
+            genAI {
+                columnContext: The status of the project or NA if the project has been completed or if it is too early in the life cycle to have a status
             }
         )
 
@@ -1196,7 +1041,7 @@ page 86 (
                 sequence: 144
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AH
@@ -1212,7 +1057,7 @@ page 86 (
                 sequence: 84
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: BK
@@ -1228,10 +1073,13 @@ page 86 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
+            }
+            genAI {
+                columnContext: Name of the project owner
             }
         )
 
@@ -1247,7 +1095,7 @@ page 86 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -1263,7 +1111,7 @@ page 86 (
                 sequence: 11
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1472,6 +1320,116 @@ page 86 (
 
         )
 
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu about (
+            label: About &NOMENCLATURE_PROJECTS.
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 107
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu projects-filter-report (
+            label: &NOMENCLATURE_PROJECTS. Primary Report
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 23
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-package
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 86
+                    clearCache: [
+                        CIR
+                        RIR
+                        86
+                    ]
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep (
+            type: separator
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+    button add-project (
+        buttonName: add_project
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 104
+                clearCache: [
+                    104
+                    24
+                ]
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
     )
 
     button up (

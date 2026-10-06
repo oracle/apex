@@ -8,7 +8,6 @@ page 33 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -70,10 +69,6 @@ page 33 (
             }
             ```
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -117,7 +112,7 @@ page 33 (
         name: Comments
         type: staticContent
         layout {
-            sequence: 80
+            sequence: 60
             slot: body
         }
         appearance {
@@ -144,6 +139,7 @@ page 33 (
                        null comment_date,
                        tm.first_name || ' ' || tm.last_name user_name,
                        --
+                       ic.comment_nbr,
                        ic.body_html comment_text,
                        case when lower(ic.created_by) = lower(:app_user)
                             then '<a href="'||apex_util.prepare_URL(
@@ -203,15 +199,12 @@ page 33 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 7
+            reportColumnQueryId: 8
             derivedColumn: N
             heading {
                 heading: Actions
@@ -230,7 +223,7 @@ page 33 (
         )
 
         column ATTRIBUTE_1 (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Attribute 1
@@ -245,7 +238,7 @@ page 33 (
         )
 
         column ATTRIBUTE_2 (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Attribute 2
@@ -260,7 +253,7 @@ page 33 (
         )
 
         column ATTRIBUTE_3 (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Attribute 3
@@ -275,7 +268,7 @@ page 33 (
         )
 
         column ATTRIBUTE_4 (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Attribute 4
@@ -290,7 +283,7 @@ page 33 (
         )
 
         column AUTHOR_ID (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Author Id
@@ -305,7 +298,7 @@ page 33 (
         )
 
         column BODY (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Body
@@ -320,7 +313,7 @@ page 33 (
         )
 
         column BODY_HTML (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Body Html
@@ -352,8 +345,27 @@ page 33 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 290
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 7
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -365,8 +377,10 @@ page 33 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -378,7 +392,7 @@ page 33 (
         )
 
         column CREATED (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created
@@ -396,7 +410,7 @@ page 33 (
         )
 
         column CREATED_BY (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: Created By
@@ -425,7 +439,7 @@ page 33 (
         )
 
         column ICON_MODIFIER (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Icon Modifier
@@ -455,7 +469,7 @@ page 33 (
         )
 
         column PRIVATE_COMMENT_LABEL (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Private Comment Label
@@ -469,7 +483,7 @@ page 33 (
         )
 
         column TEAM_MEMBER_ID (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 22
             derivedColumn: N
             heading {
                 heading: User ID
@@ -483,7 +497,7 @@ page 33 (
         )
 
         column UPDATED (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 20
             derivedColumn: N
             type: hidden
             layout {
@@ -492,7 +506,7 @@ page 33 (
         )
 
         column UPDATED_BY (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: Updated By
@@ -531,6 +545,9 @@ page 33 (
             layout {
                 sequence: 170
             }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
+            }
             sorting {
                 sortable: false
             }
@@ -542,7 +559,7 @@ page 33 (
         name: Description
         type: staticContent
         layout {
-            sequence: 60
+            sequence: 40
             slot: body
         }
         appearance {
@@ -676,6 +693,9 @@ page 33 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -697,7 +717,7 @@ page 33 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #AREA#
+                        P23_FOCUS_AREA: I#AREA#
                     }
                     clearCache: 23
                 }
@@ -834,7 +854,7 @@ page 33 (
             pageItemsToSubmit: P33_INITIATIVE_ID
         }
         layout {
-            sequence: 100
+            sequence: 80
             slot: body
             startNewRow: false
             newColumn: false
@@ -853,6 +873,7 @@ page 33 (
                 page: 56
                 items: {
                     P56_ID: #ID#
+                    P56_ON_DELETE: CLOSE
                 }
                 clearCache: 56
             }
@@ -881,7 +902,7 @@ page 33 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -897,7 +918,7 @@ page 33 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -913,7 +934,7 @@ page 33 (
                 sequence: 100
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -941,7 +962,7 @@ page 33 (
                 charSetColumn: DOCUMENT_CHARSET
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -968,7 +989,7 @@ page 33 (
                 linkText: #DOCUMENT_FILENAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -984,7 +1005,7 @@ page 33 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -1005,7 +1026,7 @@ page 33 (
                 formatMask: FILESIZE
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -1021,7 +1042,7 @@ page 33 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -1039,7 +1060,7 @@ page 33 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1055,7 +1076,7 @@ page 33 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -1072,7 +1093,7 @@ page 33 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1091,7 +1112,7 @@ page 33 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -1190,7 +1211,7 @@ page 33 (
             pageItemsToSubmit: P33_INIT_FOCUS_AREA_ID
         }
         layout {
-            sequence: 90
+            sequence: 70
             slot: body
         }
         appearance {
@@ -1234,7 +1255,7 @@ page 33 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -1250,7 +1271,7 @@ page 33 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -1266,7 +1287,7 @@ page 33 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -1285,7 +1306,7 @@ page 33 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1301,7 +1322,7 @@ page 33 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1320,7 +1341,7 @@ page 33 (
                 htmlExpression: <a href="#FOR_LINK#" target="_blank">#LINK_NAME#</a>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1336,7 +1357,7 @@ page 33 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -1355,7 +1376,7 @@ page 33 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -1371,7 +1392,7 @@ page 33 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -1432,147 +1453,11 @@ page 33 (
 
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 60
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 100
-                }
-                behavior {
-                    target: {
-                        page: 33
-                        items: {
-                            P33_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 90
-                }
-                behavior {
-                    target: {
-                        page: 33
-                        items: {
-                            P33_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
-                        }
-                        clearCache: 33
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-            menu view-history (
-                label: View History
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 57
-                        items: {
-                            P57_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
-                        }
-                        clearCache: 57
-                    }
-                }
-                appearance {
-                    icon: fa-clock-o
-                }
-            )
-
-        )
-
-        action edit (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 10151
-                    items: {
-                        P10151_ID: &P33_INIT_FOCUS_AREA_ID.
-                    }
-                    clearCache: 10151
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            security {
-                authorizationScheme: @administration-rights
-            }
-        )
-
-    )
-
     region nomenclature-project-schedule (
         name: &NOMENCLATURE_PROJECT. Schedule
         type: staticContent
         layout {
-            sequence: 40
+            sequence: 30
             slot: body
         }
         appearance {
@@ -1598,7 +1483,7 @@ page 33 (
     )
 
     region nomenclature-projects (
-        name: &NOMENCLATURE_PROJECTS.
+        name: projects report
         type: classicReport
         source {
             location: localDatabase
@@ -1643,16 +1528,17 @@ page 33 (
                 ```
         }
         layout {
-            sequence: 30
-            slot: body
+            sequence: 20
+            parentRegion: @projects
+            slot: regionBody
         }
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
             icon: " "
         }
-        advanced {
-            regionDisplaySelector: true
+        serverSideCondition {
+            type: never
         }
         reportLayout {
             numberOfRows: 500
@@ -1667,6 +1553,9 @@ page 33 (
                 t-Report--horizontalBorders
                 t-Report--hideNoPagination
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column ARCHIVED_YN (
@@ -1685,7 +1574,7 @@ page 33 (
                 heading: Attributes
             }
             layout {
-                sequence: 110
+                sequence: 120
             }
             columnFormatting {
                 htmlExpression:
@@ -1695,7 +1584,6 @@ page 33 (
                         <span class="sp-tag">#PROJECT_SIZE#</span>
                         <span class="sp-tag">#PCT_COMPLETE#%</span>
                     {if STATUS_IND/}    <span class="sp-tag">#STATUS#</span>{endif/}
-                        <span class="sp-tag">#RELEASE#</span>
                     </div>
                     ```
             }
@@ -1800,9 +1688,11 @@ page 33 (
         column RELEASE (
             reportColumnQueryId: 8
             derivedColumn: N
-            type: hidden
+            heading {
+                heading: Release
+            }
             layout {
-                sequence: 210
+                sequence: 110
             }
         )
 
@@ -1862,6 +1752,352 @@ page 33 (
             }
         )
 
+    )
+
+    region nomenclature-projects_1 (
+        name: projects report
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select p.ID,
+                       p.PROJECT,
+                       (select FIRST_NAME ||' '||last_name from SP_TEAM_MEMBERS x where x.ID = p.OWNER_ID) the_owner,
+                       (select 'P'||PRIORITY from SP_PROJECT_PRIORITIES x where x.ID = p.PRIORITY_ID) priority,
+                       p.PCT_COMPLETE pct_complete,
+                       case when p.pct_complete >= s.min_pc_for_status 
+                             and p.pct_complete != 100
+                            then nvl((select status from sp_project_statuses
+                                       where id = p.status_id),'Not Set')
+                            else 'NA'
+                            end status,
+                       decode(p.release_id,
+                          null, decode(p.TARGET_COMPLETE,null,'No Target',to_char(p.TARGET_COMPLETE,'DD-MON-YYYY')),
+                          (select RELEASE_TRAIN||' '||release from SP_RELEASE_TRAINS r where r.id = p.RELEASE_ID)) release,
+                       p.PROJECT_SIZE,
+                       p.UPDATED,
+                       p.friendly_identifier,
+                       p.project_url_name,
+                       nvl((select first_name||' '||last_name from SP_TEAM_MEMBERS tm where tm.email = lower(p.updated_by)),lower(p.updated_by)) updated_by
+                from  SP_PROJECTS p,
+                       sp_initiatives i,
+                       sp_project_scales s
+                where p.initiative_id = i.id and
+                      i.status_scale = s.scale_letter and
+                      nvl(p.ARCHIVED_YN,'N') != 'Y' and 
+                      p.DUPLICATE_OF_PROJECT_ID is null and
+                      p.focus_area_id = :P33_INIT_FOCUS_AREA_ID
+                ```
+        }
+        layout {
+            sequence: 30
+            parentRegion: @projects
+            slot: regionBody
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+            icon: " "
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        advanced {
+            savedReportMappingIdentifier: 22474443021588238042
+        }
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 100
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column PCT_COMPLETE (
+            type: plainText
+            heading {
+                heading: Complete
+                alignment: end
+            }
+            layout {
+                sequence: 60
+                columnAlignment: end
+            }
+            columnFormatting {
+                htmlExpression: #PCT_COMPLETE#%
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: E
+            }
+        )
+
+        column PRIORITY (
+            type: plainText
+            heading {
+                heading: Priority
+            }
+            layout {
+                sequence: 50
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column PROJECT (
+            type: link
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 20
+            }
+            link {
+                target: {
+                    page: 3
+                    items: {
+                        FI: #FRIENDLY_IDENTIFIER#
+                        PN: #PROJECT_URL_NAME#
+                    }
+                    clearCache: 3
+                    action: resetRegions
+                }
+                linkText: #PROJECT#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Size
+            }
+            layout {
+                sequence: 90
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 110
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column STATUS (
+            type: plainText
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column THE_OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 130
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 120
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: L
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn PCT_COMPLETE (
+                sequence: 5
+            )
+
+            displayColumn PRIORITY (
+                sequence: 4
+            )
+
+            displayColumn PROJECT (
+                sequence: 1
+            )
+
+            displayColumn PROJECT_SIZE (
+                sequence: 7
+            )
+
+            displayColumn RELEASE (
+                sequence: 3
+            )
+
+            displayColumn STATUS (
+                sequence: 6
+            )
+
+            displayColumn THE_OWNER (
+                sequence: 2
+            )
+
+            displayColumn UPDATED (
+                sequence: 8
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    nulls: last
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region projects (
+        name: &NOMENCLATURE_PROJECTS.
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
     )
 
     region rds (
@@ -2014,6 +2250,9 @@ page 33 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         breakFormatting {
             breakColumns: col1
             style: repeatHeadings
@@ -2144,7 +2383,7 @@ page 33 (
                 formatMask: DD-Mon-YYYY
             }
             columnFormatting {
-                htmlExpression: {if OVERDUE/}<span style="color:red;">#TARGET_DATE#</span>{else/}#TARGET_DATE#{endif/}
+                htmlExpression: "{if OVERDUE/}<span style=\"color:red;\">#TARGET_DATE#</span>{else/}#TARGET_DATE#{endif/}"
             }
             sorting {
                 sortable: false
@@ -2238,6 +2477,14 @@ page 33 (
                             data: {
                                 imageRefId: apex.item('P33_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'FOCUS_AREA',
+                            objectId: apex.items.P33_INIT_FOCUS_AREA_ID.value
+                        },
+                        docs: {
+                            scope: 'FOCUS_AREA',
+                            objectId: apex.items.P33_INIT_FOCUS_AREA_ID.value
                         }
                     });
                 }
@@ -2265,9 +2512,6 @@ page 33 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
-        }
         default {
             type: static
             staticValue: N
@@ -2283,6 +2527,30 @@ page 33 (
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P33_IFAID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @details
+            slot: regionBody
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P33_IFA_LINK (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: restricted
         }
     )
 
@@ -2302,7 +2570,7 @@ page 33 (
     pageItem P33_INITIATIVE (
         type: hidden
         layout {
-            sequence: 40
+            sequence: 50
             region: @details
             slot: regionBody
         }
@@ -2314,7 +2582,7 @@ page 33 (
     pageItem P33_INITIATIVE_ID (
         type: hidden
         layout {
-            sequence: 30
+            sequence: 40
             region: @details
             slot: regionBody
         }
@@ -2493,6 +2761,90 @@ page 33 (
         }
     )
 
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 50
+            }
+            behavior {
+                target: {
+                    page: 33
+                    items: {
+                        P33_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
+                    }
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 33
+                    items: {
+                        P33_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
+                    }
+                    clearCache: 33
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 40
+            }
+        )
+
+        menu view-history (
+            label: View History
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 57
+                    items: {
+                        P57_INIT_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
+                    }
+                    clearCache: 57
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clock-o
+            }
+        )
+
+    )
+
     button add-document (
         buttonName: add_document
         label: Add Document
@@ -2554,6 +2906,76 @@ page 33 (
         }
     )
 
+    button add-project_1 (
+        buttonName: add_project
+        label: Add &NOMENCLATURE_PROJECT.
+        layout {
+            sequence: 10
+            region: @projects
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 24
+                items: {
+                    P24_INITIATIVE_ID: &P33_INITIATIVE_ID.
+                    P24_FOCUS_AREA_ID: &P33_INIT_FOCUS_AREA_ID.
+                }
+                clearCache: [
+                    104
+                    24
+                ]
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit (
+        buttonName: edit
+        label: Edit
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 10151
+                items: {
+                    P10151_ID: &P33_INIT_FOCUS_AREA_ID.
+                    P10151_PREV_PAGE: 33
+                }
+                clearCache: 10151
+                action: resetPagination
+            }
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
     button edit-description (
         buttonName: edit_description
         label: Edit
@@ -2577,6 +2999,7 @@ page 33 (
                 page: 10151
                 items: {
                     P10151_ID: &P33_INIT_FOCUS_AREA_ID.
+                    P10151_PREV_PAGE: 33
                 }
                 clearCache: 10151
                 action: resetPagination
@@ -2691,7 +3114,7 @@ page 33 (
     dynamicAction add-link (
         name: add link
         execution {
-            sequence: 70
+            sequence: 80
         }
         when {
             event: click
@@ -2760,6 +3183,43 @@ page 33 (
 
     )
 
+    dynamicAction after-add-project (
+        name: after add project - button
+        execution {
+            sequence: 140
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: button
+            button: @add-project_1
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @nomenclature-projects
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh_1 (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @details-2
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
     dynamicAction after-edit (
         name: after edit
         execution {
@@ -2768,17 +3228,17 @@ page 33 (
         when {
             event: apexafterclosedialog
             selectionType: region
-            region: @menubar
+            region: @breadcrumb
         }
 
         action native-refresh (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @details-2
+                region: @description-2
             }
             execution {
-                sequence: 10
+                sequence: 20
                 fireOnInit: false
             }
         )
@@ -2787,10 +3247,10 @@ page 33 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @description-2
+                region: @details-2
             }
             execution {
-                sequence: 20
+                sequence: 10
                 fireOnInit: false
             }
         )
@@ -2875,7 +3335,7 @@ page 33 (
     dynamicAction links-in-comments-in-new-tab (
         name: links in comments in new tab
         execution {
-            sequence: 110
+            sequence: 120
         }
         when {
             event: ready
@@ -2888,6 +3348,30 @@ page 33 (
             }
             execution {
                 sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction links-in-comments-in-new-tab-after-create (
+        name: links in comments in new tab after create
+        execution {
+            sequence: 130
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @comments-report
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
             }
         )
 
@@ -2964,9 +3448,13 @@ page 33 (
                     ```plsql
                     sp_comment_util.add_init_focus_area_comment (
                         p_app_user_id        => :APP_USER_ID,
+                        p_app_user           => :APP_USER,
                         p_comment            => :P33_COMMENT,
                         p_init_focus_area_id => :P33_INIT_FOCUS_AREA_ID,
                         p_private_yn         => nvl(:P33_PRIVATE_YN,'N'),
+                        p_app_id             => :APP_ID,
+                        p_link               => :P33_IFA_LINK,
+                        p_nomen_sp           => :NOMENCLATURE_STRATEGIC_PLANNER,
                         p_image_ref_id       => :P33_IMAGE_REF_ID );
                     
                     :P33_COMMENT      := null;
@@ -2977,6 +3465,10 @@ page 33 (
                     P33_PRIVATE_YN
                     P33_INIT_FOCUS_AREA_ID
                     P33_IMAGE_REF_ID
+                    " APP_USER"
+                    APP_ID
+                    NOMENCLATURE_STRATEGIC_PLANNER
+                    P33_IFA_LINK
                 ]
                 itemsToReturn: [
                     P33_COMMENT
@@ -3018,7 +3510,7 @@ page 33 (
     dynamicAction when-change-exclude-complete (
         name: when change exclude complete
         execution {
-            sequence: 90
+            sequence: 100
         }
         when {
             selectionType: items
@@ -3042,7 +3534,7 @@ page 33 (
     dynamicAction when-change-milestone-type (
         name: when change milestone type
         execution {
-            sequence: 80
+            sequence: 90
         }
         when {
             selectionType: items
@@ -3066,7 +3558,7 @@ page 33 (
     dynamicAction when-change-min-percent (
         name: when change min percent
         execution {
-            sequence: 100
+            sequence: 110
         }
         when {
             selectionType: items
@@ -3087,6 +3579,47 @@ page 33 (
 
     )
 
+    computation p33-ifa-link (
+        itemName: P33_IFA_LINK
+        execution {
+            sequence: 70
+            point: beforeHeader
+        }
+        computation {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                return sp_util.get_setting(p_static_id => 'APP_PREFIX_URL')||
+                                      apex_page.get_url (
+                                          p_application    => :APP_ID,
+                                          p_page           => 'ifa-details',
+                                          p_session        => null,
+                                          p_items          => 'P33_IFAID',
+                                          p_values         => :P33_INIT_FOCUS_AREA_ID,
+                                          p_plain_url      => TRUE );
+                ```
+        }
+    )
+
+    computation p33-init-focus-area-id (
+        itemName: P33_INIT_FOCUS_AREA_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select id from sp_initiative_focus_areas
+                 where id = :P33_IFAID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P33_IFAID
+        }
+    )
+
     process load-display (
         name: load display
         type: executeCode
@@ -3103,6 +3636,7 @@ page 33 (
                     :P33_INITIATIVE_ID := c1.id;
                     :P33_INITIATIVE    := c1.initiative;
                     :P33_FOCUS_AREA    := c1.focus_area;
+                    :P33_IFIID         := null;
                 end loop;
                 ```
         }
@@ -3112,6 +3646,10 @@ page 33 (
         }
         advanced {
             executionMappingIdentifier: 16911786336151608910
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P33_INIT_FOCUS_AREA_ID
         }
     )
 

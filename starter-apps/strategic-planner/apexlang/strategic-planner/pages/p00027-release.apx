@@ -14,13 +14,8 @@ page 27 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @releases
@@ -503,7 +498,7 @@ page 27 (
         }
         serverSideCondition {
             type: requestIsContainedInValue
-            value: CREATE,SAVE
+            value: CREATE,SAVE,DELETE
         }
     )
 
@@ -532,19 +527,6 @@ page 27 (
         }
         advanced {
             executionMappingIdentifier: 31915612151071945347
-        }
-    )
-
-    branch (
-        name: Go To Page 8
-        execution {
-            sequence: 10
-        }
-        behavior {
-            target: {
-                page: 8
-                clearCache: 27
-            }
         }
     )
 

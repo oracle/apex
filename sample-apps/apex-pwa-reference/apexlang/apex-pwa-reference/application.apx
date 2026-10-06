@@ -1,6 +1,6 @@
 app APEX-PWA-REFERENCE (
     name: APEX PWA Reference
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -44,9 +44,7 @@ app APEX-PWA-REFERENCE (
     }
     security {
         embedInFrames: allowSameOrigin
-    }
-    sessionStateProtection {
-        checksumSalt: A13146FF78975F54FB3D6477EBD6762603EB60A1DE561795C1DDC173C8D0E343
+        allowBotAccess: true
     }
     sessionManagement {
         rejoinSessions: publicSessions

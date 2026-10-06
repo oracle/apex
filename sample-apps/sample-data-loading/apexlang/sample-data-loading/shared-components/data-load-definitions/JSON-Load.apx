@@ -1,0 +1,117 @@
+dataLoadDefinition JSON_Load (
+    name: JSON Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: replace
+    }
+    advanced {
+        commitInterval: 200
+    }
+    dataProfile {
+        name: JSON Load
+        rowSelector: items
+    }
+    advanced {
+        encoding: utf-8
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: comm
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: deptno
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 5
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: empno
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 6
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: ename
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 8
+            dataType: date
+        }
+        parsing {
+            pathExpression: hiredate
+            formatMask: YYYY"-"MM"-"DD"T"HH24":"MI":"SS
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 1
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            pathExpression: job
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 2
+            dataType: number
+        }
+        parsing {
+            pathExpression: mgr
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 3
+            dataType: number
+        }
+        parsing {
+            pathExpression: sal
+            decimalChar: .
+        }
+    )
+
+)
+

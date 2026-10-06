@@ -1,0 +1,14 @@
+lov terms-num-months-return-value (
+    name: TERMS - NUM_MONTHS RETURN VALUE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   month_equiv as r
+              from eba_sales_terms
+             order by 2
+            ```
+    }
+)
+

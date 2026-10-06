@@ -6,13 +6,6 @@ page 56 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region basic-editing (
         name: Basic Editing
@@ -549,9 +542,6 @@ page 56 (
             layout {
                 sequence: 110
             }
-            validation {
-                valueRequired: true
-            }
             source {
                 databaseColumn: ONLEAVE
                 dataType: varchar2
@@ -653,7 +643,7 @@ page 56 (
         source {
             htmlCode:
                 ```html
-                <p>This page shows how to use Item Type Plug-Ins within an interactive grid. This example uses the "Modern Star Rating" Plug-In which is distributed with Application Express Packaged Applications. To use a Plug-In in interactive Grid, the Plug-In has to be coded to support interactive Grid, that means, older item type Plug-Ins which have been developed for Application Express 4.x or 5.0 do not work in interactive Grid. Once the Plug-In is created or imported in Shared Components - Plug-Ins, it can be used simply like any other item type.
+                <p>This page shows how to use Item Type Plug-Ins within an interactive grid. This example uses the "Modern Star Rating" Plug-In which is distributed with APEX Packaged Applications. To use a Plug-In in interactive Grid, the Plug-In has to be coded to support interactive Grid, that means, older item type Plug-Ins which have been developed for APEX 4.x or 5.0 do not work in interactive Grid. Once the Plug-In is created or imported in Shared Components - Plug-Ins, it can be used simply like any other item type.
                 </p>
                 <p>The Modern Star Rating Plugin used here has the following features:</p>
                 <ul>

@@ -14,13 +14,8 @@ page 11310 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region archived-nomenclature-project (
@@ -84,6 +79,7 @@ page 11310 (
             formRegion: @archived-nomenclature-project
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -111,6 +107,7 @@ page 11310 (
             formRegion: @archived-nomenclature-project
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -191,6 +188,7 @@ page 11310 (
             formRegion: @archived-nomenclature-project
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -218,6 +216,7 @@ page 11310 (
             formRegion: @archived-nomenclature-project
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel

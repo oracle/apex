@@ -1,0 +1,55 @@
+list additional-administration (
+    name: Additional Administration
+
+    entry manage-feedback (
+        label: Manage Feedback
+        icon {
+            imageIconCssClasses: fa-comments-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 119
+                clearCache: 119
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all feedback left by application users. Feedback types include general comments, enhancement requests, and bugs.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry manage-notifications (
+        label: Manage Notifications
+        icon {
+            imageIconCssClasses: fa-comment
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 34
+                clearCache: 34
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage application notification text displayed on home page.  Requires Administrative privilege.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

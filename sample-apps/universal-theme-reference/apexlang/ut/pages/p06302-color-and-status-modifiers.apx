@@ -9,7 +9,6 @@ page 6302 (
         cssClasses: dm-Page
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -31,7 +30,7 @@ page 6302 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -130,6 +129,9 @@ page 6302 (
             ]
             cssClasses: colors-table
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column COLOR (
@@ -275,6 +277,9 @@ page 6302 (
             cssClasses: colors-table
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column OPACITY (
             reportColumnQueryId: 3
@@ -342,7 +347,7 @@ page 6302 (
         name: Opacity Utility Class
         type: staticContent
         source {
-            htmlCode: The opacity class allows for control over the opacity of elements. Combine u-opacity with any percentage amount to set the opacity of an element.
+            htmlCode: <p>The opacity class allows for control over the opacity of elements. Combine u-opacity with any percentage amount to set the opacity of an element.</p>
         }
         layout {
             sequence: 60
@@ -426,6 +431,9 @@ page 6302 (
             cssClasses: colors-table
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column SEQ (
             reportColumnQueryId: 1
@@ -473,7 +481,7 @@ page 6302 (
         name: Shadow Utility Class
         type: staticContent
         source {
-            htmlCode: The shadow class allows for control over the drop shadow of elements.
+            htmlCode: <p>The shadow class allows for control over the drop shadow of elements.</p>
         }
         layout {
             sequence: 70
@@ -567,6 +575,9 @@ page 6302 (
             ]
             cssClasses: colors-table
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column SEQ (
@@ -674,6 +685,123 @@ page 6302 (
             }
             sorting {
                 sortable: false
+            }
+        )
+
+    )
+
+    region subtle-color-modifier (
+        name: Subtle Color Utility
+        type: staticContent
+        source {
+            htmlCode: <p>Use <code>u-color-subtle</code> with a color utility to create a low-emphasis background with matching color text.</p>
+        }
+        layout {
+            sequence: 40
+            slot: body
+            columnSpan: 8
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region subtle-modifier-classe (
+        name: Subtle Utility Class
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT LEVEL num, null color, null color_text
+                  FROM DUAL
+                CONNECT BY LEVEL <= 45
+                order by 1
+                ```
+        }
+        layout {
+            sequence: 50
+            parentRegion: @subtle-color-modifier
+            slot: subRegions
+            columnCssClasses: col-sm-12
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        reportLayout {
+            numberOfRows: 1
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlightOff
+                t-Report--horizontalBorders
+            ]
+            cssClasses: colors-table
+            showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
+        }
+
+        column COLOR (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Solid
+            }
+            layout {
+                sequence: 20
+            }
+            columnFormatting {
+                htmlExpression: <span class="color-cell-block u-color-1">u-color-1</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COLOR_TEXT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Subtle
+            }
+            layout {
+                sequence: 30
+            }
+            columnFormatting {
+                htmlExpression: <span class="color-cell-block u-color-1 u-color-subtle">u-color-subtle</span>
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column NUM (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 10
             }
         )
 

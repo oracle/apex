@@ -6,9 +6,6 @@ page 123 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -76,10 +73,6 @@ page 123 (
     }
     css {
         inline: "td[headers=\"LINK\"] {text-align: center;}"
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -206,7 +199,7 @@ page 123 (
                 formatMask: YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -222,7 +215,7 @@ page 123 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -239,7 +232,7 @@ page 123 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -255,7 +248,7 @@ page 123 (
                 sequence: 120
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -274,7 +267,7 @@ page 123 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -301,7 +294,7 @@ page 123 (
                 sequence: 80
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -320,7 +313,7 @@ page 123 (
                 sequence: 100
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -339,7 +332,7 @@ page 123 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -358,7 +351,7 @@ page 123 (
                 sequence: 130
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             advanced {
                 endUserAlias: M
@@ -378,7 +371,7 @@ page 123 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -394,7 +387,7 @@ page 123 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -413,7 +406,7 @@ page 123 (
                 sequence: 110
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -432,7 +425,7 @@ page 123 (
                 sequence: 150
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -451,7 +444,7 @@ page 123 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -786,9 +779,6 @@ page 123 (
                 t-Report--hideNoPagination
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No airports found.
         }
@@ -903,7 +893,7 @@ page 123 (
                 sequence: 200
             }
             columnFormatting {
-                htmlExpression: #CITY#, #STATE_NAME#
+                htmlExpression: #CITY#, #STATE_NAME#, (#ID#)
             }
             sorting {
                 sortable: false

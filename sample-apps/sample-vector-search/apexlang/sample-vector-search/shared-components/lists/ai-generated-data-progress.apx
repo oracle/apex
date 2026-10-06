@@ -1,0 +1,53 @@
+list ai-generated-data-progress (
+    name: AI Generated Data Progress
+
+    entry confirmation (
+        label: Confirmation
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry enter-prompt (
+        label: Enter Prompt
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry generate-vector-embeddings (
+        label: Generate Vector Embeddings
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 13
+            }
+        }
+    )
+
+    entry preview-and-upload-data (
+        label: Preview and Upload Data
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+)
+

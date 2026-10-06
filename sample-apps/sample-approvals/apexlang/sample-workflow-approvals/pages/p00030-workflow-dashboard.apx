@@ -6,13 +6,8 @@ page 30 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @operations-team
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region active-workflows (
@@ -62,6 +57,9 @@ page 30 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false
@@ -146,6 +144,9 @@ page 30 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false
@@ -234,6 +235,9 @@ page 30 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: auto
@@ -357,6 +361,9 @@ page 30 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         tooltip {
             showSeriesName: false
         }
@@ -473,6 +480,9 @@ page 30 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         legend {
             show: false
         }
@@ -537,6 +547,9 @@ page 30 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false
@@ -631,6 +644,9 @@ page 30 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false

@@ -1,7 +1,7 @@
 theme universal-theme (
     name: Universal Theme
     themeNumber: 42
-    baseTheme: ut-26.1
+    baseTheme: ut-26.2
     style {
         currentThemeStyle: @vita-rest-explorer
     }
@@ -31,6 +31,8 @@ theme universal-theme (
         list: @/links-list
         region: @/standard
         classicReport: @/standard
+        headerToolbar: 2042159785845301134
+        footerToolbar: 2042159785845301134
     }
     regionDefaults {
         breadcrumbs: @/title-bar
@@ -50,7 +52,7 @@ theme universal-theme (
         library: fontApex
     }
     advanced {
-        filePrefix: #APEX_FILES#themes/theme_42/26.1/
+        filePrefix: #APEX_FILES#themes/theme_42/26.2/
         identifier: UNIVERSAL_THEME
     }
 
@@ -58,7 +60,7 @@ theme universal-theme (
         name: Vita REST Explorer
         themeRollerAttributes {
             inputParameterFileUrls: #THEME_FILES#less/theme/Vita.less
-            outputCssFileUrl: #THEME_DB_FILES#1006774889485304292.css
+            outputCssFileUrl: #THEME_DB_FILES#985769943677066565.css
             jsonConfig: "{\"classes\":[],\"vars\":{\"@g_Accent-BG\":\"#403c39\",\"@g_Button-BG\":\"#ece9e7\",\"@g_Button-Text\":\"#000000\",\"@l_Button-Primary-BG\":\"#403c39\",\"@l_Button-Primary-Text\":\"#ffffff\"},\"customCSS\":\"\",\"useCustomLess\":\"N\"}"
         }
         advanced {

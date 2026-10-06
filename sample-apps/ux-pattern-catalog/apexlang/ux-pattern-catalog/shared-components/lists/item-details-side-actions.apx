@@ -1,0 +1,101 @@
+list item-details-side-actions (
+    name: Item Details - Side Actions
+
+    entry delete (
+        label: Delete
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry duplicate (
+        label: Duplicate
+        icon {
+            imageIconCssClasses: fa-copy
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry edit (
+        label: Edit
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry export (
+        label: Export
+        icon {
+            imageIconCssClasses: fa-download
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry share (
+        label: Share
+        icon {
+            imageIconCssClasses: fa-share-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry watch-changes (
+        label: Watch Changes
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

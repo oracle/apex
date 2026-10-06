@@ -12,7 +12,6 @@ page 154 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -53,7 +52,7 @@ page 154 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -131,6 +130,9 @@ page 154 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No invalid new users found

@@ -1,0 +1,53 @@
+lov upd-request-afo (
+    name: UPD_REQUEST_AFO
+    source {
+        location: staticValues
+    }
+
+    entry all-events (
+        sequence: 1
+        display: All Events
+        return: A
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'A') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'A') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'F') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'F') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+    entry only-this-event (
+        sequence: 3
+        display: Only this Event
+        return: O
+        serverSideCondition {
+            type: expression
+            plsqlExpression:
+                ```plsql
+                (:APP_PAGE_ID =  11 and (instr( :P11_REQUEST_TYPE,'O') > 0 or  :P11_REQUEST_TYPE = 'D'))
+                or
+                (:APP_PAGE_ID = 411 and (instr(nvl(:P411_REQUEST_TYPE,'AFO'),'O') > 0 or :P411_REQUEST_TYPE = 'D'))
+                ```
+        }
+    )
+
+)
+

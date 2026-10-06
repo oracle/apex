@@ -7,12 +7,7 @@ page 23 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: No help is available for this page.
@@ -75,7 +70,7 @@ page 23 (
                 <strong>Line Type</strong> - series-level attribute to set to <strong>None</strong>.<p/>
                 <strong>Marker Show</strong> - series-level attribute to set to <strong>Yes</strong>.<p/>
                 <p/>
-                For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=lineTypes" target="_blank">Range Chart: Line Types</a> example.
+                For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Range Chart: Line Types</a> example.
                 ```
         }
         layout {
@@ -105,7 +100,7 @@ page 23 (
                 <strong>Label Position</strong> - Use the series-level attribute to define the position of the labels. Valid label positions for a Bar Range series are 'Automatic', 'Center', 'Inside Bar Edge', and 'Outside Bar Edge'. The default is 'Inside Bar Edge'. Use the <strong>Series Type</strong> attribute to change the series to Area Range. Valid label positions for an Area Range chart are 'Automatic', 'Center', 'Above Marker', 'Below Marker', 'Before Marker', and 'After Marker'. The default is 'Below Marker' for the low label and 'Above Marker'for the high label.<p/>
                 <strong>Orientation</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical button to the top left of the chart to change the orientiation of the data items on the charts.<p/>
                 <strong>Format</strong> - use this axis-level setting to apply date or numeric formatting to the values displayed on the chart and axes.  For the Y-axis, a 'Decimal' format has been used, to set the number of decimals to zero, overwriting the default setting of 2 decimal places that Oracle JET applies.<p/>
-                For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=dataLabels" target="_blank">Range Chart: Data Labels</a> example.
+                For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Range Chart: Data Labels</a> example.
                 ```
         }
         layout {
@@ -152,11 +147,13 @@ page 23 (
             maxWidth: 600
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -243,11 +240,13 @@ page 23 (
             maxWidth: 600
             height: 450
         }
+        performance {
+            lazyLoading: true
+        }
         dataCursor {
             dimOnHover: false
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -404,7 +403,7 @@ page 23 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("range").widget().ojChart({orientation: 'horizontal'});
+                jsCode: "apex.region(\"range\").widget().ojChart({orientation: 'horizontal'});"
             }
             affectedElements {
                 selectionType: region
@@ -432,7 +431,7 @@ page 23 (
         action native-javascript-code (
             action: executeJsCode
             settings {
-                jsCode: apex.region("range").widget().ojChart({orientation: 'vertical'});
+                jsCode: "apex.region(\"range\").widget().ojChart({orientation: 'vertical'});"
             }
             affectedElements {
                 selectionType: region

@@ -1,0 +1,12 @@
+lov sp-initiative-focus-areas-focus-area (
+    name: SP_INITIATIVE_FOCUS_AREAS.FOCUS_AREA
+    source {
+        tableName: SP_INITIATIVE_FOCUS_AREAS
+    }
+    columnMapping {
+        return: ID
+        display: FOCUS_AREA
+        defaultSort: FOCUS_AREA
+    }
+)
+

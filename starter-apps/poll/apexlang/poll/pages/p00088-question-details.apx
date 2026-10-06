@@ -11,15 +11,8 @@ page 88 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration: var htmldb_delete_message='"DELETE_CONFIRM_MSG"';
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region add-question (
@@ -160,6 +153,9 @@ page 88 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found
@@ -1889,9 +1885,6 @@ page 88 (
         appearance {
             template: @/optional
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: databaseColumn

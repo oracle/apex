@@ -6,9 +6,6 @@ page 54 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -33,10 +30,6 @@ page 54 (
             }
             .apex-item-yes-no {white-space:pre;}
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: Use this items on this page to configure the app.

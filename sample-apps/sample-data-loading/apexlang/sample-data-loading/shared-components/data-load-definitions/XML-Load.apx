@@ -1,0 +1,118 @@
+dataLoadDefinition XML_Load (
+    name: XML Load
+    target {
+        tableName: EBA_DEMO_LOAD_EMP
+        loadingMethod: replace
+    }
+    advanced {
+        commitInterval: 200
+    }
+    dataProfile {
+        name: XML Load
+        format: xml
+        rowSelector: /*/ROW
+    }
+    advanced {
+        encoding: utf-8
+    }
+
+    dataProfileColumn comm (
+        columnName: COMM
+        source {
+            sequence: 8
+            dataType: number
+        }
+        parsing {
+            pathExpression: "COMM[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn deptno (
+        columnName: DEPTNO
+        source {
+            sequence: 7
+            dataType: number
+        }
+        parsing {
+            pathExpression: "DEPTNO[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn empno (
+        columnName: EMPNO
+        source {
+            sequence: 1
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            pathExpression: "EMPNO[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn ename (
+        columnName: ENAME
+        source {
+            sequence: 2
+            dataType: varchar2
+            maxLength: 10
+        }
+        parsing {
+            pathExpression: "ENAME[1]"
+        }
+    )
+
+    dataProfileColumn hiredate (
+        columnName: HIREDATE
+        source {
+            sequence: 5
+            dataType: date
+        }
+        parsing {
+            pathExpression: "HIREDATE[1]"
+            formatMask: MM"/"DD"/"RR
+            hasTimeZone: false
+        }
+    )
+
+    dataProfileColumn job (
+        columnName: JOB
+        source {
+            sequence: 3
+            dataType: varchar2
+            maxLength: 9
+        }
+        parsing {
+            pathExpression: "JOB[1]"
+        }
+    )
+
+    dataProfileColumn mgr (
+        columnName: MGR
+        source {
+            sequence: 4
+            dataType: number
+        }
+        parsing {
+            pathExpression: "MGR[1]"
+            decimalChar: .
+        }
+    )
+
+    dataProfileColumn sal (
+        columnName: SAL
+        source {
+            sequence: 6
+            dataType: number
+        }
+        parsing {
+            pathExpression: "SAL[1]"
+            decimalChar: .
+        }
+    )
+
+)
+

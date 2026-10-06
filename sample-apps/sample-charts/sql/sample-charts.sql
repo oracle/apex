@@ -27,8 +27,8 @@ set define off verify off feedback off
 --------------------------------------------------------------------------------
 begin
 wwv_flow_imp.import_begin (
- p_version_yyyy_mm_dd=>'2026.03.30'
-,p_release=>'26.1.0'
+ p_version_yyyy_mm_dd=>'2026.04.07'
+,p_release=>'26.2.0'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7830
 ,p_default_id_offset=>2654143468017583
@@ -49,7 +49,7 @@ prompt APPLICATION 7830 - Sample Charts
 --       Items:                   16
 --       Computations:            17
 --       Processes:                6
---       Regions:                293
+--       Regions:                291
 --       Buttons:                 48
 --       Dynamic Actions:         48
 --     Shared Components:
@@ -75,8 +75,8 @@ prompt APPLICATION 7830 - Sample Charts
 --       E-Mail:
 --     Supporting Objects:  Included
 --       Install scripts:          4
---   Version:         26.1.0
---   Instance ID:     746015870406431
+--   Version:         26.2.0
+--   Instance ID:     745964864827421
 --
 
 prompt --application/delete_application
@@ -107,7 +107,8 @@ wwv_imp_workspace.create_flow(
 ,p_documentation_banner=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '1.0.7 -> 1.0.8: Added "SQL Source" show/hide region to all pages.',
 '1.0.9 -> 1.0.10: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie',
-'1.0.12 -> 1.0.13: Added D3 Collapsible Treemap region to page 16'))
+'1.0.12 -> 1.0.13: Added D3 Collapsible Treemap region to page 16',
+'26.2.0: Removed "ORA_WWV_PACKAGED_APPLICATIONS" cookie, minor UI update to page 10, added authorization check to Administration nav list entries'))
 ,p_authentication_id=>wwv_flow_imp.id(8206960514072704333)
 ,p_application_tab_set=>0
 ,p_logo_type=>'T'
@@ -115,11 +116,12 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.1.0'
+,p_flow_version=>'26.2.0'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'S'
 ,p_deep_linking=>'Y'
+,p_allow_bots=>'Y'
 ,p_runtime_api_usage=>'T'
 ,p_pass_ecid=>'N'
 ,p_authorize_public_pages_yn=>'Y'
@@ -144,7 +146,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_07=>'Oracle APEX'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>9
-,p_version_scn=>'113193144'
+,p_version_scn=>'302344967'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'N'
@@ -162,12 +164,12 @@ wwv_imp_workspace.create_flow(
 ,p_theme_style_by_user_pref=>false
 ,p_navigation_list_id=>wwv_flow_imp.id(1534610710950336672)
 ,p_navigation_list_position=>'SIDE'
-,p_navigation_list_template_id=>2469215554099805162
+,p_navigation_list_template_id=>2471166859590295591
 ,p_nav_list_template_options=>'#DEFAULT#:js-defaultCollapsed:js-navCollapsed--hidden:t-TreeNav--styleA'
 ,p_css_file_urls=>'#IMAGE_PREFIX#pkgapp_ui/css/5.0#MIN#.css'
 ,p_nav_bar_type=>'LIST'
 ,p_nav_bar_list_id=>wwv_flow_imp.id(1726489552249595088)
-,p_nav_bar_list_template_id=>2849019392706229583
+,p_nav_bar_list_template_id=>2850970698196720012
 );
 end;
 /
@@ -391,12 +393,12 @@ wwv_flow_imp_shared.create_plugin(
 ,p_ajax_function=>'ajax'
 ,p_standard_attributes=>'SOURCE_SQL:AJAX_ITEMS_TO_SUBMIT:ESCAPE_OUTPUT'
 ,p_substitute_attributes=>false
+,p_version_scn=>'SH256:T4TbtTQaK-UaEhmgZXpooe8LBHXvXDrH_RCbZeLl7LE'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>Badge lists are useful for displaying a region with a small number of counts for important statistics. For example, in Bug Tracker, this plug-in is used to show the total bugs, open bugs, open high priority bugs, and open critical severity bugs.</'
 ||'p>',
 '<p>This plug-in is suitable for adding to the Home page to show important summary information.</p>'))
-,p_version_identifier=>'5.0.2'
-,p_about_url=>'http://apex.oracle.com/plugins'
+,p_version_identifier=>'5.0.3'
 ,p_files_version=>2461161212457
 );
 wwv_flow_imp_shared.create_plugin_attribute(
@@ -1013,18 +1015,10 @@ wwv_flow_imp_shared.create_plugin(
 '                    p_is_printer_friendly in boolean )',
 '        return apex_plugin.t_region_render_result is',
 'begin',
-'    sys.htp.p(''<ul class="t-Cards t-Cards--sampleAppsFooter t-Cards--featured force-fa-lg t-Cards--displayIcons t-Cards--hideBody t-Cards--animColorFill">'');',
+'    sys.htp.p(''<ul class="t-Cards t-Cards--sampleAppsFooter t-Cards--featured force-fa-lg t-Cards--displayIcons t-Cards--hideBody t-Cards--animColorFill t-Cards--float">'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/twitter" target="_blank" class="t-Card-wrap">'');',
-'    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-twitter" style="color: #1da1f2"></span></div>'');',
-'    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Twitter</h3></div>'');',
-'    sys.htp.p(''    </a>'');',
-'    sys.htp.p(''  </div>'');',
-'    sys.htp.p(''</li>'');',
-'    sys.htp.p(''<li class="t-Cards-item">'');',
-'    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/linkedin" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/linkedin" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-linkedin" style="color: #0077b5"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">LinkedIn</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -1032,7 +1026,7 @@ wwv_flow_imp_shared.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/facebook" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/facebook" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-facebook" style="color: #3b5998"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Facebook</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -1040,7 +1034,7 @@ wwv_flow_imp_shared.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/youtube" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/youtube" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-youtube" style="color: red"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">YouTube</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -1048,15 +1042,15 @@ wwv_flow_imp_shared.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-apex" style="color: #707070"></span></div>'');',
-'    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">apex.oracle.com</h3></div>'');',
+'    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">oracleapex.com</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
 '    sys.htp.p(''  </div>'');',
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/community" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/community" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-users" style="color: #707070"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Oracle APEX Community</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
@@ -1064,17 +1058,9 @@ wwv_flow_imp_shared.create_plugin(
 '    sys.htp.p(''</li>'');',
 '    sys.htp.p(''<li class="t-Cards-item">'');',
 '    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/forum" target="_blank" class="t-Card-wrap">'');',
+'    sys.htp.p(''    <a href="https://oracleapex.com/forum" target="_blank" rel="noopener noreferrer external" class="t-Card-wrap">'');',
 '    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-comments-o" style="color: #707070"></span></div>'');',
 '    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Discussion Forums</h3></div>'');',
-'    sys.htp.p(''    </a>'');',
-'    sys.htp.p(''  </div>'');',
-'    sys.htp.p(''</li>'');',
-'    sys.htp.p(''<li class="t-Cards-item">'');',
-'    sys.htp.p(''  <div class="t-Card">'');',
-'    sys.htp.p(''    <a href="https://apex.oracle.com/autonomous" target="_blank" class="t-Card-wrap">'');',
-'    sys.htp.p(''      <div class="t-Card-icon"><span class="t-Icon fa fa-cloud" style="color: #707070"></span></div>'');',
-'    sys.htp.p(''      <div class="t-Card-titleWrap"><h3 class="t-Card-title">Autonomous Database + APEX</h3></div>'');',
 '    sys.htp.p(''    </a>'');',
 '    sys.htp.p(''  </div>'');',
 '    sys.htp.p(''</li>'');',
@@ -1084,10 +1070,11 @@ wwv_flow_imp_shared.create_plugin(
 ,p_api_version=>1
 ,p_render_function=>'render'
 ,p_substitute_attributes=>true
+,p_version_scn=>'SH256:n6t3MCz02DBcFeijihRjC-myQ2QhOn8gU8GES-CjmwA'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'<p>This region plug-in is used to display a custom footer at the bottom of pages with large icons for navigating to other sites such as twitter and linkedin.</p>',
+'<p>This region plug-in is used to display a custom footer at the bottom of pages with large icons for navigating to other sites such as LinkedIn and YouTube.</p>',
 '<p>Note: This plug-in should be customized to meet your specific requirements, rather than used as is.</p>'))
-,p_version_identifier=>'5.0.1'
+,p_version_identifier=>'5.0.2'
 ,p_files_version=>2461161212457
 );
 end;
@@ -1617,7 +1604,8 @@ wwv_flow_imp_shared.create_plugin_setting(
 ,p_plugin_type=>'REGION TYPE'
 ,p_plugin=>'NATIVE_IR'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'actions_menu_structure', 'IG')).to_clob
+  'actions_menu_structure', 'IG',
+  'auto_ir_reset_button', 'N')).to_clob
 ,p_version_scn=>'37166093873575'
 );
 wwv_flow_imp_shared.create_plugin_setting(
@@ -2407,7 +2395,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(1534610710950336672)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'1089078564'
+,p_version_scn=>'SH256:NSgaSq7aJ9SAXQdFyR9p5_Dg26GA4J7oXDcCdRrNj_w'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(2370751583713616789)
@@ -2416,6 +2404,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_static_id=>'administration'
 ,p_list_item_link_target=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-gear'
+,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
@@ -2572,6 +2561,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_static_id=>'manage-sample-data'
 ,p_list_item_link_target=>'f?p=&APP_ID.:27:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_imp.id(2370751583713616789)
+,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 wwv_flow_imp_shared.create_list_item(
@@ -2678,6 +2668,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_static_id=>'theme-styles'
 ,p_list_item_link_target=>'f?p=&APP_ID.:10:&SESSION.::&DEBUG.::::'
 ,p_parent_list_item_id=>wwv_flow_imp.id(2370751583713616789)
+,p_security_scheme=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_list_item_current_type=>'TARGET_PAGE'
 );
 end;
@@ -4077,44 +4068,47 @@ wwv_flow_imp_shared.create_theme(
 ,p_static_id=>'universal-theme'
 ,p_theme_name=>'Universal Theme'
 ,p_theme_internal_name=>'UNIVERSAL_THEME'
-,p_version_identifier=>'26.1'
+,p_version_identifier=>'26.2'
 ,p_navigation_type=>'L'
 ,p_nav_bar_type=>'LIST'
 ,p_is_locked=>false
-,p_current_theme_style_id=>2243014446517417
-,p_default_page_template=>4073832297226169690
-,p_default_dialog_template=>2101883943284197310
-,p_error_template=>2102634289808461002
-,p_printer_friendly_template=>4073832297226169690
-,p_login_template=>2102634289808461002
-,p_default_button_template=>4073839297780169708
-,p_default_region_template=>4073835273271169698
-,p_default_chart_template=>4073835273271169698
-,p_default_form_template=>4073835273271169698
-,p_default_reportr_template=>4073835273271169698
-,p_default_wizard_template=>4073835273271169698
-,p_default_menur_template=>2532939663579242476
-,p_default_listr_template=>4073835273271169698
-,p_default_irr_template=>2102002977963900996
-,p_default_report_template=>2540130677583398057
-,p_default_menu_template=>4073839682315169711
-,p_default_list_template=>4073837480889169704
-,p_default_top_nav_list_temp=>2528231041045349458
-,p_default_side_nav_list_temp=>2469215554099805162
+,p_current_theme_style_id=>4194319937007846
+,p_default_page_template=>4075783602716660119
+,p_default_dialog_template=>2103835248774687739
+,p_error_template=>2104585595298951431
+,p_printer_friendly_template=>4075783602716660119
+,p_login_template=>2104585595298951431
+,p_default_button_template=>4075790603270660137
+,p_default_region_template=>4075786578761660127
+,p_default_chart_template=>4075786578761660127
+,p_default_form_template=>4075786578761660127
+,p_default_reportr_template=>4075786578761660127
+,p_default_wizard_template=>4075786578761660127
+,p_default_menur_template=>2534890969069732905
+,p_default_listr_template=>4075786578761660127
+,p_default_irr_template=>2103954283454391425
+,p_default_report_template=>2542081983073888486
+,p_default_label_template=>1612549609962752680
+,p_default_menu_template=>4075790987805660140
+,p_default_list_template=>4075788786379660133
+,p_default_top_nav_list_temp=>2530182346535839887
+,p_default_side_nav_list_temp=>2471166859590295591
 ,p_default_nav_list_position=>'SIDE'
-,p_default_dialogbtnr_template=>2127905476394690047
-,p_default_dialogr_template=>4502917002193490937
-,p_default_navbar_list_template=>2849019392706229583
-,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.1/')
+,p_default_dialogbtnr_template=>2129856781885180476
+,p_default_dialogr_template=>4504868307683981366
+,p_default_option_label=>1612549609962752680
+,p_default_required_label=>1612549789555753698
+,p_default_navbar_list_template=>2850970698196720012
+,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.2/')
 ,p_files_version=>64
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
-,p_reference_id=>wwv_imp_util.get_subscription_id(4073840274158169736,2000,'universal-theme',8842.261)
+,p_reference_id=>wwv_imp_util.get_subscription_id(4075791579648660165,2000,'universal-theme',8842.262)
 ,p_version_scn=>'SH256:qp4N_JhPqTcmHIg-CkVZd3lQyweCE8LWatUuPZNb4HU'
-,p_version_scn_master=>'SH256:WOPVC8vP1TPWUxczh2dJ4mCZcNGSTzA1cn8DjR2oQjY'
+,p_version_scn_master=>'SH256:S3Fh7S4ZMPpy-ID1j0RgxJIrTUyM6ZXOJB4KD7haOtc'
 );
 end;
 /
@@ -4261,10 +4255,9 @@ wwv_flow_imp_shared.create_authentication(
 ,p_static_id=>'apex-auth'
 ,p_scheme_type=>'NATIVE_APEX_ACCOUNTS'
 ,p_invalid_session_type=>'LOGIN'
-,p_cookie_name=>'ORA_WWV_PACKAGED_APPLICATIONS'
-,p_use_secure_cookie_yn=>'Y'
+,p_use_secure_cookie_yn=>'N'
 ,p_ras_mode=>0
-,p_version_scn=>'136000091'
+,p_version_scn=>'SH256:ptYrnjT-KXJy0XcNtodLyPjfc6DqMxD6miYjsXHvcr4'
 );
 end;
 /
@@ -4336,7 +4329,7 @@ wwv_flow_imp_page.create_page(
 '	-moz-box-shadow: 0 0 10px rgba(50,117,199,0.25);',
 '	box-shadow: 0 0 10px rgba(50,117,199,0.25);',
 '}'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -4347,12 +4340,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'About Sample Charts'
 ,p_static_id=>'about-sample-charts'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>'<p>&PRODUCT_NAME. has integrated charting based on Oracle JavaScript Extension Toolkit (JET) Data Visualizations.  For more information on Oracle JET and the Data Visualizations components, please refer to the <a href="&JET_GET_STARTED_URL." target="'
-||'_blank">Oracle JET Get Started</a> documentation and <a href="&OJCHART_API_URL." target="_blank">ojChart API guide</a>.</p>'
+||'_blank" rel="noopener noreferrer external">Oracle JET Get Started</a> documentation and <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API guide</a>.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4363,20 +4356,20 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'example-charts'
 ,p_region_template_options=>'#DEFAULT#'
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-Cards--featured force-fa-lg:t-Cards--displayIcons:t-Cards--5cols:t-Cards--hideBody:t-Cards--animColorFill'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(2581994872213444144)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2888245825625742894
+,p_list_template_id=>2890197131116233323
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1674734985157084232)
 ,p_plug_name=>'Footer'
 ,p_static_id=>'footer'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>60
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -4387,7 +4380,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Sample Charts'
 ,p_static_id=>'sample-charts'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675494171183407654
+,p_plug_template=>2677445476673898083
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -4421,7 +4414,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
 ,p_javascript_code=>'var gAppImages = "#APP_IMAGES#";'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -4433,7 +4426,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-area-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -4449,7 +4442,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'area_js'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -4462,7 +4455,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'area'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'on'
@@ -4523,7 +4516,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4546,7 +4538,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4570,7 +4561,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4593,7 +4583,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -4633,7 +4622,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-color-javascript-code-customization-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(684236466905959478)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -4665,10 +4654,10 @@ wwv_flow_imp_page.create_page_plug(
 '</pre><p/>',
 '',
 '<p>',
-'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.',
+'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.',
 '</p>',
 '<p>',
-'For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.'))
+'For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank" rel="noopener noreferrer external">Area Chart: Styles</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4679,7 +4668,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-legend-javascript-code-customization'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -4692,7 +4681,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'area'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'on'
@@ -4766,7 +4755,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4789,7 +4777,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4813,7 +4800,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -4836,7 +4822,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -4876,7 +4861,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-legend-javascript-code-customization-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(241699551164739579)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -4921,10 +4906,10 @@ wwv_flow_imp_page.create_page_plug(
 '</pre><p/>',
 '',
 '<p>',
-'For more information on the JET chart legend options, refer to the Oracle JET <a href="&OJCHART_API_URL.#LegendItem" target="_blank">LegendItem symbolType</a> attributes in the ojChart API.',
+'For more information on the JET chart legend options, refer to the Oracle JET <a href="&OJCHART_API_URL.#LegendItem" target="_blank" rel="noopener noreferrer external">LegendItem symbolType</a> attributes in the ojChart API.',
 '</p>',
 '<p>',
-'For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank">Area Chart: Styles</a> example.'))
+'For more information on the Area chart style settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=areaChart&demo=styles#" target="_blank" rel="noopener noreferrer external">Area Chart: Styles</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -4936,7 +4921,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'area2'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -4948,7 +4933,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(433452333159367777)
 ,p_chart_type=>'area'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -4989,7 +4974,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5012,7 +4996,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5036,7 +5019,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5059,7 +5041,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -5115,7 +5096,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-line-types-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5127,7 +5108,8 @@ wwv_flow_imp_page.create_page_plug(
 ||'s by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>',
 '<strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the chart series. Line type specifies the shape of the data point connectors on the chart.<p/>',
 '<p>',
-'For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=lineTypes" target="_blank">Area Chart: Line Types</a> example.'))
+'For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Area C'
+||'hart: Line Types</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -5138,7 +5120,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-markers'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5163,7 +5145,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(442707763272123062)
 ,p_region_id=>wwv_flow_imp.id(442707412285123059)
 ,p_chart_type=>'area'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -5202,7 +5184,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'none'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -5241,7 +5222,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'area1'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5254,7 +5235,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'area'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'on'
@@ -5297,7 +5278,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5320,7 +5300,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5344,7 +5323,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5367,7 +5345,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -5405,7 +5382,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-stacked-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(442714087146123081)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5420,8 +5397,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical buttons to the top left of the chart to change the orientiation of the data items on the charts, and the Stack/Unstack buttons to the top right of the '
 ||'chart to change the rendering style of the data items. When multiple series are shown, stacking is recommended to prevent values from being obscured.<p/>',
 '<p>',
-'For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=default" target="_blank">Area Chart: Basic</a> and <a href="https://'
-||'www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=hideShow" target="_blank">Area Chart: Hide & Show</a> examples.',
+'For more information on the Area chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=default" target="_blank" rel="noopener noreferrer external">Area Cha'
+||'rt: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=areaChart&demo=hideShow" target="_blank" rel="noopener noreferrer external">Area Chart: Hide & Show</a> examples.',
 '',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -5434,7 +5411,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'area-chart-y-axis-value-formatting'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5445,7 +5422,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(442712423398123078)
 ,p_region_id=>wwv_flow_imp.id(442711931833123077)
 ,p_chart_type=>'combo'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -5490,7 +5467,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -5516,7 +5492,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -5556,21 +5531,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(442710008908123075)
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5588,9 +5563,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_button_name=>'Curved'
 ,p_static_id=>'curved'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Curved'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5601,9 +5577,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(442714087146123081)
 ,p_button_name=>'Horizontal'
 ,p_static_id=>'horizontal'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -5615,9 +5592,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_button_name=>'None'
 ,p_static_id=>'none'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'None'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5628,9 +5606,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_button_name=>'Segmented'
 ,p_static_id=>'segmented'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Centered Segmented'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5641,9 +5620,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(442714087146123081)
 ,p_button_name=>'Stack'
 ,p_static_id=>'stack'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Stack'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5654,9 +5634,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_button_name=>'Stepped'
 ,p_static_id=>'stepped'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Stepped'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5667,9 +5648,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(433452333159367777)
 ,p_button_name=>'Straight'
 ,p_static_id=>'straight'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Straight'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5680,9 +5662,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(442714087146123081)
 ,p_button_name=>'Unstack'
 ,p_static_id=>'unstack'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Unstack'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -5693,9 +5676,10 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_plug_id=>wwv_flow_imp.id(442714087146123081)
 ,p_button_name=>'Vertical'
 ,p_static_id=>'vertical'
+,p_show_as_disabled=>false
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -5939,7 +5923,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -5951,7 +5935,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-gantt-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -5966,14 +5950,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1313380870361874471)
@@ -5982,7 +5966,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(433452148171367775)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:js-showMaximizeButton:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -5994,24 +5978,18 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1313380870361874471)
 ,p_chart_type=>'gantt'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
 ,p_show_label=>true
 ,p_show_row=>false
 ,p_show_start=>true
 ,p_show_end=>true
 ,p_show_progress=>true
 ,p_show_baseline=>false
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_no_data_found_message=>'Select a start and end date, to render the gantt chart'
 ,p_horizontal_grid=>'visible'
@@ -6060,7 +6038,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_ajax_items_to_submit=>'P3_START_DATE,P3_END_DATE'
 ,p_series_type=>'gantt'
 ,p_items_label_rendered=>true
-,p_items_label_display_as=>'PERCENT'
 ,p_gantt_start_date_source=>'DB_COLUMN'
 ,p_gantt_start_date_column=>'GANTT_START'
 ,p_gantt_end_date_source=>'DB_COLUMN'
@@ -6130,7 +6107,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'gantt-controls'
 ,p_parent_plug_id=>wwv_flow_imp.id(433452148171367775)
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6146,7 +6123,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'multiple-tasks-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(433452148171367775)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6162,10 +6139,11 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Baseline CSS Classes</strong> - Use this series-level attribute to customize the color of baseline bars<br/>',
 '',
 '<p>',
-'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.',
+'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank" rel="noopener noreferrer external">ojGantt API</a>.',
 '</p>',
 '<p>',
-'For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://apex.oracle.com/pls/apex/f?p=42:6302:::NO:::" target="_blank">Color and Status Modifiers</a> page.'))
+'For more information on Universal Theme Color css classes, refer to the Universal Theme Sample Application <a href="https://oracleapex.com/ords/r/apex_pm/ut/color-and-status-modifiers" target="_blank" rel="noopener noreferrer external">Color and Stat'
+||'us Modifiers</a> page.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -6175,7 +6153,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Multiple Tasks per Row'
 ,p_static_id=>'multiple-tasks-per-row'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6189,7 +6167,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6207,7 +6185,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'single-task-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(2582666454561514713)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6223,8 +6201,8 @@ wwv_flow_imp_page.create_page_plug(
 '',
 '<strong>Task Appearance</strong> - the Tasks rendered on this example differ in appearance, with some being displayed as blue lines with start/end dates, while others are displayed as gray diamond-shaped markers.  The difference in appearance is due '
 ||'to how JET interprets the Task ''type''. Normal tasks are rendered as the blue lines, while Milestones are rendered as gray diamond-shaped markers. As outlined in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/'
-||'oj.ojGantt.html#RowTask" target="_blank">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank">ojGantt</a> API, if Task Start Date'
-||' and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>',
+||'oj.ojGantt.html#RowTask" target="_blank" rel="noopener noreferrer external">type</a> property of the RowTask type definition in the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojGantt.html" target="_blank" '
+||'rel="noopener noreferrer external">ojGantt</a> API, if Task Start Date and Task End Date values are specified and unequal, then the assumption is that the task type is "normal".  Otherwise, the type is assumed to be "milestone".<p/>',
 '',
 '<strong>JavaScript Code</strong> - Use this chart-level attribute to customize your chart attributes and data.  Any chart initialization changes, to attributes such as the chart y-axis, type, or orientation, can also be made.  The JavaScript Code sho'
 ||'uld follow a template similar to the following:<br/>',
@@ -6245,11 +6223,11 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Tooltip Options</strong> - Use the chart-level Tooltip attributes to declaratively choose what information should be displayed in the Gantt chart tooltip. This chart only displays the Row, Label, and Progress information, by setting the <stro'
 ||'ng>Show Row</strong>, <strong>Show Label</strong> and <strong>Show Progress</strong> attributes.<br/> ',
 '<p>',
-'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank">ojGantt API</a>.',
+'For more information on the JET Gantt chart options, refer to the Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojGantt.html" target="_blank" rel="noopener noreferrer external">ojGantt API</a>.',
 '</p>',
 '<p>',
-'For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank">Gantt Chart: Multiple Tasks Per Row'
-||'</a> example.'))
+'For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=gantt&demo=multipleTasks" target="_blank" rel="noopener noreferrer external">'
+||'Gantt Chart: Multiple Tasks Per Row</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -6261,7 +6239,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'gantt'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6273,24 +6251,18 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(2582666454561514713)
 ,p_chart_type=>'gantt'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
 ,p_show_label=>true
 ,p_show_row=>false
 ,p_show_start=>true
 ,p_show_end=>true
 ,p_show_progress=>true
 ,p_show_baseline=>false
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_horizontal_grid=>'visible'
 ,p_vertical_grid=>'visible'
@@ -6328,7 +6300,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 'order by id asc'))
 ,p_series_type=>'gantt'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_gantt_start_date_source=>'DB_COLUMN'
 ,p_gantt_start_date_column=>'GANTT_START_DATE'
 ,p_gantt_end_date_source=>'DB_COLUMN'
@@ -6386,7 +6357,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'tasks-per-employee-not-hierarchical'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6398,24 +6369,18 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(220155891448223111)
 ,p_chart_type=>'gantt'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
 ,p_show_label=>true
 ,p_show_row=>true
 ,p_show_start=>true
 ,p_show_end=>true
 ,p_show_progress=>true
 ,p_show_baseline=>false
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_horizontal_grid=>'visible'
 ,p_vertical_grid=>'visible'
@@ -6457,7 +6422,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 '    order siblings by task_name  '))
 ,p_series_type=>'gantt'
 ,p_items_label_rendered=>true
-,p_items_label_display_as=>'PERCENT'
 ,p_gantt_start_date_source=>'DB_COLUMN'
 ,p_gantt_start_date_column=>'GANTT_START_DATE'
 ,p_gantt_end_date_source=>'DB_COLUMN'
@@ -6519,7 +6483,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_button_static_id=>'P3_GO'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Go'
 ,p_warn_on_unsaved_changes=>null
@@ -6540,7 +6504,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cMaxlength=>4000
 ,p_begin_on_new_line=>'N'
 ,p_colspan=>2
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
@@ -6585,7 +6549,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cSize=>64
 ,p_cMaxlength=>4000
 ,p_colspan=>2
-,p_field_template=>1610598484065263269
+,p_field_template=>1612549789555753698
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
@@ -6641,7 +6605,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -6653,7 +6617,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-pie-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -6669,14 +6633,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>90
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(567674554141677627)
@@ -6685,7 +6649,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(567674406913677626)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -6697,7 +6661,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(567674563630677628)
 ,p_region_id=>wwv_flow_imp.id(567674554141677627)
 ,p_chart_type=>'pie'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -6707,11 +6671,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'top'
@@ -6762,7 +6723,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(567674406913677626)
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6773,7 +6734,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(102344495628898571)
 ,p_region_id=>wwv_flow_imp.id(102344241717898569)
 ,p_chart_type=>'pie'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -6783,11 +6744,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'top'
@@ -6829,7 +6787,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'donut-chart-new-declarative-label-option'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6841,7 +6799,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(729071807687057488)
 ,p_chart_type=>'donut'
 ,p_height=>'450'
-,p_animation_on_display=>'alphaFade'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -6853,11 +6811,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'currency'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'top'
@@ -6895,7 +6850,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'donut-chart-new-declarative-label-option-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(729071807687057488)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6913,7 +6868,8 @@ wwv_flow_imp_page.create_page_plug(
 '</ul>',
 '<p/>',
 '<strong>Label Position</strong> - The series-level attribute is set to Outside Slice, to ensure lengthy labels are visible, and rendered outside the slice of the donut.<p/>',
-'For more information on the custom label settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=dataLabel" target="_blank">Chart: Data Label Callback</a> example.'))
+'For more information on the custom label settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=dataLabel" target="_blank" rel="noopener noreferrer external">Chart: D'
+||'ata Label Callback</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -6925,7 +6881,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'donut1'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -6937,7 +6893,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(432799309191447662)
 ,p_chart_type=>'donut'
 ,p_height=>'450'
-,p_animation_on_display=>'alphaFade'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -6949,11 +6905,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'top'
@@ -6997,7 +6950,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'donut-chart-sorting-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(432799309191447662)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7010,8 +6963,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Label Display As</strong> - The new series-level attribute is set to <strong>Percentage ( Value )</strong>, rendering the label in that format, without the need to use custom JavaScript code to acomplish it.<p/>',
 '<strong>Sort Order</strong> - Donut chart slices can be sorted based on the values. The new <strong>Sort Order</strong> chart-level attribute allows you to define the sort order of your chart. Through the use of Dynamic actions, you can allow your en'
 ||'d users to toggle the sort order. Use the Ascending/Descending buttons to the top right of the chart to change the sorting of the data items on the charts.<p/>',
-'<strong>JavaScript Initialization Code</strong> - Use this chart-level attribute to customize the <a href="&OJCHART_API_URL.#styleDefaults.otherColor" target="_blank">otherColor</a> JET attribute, to set the color of the ''Other'' slice of the chart.  '
-||'By default, that slice will use the color black. Use the following code snippet to achieve this:<br/>',
+'<strong>JavaScript Initialization Code</strong> - Use this chart-level attribute to customize the <a href="&OJCHART_API_URL.#styleDefaults.otherColor" target="_blank" rel="noopener noreferrer external">otherColor</a> JET attribute, to set the color o'
+||'f the ''Other'' slice of the chart.  By default, that slice will use the color black. Use the following code snippet to achieve this:<br/>',
 '<pre>',
 'function (options) {',
 '    // Set color of ''Other'' slice to pink',
@@ -7020,7 +6973,7 @@ wwv_flow_imp_page.create_page_plug(
 '}',
 '</pre>',
 '<p/>',
-'For more information on the Pie chart sort settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=sorting" target="_blank">Pie Chart: Sorting</a> example.'))
+'For more information on the Pie chart sort settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=sorting" target="_blank" rel="noopener noreferrer external">Pie Chart: Sorting</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7031,7 +6984,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'donut-chart-v2-labels-outside-slice'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7042,7 +6995,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(432798869061447658)
 ,p_region_id=>wwv_flow_imp.id(432798793363447657)
 ,p_chart_type=>'donut'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -7052,11 +7005,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_title=>'Projects Tasks'
@@ -7094,7 +7044,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Master Detail Chart Links'
 ,p_static_id=>'master-detail-chart-links'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7102,7 +7052,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'Drill into a slice of the Products pie chart on the left, to display its associated orders in the Orders bar chart on the right. To drill using the mouse, click on the chart slice.  To drill using the keyboard, navigate to the slice and hit Enter.<p/'
 ||'>',
-'For more information on the <a href="&OJCHART_API_URL.#drilling" target="_blank">drilling</a> attribute, refer to the ojChart API.'))
+'For more information on the <a href="&OJCHART_API_URL.#drilling" target="_blank" rel="noopener noreferrer external">drilling</a> attribute, refer to the ojChart API.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7113,7 +7063,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'master-detail-chart-links-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(807038608280025468)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7124,7 +7074,7 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Dynamic Action</strong> - Define a dynamic action, to be triggered upon a change to the hidden page item.  That action will trigger a refresh of the Orders bar chart, to reflect the orders associated with the selected product.<p/>',
 '<strong>Page Items To Submit</strong> - Ensure this series-level attribute is set to the name of the hidden page item, to ensure its value is used at the time of processing the chart SQL query.<p/>',
 '<strong>JavaScript Code</strong> - Use this chart-level attribute to define JavaScript code, to customise the pie chart attributes at initialization, to render the chart in 3D.  The <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blan'
-||'k">threeDEffect</a> attribute in the ojChart API should be set, using the following JavaScript code:</br/>',
+||'k" rel="noopener noreferrer external">threeDEffect</a> attribute in the ojChart API should be set, using the following JavaScript code:</br/>',
 '<pre>',
 'function( options ) {',
 '',
@@ -7145,7 +7095,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(807038608280025468)
 ,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -7159,7 +7109,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_title=>'&P4_PRODUCT_NAME.'
 ,p_height=>'380'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -7176,7 +7126,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_no_data_found_message=>'No product selected from Pie Chart (Master chart)'
 );
@@ -7200,7 +7149,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -7241,7 +7189,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'pie1'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7253,7 +7201,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(432798249016447652)
 ,p_chart_type=>'pie'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -7263,11 +7211,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'auto'
@@ -7307,7 +7252,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pie-chart-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(432798249016447652)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7320,8 +7265,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Label Display As</strong> - To display the ''Label'' column mapping information in the label on each pie slice, this new series-level attribute is set to <strong>Label</strong>.<p/>',
 '',
 '<strong>Legend size</strong> - To decrease the amount of space between the pie chart and legend, the legend <strong>size</strong> attribute can be set to a value, in pixels or percent. Click the <strong>Increase Legend Size</strong> or <strong>Decrea'
-||'se Legend Size</strong> buttons to trigger a change in the legend size in relation to the chart.  A dynamic action is used to update the region size.  Refer to the <a href="&OJCHART_API_URL.#legend.size" target="_blank">ojChart API guide</a> for more'
-||' information on this setting.<p>',
+||'se Legend Size</strong> buttons to trigger a change in the legend size in relation to the chart.  A dynamic action is used to update the region size.  Refer to the <a href="&OJCHART_API_URL.#legend.size" target="_blank" rel="noopener noreferrer exter'
+||'nal">ojChart API guide</a> for more information on this setting.<p>',
 '',
 '<strong>Link</strong> - This series-level attribute can be set to define a link on the chart element.  For this example, the new Interactive Grid URL Filtering support is demonstrated here.  When you click on a chart element, the URL will redirect yo'
 ||'u to page 47 in the application, which contains an Interactive Grid saved report on the EBA_DEMO_CHART_TASKS table.  The report will filter information based upon the project (ID) associated with the selected chart element.  The URL Filtering is achi'
@@ -7339,8 +7284,8 @@ wwv_flow_imp_page.create_page_plug(
 '</ul>',
 '<p/><p/>',
 '',
-'For more information on the Pie chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=hideShow" target="_blank">Pie Chart: Hide & Show</a> and <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=animatio'
-||'n" target="_blank">Pie Chart: Animations</a> examples.'))
+'For more information on the Pie chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=pieChart&demo=hideShow" target="_blank" rel="noopener noreferrer external">Pie Chart: Hide & Show</a> and <a href="&JET_COOKBOOK_UR'
+||'L.?component=pieChart&demo=animation" target="_blank" rel="noopener noreferrer external">Pie Chart: Animations</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7350,7 +7295,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Pie Chart (Series Colors)'
 ,p_static_id=>'pie-chart-series-colors'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7365,7 +7310,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pie-chart-series-colors-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(567674406913677626)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7406,7 +7351,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(807038608280025468)
 ,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7417,7 +7362,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(807037406864025456)
 ,p_region_id=>wwv_flow_imp.id(807037267134025455)
 ,p_chart_type=>'pie'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -7427,11 +7372,8 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
 ,p_legend_position=>'auto'
@@ -7485,7 +7427,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'ascending'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Ascending'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -7499,7 +7441,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'decrease'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Decrease Legend Size'
 ,p_button_position=>'BELOW_BOX'
 ,p_button_alignment=>'RIGHT'
@@ -7513,7 +7455,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'descending'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Descending'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -7527,7 +7469,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'increase'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Increase Legend Size'
 ,p_button_position=>'BELOW_BOX'
 ,p_button_alignment=>'RIGHT'
@@ -7551,7 +7493,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Product:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -7761,7 +7703,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -7773,7 +7715,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-dial-gauge-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -7789,27 +7731,27 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_plug_name=>'Circular'
 ,p_static_id=>'circular'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_header=>'<strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeCircular" target="_blan'
-||'k">Status Meter Gauge - Circular</a> example.</strong>'
+||'k" rel="noopener noreferrer external">Status Meter Gauge - Circular</a> example.</strong>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7819,13 +7761,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Horizontal'
 ,p_static_id=>'horizontal'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_header=>'<strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeHorizontal" target="_bl'
-||'ank">Status Meter Gauge - Horizontal</a> example.</strong>'
+||'ank" rel="noopener noreferrer external">Status Meter Gauge - Horizontal</a> example.</strong>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -7837,7 +7779,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>110
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7849,7 +7791,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35156523968216642)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -7859,13 +7801,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>10
@@ -7894,7 +7830,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_column_name=>'MY_LABEL'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -7904,7 +7839,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>110
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7917,7 +7852,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -7927,13 +7862,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>10
@@ -7962,7 +7891,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_column_name=>'MY_LABEL'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -7972,7 +7900,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -7985,20 +7913,14 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_text_type=>'percent'
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>.5
@@ -8030,7 +7952,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#EDBD45'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8039,7 +7960,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'indicator-size-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35156523968216642)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8057,7 +7978,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'indicator-size-information-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(35153753109216614)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8076,7 +7997,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8090,7 +8011,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8099,13 +8020,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'percent'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>.5
@@ -8137,7 +8052,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#1A3AD9'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8146,7 +8060,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'inner-radius-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922686646191058)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8165,7 +8079,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8179,7 +8093,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8189,13 +8103,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>1
@@ -8226,7 +8134,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FFFF00'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8236,7 +8143,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8250,7 +8157,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8259,13 +8166,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>1
@@ -8298,7 +8199,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'MY_LABEL'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8307,7 +8207,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'label-and-value-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35153363118216611)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8326,7 +8226,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -8338,7 +8238,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35155938456216636)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8348,13 +8248,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'currency'
 ,p_value_decimal_places=>2
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.8
@@ -8383,7 +8277,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FA0F0F'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8393,7 +8286,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8407,7 +8300,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'30'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8417,13 +8310,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'currency'
 ,p_value_decimal_places=>2
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.8
@@ -8452,7 +8339,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FA0F0F'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8462,7 +8348,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8476,7 +8362,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8485,13 +8371,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'currency'
 ,p_value_decimal_places=>2
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>1
@@ -8522,7 +8402,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8531,7 +8410,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'number-formatting-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35155938456216636)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8553,7 +8432,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'number-formatting-information-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(35153998728216617)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8576,7 +8455,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -8588,7 +8467,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35155593020216633)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8596,13 +8475,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_text_type=>'percent'
 ,p_value_position=>'auto'
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.5
@@ -8630,7 +8503,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8640,7 +8512,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8654,7 +8526,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8662,13 +8534,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_text_type=>'percent'
 ,p_value_position=>'auto'
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.5
@@ -8696,7 +8562,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -8705,7 +8570,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'percent-formatting-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35155593020216633)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8725,7 +8590,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8739,7 +8604,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35156181191216639)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8749,13 +8614,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.4
@@ -8784,7 +8643,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_gauge_plot_area_color=>'#4BB521'
 ,p_threshold_display=>'onIndicator'
 );
@@ -8795,7 +8653,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8809,7 +8667,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8819,13 +8677,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.4
@@ -8854,7 +8706,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_gauge_plot_area_color=>'#4BB521'
 ,p_threshold_display=>'onIndicator'
 );
@@ -8864,7 +8715,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'plot-area-and-indicator-size-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35156181191216639)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8883,7 +8734,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -8902,7 +8753,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -8916,7 +8767,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -8925,13 +8776,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'percent'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>1
@@ -8965,7 +8810,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#F50000'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'start'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_reference_line_values=>'7,14'
 ,p_reference_line_colors=>'yellow'
@@ -8976,7 +8820,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'start-angle-and-angle-extent-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(442949079054848952)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -8996,7 +8840,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>120
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -9008,7 +8852,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35156786120216645)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9018,13 +8862,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.9
@@ -9052,7 +8890,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,20'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'all'
@@ -9064,7 +8901,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>120
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9078,7 +8915,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9088,13 +8925,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.9
@@ -9122,7 +8953,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,14'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'all'
@@ -9134,7 +8964,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>140
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -9146,7 +8976,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35157391878216651)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9156,13 +8986,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.9
@@ -9190,7 +9014,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,20'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'currentOnly'
@@ -9202,7 +9025,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>140
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9216,7 +9039,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9226,13 +9049,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.9
@@ -9260,7 +9077,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,20'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'currentOnly'
@@ -9271,7 +9087,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'thresholds-current-threshold-only-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35157391878216651)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9293,7 +9109,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'thresholds-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35156786120216645)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9315,7 +9131,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'thresholds-information-2'
 ,p_parent_plug_id=>wwv_flow_imp.id(35154600554216623)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9338,7 +9154,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>130
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -9350,7 +9166,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35157131954216648)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9360,13 +9176,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>.9
@@ -9394,7 +9204,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,20'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'onIndicator'
@@ -9406,7 +9215,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>130
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9420,7 +9229,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9430,13 +9239,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>.9
@@ -9464,7 +9267,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'VALUE'
 ,p_items_max_value=>'MAX_VALUE'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,12,20'
 ,p_threshold_colors=>'#FF0000,#FFFF00,#008000'
 ,p_threshold_display=>'onIndicator'
@@ -9475,7 +9277,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'thresholds-on-indicator-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35157131954216648)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9498,7 +9300,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(1132922650539191057)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9512,7 +9314,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'90'
 ,p_height=>'100'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9521,13 +9323,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'circular'
 ,p_gauge_indicator_size=>.5
@@ -9565,7 +9361,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'BLACK'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_values=>'4,8,14'
 ,p_threshold_colors=>'red,yellow,green'
 ,p_threshold_display=>'all'
@@ -9576,7 +9371,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'value-and-label-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(35155322695216630)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9596,7 +9391,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9609,7 +9404,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(35155322695216630)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9619,13 +9414,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>1
@@ -9656,7 +9445,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FFFF00'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_gauge_plot_area_color=>'GRAY'
 ,p_threshold_display=>'onIndicator'
 );
@@ -9666,7 +9454,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'value-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(41538502424001918)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -9685,7 +9473,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35154875808216626)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -9697,7 +9485,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(41538502424001918)
 ,p_chart_type=>'dial'
 ,p_width=>'300'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9707,13 +9495,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'horizontal'
 ,p_gauge_indicator_size=>1
@@ -9743,7 +9525,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FFFF00'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_gauge_plot_area_color=>'GRAY'
 ,p_threshold_display=>'onIndicator'
 );
@@ -9754,7 +9535,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(35157723751216654)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -9768,7 +9549,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'dial'
 ,p_width=>'21'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_stack=>'off'
 ,p_stack_label=>'off'
@@ -9778,13 +9559,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
-,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_gauge_orientation=>'vertical'
 ,p_gauge_indicator_size=>1
@@ -9814,7 +9589,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_color=>'#FFFF00'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -9822,13 +9596,13 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Vertical'
 ,p_static_id=>'vertical'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_header=>'<strong>For more information on the Status Meter Gauge chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=statusMeterGauge&demo=statusMeterGaugeVertical" target="_blan'
-||'k">Status Meter Gauge - Vertical</a> example.</strong>'
+||'k" rel="noopener noreferrer external">Status Meter Gauge - Vertical</a> example.</strong>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -9855,7 +9629,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -9867,7 +9641,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-list-alt'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -9885,7 +9659,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'badgeListCircular'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -9920,14 +9694,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>80
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(513638794182534983)
@@ -9935,7 +9709,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'orders'
 ,p_region_template_options=>'#DEFAULT#:i-h320:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_plug_new_grid_row=>false
 ,p_plug_item_display_point=>'ABOVE'
@@ -9946,7 +9720,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(513639031722534984)
 ,p_region_id=>wwv_flow_imp.id(513638794182534983)
 ,p_chart_type=>'combo'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -9988,7 +9762,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -10010,7 +9783,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -10033,7 +9805,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -10058,7 +9829,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -10113,7 +9883,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Project Task Status'
 ,p_static_id=>'project-task-status'
 ,p_region_name=>'sttSlide'
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_css_classes=>'i-h300'
@@ -10142,10 +9912,11 @@ wwv_flow_imp_page.create_report_region(
 ' where t.project = p.id'))
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2095080600153409441
+,p_query_row_template=>2097031905643899870
 ,p_query_num_rows=>300
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -10301,7 +10072,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'combo1'
 ,p_region_template_options=>'#DEFAULT#:i-h320:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10312,7 +10083,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(513646817030555908)
 ,p_region_id=>wwv_flow_imp.id(513646503401555907)
 ,p_chart_type=>'bar'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -10329,7 +10100,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -10351,7 +10121,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'outsideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -10393,7 +10162,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_css_classes=>'i-h300'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -10441,7 +10210,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -10453,7 +10222,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-stock-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10469,14 +10238,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(432823429366637709)
@@ -10484,7 +10253,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'dummy-corp-stock-chart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'N'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10494,7 +10263,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(432823919867637712)
 ,p_region_id=>wwv_flow_imp.id(432823429366637709)
 ,p_chart_type=>'stock'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_data_cursor=>'on'
 ,p_data_cursor_behavior=>'smooth'
@@ -10503,15 +10272,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_stock_render_as=>'candlestick'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'delayed'
 ,p_initial_zooming=>'first'
 ,p_tooltip_rendered=>'Y'
-,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_time_axis_type=>'auto'
 );
@@ -10537,7 +10301,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'LABEL'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -10577,7 +10340,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10595,7 +10358,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Overview</strong> - Use the overview section, displayed at the bottom of the chart region, to zoom & scroll to a specific section of the chart.<p/>',
 '',
 '<p>',
-'For more information on the Oracle JET Stock chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=stockChart&demo=default" target="_blank">Stock Chart</a> example.'))
+'For more information on the Oracle JET Stock chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=stockChart&demo=default" target="_blank" rel="noopener noreferrer external">Stoc'
+||'k Chart</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -10613,7 +10377,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -10625,7 +10389,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-scatter-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -10642,21 +10406,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(430270014009218979)
 ,p_plug_name=>'New'
 ,p_static_id=>'new'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10674,7 +10438,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'scatter-dynamic-y-axis-min-max-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(430269139817218971)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -10697,7 +10461,7 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Dynamic Action</strong> - Use a dynamic action, triggerd by the click of a button, to update the chart with y-axis minimum and maximum values selected by the end user.<p/>',
 '',
 '<p>',
-'For more information on the Oracle JET ojChart yAxis object, refer to the Oracle JET ojChart API <a href="&OJCHART_API_URL.#yAxis.min" target="_blank">ojChart: yAxis object</a>.'))
+'For more information on the Oracle JET ojChart yAxis object, refer to the Oracle JET ojChart API <a href="&OJCHART_API_URL.#yAxis.min" target="_blank" rel="noopener noreferrer external">ojChart: yAxis object</a>.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -10709,7 +10473,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'scatterChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10723,7 +10487,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'scatter'
 ,p_title=>'Dummy Corp Stock Value'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -10732,8 +10496,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>false
@@ -10773,7 +10535,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'star'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -10817,7 +10578,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'scatter-percent-format'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -10830,7 +10591,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'scatter'
 ,p_title=>'OECD Members Pension Contribution Revenues, 2011'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -10838,15 +10599,12 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack=>'off'
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>false
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -10874,7 +10632,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_rendered=>'auto'
 ,p_marker_shape=>'star'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -10918,7 +10675,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'scatter-percent-format-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(578529575208283321)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -10932,8 +10689,9 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Custom Tooltip</strong> - Use this series-level attribute to include custom data in the tooltips displayed as the mouse moves over the data points of the chart.<p/>',
 '',
 '<p>',
-'For more information on the Oracle JET Scatter chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=scatterChart&demo=attrGroups" target="_blank">Scatter Chart: Attribute Groups<'
-||'/a> example. The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.'))
+'For more information on the Oracle JET Scatter chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=scatterChart&demo=attrGroups" target="_blank" rel="noopener noreferrer externa'
+||'l">Scatter Chart: Attribute Groups</a> example. The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank" rel="noopener noreferrer external">OECD Pensi'
+||'ons at a Glance 2013</a> report.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -10946,7 +10704,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'set'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--small:t-Button--primary:t-Button--padRight:t-Button--padTop:t-Button--padBottom'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Set'
 ,p_warn_on_unsaved_changes=>null
 ,p_grid_new_row=>'N'
@@ -10966,7 +10724,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_begin_on_new_line=>'N'
 ,p_colspan=>2
 ,p_grid_label_column_span=>1
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -10985,7 +10743,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_cHeight=>1
 ,p_colspan=>2
 ,p_grid_label_column_span=>1
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -11047,7 +10805,7 @@ wwv_flow_imp_page.create_page(
 'ul.barGraph li > span.noBorder{border-top:none;padding-top:0}',
 'ul.barGraph li > span a{color:##405580}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -11059,7 +10817,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-bar-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -11077,7 +10835,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'dualChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11090,7 +10848,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_width=>'700'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -11129,7 +10887,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_size=>'14'
 ,p_items_label_font_color=>'BLUE'
 ,p_threshold_display=>'onIndicator'
@@ -11153,7 +10910,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'outsideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_size=>'14'
 ,p_items_label_font_color=>'#309fdb'
 ,p_threshold_display=>'onIndicator'
@@ -11176,7 +10932,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_size=>'14'
 ,p_items_label_font_color=>'WHITE'
 ,p_threshold_display=>'onIndicator'
@@ -11235,7 +10990,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Bar Chart (Series Colors)'
 ,p_static_id=>'bar-chart-series-colors'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -11252,7 +11007,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-series-colors-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(861364531816537096)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11316,7 +11071,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-series-name-column-mapping'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -11331,7 +11086,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_title=>'Jobs By Department'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -11371,7 +11126,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'f?p=&APP_ID.:29:&SESSION.:IG[emp]_emp_details:&DEBUG.:CR,:IG_DEPTNO:&DEPTNO.'
 ,p_link_target_type=>'REDIRECT_PAGE'
@@ -11413,7 +11167,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-series-name-column-mapping-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(729069272190057463)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11459,7 +11213,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'stackCategoryChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11472,7 +11226,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_width=>'700'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -11512,7 +11266,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_stack_category=>'stack1'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_css_classes=>'font-size:14px;color:blue;'
 ,p_threshold_display=>'onIndicator'
 );
@@ -11536,7 +11289,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_stack_category=>'stack2'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'outsideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_css_classes=>'font-size:14px;color:blue;'
 ,p_threshold_display=>'onIndicator'
 );
@@ -11559,7 +11311,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_stack_category=>'stack1'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'insideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_css_classes=>'font-size:14px;color:white;'
 ,p_threshold_display=>'onIndicator'
 );
@@ -11618,7 +11369,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-stack-label-stack-category-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(432801196860447681)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11630,9 +11381,9 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Stack Category</strong> - Set the series-level attribute to assign a series to a specific category on the chart.  This attribute allows you to render multiple stacks on a stacked chart, without the need to use JavaScript code.<p/>',
 '',
 '<p>',
-'For more information on the Stack Label and Stack Category attributes, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=barChart&demo=dataLabels" target="_blank">Bar Chart: Data'
-||' Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=stackCategory" target="_blank">Stack Categories</a> examples, and the <a href="&OJCHART_API_URL.#stackLabel" target="_blank">stackLabel</a'
-||'> attribute in the ojChart API guide.',
+'For more information on the Stack Label and Stack Category attributes, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jetCookbook.html?component=barChart&demo=dataLabels" target="_blank" rel="noopener n'
+||'oreferrer external">Bar Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=stackCategory" target="_blank" rel="noopener noreferrer external">Stack Categories</a> examples, and th'
+||'e <a href="&OJCHART_API_URL.#stackLabel" target="_blank" rel="noopener noreferrer external">stackLabel</a> attribute in the ojChart API guide.',
 '',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -11645,7 +11396,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-stacked'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11671,7 +11422,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(432800685702447676)
 ,p_chart_type=>'bar'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -11707,7 +11458,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -11745,7 +11495,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-stacked-percent'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11771,7 +11521,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(665779197815331456)
 ,p_chart_type=>'bar'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -11807,7 +11557,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -11848,7 +11597,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bar-chart-stacked-percent-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(665779197815331456)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -11877,14 +11626,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>70
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(899260659787420152)
@@ -11893,7 +11642,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(861364531816537096)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -11907,7 +11656,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(899260659787420152)
 ,p_chart_type=>'bar'
 ,p_height=>'340'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -11923,7 +11672,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'function( options ){ ',
@@ -11961,7 +11709,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -12004,7 +11751,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(861364531816537096)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12017,7 +11764,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(421045153869874883)
 ,p_chart_type=>'bar'
 ,p_height=>'340'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -12033,7 +11780,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -12055,7 +11801,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -12111,7 +11856,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(861364531816537096)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -12125,7 +11870,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(861364681843537097)
 ,p_chart_type=>'bar'
 ,p_height=>'340'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -12141,7 +11886,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -12164,7 +11908,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -12206,7 +11949,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(861364531816537096)
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -12220,7 +11963,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(899261205673420157)
 ,p_chart_type=>'bar'
 ,p_height=>'340'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -12236,7 +11979,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -12266,7 +12008,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -12309,7 +12050,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'horizontal'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -12323,7 +12064,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'stack'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Stack'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -12336,7 +12077,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'unstack'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Unstack'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -12349,7 +12090,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'vertical'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -12472,7 +12213,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
@@ -12483,10 +12224,10 @@ wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(2140441329979056854)
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
-,p_region_template_options=>'#DEFAULT#:t-HeroRegion--hideIcon'
-,p_plug_template=>2675494171183407654
+,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
-,p_plug_item_display_point=>'ABOVE'
+,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>'<p>Select the look and feel of the application you would like to use for all users of this application.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -12499,43 +12240,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(2140440614430056852)
-,p_plug_name=>'items'
-,p_static_id=>'items'
-,p_parent_plug_id=>wwv_flow_imp.id(2140440146990056851)
-,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
-,p_plug_display_sequence=>30
-,p_plug_display_point=>'SUB_REGIONS'
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_translate_title=>'N'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
-);
-wwv_flow_imp_page.create_page_plug(
- p_id=>wwv_flow_imp.id(2140440146990056851)
-,p_plug_name=>'Set User Interface Theme Style'
-,p_static_id=>'set-user-interface-theme-style'
-,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--hiddenOverflow'
-,p_plug_template=>4073835273271169698
-,p_plug_display_sequence=>20
-,p_plug_item_display_point=>'ABOVE'
-,p_location=>null
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'expand_shortcuts', 'N',
-  'output_as', 'HTML')).to_clob
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(2140442156483056854)
@@ -12545,7 +12257,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'CLOSE'
 ,p_button_redirect_url=>'f?p=&APP_ID.:&LAST_VIEW.:&SESSION.::&DEBUG.:::'
@@ -12558,7 +12270,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'save'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Apply Changes'
 ,p_button_position=>'CREATE'
@@ -12575,12 +12287,12 @@ wwv_flow_imp_page.create_page_branch(
 );
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(2140440945406056852)
-,p_name=>'P10_DESKTOP_THEME_STYLE_ID'
+,p_name=>'P10_THEME_STYLE_ID'
 ,p_is_required=>true
-,p_item_sequence=>10
-,p_item_plug_id=>wwv_flow_imp.id(2140440614430056852)
+,p_item_sequence=>20
+,p_item_plug_id=>wwv_flow_imp.id(2140441329979056854)
 ,p_use_cache_before_default=>'NO'
-,p_prompt=>'Desktop Theme Style'
+,p_prompt=>'Theme Style'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select s.theme_style_id',
 'from apex_application_theme_styles s, apex_application_themes t',
@@ -12593,14 +12305,15 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_LIST'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select s.name d,',
-'          s.theme_style_id r',
-'from apex_application_theme_styles s, apex_application_themes t',
-'where s.application_id = t.application_id',
-'and s.theme_number = t.theme_number',
-'and s.application_id = :app_id',
-'and t.ui_type_name   = ''DESKTOP''',
-'and t.is_current = ''Yes''',
-'order by 1'))
+'       s.theme_style_id r',
+'  from apex_application_theme_styles s,',
+'       apex_application_themes       t',
+' where s.application_id = t.application_id',
+'   and s.theme_number   = t.theme_number',
+'   and s.application_id = :app_id',
+'   and t.ui_type_name   = ''DESKTOP''',
+'   and t.is_current     = ''Yes''',
+' order by 1'))
 ,p_cHeight=>1
 ,p_display_when=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select 1',
@@ -12611,7 +12324,7 @@ wwv_flow_imp_page.create_page_item(
 'and t.ui_type_name   = ''DESKTOP''',
 'and t.is_current = ''Yes'''))
 ,p_display_when_type=>'EXISTS'
-,p_field_template=>2528236951996823187
+,p_field_template=>2530188257487313616
 ,p_item_template_options=>'#DEFAULT#'
 ,p_lov_display_extra=>'NO'
 ,p_protection_level=>'S'
@@ -12627,7 +12340,7 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_name=>'Set Theme Style'
 ,p_static_id=>'set-theme-style'
 ,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'if :P10_DESKTOP_THEME_STYLE_ID is not null then',
+'if :P10_THEME_STYLE_ID is not null then',
 '    for c1 in (select theme_number',
 '               from apex_application_themes',
 '               where application_id = :app_id',
@@ -12636,7 +12349,7 @@ wwv_flow_imp_page.create_page_process(
 '    loop',
 '        apex_theme.set_current_style (',
 '            p_theme_number   => c1.theme_number,',
-'            p_id => :P10_DESKTOP_THEME_STYLE_ID',
+'            p_id => :P10_THEME_STYLE_ID',
 '            );',
 '    end loop;',
 'end if;'))
@@ -12659,7 +12372,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -12671,7 +12384,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-bubble-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -12688,14 +12401,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(433182353184203056)
@@ -12703,7 +12416,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'bubble'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12716,7 +12429,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bubble'
 ,p_title=>'OECD Members Pension Contribution Revenues, 2011'
 ,p_height=>'400'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -12760,7 +12473,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'javascript:$s("P11_POINT",''&COUNTRY.  Total Contributions: $&TOTAL.'');'
 ,p_link_target_type=>'REDIRECT_URL'
@@ -12805,7 +12517,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Filter'
 ,p_static_id=>'filter'
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>50
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -12819,7 +12531,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'information'
 ,p_parent_plug_id=>wwv_flow_imp.id(433182353184203056)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'BELOW'
@@ -12827,8 +12539,9 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'This example demonstrates a Bubble chart with percent numeric formatting. The <strong>Percent</strong> Format allows a user to format the numeric values on the axes and tooltips as percent values. When a number is formatted as a percent, the values o'
 ||'n the chart are multiplied by 100.<p/>',
-'For more information on the Bubble chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=bubbleChart&demo=default" target="_blank">Bubble Chart: Basic</a> example.<p/>The'
-||' chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.'))
+'For more information on the Bubble chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=bubbleChart&demo=default" target="_blank" rel="noopener noreferrer external">Bubb'
+||'le Chart: Basic</a> example.<p/>The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank" rel="noopener noreferrer external">OECD Pensions at a Glance '
+||'2013</a> report.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -12838,7 +12551,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -12858,7 +12571,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Selected:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'based_on', 'VALUE',
@@ -12915,7 +12628,7 @@ wwv_flow_imp_page.create_page(
 'div.helpContainer div.helpMain ul li{font:normal 12px/20px Arial,sans-serif;color:#404040}',
 'div.helpContainer div.helpMain .aboutApp,div.helpContainer div.helpMain .textRegion{border-bottom:1px solid #EEE;padding-bottom:16px;margin-bottom:16px}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
@@ -12944,7 +12657,7 @@ wwv_flow_imp_page.create_report_region(
  p_id=>wwv_flow_imp.id(2062295216732191385)
 ,p_name=>'&APP_NAME.'
 ,p_static_id=>'app-name'
-,p_template=>2675494171183407654
+,p_template=>2677445476673898083
 ,p_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_region_css_classes=>'t-HeroRegion--featured'
@@ -12963,10 +12676,11 @@ wwv_flow_imp_page.create_report_region(
 ,p_ajax_enabled=>'Y'
 ,p_region_image=>'#APP_FILES#icons/app-icon-512.png'
 ,p_lazy_loading=>false
-,p_query_row_template=>2101991776017792140
+,p_query_row_template=>2103943081508282569
 ,p_query_num_rows=>15
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
+,p_query_num_rows_type=>'SHOW_ALL'
 ,p_csv_output=>'N'
 ,p_prn_output=>'N'
 ,p_sort_null=>'L'
@@ -13043,14 +12757,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'help'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>1
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 ,p_plug_display_condition_type=>'NEVER'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -13058,7 +12772,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Help Container'
 ,p_static_id=>'help-container'
 ,p_region_template_options=>'#DEFAULT#:t-Region--removeHeader js-removeLandmark:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13079,7 +12793,7 @@ wwv_flow_imp_page.create_page_plug(
 '<H2>Getting Started</h2>',
 '<p>Run the application as a developer; at the bottom of the page will be buttons for viewing the page in the Oracle APEX Application Builder. Click on the "Edit Page" button to see how the pages are defined. Use the Reference menu to quickly inspect '
 ||'chart examples for specific functionality and support.</p>',
-'<p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" target="_blank">OTN Forum</a>.</p>'))
+'<p>If you have questions, ask them on the <a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" target="_blank" rel="noopener noreferrer external">OTN Forum</a>.</p>'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -13106,7 +12820,7 @@ wwv_flow_imp_page.create_page(
 'border-right: none !important;}',
 '.reportDetail td.separator { border-top: 1px solid #DDD !important;}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -13117,7 +12831,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'About this page'
 ,p_static_id=>'about-this-page'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13136,14 +12850,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1310930070752983994)
@@ -13151,7 +12865,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'projects'
 ,p_region_name=>'projects_report'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton'
-,p_plug_template=>2102002977963900996
+,p_plug_template=>2103954283454391425
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -13450,7 +13164,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'SQL Source'
 ,p_static_id=>'sql-source'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--noBorder:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13466,7 +13180,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-data'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Reset'
 ,p_button_position=>'RIGHT_OF_IR_SEARCH_BAR'
 ,p_button_redirect_url=>'f?p=&APP_ID.:13:&SESSION.::&DEBUG.:RP,13,RIR::'
@@ -13500,7 +13214,7 @@ wwv_flow_imp_page.create_page(
 'ul.barGraph li > span.noBorder{border-top:none;padding-top:0}',
 'ul.barGraph li > span a{color:##405580}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -13512,7 +13226,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-code-group'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -13538,14 +13252,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1080210567141871208)
@@ -13553,7 +13267,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'multi-series-chart-densified-sorted-by-label-desc'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -13570,7 +13284,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_title=>'Jobs By Department'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -13610,7 +13324,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.:RP,:P29_DEPTNO:&DEPTNO.'
 ,p_link_target_type=>'REDIRECT_PAGE'
@@ -13652,7 +13365,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'multi-series-chart-stacked-with-stack-label'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -13670,7 +13383,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_title=>'Average Salary By Department'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -13710,7 +13423,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.:RP:P29_DEPTNO:&DEPTNO.'
 ,p_link_target_type=>'REDIRECT_PAGE'
@@ -13752,7 +13464,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'multi-series-chart-using-order-by'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -13769,7 +13481,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'bar'
 ,p_title=>'Jobs By Department'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -13814,7 +13526,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'f?p=&APP_ID.:29:&SESSION.::&DEBUG.:RP:P29_DEPTNO:&DEPTNO.'
 ,p_link_target_type=>'REDIRECT_PAGE'
@@ -13871,7 +13582,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'bar_1'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -13884,7 +13595,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(772186448821688628)
 ,p_chart_type=>'bar'
 ,p_height=>'340'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -13900,7 +13611,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>false
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -13922,7 +13632,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -13979,7 +13688,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -13991,7 +13700,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-line-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -14007,14 +13716,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>40
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(433514340394559856)
@@ -14023,7 +13732,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'lineChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14034,7 +13743,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(433514689741559878)
 ,p_region_id=>wwv_flow_imp.id(433514340394559856)
 ,p_chart_type=>'line'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -14077,7 +13786,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -14103,7 +13811,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -14128,7 +13835,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -14184,7 +13890,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-data-labels-line-styles-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(433514340394559856)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14198,8 +13904,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>',
 '<strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>',
 '<strong>Label Position</strong> - Use this series-level attribute to control the positioning of the labels on data items of the chart.<p/>',
-'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=dataLabels" target="_blank">Line Chart: Data Labels</a> and <a href='
-||'"https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=lineTypes" target="_blank">Line Chart: Line Types</a> examples.'))
+'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Line '
+||'Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line Chart: Line Types</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -14211,7 +13917,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'lineChartAxes'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14222,7 +13928,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(190494603570676818)
 ,p_region_id=>wwv_flow_imp.id(131536408579448260)
 ,p_chart_type=>'line'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -14268,7 +13974,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#3966ED'
 ,p_threshold_display=>'onIndicator'
@@ -14296,7 +14001,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#8A3232'
 ,p_threshold_display=>'onIndicator'
@@ -14323,7 +14027,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#FA1238'
 ,p_threshold_display=>'onIndicator'
@@ -14397,7 +14100,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-declarative-font-formatting-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(131536408579448260)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14425,7 +14128,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-reference-object-via-javascript-customizations'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14438,7 +14141,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'line'
 ,p_width=>'500'
 ,p_height=>'450'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -14489,7 +14192,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -14515,7 +14217,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -14540,7 +14241,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -14598,7 +14298,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-reference-object-via-javascript-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(708961717734206155)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14623,10 +14323,10 @@ wwv_flow_imp_page.create_page_plug(
 '</pre><p/>',
 '',
 '<p>',
-'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.',
+'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.',
 '</p>',
 '<p>',
-'For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=lineChart&demo=refObject" target="_blank">Line Chart: Reference Objects</a> example.'))
+'For more information on Reference Object settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=lineChart&demo=refObject" target="_blank" rel="noopener noreferrer external">Line Chart: Reference Objects</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -14638,7 +14338,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'lineChartLabels'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14649,7 +14349,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(563146183762070435)
 ,p_region_id=>wwv_flow_imp.id(563146102696070434)
 ,p_chart_type=>'line'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -14695,7 +14395,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#3966ED'
 ,p_threshold_display=>'onIndicator'
@@ -14723,7 +14422,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#8A3232'
 ,p_threshold_display=>'onIndicator'
@@ -14750,7 +14448,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_items_label_font_family=>'Comic Sans MS'
 ,p_items_label_font_color=>'#FA1238'
 ,p_threshold_display=>'onIndicator'
@@ -14818,7 +14515,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-show-hide-labels-via-dynamic-action-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(563146102696070434)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14860,10 +14557,10 @@ wwv_flow_imp_page.create_page_plug(
 'apex.region("lineChartLabels").widget().ojChart(''refresh'');',
 '</pre><p/>',
 '<p>',
-'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank">ojChart API</a>.',
+'For more information on the JET chart options, refer to the Oracle JET <a href="&OJCHART_API_URL." target="_blank" rel="noopener noreferrer external">ojChart API</a>.',
 '</p>',
 '<p>',
-'For more information on labelPosition settings, refer to the Oracle JET <a href="&OJCHART_ITEM_API_URL.#labelPosition" target="_blank">ojChartItem API</a> example.'))
+'For more information on labelPosition settings, refer to the Oracle JET <a href="&OJCHART_ITEM_API_URL.#labelPosition" target="_blank" rel="noopener noreferrer external">ojChartItem API</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -14875,7 +14572,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'line_chart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14887,7 +14584,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(2062705371618630995)
 ,p_chart_type=>'line'
 ,p_height=>'420'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'on'
@@ -14934,7 +14631,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_rendered=>'off'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -14976,7 +14672,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-chart-time-axis-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(2062705371618630995)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -14990,8 +14686,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>',
 '<strong>Format</strong> - Use the axis-level attribute to define currency formatting on the y-axis, and date formatting on the x-axis. New in APEX 18.1 is the ability to leave the <strong>Currency</strong> property empty, to allow for the currency sy'
 ||'mbol to be automatically derived from the application language. <p/>',
-'For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example. For additional ex'
-||'amples of time axis settings, refer to the <a href="f?p=&APP_ID.:25:&APP_SESSION.">Combination</a> examples.'))
+'For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank" rel="noopener noreferrer external">Chart: Time '
+||'Axis</a> example. For additional examples of time axis settings, refer to the <a href="f?p=&APP_ID.:25:&APP_SESSION.">Combination</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -15001,7 +14697,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15021,7 +14717,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'area'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Area'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15035,7 +14731,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'bar'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Bar'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15049,7 +14745,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'combo'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Combo'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15063,7 +14759,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'hidelabels'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Hide Labels'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15076,7 +14772,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'horizontal'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -15090,7 +14786,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'line'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Line'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15104,7 +14800,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'linewitharea'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Line with Area'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15118,7 +14814,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Reset Zoom'
 ,p_button_position=>'TOP'
 ,p_button_alignment=>'RIGHT'
@@ -15132,7 +14828,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'showlabels'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Show Labels'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -15145,7 +14841,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'vertical'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -15458,7 +15154,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
@@ -15471,14 +15167,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'administration'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(2370746745156590595)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(2337024716473517291)
@@ -15486,7 +15182,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -15494,7 +15190,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_computation(
  p_id=>wwv_flow_imp.id(2337025041440517295)
@@ -15518,7 +15214,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -15530,7 +15226,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-line-area-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -15546,14 +15242,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(567675611492677638)
@@ -15561,7 +15257,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'custom-tooltip-labels-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(567674786010677630)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15587,8 +15283,9 @@ wwv_flow_imp_page.create_page_plug(
 '}',
 '</pre><p/>',
 '',
-'For more information on the tooltip label settings, refer to the Oracle JET Cookbook <a href="&OJCHART_API_URL.#valueFormats.value.tooltipLabel" target="_blank">valueFormats.value.tooltipLabel</a>, <a href="&OJCHART_API_URL.#valueFormats.group.toolti'
-||'pLabel" target="_blank">valueFormats.group.tooltipLabel</a> and <a href="&OJCHART_API_URL.#valueFormats.series.tooltipLabel" target="_blank">valueFormats.series.tooltipLabel</a> examples.'))
+'For more information on the tooltip label settings, refer to the Oracle JET Cookbook <a href="&OJCHART_API_URL.#valueFormats.value.tooltipLabel" target="_blank" rel="noopener noreferrer external">valueFormats.value.tooltipLabel</a>, <a href="&OJCHART'
+||'_API_URL.#valueFormats.group.tooltipLabel" target="_blank" rel="noopener noreferrer external">valueFormats.group.tooltipLabel</a> and <a href="&OJCHART_API_URL.#valueFormats.series.tooltipLabel" target="_blank" rel="noopener noreferrer external">valu'
+||'eFormats.series.tooltipLabel</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -15599,7 +15296,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'data-labels-line-styles-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(442898883885355517)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>50
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15614,8 +15311,9 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>',
 '<strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>',
 '',
-'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank">Line with Area Chart: Data Label'
-||'s</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank">Line with Area Chart: Line Types</a> examples.'))
+'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank" rel="noopener noreferrer externa'
+||'l">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Line Types</a'
+||'> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -15626,7 +15324,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'fill-gaps-and-sort-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(3709319508010266891)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15643,8 +15341,9 @@ wwv_flow_imp_page.create_page_plug(
 '<p/>Note that multi-series charts using the attribute <strong>Time Axis Type</strong> setting of <strong>Mixed Frequency</strong> or <strong>Skip Gaps</strong> will not be densified, to respect the intended behavior of the Oracle JET ''Time Axis Type'''
 ||' attribute.<p/>',
 '',
-'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank">Line with Area Chart: Data Label'
-||'s</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank">Line with Area Chart: Line Types</a> examples.'))
+'For more information on the Line chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=dataLabels" target="_blank" rel="noopener noreferrer externa'
+||'l">Line with Area Chart: Data Labels</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=lineWithAreaChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Line with Area Chart: Line Types</a'
+||'> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -15656,7 +15355,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'tooltips'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15668,7 +15367,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(567674786010677630)
 ,p_chart_type=>'lineWithArea'
 ,p_height=>'480'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -15725,7 +15424,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -15752,7 +15450,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -15778,7 +15475,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -15836,7 +15532,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'lineChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -15848,7 +15544,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(442898883885355517)
 ,p_chart_type=>'lineWithArea'
 ,p_height=>'480'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -15891,7 +15587,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -15917,7 +15612,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -15942,7 +15636,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -16000,7 +15693,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'mixedLineChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16012,7 +15705,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(3709319508010266891)
 ,p_chart_type=>'lineWithArea'
 ,p_height=>'480'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -16056,7 +15749,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16083,7 +15775,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16109,7 +15800,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -16167,7 +15857,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'linePercentChart'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16179,7 +15869,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(665779774502331462)
 ,p_chart_type=>'lineWithArea'
 ,p_height=>'480'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -16222,7 +15912,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16248,7 +15937,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'belowMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16273,7 +15961,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'aboveMarker'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -16332,7 +16019,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'line-with-area-chart-stacked-percent-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(665779774502331462)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16360,7 +16047,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#:t-TabsRegion-mod--fillLabels:t-TabsRegion-mod--pill'
-,p_plug_template=>3224648155363603145
+,p_plug_template=>3226599460854093574
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16380,7 +16067,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'horizontal'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -16394,7 +16081,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'vertical'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -16468,7 +16155,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Polar'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -16480,7 +16167,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-polar-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16497,21 +16184,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(513622682172327098)
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16522,8 +16209,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Line Style & Type</strong> - Use the series-level attributes to define various line styles, such as dotted, and types, such as curved, to the chart.<p/>',
 '<strong>Marker</strong> - Use the series-level attribute to define various markers to the data items rendered on the chart.<p/>',
 '<strong>Label Position</strong> - Use this series-level attribute to control the positioning of the labels on data items of the chart.<p/>',
-'For more information on the Polar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=lineTypes" target="_blank">Polar Chart: Line Types</a> and <a href'
-||'="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank">Polar Chart: Basic</a> examples.'))
+'For more information on the Polar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Pola'
+||'r Chart: Line Types</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank" rel="noopener noreferrer external">Polar Chart: Basic</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -16534,7 +16221,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'polar'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'N'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16546,7 +16233,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'polar'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_hide_and_show_behavior=>'withRescale'
 ,p_hover_behavior=>'dim'
@@ -16584,7 +16271,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16607,7 +16293,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16631,7 +16316,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -16678,7 +16362,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -16690,12 +16374,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-combo-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'<p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, can be customized to render as a <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=pareto" target="_blank">P'
-||'areto</a> chart. Pareto charts are useful for displaying categories of data in descending order of frequency.</p>'
+,p_plug_source=>'<p>&PRODUCT_NAME. native Combination charts, using Oracle JET Data Visualizations, can be customized to render as a <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=pareto" target="_blank" r'
+||'el="noopener noreferrer external">Pareto</a> chart. Pareto charts are useful for displaying categories of data in descending order of frequency.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -16707,7 +16391,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'pareto'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -16738,7 +16422,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1011208009328190700)
 ,p_chart_type=>'combo'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -16774,7 +16458,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_rendered=>'off'
 ,p_assigned_to_y2=>'on'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -16793,7 +16476,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_line_style=>'dotted'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -16855,14 +16537,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Pareto Chart - Information'
 ,p_static_id=>'pareto-chart-information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'This example demonstrates how to render a Pareto chart, based upon a declaratively created Combination chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is repres'
-||'ented by the line. The Oracle PL/SQL <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/RATIO_TO_REPORT.html#GUID-9D10C275-4341-435F-ACF4-767B9CCB7390" target="_blank">RATIO_TO_REPORT</a> function is an analytic function whi'
-||'ch returns the proportion of a value over the total set of values, and is used in the calculation of the <i>Cumulative</i> line series of the Pareto chart.<p/><br/>',
+||'ented by the line. The Oracle PL/SQL <a href="https://docs.oracle.com/en/database/oracle/oracle-database/19/sqlrf/RATIO_TO_REPORT.html#GUID-9D10C275-4341-435F-ACF4-767B9CCB7390" target="_blank" rel="noopener noreferrer external">RATIO_TO_REPORT</a> f'
+||'unction is an analytic function which returns the proportion of a value over the total set of values, and is used in the calculation of the <i>Cumulative</i> line series of the Pareto chart.<p/><br/>',
 '',
 '<strong>Region Source</strong> - set the chart query at region-level, using a query similar to the following:<br/>',
 '<pre>',
@@ -16937,7 +16619,7 @@ wwv_flow_imp_page.create_page_plug(
 '</ul>',
 '<p/>',
 '',
-'For more information on the Pareto chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=pareto" target="_blank">Pareto</a> example.'))
+'For more information on the Pareto chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=pareto" target="_blank" rel="noopener noreferrer external">Pareto</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -16962,7 +16644,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Radar'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -16974,7 +16656,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-radar-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -16990,21 +16672,21 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(513651318778586196)
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17013,8 +16695,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Maximum Width & Height</strong> - Chart-level attributes Maximum Width and Height have been set to 500px and 450px respectively, to size the chart within its region.  If you wish to default to using 100% width and height of the given region, '
 ||'simply remove these values, and utilitize the Template Options of the region to control the height as you wish.<p/> ',
 '<strong>Grid Shape</strong> - our native Radar chart corresponds with Oracle JET''s polygon polar grid shape and polar coordinate system.<p/>',
-'For more information on the Radar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank">Polar Chart: Basic</a> example and select'
-||' the <strong>Polygon</strong> option.'))
+'For more information on the Radar chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=polarChart&demo=default" target="_blank" rel="noopener noreferrer external">Polar '
+||'Chart: Basic</a> example and select the <strong>Polygon</strong> option.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -17025,7 +16707,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'radar'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17038,7 +16720,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'radar'
 ,p_width=>'600'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -17078,7 +16760,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -17101,7 +16782,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -17124,7 +16804,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -17169,7 +16848,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Funnel'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -17181,7 +16860,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-funnel-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17197,14 +16876,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(242500046659289176)
@@ -17213,13 +16892,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'3DfunnelTarget'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody:t-Form--stretchInputs'
 ,p_escape_on_http_output=>'N'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source_type=>'NATIVE_JET_CHART'
-,p_plug_header=>'Render your Funnel chart in 3D by setting the <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank">threeDEffect</a> attribute of the ojChart API. Edit the chart, and view the code snippet in the JavaScript Code attribute.<p/>'
+,p_plug_header=>'Render your Funnel chart in 3D by setting the <a href="&OJCHART_API_URL.#styleDefaults.threeDEffect" target="_blank" rel="noopener noreferrer external">threeDEffect</a> attribute of the ojChart API. Edit the chart, and view the code snippet in the Ja'
+||'vaScript Code attribute.<p/>'
 );
 wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(242500289689289178)
@@ -17227,7 +16907,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'funnel'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -17240,15 +16920,11 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'function( options ){',
@@ -17277,7 +16953,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'CUSTOMER'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -17287,7 +16962,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'funnel'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody:t-Form--stretchInputs'
 ,p_escape_on_http_output=>'N'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17301,7 +16976,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'funnel'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -17312,15 +16987,11 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_javascript_code=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'function( options ) {   ',
@@ -17362,7 +17033,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'CUSTOMER'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -17371,7 +17041,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'funnel-multi-select-selection-mode-chart-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(607351200326918191)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17406,7 +17076,8 @@ wwv_flow_imp_page.create_page_plug(
 '</pre>',
 '<p/>',
 '<p>',
-'For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> example.'))
+'For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank" rel="noopener noreferrer external">Funnel Char'
+||'t: Selection</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -17418,7 +17089,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'funnelTarget'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody:t-Form--stretchInputs'
 ,p_escape_on_http_output=>'N'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17432,7 +17103,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'funnel'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -17445,15 +17116,11 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -17474,7 +17141,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'CUSTOMER'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'javascript:$s("P22_SERIES",''&CUSTOMER. Sales: $&QUANTITY., Target: $&TARGET_VAL.'');'
 ,p_link_target_type=>'REDIRECT_URL'
@@ -17485,7 +17151,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'funnel-target-value-chart-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(553115514934473705)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17499,8 +17165,8 @@ wwv_flow_imp_page.create_page_plug(
 ||'target is referencing columns in the SQL query using &amp;COLUMN_NAME. syntax.<p/>',
 '',
 '<p>',
-'For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=targetValues" target="_blank">Funnel Chart: Target Values</a> and <a href'
-||'="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank">Funnel Chart: Selection</a> examples.'))
+'For more information on the Funnel chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=targetValues" target="_blank" rel="noopener noreferrer external">Funnel C'
+||'hart: Target Values</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=funnelChart&demo=selection" target="_blank" rel="noopener noreferrer external">Funnel Chart: Selection</a> examples.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -17510,7 +17176,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17530,7 +17196,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Selected:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'based_on', 'VALUE',
@@ -17546,7 +17212,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Selected:'
 ,p_source_type=>'ALWAYS_NULL'
 ,p_display_as=>'NATIVE_DISPLAY_ONLY'
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'format', 'HTML',
@@ -17563,7 +17229,7 @@ wwv_flow_imp_page.create_page(
 ,p_step_title=>'Range'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -17575,7 +17241,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-range-chart-bar'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17591,14 +17257,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(828700293123654022)
@@ -17606,7 +17272,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'information-area-range'
 ,p_parent_plug_id=>wwv_flow_imp.id(828699604976654015)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17618,7 +17284,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Line Type</strong> - series-level attribute to set to <strong>None</strong>.<p/>',
 '<strong>Marker Show</strong> - series-level attribute to set to <strong>Yes</strong>.<p/>',
 '<p/>',
-'For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=lineTypes" target="_blank">Range Chart: Line Types</a> example.'))
+'For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=lineTypes" target="_blank" rel="noopener noreferrer external">Rang'
+||'e Chart: Line Types</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -17629,7 +17296,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'information-bar-range'
 ,p_parent_plug_id=>wwv_flow_imp.id(625878907412668564)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17645,7 +17312,8 @@ wwv_flow_imp_page.create_page_plug(
 '<strong>Orientation</strong> - Through the use of Dynamic actions, use the Horizontal/Vertical button to the top left of the chart to change the orientiation of the data items on the charts.<p/>',
 '<strong>Format</strong> - use this axis-level setting to apply date or numeric formatting to the values displayed on the chart and axes.  For the Y-axis, a ''Decimal'' format has been used, to set the number of decimals to zero, overwriting the default'
 ||' setting of 2 decimal places that Oracle JET applies.<p/>',
-'For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=dataLabels" target="_blank">Range Chart: Data Labels</a> example.'))
+'For more information on the Range chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=rangeChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Ran'
+||'ge Chart: Data Labels</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -17656,7 +17324,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'range-area-range'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17669,7 +17337,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'range'
 ,p_width=>'600'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -17711,7 +17379,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'outsideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -17752,7 +17419,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'range'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -17765,7 +17432,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'range'
 ,p_width=>'600'
 ,p_height=>'450'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -17804,7 +17471,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'outsideBarEdge'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -17860,7 +17526,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'horizontal'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'BELOW_BOX'
 ,p_button_alignment=>'RIGHT'
@@ -17875,7 +17541,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'horizontal-2'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Horizontal'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -17889,7 +17555,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'vertical'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'BELOW_BOX'
 ,p_button_alignment=>'RIGHT'
@@ -17904,7 +17570,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'vertical-2'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>2350584059425431644
+,p_button_template_id=>2352535364915922073
 ,p_button_image_alt=>'Vertical'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -17971,7 +17637,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -17983,7 +17649,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-columns'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -17999,14 +17665,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1314831064357762772)
@@ -18014,7 +17680,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'employee-commissions'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -18027,7 +17693,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1314831064357762772)
 ,p_chart_type=>'donut'
 ,p_title=>'Increased Font Size'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -18036,14 +17702,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_pie_other_threshold=>0
 ,p_pie_selection_effect=>'highlight'
@@ -18080,7 +17742,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'employee-salaries'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -18093,7 +17755,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1611104078681372603)
 ,p_chart_type=>'donut'
 ,p_title=>'Title at End'
-,p_animation_on_display=>'alphaFade'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -18104,14 +17766,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_pie_other_threshold=>0
 ,p_pie_selection_effect=>'highlight'
@@ -18138,7 +17796,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'SAL'
 ,p_items_label_column_name=>'ENAME'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -18146,7 +17803,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>80
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -18204,7 +17861,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'pie1'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18216,7 +17873,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1314830520010762767)
 ,p_chart_type=>'pie'
 ,p_title=>'Default'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -18225,14 +17882,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_stack_label=>'off'
 ,p_connect_nulls=>'Y'
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_pie_other_threshold=>0
 ,p_pie_selection_effect=>'highlightAndExplode'
@@ -18268,7 +17921,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'donut1'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -18281,7 +17934,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(1314831580185762777)
 ,p_chart_type=>'donut'
 ,p_title=>'Title at Start'
-,p_animation_on_display=>'alphaFade'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -18292,14 +17945,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_pie_other_threshold=>.05
 ,p_pie_selection_effect=>'highlight'
@@ -18375,7 +18024,7 @@ wwv_flow_imp_page.create_page(
 'ul.barGraph li > span.noBorder{border-top:none;padding-top:0}',
 'ul.barGraph li > span a{color:##405580}',
 '</style>'))
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -18387,7 +18036,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-combo-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -18403,14 +18052,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(447059544726912253)
@@ -18419,7 +18068,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'combo1'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18432,7 +18081,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'combo'
 ,p_width=>'600'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -18476,7 +18125,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -18500,7 +18148,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -18525,7 +18172,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'center'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -18551,7 +18197,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -18607,7 +18252,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'combination-chart-information-data-label-positions'
 ,p_parent_plug_id=>wwv_flow_imp.id(447059544726912253)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18620,8 +18265,9 @@ wwv_flow_imp_page.create_page_plug(
 ||'s by clicking the chart legend markers. The chart axes will not rescale, which is useful to remain in context. <p/>',
 '<strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the buttons to the top right of the chart to change the line type of the ''Store A'' chart series. Line type specifies the shape of the data point connectors on the chart.<p/>',
 '<p>',
-'For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> '
-||'and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=dataLabels" target="_blank">Combination Chart: Data Labels</a>  examples.',
+'For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank" rel="noopener noreferrer exte'
+||'rnal">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=dataLabels" target="_blank" rel="noopener noreferrer external">Combination Chart: Data Labels</a>  examp'
+||'les.',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -18632,7 +18278,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Combination Chart  Information (Regular v Mixed Frequency Time Axis)'
 ,p_static_id=>'combination-chart-information-regular-v-mixed-frequency-time-axis'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>80
 ,p_plug_new_grid_row=>false
 ,p_plug_new_grid_column=>false
@@ -18649,7 +18295,8 @@ wwv_flow_imp_page.create_page_plug(
 '<li>The ''Mixed Frequency'' time axis type allows each data item to have a different time value. Since the time value of the data items within each group can vary, stacking is not possible.</li>',
 '</ul>',
 '<p/>',
-'For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank">Chart: Time Axis</a> example.',
+'For more information on the Time Axis settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=chart&demo=timeAxis" target="_blank" rel="noopener noreferrer external">Chart: Time '
+||'Axis</a> example.',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -18661,7 +18308,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'combination-chart-information-y-axis-value-formatting'
 ,p_parent_plug_id=>wwv_flow_imp.id(447065765297912267)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18677,8 +18324,9 @@ wwv_flow_imp_page.create_page_plug(
 ||'ed.<br/> ',
 '',
 '<p>',
-'For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank">Combination Chart: Basic</a> '
-||'and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=refObject" target="_blank">Combination Chart: Reference Object</a>  examples.',
+'For more information on the Combination chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=default" target="_blank" rel="noopener noreferrer exte'
+||'rnal">Combination Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=combinationChart&demo=refObject" target="_blank" rel="noopener noreferrer external">Combination Chart: Reference Object</a>  e'
+||'xamples.',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
@@ -18689,7 +18337,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Combination Chart (Regular v Mixed Frequency Time Axis)'
 ,p_static_id=>'combination-chart-regular-v-mixed-frequency-time-axis'
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18704,7 +18352,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'combination-chart-y-axis-value-formatting'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18716,7 +18364,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(447065765297912267)
 ,p_chart_type=>'combo'
 ,p_height=>'400'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'horizontal'
 ,p_data_cursor=>'auto'
@@ -18762,7 +18410,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -18788,7 +18435,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>true
 ,p_items_label_position=>'auto'
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -18832,7 +18478,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(625837763098694813)
 ,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -18844,7 +18490,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(625841016217694824)
 ,p_region_id=>wwv_flow_imp.id(625840578706694824)
 ,p_chart_type=>'combo'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -18861,7 +18507,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_time_axis_type=>'mixedFrequency'
 );
@@ -18883,7 +18528,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_line_style=>'solid'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -18907,7 +18551,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -18963,7 +18606,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(625837763098694813)
 ,p_region_template_options=>'#DEFAULT#:i-h480:t-Region--noBorder:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -18974,7 +18617,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(625838428551694820)
 ,p_region_id=>wwv_flow_imp.id(625838205829694819)
 ,p_chart_type=>'combo'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -18991,7 +18634,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_time_axis_type=>'enabled'
 );
@@ -19013,7 +18655,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_line_style=>'solid'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19037,7 +18678,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -19079,7 +18719,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'curved'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Curved'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -19092,7 +18732,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'none'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillEnd'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'None'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -19105,7 +18745,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'segmented'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Centered Segmented'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -19118,7 +18758,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'stepped'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pill'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Stepped'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -19131,7 +18771,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'straight'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#:t-Button--pillStart'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Straight'
 ,p_button_position=>'NEXT'
 ,p_warn_on_unsaved_changes=>null
@@ -19147,7 +18787,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_YES_NO'
 ,p_colspan=>3
 ,p_grid_label_column_span=>1
-,p_field_template=>2320077351817916916
+,p_field_template=>2322028657308407345
 ,p_item_template_options=>'#DEFAULT#'
 ,p_help_text=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'The ''Regular Time Axis'' chart renders data items that share the same date value i.e. the date values associated with the points of series ''Shop C'' are exactly the same as the dates values associated with the points of series ''Store A''. The date inter'
@@ -19353,7 +18993,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -19365,18 +19005,18 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-plug'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>',
-'While we may not declaratively support all available <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank">Oracle JET Data Visualizations</a>, you can easily create a plu'
-||'g-in to integrate other Oracle JET components in to your application.  This page demonstrates the integration of an Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=legend&demo=default" target="_blan'
-||'k">Legend</a> component. Take a look at the <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=dataVisualizations&demo=filtering" target="_blank">Associated Views: Filtering</a> use case in the Oracle JET Cookboo'
-||'k, to see where the idea for this plug-in came from. Explore the <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank">Oracle JET Data Visualizations Cookbook</a> to see '
-||'other visualizations you can integrate as plug-ins in your application.'))
+'While we may not declaratively support all available <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=home&demo=rootVisualizations" target="_blank" rel="noopener noreferrer external">Oracle JET Data Visualizatio'
+||'ns</a>, you can easily create a plug-in to integrate other Oracle JET components in to your application.  This page demonstrates the integration of an Oracle JET <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component'
+||'=legend&demo=default" target="_blank" rel="noopener noreferrer external">Legend</a> component. Take a look at the <a href="https://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?component=dataVisualizations&demo=filtering" target="_bla'
+||'nk" rel="noopener noreferrer external">Associated Views: Filtering</a> use case in the Oracle JET Cookbook, to see where the idea for this plug-in came from. Explore the <a href="http://www.oracle.com/webfolder/technetwork/jet-720/jetCookbook.html?co'
+||'mponent=home&demo=rootVisualizations" target="_blank" rel="noopener noreferrer external">Oracle JET Data Visualizations Cookbook</a> to see other visualizations you can integrate as plug-ins in your application.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -19387,35 +19027,36 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>60
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(4092463964069059103)
 ,p_plug_name=>'Information'
 ,p_static_id=>'information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>100
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'This example demonstrates the use of an APEX plug-in based on the Oracle JET Legend, using the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojLegend.html" target="_blank">ojLegend API</a>.<p/><p/>',
+'This example demonstrates the use of an APEX plug-in based on the Oracle JET Legend, using the <a href="https://docs.oracle.com/en/middleware/developer-tools/jet/7.2/reference-api/oj.ojLegend.html" target="_blank" rel="noopener noreferrer external">o'
+||'jLegend API</a>.<p/><p/>',
 '',
 '<strong>Note that in order for this example to work, the charts must be rendering series with the same names, and those series names are then used to populate the Legend.</strong><p/><p/>',
 '<strong>1.</strong> Create 3 separate chart regions, which all render series with the same name e.g Acme Store, Deli, Shop C and Store A.<p/>',
 '<strong>2.</strong> Set the Legend ''Show'' attribute to ''No'' for each of the charts.<p/>',
 '<strong>3.</strong> Create a new JET Legend plug-in region on the page, based on the jetLegend Plug-in. Navigate to Shared Components > Plug-ins > jetLegend, to inspect the plug-in.<p/>',
 '<p>',
-'For more information on the Legend visualization settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=legend&demo=default" target="_blank">Legend: Basic</a> example and <a hre'
-||'f="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojLegend.html" target="_blank" >ojLegend</a> API.  For more information on working with Plug-ins, refer to Chapter 19.2 <a href="https://docs.oracle.com/en/database/oracle/apex/22.2/ht'
-||'mdb/implementing-plug-ins.html" target="_blank">Implementing Plug-ins</a> in the &PRODUCT_NAME. 20.1 User''s Guide.',
+'For more information on the Legend visualization settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=legend&demo=default" target="_blank" rel="noopener noreferrer external">L'
+||'egend: Basic</a> example and <a href="https://www.oracle.com/webfolder/technetwork/jet-800/jsdocs/oj.ojLegend.html" target="_blank" rel="noopener noreferrer external">ojLegend</a> API.  For more information on working with Plug-ins, refer to Chapter '
+||'19.2 <a href="https://docs.oracle.com/en/database/oracle/apex/22.2/htmdb/implementing-plug-ins.html" target="_blank" rel="noopener noreferrer external">Implementing Plug-ins</a> in the &PRODUCT_NAME. 20.1 User''s Guide.',
 '',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -19429,7 +19070,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(7636189455279334506)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody:t-Form--noPadding:margin-top-none:margin-bottom-sm:margin-left-none:margin-right-none'
 ,p_region_attributes=>'style="width:100%; height:100px;"'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -19451,7 +19092,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Oracle JET Legend Component as a Plug-in'
 ,p_static_id=>'oracle-jet-legend-component-as-a-plug-in'
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'BELOW'
@@ -19467,7 +19108,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(7636189455279334506)
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -19480,7 +19121,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(7636190957651334521)
 ,p_chart_type=>'pie'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_data_cursor=>'auto'
 ,p_data_cursor_behavior=>'auto'
@@ -19492,14 +19133,10 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_decimal_places=>0
 ,p_value_currency=>'EUR'
 ,p_value_format_scaling=>'auto'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_pie_other_threshold=>0
 ,p_pie_selection_effect=>'highlight'
@@ -19523,7 +19160,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'SALES'
 ,p_items_label_column_name=>'CUSTOMER'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -19533,7 +19169,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(7636189455279334506)
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -19546,7 +19182,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(7636188553951334497)
 ,p_chart_type=>'lineWithArea'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -19563,7 +19199,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 ,p_time_axis_type=>'mixedFrequency'
 );
@@ -19592,7 +19227,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19620,7 +19254,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19648,7 +19281,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19676,7 +19308,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -19736,7 +19367,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_parent_plug_id=>wwv_flow_imp.id(7636189455279334506)
 ,p_region_template_options=>'#DEFAULT#:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -19748,7 +19379,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_region_id=>wwv_flow_imp.id(8359500334882930178)
 ,p_chart_type=>'bar'
 ,p_height=>'200'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -19765,7 +19396,6 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'off'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19785,7 +19415,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19805,7 +19434,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19825,7 +19453,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -19845,7 +19472,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -19907,7 +19533,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_required_role=>'MUST_NOT_BE_PUBLIC_USER'
 ,p_protection_level=>'C'
@@ -19919,7 +19545,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -19927,7 +19553,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(3615868063623574759)
@@ -19935,7 +19561,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'buttons'
 ,p_parent_plug_id=>wwv_flow_imp.id(4099595806872791482)
 ,p_region_template_options=>'#DEFAULT#:t-ButtonRegion--noPadding:t-ButtonRegion--noUI'
-,p_plug_template=>2127905476394690047
+,p_plug_template=>2129856781885180476
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -19949,7 +19575,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Manage Sample Application'
 ,p_static_id=>'manage-sample-application'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--wizard:t-Alert--defaultIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -19966,7 +19592,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'cancel'
 ,p_button_action=>'REDIRECT_PAGE'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'Cancel'
 ,p_button_position=>'PREVIOUS'
 ,p_button_redirect_url=>'f?p=&APP_ID.:17:&SESSION.::&DEBUG.:RP::'
@@ -19979,7 +19605,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'reset-data'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#:t-Button--large'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Reset Data'
 ,p_button_position=>'NEXT'
@@ -20021,7 +19647,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20034,14 +19660,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-MediaList--cols t-MediaList--2cols'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665579497986240048)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(5059917834353543430)
@@ -20049,7 +19675,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference-2'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20057,7 +19683,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 end;
 /
@@ -20069,7 +19695,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'EMPLOYEES-REPORT'
 ,p_step_title=>'Employees  Report'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'21'
@@ -20080,7 +19706,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-layout-grid-3x'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -20098,14 +19724,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(2301337441280564665)
@@ -20113,7 +19739,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'employees-report'
 ,p_region_name=>'emp'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -20560,7 +20186,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20573,7 +20199,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20581,7 +20207,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(8707343578974933569)
@@ -20589,14 +20215,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665652025282804587)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20610,7 +20236,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20623,7 +20249,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20631,7 +20257,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(12357343952207781877)
@@ -20639,14 +20265,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665959829027508577)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20660,7 +20286,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20673,7 +20299,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20681,7 +20307,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(16007354194030680642)
@@ -20689,14 +20315,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665985903059646611)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20710,7 +20336,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20723,7 +20349,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20731,7 +20357,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(19657374212224625964)
@@ -20739,14 +20365,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665995520776704875)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20760,7 +20386,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20773,7 +20399,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20781,7 +20407,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(23307397915262630116)
@@ -20789,14 +20415,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3665999280311751200)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20810,7 +20436,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20823,7 +20449,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20831,7 +20457,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(26957429577278690151)
@@ -20839,14 +20465,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3666001542025772066)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20860,7 +20486,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20873,7 +20499,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20881,7 +20507,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(30607466067025778122)
@@ -20889,14 +20515,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3666007594319809273)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20910,7 +20536,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20923,7 +20549,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20931,7 +20557,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(34259851005969485520)
@@ -20939,14 +20565,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3668354597565429789)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -20960,7 +20586,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -20973,7 +20599,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -20981,7 +20607,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(37912273107418315580)
@@ -20989,14 +20615,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3668384211224533120)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -21010,7 +20636,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -21023,7 +20649,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -21031,7 +20657,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(41853175978628467844)
@@ -21039,14 +20665,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(3956878055665898782)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -21060,7 +20686,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -21073,14 +20699,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(4013935664432475523)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -21092,7 +20718,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'BOX-PLOT'
 ,p_step_title=>'Box Plot'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'03'
@@ -21103,14 +20729,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-box-plot-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'BELOW'
 ,p_location=>null
 ,p_plug_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '<p>&PRODUCT_NAME. native Box Plot charts, using Oracle JET Data Visualizations, are showcased on this page. The Box Plot chart is useful for reading statistical data, and follows a specific formula for representing the data on the chart.</p><br/><str'
 ||'ong>How to Read a Box Plot chart</strong><p/>',
-'Review the image explaining the sections of a <a href="#APP_IMAGES#box-plot-explained.gif" target="_blank">Box Plot chart</a>.',
+'Review the image explaining the sections of a <a href="#APP_IMAGES#box-plot-explained.gif" target="_blank" rel="noopener noreferrer external">Box Plot chart</a>.',
 'Here are the main components of a Box Plot:<p/>',
 '',
 '<ul>',
@@ -21132,14 +20758,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumbs'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1281103703554711671)
@@ -21147,7 +20773,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'grades-custom-q2-q3-colours'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>100
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21160,7 +20786,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295710837488101863)
 ,p_region_id=>wwv_flow_imp.id(1281103703554711671)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21200,7 +20826,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -21220,7 +20845,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21260,7 +20884,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'grades-mixed-series-types'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>90
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21272,7 +20896,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295707659594100233)
 ,p_region_id=>wwv_flow_imp.id(1281099867986710035)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21312,7 +20936,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -21330,7 +20953,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21368,7 +20990,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'grades-multi-series'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>80
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21380,7 +21002,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295703899681098512)
 ,p_region_id=>wwv_flow_imp.id(1280643505109510857)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21415,7 +21037,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -21432,7 +21053,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -21449,7 +21069,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21487,7 +21106,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'grades-single-series'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>70
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21498,7 +21117,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295701232426096893)
 ,p_region_id=>wwv_flow_imp.id(1280640425962509230)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21534,7 +21153,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21572,7 +21190,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'information'
 ,p_parent_plug_id=>wwv_flow_imp.id(1000286017973967443)
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--textContent:t-Region--scrollBody'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_plug_new_grid_row=>false
 ,p_plug_display_point=>'SUB_REGIONS'
@@ -21593,7 +21211,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'RDS'
 ,p_static_id=>'rds'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_new_grid_row=>false
@@ -21612,7 +21230,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_name=>'Samples Report Data'
 ,p_static_id=>'samples-report-data'
 ,p_parent_plug_id=>wwv_flow_imp.id(1000286017973967443)
-,p_template=>4073835273271169698
+,p_template=>4075786578761660127
 ,p_display_sequence=>10
 ,p_region_template_options=>'#DEFAULT#:t-Region--noBorder:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:t-Report--altRowsDefault:t-Report--rowHighlight'
@@ -21623,7 +21241,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_include_rowid_column=>true
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
-,p_query_row_template=>2540130677583398057
+,p_query_row_template=>2542081983073888486
 ,p_query_num_rows=>5
 ,p_query_options=>'DERIVED_REPORT_COLUMNS'
 ,p_query_show_nulls_as=>'-'
@@ -21690,7 +21308,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'survey-results'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>40
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21701,7 +21319,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295403184017473778)
 ,p_region_id=>wwv_flow_imp.id(1000286017973967443)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21744,7 +21362,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 ,p_link_target=>'f?p=&APP_ID.:1:&SESSION.::&DEBUG.:RP::'
 ,p_link_target_type=>'REDIRECT_PAGE'
@@ -21784,7 +21401,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'survey-results-normalised-tables'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>50
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21796,7 +21413,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295397663172473752)
 ,p_region_id=>wwv_flow_imp.id(765821517709239410)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21836,7 +21453,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21874,7 +21490,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'survey-sample-data-time-axis'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>60
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -21886,7 +21502,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(295400265522473774)
 ,p_region_id=>wwv_flow_imp.id(765821994439239415)
 ,p_chart_type=>'boxPlot'
-,p_animation_on_display=>'none'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'none'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -21929,7 +21545,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'auto'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -21973,7 +21588,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -21986,7 +21601,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -21994,7 +21609,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(46389900139134554854)
@@ -22002,14 +21617,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(4013935664432475523)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -22024,7 +21639,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
 ,p_javascript_code=>'var gAppImages = "#APP_IMAGES#";'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -22036,7 +21651,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-pyramid-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22052,14 +21667,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(722465604608694533)
@@ -22068,7 +21683,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'pyramid1'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22081,7 +21696,7 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_chart_type=>'pyramid'
 ,p_width=>'500'
 ,p_height=>'400'
-,p_animation_on_display=>'alphaFade'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_data_cursor=>'on'
 ,p_data_cursor_behavior=>'smooth'
@@ -22093,15 +21708,11 @@ wwv_flow_imp_page.create_jet_chart(
 ,p_value_format_type=>'decimal'
 ,p_value_decimal_places=>0
 ,p_value_format_scaling=>'none'
-,p_sorting=>'label-asc'
-,p_fill_multi_series_gaps=>true
 ,p_zoom_and_scroll=>'off'
 ,p_tooltip_rendered=>'Y'
 ,p_show_series_name=>true
-,p_show_group_name=>true
 ,p_show_value=>true
 ,p_legend_rendered=>'on'
-,p_legend_position=>'auto'
 ,p_overview_rendered=>'off'
 );
 wwv_flow_imp_page.create_jet_chart_series(
@@ -22120,7 +21731,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_items_value_column_name=>'QUANTITY'
 ,p_items_label_column_name=>'PRODUCT_NAME'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_page_plug(
@@ -22129,7 +21739,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'pyramid-chart-information'
 ,p_parent_plug_id=>wwv_flow_imp.id(722465604608694533)
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>10
 ,p_plug_display_point=>'SUB_REGIONS'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22142,8 +21752,8 @@ wwv_flow_imp_page.create_page_plug(
 ||'largely varying values.<p/>',
 '<strong>Dynamic Actions</strong> - Through the use of Dynamic actions, use the 2D/3D buttons to the top left of the chart to change the three dimensional effect of the chart.<p/>',
 '<p>',
-'For more information on the Pyramid chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=default" target="_blank">Pyramid Chart: Basic</a> and <a href='
-||'"https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=legend" target="_blank">Pyramid Chart: Legend</a> examples.',
+'For more information on the Pyramid chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=default" target="_blank" rel="noopener noreferrer external">Py'
+||'ramid Chart: Basic</a> and <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=pyramidChart&demo=legend" target="_blank" rel="noopener noreferrer external">Pyramid Chart: Legend</a> examples.',
 '',
 ''))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
@@ -22155,7 +21765,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Region Display Selector'
 ,p_static_id=>'region-display-selector'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4502917002193490937
+,p_plug_template=>4504868307683981366
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22175,7 +21785,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'2d'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'2D'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -22188,7 +21798,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'3d'
 ,p_button_action=>'DEFINED_BY_DA'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_image_alt=>'3D'
 ,p_button_position=>'PREVIOUS'
 ,p_warn_on_unsaved_changes=>null
@@ -22264,7 +21874,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -22277,7 +21887,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -22285,7 +21895,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(9061365542637785129)
@@ -22293,14 +21903,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(190483713318588156)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -22314,7 +21924,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -22327,7 +21937,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -22335,7 +21945,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(9238418879491546015)
@@ -22343,14 +21953,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(190517728260826337)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -22365,7 +21975,7 @@ wwv_flow_imp_page.create_page(
 ,p_warn_on_unsaved_changes=>'N'
 ,p_first_item=>'AUTO_FIRST_ITEM'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_help_text=>'No help is available for this page.'
@@ -22377,12 +21987,12 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-scatter-chart'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
-,p_plug_source=>'<p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, can be customized to render as an <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=eventDrops" target="_blank">Eve'
-||'nt Drops</a> chart. Event Drop charts are useful for visualizing event occurrences over a given timeline, across multiple series.  This chart type is recommended for visualizing mixed frequency time data.</p>'
+,p_plug_source=>'<p>&PRODUCT_NAME. native Line charts, using Oracle JET Data Visualizations, can be customized to render as an <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=dataVisualizations&demo=eventDrops" target="_blank" rel'
+||'="noopener noreferrer external">Event Drops</a> chart. Event Drop charts are useful for visualizing event occurrences over a given timeline, across multiple series.  This chart type is recommended for visualizing mixed frequency time data.</p>'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -22394,7 +22004,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_name=>'sales'
 ,p_region_template_options=>'#DEFAULT#:js-showMaximizeButton:i-h480:t-Region--scrollBody'
 ,p_escape_on_http_output=>'Y'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
@@ -22405,7 +22015,7 @@ wwv_flow_imp_page.create_jet_chart(
  p_id=>wwv_flow_imp.id(267973967218668977)
 ,p_region_id=>wwv_flow_imp.id(688019810835166079)
 ,p_chart_type=>'line'
-,p_animation_on_display=>'auto'
+,p_lazy_loading=>true
 ,p_animation_on_data_change=>'auto'
 ,p_orientation=>'vertical'
 ,p_data_cursor=>'auto'
@@ -22497,7 +22107,6 @@ wwv_flow_imp_page.create_jet_chart_series(
 ,p_marker_shape=>'circle'
 ,p_assigned_to_y2=>'off'
 ,p_items_label_rendered=>false
-,p_items_label_display_as=>'PERCENT'
 ,p_threshold_display=>'onIndicator'
 );
 wwv_flow_imp_page.create_jet_chart_axis(
@@ -22560,7 +22169,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_plug_name=>'Event Drops Chart - Sales Information'
 ,p_static_id=>'event-drops-chart-sales-information'
 ,p_region_template_options=>'#DEFAULT#:is-collapsed:t-Region--scrollBody'
-,p_plug_template=>2665811232373458102
+,p_plug_template=>2667762537863948531
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22632,7 +22241,7 @@ wwv_flow_imp_page.create_page_plug(
 'apex.region(''sales'').widget().ojChart(''option'',''yAxis.tickLabel.converter'', eventNamesFn );',
 '</pre>',
 '',
-'For more information on the Event Drops chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=eventDrops" target="_blank">Event Drops</a> example.'))
+'For more information on the Event Drops chart settings, refer to the Oracle JET Cookbook <a href="&JET_COOKBOOK_URL.?component=dataVisualizations&demo=eventDrops" target="_blank" rel="noopener noreferrer external">Event Drops</a> example.'))
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'expand_shortcuts', 'N',
   'output_as', 'HTML')).to_clob
@@ -22678,7 +22287,7 @@ wwv_flow_imp_page.create_page(
 ,p_alias=>'TASKS-PER-PROJECT'
 ,p_step_title=>'Tasks per Project'
 ,p_autocomplete_on_off=>'OFF'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_protection_level=>'C'
 ,p_page_component_map=>'21'
@@ -22689,7 +22298,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'about-this-page'
 ,p_icon_css_classes=>'fa-layout-grid-3x'
 ,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--customIcons:t-Alert--info'
-,p_plug_template=>2042159785845301134
+,p_plug_template=>2044111091335791563
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -22707,14 +22316,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>30
 ,p_plug_display_point=>'REGION_POSITION_01'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(1043314404127780813)
@@ -22722,7 +22331,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'tasks-report'
 ,p_region_name=>'tasksRep'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>30
 ,p_plug_item_display_point=>'ABOVE'
 ,p_query_type=>'SQL'
@@ -23216,7 +22825,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -23229,7 +22838,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -23237,7 +22846,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(35252410262584902903)
@@ -23245,14 +22854,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(1006023311349483763)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -23266,7 +22875,7 @@ wwv_flow_imp_page.create_page(
 ,p_reload_on_submit=>'A'
 ,p_warn_on_unsaved_changes=>'N'
 ,p_autocomplete_on_off=>'ON'
-,p_step_template=>4073832297226169690
+,p_step_template=>4075783602716660119
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'C'
@@ -23279,7 +22888,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'breadcrumb'
 ,p_region_template_options=>'#DEFAULT#:t-BreadcrumbRegion--useBreadcrumbTitle'
 ,p_component_template_options=>'#DEFAULT#'
-,p_plug_template=>2532939663579242476
+,p_plug_template=>2534890969069732905
 ,p_plug_display_sequence=>10
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_display_point=>'REGION_POSITION_01'
@@ -23287,7 +22896,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_location=>null
 ,p_menu_id=>wwv_flow_imp.id(8206961814923704343)
 ,p_plug_source_type=>'NATIVE_BREADCRUMB'
-,p_menu_template_id=>4073839682315169711
+,p_menu_template_id=>4075790987805660140
 );
 wwv_flow_imp_page.create_page_plug(
  p_id=>wwv_flow_imp.id(10126445837665570966)
@@ -23295,14 +22904,14 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'reference'
 ,p_region_template_options=>'#DEFAULT#:t-Region--noPadding:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--scrollBody:margin-top-none:margin-bottom-none:margin-left-none:margin-right-none'
 ,p_component_template_options=>'#DEFAULT#:u-colors'
-,p_plug_template=>4073835273271169698
+,p_plug_template=>4075786578761660127
 ,p_plug_display_sequence=>20
 ,p_include_in_reg_disp_sel_yn=>'Y'
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(402730015081068791)
 ,p_plug_source_type=>'NATIVE_LIST'
-,p_list_template_id=>2069471208528591807
+,p_list_template_id=>2071422514019082236
 );
 end;
 /
@@ -23337,7 +22946,7 @@ wwv_flow_imp_page.create_page(
 'margin-right: 8px;',
 'vertical-align: middle;',
 '}'))
-,p_step_template=>2102634289808461002
+,p_step_template=>2104585595298951431
 ,p_page_template_options=>'#DEFAULT#'
 ,p_page_is_public_y_n=>'Y'
 ,p_protection_level=>'U'
@@ -23349,7 +22958,7 @@ wwv_flow_imp_page.create_page_plug(
 ,p_static_id=>'sample-charts'
 ,p_region_name=>'sample_charts'
 ,p_region_template_options=>'#DEFAULT#'
-,p_plug_template=>2675634334296186762
+,p_plug_template=>2677585639786677191
 ,p_plug_display_sequence=>10
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
@@ -23366,7 +22975,7 @@ wwv_flow_imp_page.create_page_button(
 ,p_static_id=>'login'
 ,p_button_action=>'SUBMIT'
 ,p_button_template_options=>'#DEFAULT#'
-,p_button_template_id=>4073839297780169708
+,p_button_template_id=>4075790603270660137
 ,p_button_is_hot=>'Y'
 ,p_button_image_alt=>'Sign In'
 ,p_button_position=>'NEXT'
@@ -23384,7 +22993,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_PASSWORD'
 ,p_cSize=>64
 ,p_cMaxlength=>100
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-key'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_is_persistent=>'N'
@@ -23405,7 +23014,7 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_TEXT_FIELD'
 ,p_cSize=>64
 ,p_cMaxlength=>100
-,p_field_template=>2042262243893469891
+,p_field_template=>2044213549383960320
 ,p_item_icon_css_classes=>'fa-user'
 ,p_item_template_options=>'#DEFAULT#'
 ,p_protection_level=>'S'

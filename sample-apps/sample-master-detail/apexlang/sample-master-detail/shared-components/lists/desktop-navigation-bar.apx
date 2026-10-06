@@ -1,0 +1,62 @@
+list desktop-navigation-bar (
+    name: Desktop Navigation Bar
+
+    entry app-user (
+        label: &APP_USER.
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+        userDefinedAttributes {
+            2: has-username
+        }
+    )
+
+    entry feedback (
+        label: Feedback
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+                items: {
+                    P102_APPLICATION_ID: &APP_ID.
+                    P102_PAGE_ID: &APP_PAGE_ID.
+                }
+                clearCache: 102
+            }
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: nvl(:ENABLE_FEEDBACK,'NO') = 'YES'
+        }
+    )
+
+    entry log-out (
+        label: Log Out
+        layout {
+            sequence: 35
+            parentEntry: @app-user
+        }
+        link {
+            target: {
+                type: url
+                url: &LOGOUT_URL.
+            }
+        }
+    )
+
+)
+

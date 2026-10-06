@@ -6,6 +6,9 @@ page 410 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     css {
         inline:
             ```css
@@ -16,8 +19,6 @@ page 410 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:

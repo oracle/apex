@@ -11,9 +11,6 @@ page 10034 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -29,8 +26,6 @@ page 10034 (
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feature-access-control
@@ -98,6 +93,9 @@ page 10034 (
                 t-Report--staticRowColors
                 t-Report--rowHighlightOff
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500

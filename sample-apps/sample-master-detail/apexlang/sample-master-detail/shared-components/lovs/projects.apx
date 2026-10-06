@@ -1,0 +1,14 @@
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as display
+            , id as return
+            from eba_demo_md_projects
+            order by 1
+            ```
+    }
+)
+

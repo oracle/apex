@@ -10,6 +10,12 @@ appItem APPROVALS_PENDING_CNT (
     }
 )
 
+appItem APP_SYSDATE (
+    comments {
+        comments: use as "to_date(:APP_SYSDATE,'DD-MON-YYYY')"
+    }
+)
+
 appItem APP_USER_FIRST_LAST_NAME (
 )
 
@@ -25,10 +31,16 @@ appItem COMPLETE_TASK_STATUS_IDS (
 appItem FOCUS_AREA (
 )
 
+appItem HOME_PAGE_DISPLAY (
+)
+
 appItem INITIATIVE (
 )
 
 appItem IS_ADMIN (
+)
+
+appItem IS_CONTRIBUTOR (
 )
 
 appItem LAST_COUNT_REFRESH (

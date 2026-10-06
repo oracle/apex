@@ -1,0 +1,32 @@
+lov workflow-charts-lov-time-unit (
+    name: WORKFLOW_CHARTS.LOV.TIME_UNIT
+    source {
+        location: staticValues
+    }
+
+    entry days (
+        sequence: 4
+        display: Days
+        return: DAY
+    )
+
+    entry hours (
+        sequence: 3
+        display: Hours
+        return: HOUR
+    )
+
+    entry minutes (
+        sequence: 2
+        display: Minutes
+        return: MIN
+    )
+
+    entry seconds (
+        sequence: 1
+        display: Seconds
+        return: SEC
+    )
+
+)
+

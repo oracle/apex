@@ -1,0 +1,96 @@
+list transactions (
+    name: Transactions
+
+    entry generate-100-transactions-on-page-load (
+        label: Generate 100 Transactions on Page Load
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 31
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Generate 100 transactions.  Click button to generate another 100 transactions.
+        }
+    )
+
+    entry generate-transaction-on-button-click (
+        label: Generate Transaction on Button Click
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 29
+            }
+        }
+        userDefinedAttributes {
+            1: Generate one transaction for a random product from a random store.  Press button complete transaction.
+        }
+    )
+
+    entry generate-transaction-on-page-load (
+        label: Generate Transaction on Page Load
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Generate one transaction by loading the page.  Includes option to automatically resubmit page via javascript.
+        }
+    )
+
+    entry remove-transaction-history (
+        label: Remove Transaction History
+        icon {
+            imageIconCssClasses: fa-trash-o
+        }
+        layout {
+            sequence: 300
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+        userDefinedAttributes {
+            1: Remove transaction history.
+        }
+    )
+
+    entry reset-sample-data (
+        label: Reset Sample Data
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 1
+        }
+        link {
+            target: {
+                page: 40
+            }
+        }
+        userDefinedAttributes {
+            1: Reset sales history to t-shirt sizes
+        }
+    )
+
+)
+

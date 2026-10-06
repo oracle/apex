@@ -8,13 +8,8 @@ page 4000 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -61,10 +56,14 @@ page 4000 (
                        apex_util.get_since(start_time) created_ago,
                        last_updated_on,
                        state badge_text,
-                       case when state = 'Completed' then 'success' 
+                       case state when 'Active' then 'success' 
+                                  when 'Terminated' then 'warning'
+                                  when 'Completed' then 'primary'
+                                  when 'Faulted' then 'danger'
                             end badge_state
                   from apex_workflows
                  where application_id = :APP_ID
+                   and (state = :P4000_FILTER or nvl(:P4000_FILTER,'all') = 'all')
                 ```
             optimizerHint: APEX$USE_NO_GROUPING_SETS
         }
@@ -256,11 +255,56 @@ page 4000 (
                     items: {
                         P4001_WORKFLOW_ID: &WORKFLOW_ID.
                     }
+                    clearCache: 4001
                     action: resetPagination
                 }
             }
         )
 
+    )
+
+    pageItem P4000_FILTER (
+        type: selectList
+        label {
+            label: Display
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select unique state d, state r
+                  from apex_workflows
+                 where application_id = :APP_ID
+                  order by 1
+                ```
+            displayExtraValues: false
+            nullDisplayValue: Display All
+            nullReturnValue: all
+        }
+        layout {
+            sequence: 10
+            region: @report
+            slot: sortOrder
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-filter
+            height: 1
+        }
+        advanced {
+            cssClasses: mnw160
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: all
+        }
+        sessionState {
+            storage: user
+        }
     )
 
     pageItem P4000_SORT_BY (
@@ -276,11 +320,10 @@ page 4000 (
             displayNullValue: false
         }
         layout {
-            sequence: 10
+            sequence: 20
             region: @report
             slot: sortOrder
             alignment: left
-            labelColumnSpan: 0
         }
         appearance {
             template: @/hidden
@@ -358,7 +401,7 @@ page 4000 (
     )
 
     dynamicAction after-action (
-        name: after action
+        name: after dc
         execution {
             sequence: 10
         }
@@ -376,6 +419,42 @@ page 4000 (
             }
             execution {
                 sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction after-filter-change (
+        name: after filter change
+        execution {
+            sequence: 20
+        }
+        when {
+            selectionType: items
+            items: P4000_FILTER
+        }
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode: null;
+                itemsToSubmit: P4000_FILTER
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @report
+            }
+            execution {
+                sequence: 20
                 fireOnInit: false
             }
         )

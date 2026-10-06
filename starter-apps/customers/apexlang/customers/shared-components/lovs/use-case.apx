@@ -1,0 +1,14 @@
+lov use-case (
+    name: USE_CASE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select use_case d, id r
+            from   EBA_CUST_USE_CASE
+            where is_active = 'Y'
+            order by 1
+            ```
+    }
+)
+

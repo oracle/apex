@@ -1,0 +1,43 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry image-support-demo (
+        label: Image Support Demo
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                2
+                3
+                4
+            ]
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+)
+

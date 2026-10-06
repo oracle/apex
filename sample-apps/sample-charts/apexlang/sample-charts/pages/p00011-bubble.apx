@@ -7,12 +7,7 @@ page 11 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -93,8 +88,10 @@ page 11 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -189,7 +186,7 @@ page 11 (
             htmlCode:
                 ```html
                 This example demonstrates a Bubble chart with percent numeric formatting. The <strong>Percent</strong> Format allows a user to format the numeric values on the axes and tooltips as percent values. When a number is formatted as a percent, the values on the chart are multiplied by 100.<p/>
-                For more information on the Bubble chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=bubbleChart&demo=default" target="_blank">Bubble Chart: Basic</a> example.<p/>The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.
+                For more information on the Bubble chart settings, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=bubbleChart&demo=default" target="_blank" rel="noopener noreferrer external">Bubble Chart: Basic</a> example.<p/>The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank" rel="noopener noreferrer external">OECD Pensions at a Glance 2013</a> report.
                 ```
         }
         layout {

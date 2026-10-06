@@ -1,6 +1,5 @@
 appProcess initialize-shopping-cart-header (
     name: Initialize Shopping Cart Header
-    type: executeCode
     source {
         plsqlCode:
             ```plsql

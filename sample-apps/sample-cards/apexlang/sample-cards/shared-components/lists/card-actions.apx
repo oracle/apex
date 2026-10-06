@@ -1,0 +1,41 @@
+list card-actions (
+    name: Card Actions
+
+    entry conditional-actions (
+        label: Conditional Actions
+        icon {
+            imageIconCssClasses: fa-workflow
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to add multiple actions per card
+        }
+    )
+
+    entry full-card-action (
+        label: Full Card Action
+        icon {
+            imageIconCssClasses: fa-clipboard-check
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define a single action for each card
+        }
+    )
+
+)
+

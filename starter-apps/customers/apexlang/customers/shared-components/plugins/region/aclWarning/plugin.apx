@@ -36,10 +36,9 @@ plugin aclWarning (
     }
     information {
         version: 5.0.1
-        aboutUrl: http://apex.oracle.com/plugins
         helpText:
             ```
-            <p>ACL Warning is designed for those applications that use the built-in Application Express authentication Access Control List (ACL), to control access to the application and features. The plug-in displays a warning when ACL is disabled.</p>
+            <p>ACL Warning is designed for those applications that use the built-in authentication Access Control List (ACL), to control access to the application and features. The plug-in displays a warning when ACL is disabled.</p>
             <p>This plug-in is suitable for adding to the Home page to provide warnings when ACL is not enabled, allowing every user to act as an Administrator.</p>
             ```
     }

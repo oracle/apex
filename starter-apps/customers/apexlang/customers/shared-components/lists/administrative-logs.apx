@@ -1,0 +1,62 @@
+list administrative-logs (
+    name: Administrative Logs
+
+    entry application-email-log (
+        label: Application Email Log
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 121
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all emails sent from the application.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @feedback
+        }
+    )
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-alert
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 175
+                clearCache: [
+                    RIR
+                    CIR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all internal errors encountered within the application.
+            2: reportIcon
+            3: &CNT_08.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+)
+

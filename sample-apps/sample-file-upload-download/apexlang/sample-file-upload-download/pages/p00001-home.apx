@@ -7,6 +7,7 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -106,6 +107,7 @@ page 1 (
     }
     security {
         pageAccessProtection: noArgumentsSupported
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -118,7 +120,7 @@ page 1 (
         name: About this application
         type: staticContent
         source {
-            htmlCode: <p>This application demonstrates how to upload and download files within applications written using Oracle Application Express (APEX).  The files are stored  within Oracle database tables in BLOB column types.</p>
+            htmlCode: <p>This application demonstrates how to upload and download files within applications written using Oracle APEX.  The files are stored  within Oracle database tables in BLOB column types.</p>
         }
         layout {
             sequence: 10
@@ -127,92 +129,6 @@ page 1 (
         appearance {
             template: @/blank-with-attributes
             templateOptions: #DEFAULT#
-        }
-    )
-
-    region additional-oracle-apex-communities-and-resources (
-        name: Additional Oracle APEX Communities and Resources
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <div class="apex_row">
-                	<div class="apex_cols apex_span_2 alpha">
-                		<a href="https://forums.oracle.com/forums/forum.jspa?forumID=137" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/forums.png" alt="" />
-                				<h1>Oracle OTN Forums</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                	<div class="apex_cols apex_span_2">
-                		<a href="http://www.linkedin.com/skills/skill/Oracle_Application_Express" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/linkedin.png" alt="" />
-                				<h1>Connect on LinkedIn</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                	<div class="apex_cols apex_span_2">
-                		<a href="http://twitter.com/oracleapexnews" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/twitter.png" alt="" />
-                				<h1>Follow us on Twitter</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                	<div class="apex_cols apex_span_2">
-                		<a href="https://cloud.oracle.com/" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/cloud.png" alt="" />
-                				<h1>Oracle Database Cloud Service</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                	<div class="apex_cols apex_span_2">
-                		<a href="http://apex.oracle.com/" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/apexoracle.png" alt="" />
-                				<h1>apex.oracle.com</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                	<div class="apex_cols apex_span_2 omega">
-                		<a href="http://www.oracle.com/technetwork/developer-tools/apex/overview/index.html" class="blockLink" target="_blank">
-                		<div class="featuredBlock">
-                			<div class="featuredIcon">
-                				<img src="#IMAGE_PREFIX#eba/icons/otn.png" alt="" />
-                				<h1>APEX on OTN</h1>
-                			</div>
-                		</div>
-                		</a>
-                	</div>
-                </div>
-                ```
-        }
-        layout {
-            sequence: 60
-            slot: body
-        }
-        appearance {
-            template: @/tabs-container
-            templateOptions: [
-                #DEFAULT#
-                t-TabsRegion-mod--simple
-            ]
-        }
-        serverSideCondition {
-            type: never
         }
     )
 
@@ -229,32 +145,6 @@ page 1 (
         }
         image {
             fileUrl: #APP_FILES#icons/app-icon-512.png
-        }
-    )
-
-    region breadcrumbs (
-        name: Breadcrumbs
-        type: breadcrumb
-        source {
-            breadcrumb: @breadcrumb
-        }
-        layout {
-            sequence: 20
-            slot: breadcrumbBar
-        }
-        appearance {
-            template: @/title-bar
-            templateOptions: [
-                #DEFAULT#
-                t-BreadcrumbRegion--useBreadcrumbTitle
-            ]
-        }
-        serverSideCondition {
-            type: never
-        }
-        componentAppearance {
-            breadcrumbTemplate: @/breadcrumb
-            templateOptions: #DEFAULT#
         }
     )
 
@@ -316,6 +206,9 @@ page 1 (
                 t-AVPList--leftAligned
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -546,6 +439,7 @@ page 1 (
             showNullValuesAs: " - "
         }
         pagination {
+            type: showAll
             partialPageRefresh: false
         }
         performance {

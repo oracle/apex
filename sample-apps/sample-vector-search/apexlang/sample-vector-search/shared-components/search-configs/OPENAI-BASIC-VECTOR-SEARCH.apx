@@ -1,0 +1,27 @@
+searchConfig OPENAI_BASIC_VECTOR_SEARCH (
+    name: OPENAI-BASIC-VECTOR-SEARCH-MOVIEDATA
+    type: vector
+    source {
+        tableName: EBA_VECTOR_MOVIEDATA
+    }
+    vectorAttributes {
+        provider: @EBA_VECTOR_OPENAI
+        columnName: EMBEDDING_VECTOR
+        distanceMetric: dot
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: TITLE
+        subtitleColumn: ACTORS
+        descriptionColumn: MOVIEDESCRIPTION
+        badgeColumn: RATING
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-film
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

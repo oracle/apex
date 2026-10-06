@@ -1,0 +1,89 @@
+list custom-vector-search (
+    name: Custom Vector Search
+
+    entry basic-vector-search (
+        label: Basic Vector Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: "Search data using vectors based on the first 10 columns of your uploaded data. "
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery: select 1 from EBA_VECTOR_DATATABLE where embedding_vector is not null
+        }
+    )
+
+    entry prepare-data (
+        label: Prepare Data
+        icon {
+            imageIconCssClasses: fa-file-csv-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: Upload your custom data to perform vector search on.
+        }
+    )
+
+    entry vector-and-oracle-text (
+        label: Vector and Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Combine</strong> vector and Oracle Text search for a more effective, and targeted search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+    entry vector-vs-oracle-text (
+        label: Vector vs. Oracle Text
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Compare</strong> vector based search with traditional Oracle Text search.
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: eba_sample_vector_search_pkg.has_datatable_and_oracle_text
+        }
+    )
+
+)
+

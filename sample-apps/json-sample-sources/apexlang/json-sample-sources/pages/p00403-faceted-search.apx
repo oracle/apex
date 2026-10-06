@@ -7,13 +7,8 @@ page 403 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -129,6 +124,9 @@ page 403 (
             layout {
                 sequence: 50
             }
+            listEntries {
+                allowToExclude: false
+            }
             source {
                 databaseColumn: CREATED_AT2
                 dataType: date
@@ -148,6 +146,7 @@ page 403 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: PRIORITY
@@ -180,6 +179,7 @@ page 403 (
             }
             listEntries {
                 maxDisplayedEntries: 7
+                allowToExclude: false
             }
             source {
                 databaseColumn: STATUS

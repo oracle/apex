@@ -7,7 +7,6 @@ page 4 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -88,8 +87,6 @@ page 4 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region categories (
@@ -224,7 +221,7 @@ page 4 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+            htmlExpression: "{if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min"
         }
         iconAndBadge {
             badgeColumn: RATING
@@ -314,7 +311,7 @@ page 4 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+            htmlExpression: "{if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min"
         }
         iconAndBadge {
             badgeColumn: RATING
@@ -428,7 +425,7 @@ page 4 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+            htmlExpression: "{if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min"
         }
         iconAndBadge {
             badgeColumn: RATING
@@ -570,7 +567,7 @@ page 4 (
         }
         subtitle {
             advancedFormatting: true
-            htmlExpression: {if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min
+            htmlExpression: "{if !=DELIVERY_FEE/}Free Delivery{else/}$&DELIVERY_FEE. Delivery Fee{endif/} &bull; &DELIVERY_TIME. min"
         }
         iconAndBadge {
             badgeColumn: RATING

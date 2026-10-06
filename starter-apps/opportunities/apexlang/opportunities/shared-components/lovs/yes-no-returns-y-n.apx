@@ -1,0 +1,20 @@
+lov yes-no-returns-y-n (
+    name: YES NO (RETURNS Y N)
+    source {
+        location: staticValues
+    }
+
+    entry no (
+        sequence: 2
+        display: No
+        return: N
+    )
+
+    entry yes (
+        sequence: 1
+        display: Yes
+        return: Y
+    )
+
+)
+

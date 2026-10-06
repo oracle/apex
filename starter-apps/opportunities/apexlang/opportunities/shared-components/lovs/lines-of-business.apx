@@ -1,0 +1,14 @@
+lov lines-of-business (
+    name: LINES OF BUSINESS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from EBA_SALES_PRODUCT_LOBS
+             order by 1
+            ```
+    }
+)
+

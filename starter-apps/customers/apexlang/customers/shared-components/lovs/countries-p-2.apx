@@ -1,0 +1,20 @@
+lov countries-p-2 (
+    name: COUNTRIES_P59
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select country_name as d,
+                   id as r
+              from EBA_CUST_COUNTRIES
+             where display_yn = 'Y'
+               and (
+                       (nvl(:P59_GEO,0) = 0 and id is not null)
+                       or
+                       (nvl(:P59_GEO,0)  > 0 and region_id = :P59_GEO)
+                   )
+             order by 1
+            ```
+    }
+)
+

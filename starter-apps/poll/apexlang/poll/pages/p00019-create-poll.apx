@@ -12,13 +12,10 @@ page 19 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -155,9 +152,6 @@ page 19 (
             template: @/optional
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
-        }
         source {
             type: databaseColumn
             databaseColumn: ALL_VIEW_RESULTS_YN
@@ -183,9 +177,6 @@ page 19 (
         appearance {
             template: @/optional
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: databaseColumn
@@ -245,9 +236,6 @@ page 19 (
         appearance {
             template: @/optional
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: databaseColumn
@@ -480,9 +468,6 @@ page 19 (
         appearance {
             template: @/optional
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: databaseColumn

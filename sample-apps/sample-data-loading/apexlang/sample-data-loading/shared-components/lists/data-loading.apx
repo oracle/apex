@@ -1,0 +1,99 @@
+list data-loading (
+    name: Data Loading
+
+    entry background-loading (
+        label: Background Loading
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 17
+                clearCache: 17
+            }
+        }
+        userDefinedAttributes {
+            1: For a large data load, use the <strong>Execution Chain</strong> process type to perform loading in the background.
+        }
+    )
+
+    entry csv-load (
+        label: CSV Load
+        icon {
+            imageIconCssClasses: fa-file-csv
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+                clearCache: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Upload or copy and paste CSV data.
+        }
+    )
+
+    entry legacy-data-loading (
+        label: Legacy Data Loading
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+        userDefinedAttributes {
+            1: Allow end users to specify column mappings using the <strong>Legacy Data Loading Wizard</strong>.
+        }
+    )
+
+    entry multiple-file-types-load (
+        label: Multiple File Types Load
+        icon {
+            imageIconCssClasses: fa-files-o
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 16
+                clearCache: 16
+            }
+        }
+        userDefinedAttributes {
+            1: Use <strong>APEX_DATA_LOADING</strong> package to support loading multiple file types.
+        }
+    )
+
+    entry transformation-and-lookup (
+        label: Transformation and Lookup
+        icon {
+            imageIconCssClasses: fa-dynamic-content
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+        userDefinedAttributes {
+            1: Define <strong>Transformation Rules</strong> and <strong>Lookups</strong> to convert the data when loading.
+        }
+    )
+
+)
+

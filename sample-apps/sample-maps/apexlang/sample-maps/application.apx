@@ -1,6 +1,6 @@
 app SAMPLE-MAPS (
     name: Sample Maps
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -47,9 +47,7 @@ app SAMPLE-MAPS (
     }
     security {
         deepLinking: true
-    }
-    sessionStateProtection {
-        checksumSalt: 3CD3E42780EA891142FAE9657CD2FC5D9B816007F5D2FE48E2390EA8E7ADB956
+        allowBotAccess: true
     }
     globalization {
         documentDirection: leftToRight

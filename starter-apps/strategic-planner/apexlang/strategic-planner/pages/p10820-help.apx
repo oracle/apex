@@ -8,11 +8,8 @@ page 10820 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: All application help text can be accessed from this page. The links in the "Documentation" region give a much more in-depth explanation of the application's features and functionality.
@@ -78,128 +75,6 @@ page 10820 (
         }
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 10
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 50
-                }
-            )
-
-            menu edit-app-description (
-                label: Edit App Description
-                layout {
-                    sequence: 30
-                }
-                behavior {
-                    target: {
-                        page: 14000
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-edit
-                }
-                security {
-                    authorizationScheme: @administration-rights
-                }
-            )
-
-            menu edit-terminology (
-                label: Edit Terminology
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 10400
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-edit
-                }
-                security {
-                    authorizationScheme: @administration-rights
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 70
-                }
-                behavior {
-                    target: {
-                        page: 10820
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 60
-                }
-                behavior {
-                    target: {
-                        page: 10820
-                        clearCache: 10820
-                        action: clearRegions
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-        )
-
-    )
-
     region percent-complete (
         name: Percent Complete
         type: staticContent
@@ -241,60 +116,6 @@ page 10820 (
                 <p/>
                 <p>
                     <h3><span aria-hidden="true" class="fa fa-lightbulb-o fa-2x  margin-right-sm"></span> &NOMENCLATURE_INITIATIVES.</h3> Further organize &NOMENCLATURE_AREAS..
-                    All &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
-                    that are organized by &NOMENCLATURE_AREAS..
-                <p/>
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECTS.</h3> This application primarily tracks &NOMENCLATURE_PROJECTS.. 
-                    &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_AREAS. and &NOMENCLATURE_INITIATIVES..
-                    &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags.
-                <p/>
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECTS.</h3> This application primarily tracks &NOMENCLATURE_PROJECTS.. 
-                    &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_AREAS. and &NOMENCLATURE_INITIATIVES..
-                    &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags. &NOMENCLATURE_PROJECTS. can also have Milestones, Reviews and Tasks.  Default Milestones and Reviews can be selected at the &NOMENCLATURE_INITIATIVE. level and any &NOMENCLATURE_PROJECT. created within that &NOMENCLATURE_INITIATIVE. will inherit those (which can then be customized).
-                <p/>
-                
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECT. Groups</h3> &NOMENCLATURE_PROJECT. Groups allows viewing of all Comments and Activity across a common organizing structure.  
-                    Each &NOMENCLATURE_PROJECT. can only belong to one Group. 
-                <p/>
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-badge-check fa-2x  margin-right-sm"></span> Activities</h3>  Activities are work performed by people.  
-                    Activities can be specific to a &NOMENCLATURE_PROJECT. but they are not required to be.
-                    Activities track who is doing on what within a time range.  For example Jane Doe is researching an implementation for a specific &NOMENCLATURE_PROJECT..
-                <p/>
-                ```
-        }
-        layout {
-            sequence: 60
-            slot: body
-        }
-        appearance {
-            template: @/content-block
-            templateOptions: [
-                #DEFAULT#
-                t-ContentBlock--h2
-            ]
-        }
-        config {
-            buildOption: !@releases
-        }
-    )
-
-    region terminology-2 (
-        name: Terminology
-        type: staticContent
-        source {
-            htmlCode:
-                ```html
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-folder-o fa-2x margin-right-sm"></span> &NOMENCLATURE_AREAS.</h3> Top level organization for &NOMENCLATURE_PROJECTS..
-                    All &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
-                    that are organized by &NOMENCLATURE_AREAS..  Full &NOMENCLATURE_PROJECT. organization is &NOMENCLATURE_AREA. > &NOMENCLATURE_INITIATIVE. >  &NOMENCLATURE_PROJECT..
-                <p/>
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-lightbulb-o fa-2x  margin-right-sm"></span> &NOMENCLATURE_INITIATIVES.</h3> Further organize &NOMENCLATURE_AREAS..
                     All  &NOMENCLATURE_PROJECTS. are organized by &NOMENCLATURE_INITIATIVES. 
                     that are organized by &NOMENCLATURE_AREAS..
                 <p/>
@@ -304,18 +125,13 @@ page 10820 (
                     &NOMENCLATURE_PROJECTS. typically have owners, sizes, priorities, tags, and can be optionally associated with releases. &NOMENCLATURE_PROJECTS. can also have Milestones, Reviews and Tasks.  Default Milestones and Reviews can be selected at the &NOMENCLATURE_INITIATIVE. level and any &NOMENCLATURE_PROJECT. created within that &NOMENCLATURE_INITIATIVE. will inherit those (which can then be customized).
                 <p/>
                 <p>
-                    <h3><span aria-hidden="true" class="fa fa-package fa-2x  margin-right-sm"></span> &NOMENCLATURE_PROJECT. Groups</h3> &NOMENCLATURE_PROJECT. Groups allows viewing of all Comments and Activity across a common organizing structure.  
+                    &NOMENCLATURE_PROJECT. Groups allows viewing of all Comments and Activity across a common organizing structure.  
                     Each &NOMENCLATURE_PROJECT. can only belong to one Group. 
                 <p/>
                 <p>
                     <h3><span aria-hidden="true" class="fa fa-badge-check fa-2x  margin-right-sm"></span> Activities</h3>  Activities are work performed by people.  
-                    Activities can be specific to a &NOMENCLATURE_PROJECT. but they are not required to be.
+                    Activities can be specific to a &NOMENCLATURE_PROJECT. or &NOMENCLATURE_INITIATIVE. but they are not required to be.
                     Activities track who is doing on what within a time range.  For example Jane Doe is researching an implementation for a specific &NOMENCLATURE_PROJECT..
-                <p/>
-                <p>
-                    <h3><span aria-hidden="true" class="fa fa-ship fa-2x margin-right-sm"></span> Releases</h3>  &NOMENCLATURE_PROJECTS. can be optionally associated with a release.  
-                    A release is typically a software distribution.  
-                    Releases have specific milestones with dates.  
                 <p/>
                 ```
         }
@@ -328,11 +144,154 @@ page 10820 (
             templateOptions: [
                 #DEFAULT#
                 t-ContentBlock--h2
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region terminology-people (
+        name: Terminology - People
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-user fa-2x margin-right-sm"></span>&NOMENCLATURE_USERS.</h3>&NOMENCLATURE_USERS. are defined to be assigned to &NOMENCLATURE_PROJECTS., Reviews, Milestones, Tasks, Activities, etc.  
+                    &NOMENCLATURE_USERS. do not have automatically have access to run this application, access is controlled by Administrators under the Administration / Access Control section.
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 70
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-Region--removeHeader js-removeLandmark
+                margin-top-none
+                margin-bottom-none
+            ]
+        }
+    )
+
+    region terminology-releases (
+        name: Terminology - Releases
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-ship fa-2x margin-right-sm"></span> Releases</h3>  &NOMENCLATURE_PROJECTS. can be optionally associated with a release.  
+                    A release is typically a software distribution.  
+                    Releases have specific milestones with dates.  
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-Region--removeHeader js-removeLandmark
+                margin-top-none
+                margin-bottom-none
             ]
         }
         config {
             buildOption: @releases
         }
+    )
+
+    region terminology-team-calendar (
+        name: Terminology - Team Calendar
+        type: staticContent
+        source {
+            htmlCode:
+                ```html
+                <p>
+                    <h3><span aria-hidden="true" class="fa fa-calendar-month fa-2x margin-right-sm"></span>Team Calendar</h3>Team Calendar allows users to view events that can affect availability (public holidays, internal meetings) as well as out of office events managed by each &NOMENCLATURE_USER.. 
+                    Out of office events for the next 2 weeks will display when assigning &NOMENCLATURE_PROJECTS. and Reviews (e.g. "Out of Office 3 of next 10 work days").
+                <p/>
+                ```
+        }
+        layout {
+            sequence: 80
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h2
+                t-Region--removeHeader js-removeLandmark
+                margin-top-none
+                margin-bottom-none
+            ]
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+
+        menu edit-app-description (
+            label: Edit About Page Text
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 14000
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-info
+            }
+        )
+
+        menu edit-terminology (
+            label: Edit Nomenclature
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 10400
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-external-link-square
+            }
+        )
+
     )
 
     button up (

@@ -1,0 +1,252 @@
+list ut-sample-navigation-mega-menu (
+    name: UT - Sample Navigation Mega Menu
+
+    entry menu-item (
+        label: Menu Item 1
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-2 (
+        label: Menu Item 2
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: always
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-3 (
+        label: Menu Item 3
+        icon {
+            imageIconCssClasses: fa-play-circle-o
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-4 (
+        label: Menu Item 4
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item (
+        label: Sub Menu Item 1.1
+        layout {
+            sequence: 160
+            parentEntry: @menu-item
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-10 (
+        label: Sub Menu Item 3.2.3
+        layout {
+            sequence: 130
+            parentEntry: @sub-menu-item-7
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-11 (
+        label: Sub Menu Item 4.1
+        layout {
+            sequence: 140
+            parentEntry: @menu-item-4
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-12 (
+        label: Sub Menu Item 4.2
+        layout {
+            sequence: 150
+            parentEntry: @menu-item-4
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-2 (
+        label: Sub Menu Item 1.2
+        layout {
+            sequence: 170
+            parentEntry: @menu-item
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-3 (
+        label: Sub Menu Item 2.1
+        layout {
+            sequence: 60
+            parentEntry: @menu-item-2
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-4 (
+        label: Sub Menu Item 2.2
+        layout {
+            sequence: 70
+            parentEntry: @menu-item-2
+        }
+        isCurrent {
+            type: always
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-5 (
+        label: Sub Menu Item 2.3
+        layout {
+            sequence: 80
+            parentEntry: @menu-item-2
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-6 (
+        label: Sub Menu Item 3.1
+        layout {
+            sequence: 90
+            parentEntry: @menu-item-3
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-7 (
+        label: Sub Menu Item 3.2
+        layout {
+            sequence: 100
+            parentEntry: @menu-item-3
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-8 (
+        label: Sub Menu Item 3.2.1
+        layout {
+            sequence: 110
+            parentEntry: @sub-menu-item-7
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-9 (
+        label: Sub Menu Item 3.2.2
+        layout {
+            sequence: 120
+            parentEntry: @sub-menu-item-7
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

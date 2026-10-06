@@ -1,0 +1,14 @@
+lov industries (
+    name: INDUSTRIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select industry_name as d,
+                   id as r
+              from eba_sales_industries
+             order by 1
+            ```
+    }
+)
+

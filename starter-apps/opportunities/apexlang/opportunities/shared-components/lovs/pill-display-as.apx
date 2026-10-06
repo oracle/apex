@@ -1,0 +1,35 @@
+lov pill-display-as (
+    name: PILL_DISPLAY_AS
+    source {
+        location: staticValues
+    }
+
+    entry cards-view (
+        sequence: 1
+        display: Cards View
+        return: CARDS
+        globalization {
+            template: <span class="t-Icon fa fa-cards" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+    entry customizable-grid (
+        sequence: 3
+        display: Customizable Grid
+        return: GRID
+        globalization {
+            template: <span class="t-Icon fa fa-table" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+    entry report-view (
+        sequence: 2
+        display: Report View
+        return: REPORT
+        globalization {
+            template: <span class="t-Icon fa fa-reorder" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+)
+

@@ -1,0 +1,529 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        security {
+            authorizationScheme: mustNotBePublicUser
+        }
+    )
+
+    entry area (
+        label: Area
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry bar (
+        label: Bar
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                9
+                29
+            ]
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry box-plot (
+        label: Box Plot
+        icon {
+            imageIconCssClasses: fa-box-plot-chart
+        }
+        layout {
+            sequence: 17
+        }
+        isCurrent {
+            type: pages
+            pages: 41
+        }
+        link {
+            target: {
+                page: 41
+            }
+        }
+    )
+
+    entry bubble (
+        label: Bubble
+        icon {
+            imageIconCssClasses: fa-bubble-chart
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 11
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry combination (
+        label: Combination
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: pages
+            pages: 25
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry dashboard-pies (
+        label: Dashboard - Pies
+        icon {
+            imageIconCssClasses: fa-columns
+        }
+        layout {
+            sequence: 32
+        }
+        isCurrent {
+            type: pages
+            pages: 24
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+    entry data-densification (
+        label: Data Densification
+        icon {
+            imageIconCssClasses: fa-code-group
+        }
+        layout {
+            sequence: 27
+        }
+        isCurrent {
+            type: pages
+            pages: 14
+        }
+        link {
+            target: {
+                page: 14
+            }
+        }
+    )
+
+    entry event-drops (
+        label: Event Drops
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 35
+        }
+        isCurrent {
+            type: pages
+            pages: 46
+        }
+        link {
+            target: {
+                page: 46
+            }
+        }
+    )
+
+    entry funnel (
+        label: Funnel
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 22
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+    )
+
+    entry gantt (
+        label: Gantt
+        icon {
+            imageIconCssClasses: fa-gantt-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 3
+                clearCache: 3
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry legend-plug-in (
+        label: Legend Plug-in
+        icon {
+            imageIconCssClasses: fa-plug
+        }
+        layout {
+            sequence: 52
+        }
+        isCurrent {
+            type: pages
+            pages: 26
+        }
+        link {
+            target: {
+                page: 26
+            }
+        }
+    )
+
+    entry line (
+        label: Line
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry line-with-area (
+        label: Line with Area
+        icon {
+            imageIconCssClasses: fa-line-area-chart
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: 18
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        layout {
+            sequence: 115
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        security {
+            authorizationScheme: mustNotBePublicUser
+        }
+    )
+
+    entry pareto-chart (
+        label: Pareto Chart
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 65
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry pie (
+        label: Pie
+        icon {
+            imageIconCssClasses: fa-pie-chart
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                13
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry polar (
+        label: Polar
+        icon {
+            imageIconCssClasses: fa-polar-chart
+        }
+        layout {
+            sequence: 75
+        }
+        isCurrent {
+            type: pages
+            pages: 19
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry pyramid (
+        label: Pyramid
+        icon {
+            imageIconCssClasses: fa-pyramid-chart
+        }
+        layout {
+            sequence: 77
+        }
+        link {
+            target: {
+                page: 43
+            }
+        }
+    )
+
+    entry radar (
+        label: Radar
+        icon {
+            imageIconCssClasses: fa-radar-chart
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: 21
+        }
+        link {
+            target: {
+                page: 21
+            }
+        }
+    )
+
+    entry range (
+        label: Range
+        icon {
+            imageIconCssClasses: fa-range-chart-bar
+        }
+        layout {
+            sequence: 85
+        }
+        isCurrent {
+            type: pages
+            pages: 23
+        }
+        link {
+            target: {
+                page: 23
+            }
+        }
+    )
+
+    entry reference (
+        label: Reference
+        icon {
+            imageIconCssClasses: fa-book
+        }
+        layout {
+            sequence: 130
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                28
+                31
+                32
+                33
+                34
+                35
+                36
+                37
+                38
+                40
+                16
+                49
+            ]
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry scatter (
+        label: Scatter
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+    )
+
+    entry status-meter-gauge (
+        label: Status Meter Gauge
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 92
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry stock (
+        label: Stock
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 95
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry theme-styles (
+        label: Theme Styles
+        layout {
+            sequence: 120
+            parentEntry: @administration
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        security {
+            authorizationScheme: mustNotBePublicUser
+        }
+    )
+
+)
+

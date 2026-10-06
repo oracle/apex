@@ -1,6 +1,6 @@
-create table SP_DEFAULT_PEOPLE_TAGS (
+create table sp_default_people_tags (
     id                             number default on null to_number(sys_guid(), 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX') 
-                                   constraint SP_DEFAULT_PEOPLE_TAGS_pk primary key,
+                                   constraint sp_default_people_tags_pk primary key,
     display_sequence               number             not null,
     tag                            varchar2(30 char)  not null,
     description                    varchar2(512 char),
@@ -12,4 +12,4 @@ create table SP_DEFAULT_PEOPLE_TAGS (
 )
 ;
 
-create unique index SP_DEFAULT_PEOPLE_TAGS_u1 on SP_DEFAULT_PEOPLE_TAGS (tag);
+create unique index sp_default_people_tags_u1 on sp_default_people_tags (tag);

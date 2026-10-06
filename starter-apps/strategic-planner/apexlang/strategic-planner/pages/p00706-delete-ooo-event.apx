@@ -1,0 +1,445 @@
+page 706 (
+    name: Delete Out of Office Event
+    alias: DELETE-OOO-EVENT
+    title: Delete Out of Office Event
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    config {
+        buildOption: @team-calendar
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region delete-affects (
+        name: Delete Affects
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region event-details (
+        name: Event Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    pageItem P706_DELETE_AFFECTS (
+        type: radioGroup
+        label {
+            label: Delete Affects
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p706-delete-affects
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @delete-affects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    pageItem P706_EVENT_DATE (
+        type: displayOnly
+        label {
+            label: Event Date
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_EVENT_DATE
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P706_EVENT_DETAILS (
+        type: displayOnly
+        label {
+            label: Event Details
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_EVENT_DETAILS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P706_EVENT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P706_EVENT_NAME (
+        type: displayOnly
+        label {
+            label: Event Name
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_EVENT_NAME
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P706_EVENT_TYPE (
+        type: displayOnly
+        label {
+            label: Event Type
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_EVENT_TYPE
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P706_FOR_USER (
+        type: displayOnly
+        label {
+            label: For User
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_FOR_USER
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P706_REPEATS (
+        type: displayOnly
+        label {
+            label: Repeats
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 70
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P706_REPEATS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close (
+        name: close
+        type: closeDialog
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 31842514238990726831
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process delete (
+        name: Delete
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.delete_event ( 
+                    p_event_id    => :P706_EVENT_ID, 
+                    p_delete_type => :P706_DELETE_AFFECTS );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) deleted.
+        }
+        advanced {
+            executionMappingIdentifier: 31842514169231726830
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process reload-ooo-if-necessary (
+        name: reload OOO, if necessary
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_updated_yn  varchar2(1);
+                begin
+                
+                if :P704_PREVIOUS_FOR_USER_ID is not null then
+                    sp_event_util.load_one_ooo (
+                        p_team_member_id => :P704_PREVIOUS_FOR_USER_ID,
+                        p_updated_yn     => l_updated_yn );
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 33518813767076200427
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+        }
+    )
+
+    process set-values (
+        name: set values
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                for c1 in (
+                    select (select event_type from sp_event_types
+                             where id = e.event_type_id) event_type,
+                           event_date,
+                           event_name event_name,
+                           event_details event_details,
+                           (select first_name||' '||last_name
+                              from sp_team_members
+                             where id = e.for_user_id) for_user,
+                           series_id
+                      from sp_events e
+                     where id = :P706_EVENT_ID
+                ) loop
+                    :P706_EVENT_TYPE := c1.event_type;
+                    :P706_EVENT_DATE := to_char(c1.event_date,'Mon fmDD, YYYY');
+                    :P706_EVENT_NAME := c1.event_name;
+                    :P706_FOR_USER := c1.for_user;
+                    :P706_EVENT_DETAILS := c1.event_details;
+                
+                    for c2 in (
+                        select decode(recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                  '2W', 'Every 2 Weeks', 'M', 'Monthly', recur_freq) recur_freq,
+                               start_date, end_date
+                          from sp_event_series
+                         where id = c1.series_id
+                    ) loop
+                        :P706_REPEATS := c2.recur_freq||', '||
+                                         case when to_char(c2.start_date,'MONYYYY') = to_char(c2.end_date,'MONYYYY') 
+                                              then to_char(c2.start_date,'Mon fmDD')||'-'||to_char(c2.end_date,'fmDD, YYYY')
+                                              when to_char(c2.start_date,'YYYY') = to_char(c2.end_date,'YYYY') 
+                                              then to_char(c2.start_date,'Mon fmDD')||' until '||to_char(c2.end_date,'Mon fmDD, YYYY')
+                                              else to_char(c2.start_date,'Mon fmDD, YYYY')||' until '||to_char(c2.end_date,'Mon fmDD YYYY')
+                                              end;
+                
+                    end loop;
+                end loop;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 31842515522774726844
+        }
+    )
+
+)
+

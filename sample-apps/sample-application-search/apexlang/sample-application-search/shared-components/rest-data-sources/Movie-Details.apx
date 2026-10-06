@@ -3,7 +3,7 @@ restDataSource Movie_Details (
     source {
         type: http
         remoteServer: @api_themoviedb_org_3
-        urlPathPrefix: movie/{movie_id}
+        urlPathPrefix: "movie/{movie_id}"
     }
     authentication {
         credentials: @tmdb_api_key

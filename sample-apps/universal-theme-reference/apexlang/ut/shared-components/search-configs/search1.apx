@@ -1,0 +1,19 @@
+searchConfig search1 (
+    name: Search1
+    source {
+        tableName: EBA_UT_CHART_PROJECTS
+        searchableColumns: [
+            CREATED_BY
+            UPDATED_BY
+            PROJECT
+        ]
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: PROJECT
+    }
+    iconAndBadge {
+        iconSource: initials
+    }
+)
+

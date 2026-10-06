@@ -12,11 +12,12 @@ page 90 (
         resizable: false
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -97,6 +98,9 @@ page 90 (
                 t-Report--rowHighlightOff
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found

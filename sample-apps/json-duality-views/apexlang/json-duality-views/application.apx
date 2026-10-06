@@ -1,6 +1,6 @@
 app JSON-DUALITY-VIEWS (
     name: Sample Duality Views
-    version: 26.1.0
+    version: 26.2.0
     logo {
         type: text
         text: Sample Duality Views
@@ -45,8 +45,8 @@ app JSON-DUALITY-VIEWS (
     authorization {
         scheme: mustNotBePublicUser
     }
-    sessionStateProtection {
-        checksumSalt: D34EECD14C472E5A1BB288515A37BD39E9E588F9C03EAF0DDC480C8571CB32E1
+    security {
+        allowBotAccess: true
     }
     sessionManagement {
         maxSessionLength: 28800
@@ -54,6 +54,9 @@ app JSON-DUALITY-VIEWS (
     }
     runtime {
         allowFeedback: true
+    }
+    advanced {
+        modernizeApp: true
     }
 
     substitution APP_NAME (
@@ -63,3 +66,4 @@ app JSON-DUALITY-VIEWS (
     )
 
 )
+

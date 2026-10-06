@@ -8,7 +8,6 @@ page 125 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -24,8 +23,6 @@ page 125 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -286,6 +283,9 @@ page 125 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: no data found
         }
@@ -379,6 +379,9 @@ page 125 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 1500
@@ -476,6 +479,9 @@ page 125 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 1500

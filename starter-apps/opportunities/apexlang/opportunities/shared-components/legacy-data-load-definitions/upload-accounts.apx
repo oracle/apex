@@ -1,0 +1,51 @@
+legacyDataLoadDefinition upload-accounts (
+    name: Upload Accounts
+    target {
+        tableOwner: #OWNER#
+        tableName: EBA_SALES_CUSTOMERS
+    }
+    uniqueKeys {
+        uniqueColumn1: ID
+    }
+
+    tableLookup CUSTOMER_INDUSTRY_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_INDUSTRIES
+        }
+        compareUploadWith {
+            column: INDUSTRY_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup CUSTOMER_TERRITORY_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_TERRITORIES
+        }
+        compareUploadWith {
+            column: TERRITORY_NAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+    tableLookup DEFAULT_REP_ID (
+        source {
+            tableOwner: #OWNER#
+            tableName: EBA_SALES_SALESREPS
+        }
+        compareUploadWith {
+            column: REP_EBA_SALES_USERNAME
+        }
+        lookup {
+            returnColumn: ID
+        }
+    )
+
+)
+

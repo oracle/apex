@@ -8,7 +8,6 @@ page 26 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -156,8 +155,6 @@ page 26 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -683,6 +680,9 @@ page 26 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column ADMINISTRATORS (

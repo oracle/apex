@@ -10,13 +10,6 @@ page 147 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @approvals
     }
@@ -40,7 +33,7 @@ page 147 (
                                                        ' as alternate for '||tm.first_name||' '||tm.last_name
                                                 else tm.first_name||' '||tm.last_name
                                                 end ||
-                                            case when c.active_yn = 'N' then ')' end,', ')
+                                            case when c.active_yn = 'N' then ')' end,', ' on overflow truncate with count)
                                    within group (order by approval_seq)
                               from sp_initiative_approval_chain c,
                                    sp_team_members tm
@@ -78,6 +71,9 @@ page 147 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_TYPE (

@@ -1,0 +1,87 @@
+aiAgent project-agent (
+    name: Project Agent
+    genAI {
+        systemPrompt:
+            ```
+            You are a data analyst, you will answer questions about a selected project from the details provided.
+            
+            For quantitative questions, do not make guesses, do full counts.
+            
+            The current user is &APP_USER_FIRST_LAST_NAME..
+            
+            The current date is &APP_SYSDATE..
+            
+            All the details of the current project are available in markdown format by calling the 'get_project_details' tool.
+            If the user asks to edit the &NOMENCLATURE_PROJECT. and the 'edit_project' tool is NOT accessible, let the user know that Only Contributors or Administrators can edit.
+            ```
+        welcomeMessage: What is your question related to this project?
+    }
+
+    tool edit-project (
+        name: edit_project
+        type: executeClientsideCode
+        executionPoint: onDemand
+        description: Use this tool if a user wants to edit the &NOMENCLATURE_PROJECT. details (such as name, priority, size, target date)
+        settings {
+            jsCode:
+                ```javascript-browser
+                apex.server.process(
+                  "get_edit_project_url",
+                  { pageItems: "#P3_PROJECT_ID" },
+                  {
+                    dataType: "json",
+                    success: function (data) {
+                      apex.navigation.redirect(data.url);
+                    }
+                  }
+                );
+                return {earlyExit:true};
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    tool get-project-details (
+        name: get_project_details
+        type: retrieveData
+        executionPoint: onDemand
+        description: This tool returns the details, in markdown format, of the current &NOMENCLATURE_PROJECT..
+        settings {
+            type: functionBody
+            language: plsql
+            plsqlFunctionBody:
+                ```plsql
+                return sp_summary_util.generate_project_md ( 
+                           p_project_id => :P3_PROJECT_ID,
+                           p_app_user_id => :APP_USER_ID );
+                ```
+        }
+    )
+
+    tool navigate-to-favorite (
+        name: navigate_to_favorite
+        type: executeClientsideCode
+        executionPoint: onDemand
+        description: Use this tool if the user wants to favorite (or unfavorite) the current &NOMENCLATURE_PROJECT.
+        settings {
+            jsCode:
+                ```javascript-browser
+                apex.server.process(
+                  "get_favorite_project_url",
+                  { pageItems: "#P3_PROJECT_ID" },
+                  {
+                    dataType: "json",
+                    success: function (data) {
+                      apex.navigation.redirect(data.url);
+                    }
+                  }
+                );
+                return {earlyExit:true};
+                ```
+        }
+    )
+
+)
+

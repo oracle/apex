@@ -1,0 +1,62 @@
+list basics (
+    name: Basics
+
+    entry multiple-search-configurations (
+        label: Multiple Search Configurations
+        icon {
+            imageIconCssClasses: fa-cubes
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 102
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to use Search region to create searches on multiples Data Sources.
+        }
+    )
+
+    entry rest-data-source (
+        label: REST Data Source
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 103
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on REST Data Source.
+        }
+    )
+
+    entry single-search-configuration (
+        label: Single Search Configuration
+        icon {
+            imageIconCssClasses: fa-cube
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 101
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to create Search Configurations based on Local Data Source.
+        }
+    )
+
+)
+

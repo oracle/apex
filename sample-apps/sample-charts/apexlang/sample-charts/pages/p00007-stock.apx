@@ -7,12 +7,7 @@ page 7 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -87,6 +82,9 @@ page 7 (
         }
         chart {
             type: stock
+        }
+        performance {
+            lazyLoading: true
         }
         dataCursor {
             cursor: true
@@ -173,7 +171,7 @@ page 7 (
                 <strong>Overview</strong> - Use the overview section, displayed at the bottom of the chart region, to zoom & scroll to a specific section of the chart.<p/>
                 
                 <p>
-                For more information on the Oracle JET Stock chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=stockChart&demo=default" target="_blank">Stock Chart</a> example.
+                For more information on the Oracle JET Stock chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=stockChart&demo=default" target="_blank" rel="noopener noreferrer external">Stock Chart</a> example.
                 ```
         }
         layout {

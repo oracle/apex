@@ -10,15 +10,8 @@ page 166 (
     dialog {
         chained: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
-        buildOption: @ai-release-summaries
+        buildOption: @ai-release-summaries-view
     }
 
     region details-sent (

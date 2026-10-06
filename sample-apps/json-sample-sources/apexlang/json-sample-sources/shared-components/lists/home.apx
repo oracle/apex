@@ -1,0 +1,95 @@
+list home (
+    name: Home
+
+    entry data-presentation (
+        label: Data Presentation
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 400
+            }
+        }
+        userDefinedAttributes {
+            1: Highlights different ways to visualize and interact with data in APEX.
+        }
+    )
+
+    entry duality-view (
+        label: Duality View
+        icon {
+            imageIconCssClasses: fa-exchange
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 200
+            }
+        }
+        userDefinedAttributes {
+            1: Showcases bidirectional synchronization between relational data and JSON using duality views.
+        }
+    )
+
+    entry json-sources (
+        label: JSON Sources
+        icon {
+            imageIconCssClasses: fa-file-json-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 100
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to work with JSON data stored in Oracle tables and collections.
+        }
+    )
+
+    entry sql-json-functions (
+        label: SQL/JSON Functions
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 300
+            }
+        }
+        userDefinedAttributes {
+            1: Explores built-in SQL functions for querying and transforming JSON data manually.
+        }
+    )
+
+    entry use-cases (
+        label: Use Cases
+        icon {
+            imageIconCssClasses: fa-missile
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 500
+            }
+        }
+        userDefinedAttributes {
+            1: Provides practical examples of real-world JSON and APEX implementations.
+        }
+    )
+
+)
+

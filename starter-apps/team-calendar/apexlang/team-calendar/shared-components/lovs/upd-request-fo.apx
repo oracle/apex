@@ -1,0 +1,20 @@
+lov upd-request-fo (
+    name: UPD_REQUEST_FO
+    source {
+        location: staticValues
+    }
+
+    entry future-events (
+        sequence: 2
+        display: Future Events
+        return: F
+    )
+
+    entry only-this-event (
+        sequence: 3
+        display: Only this Event
+        return: O
+    )
+
+)
+

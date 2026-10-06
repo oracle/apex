@@ -1,0 +1,8 @@
+lov distinct-status-values (
+    name: DISTINCT STATUS VALUES
+    source {
+        type: legacySqlQuery
+        sqlQuery: select distinct status d, status r from EBA_DEMO_IR_PROJECTS order by 1
+    }
+)
+

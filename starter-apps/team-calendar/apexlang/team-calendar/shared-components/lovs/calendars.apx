@@ -1,0 +1,22 @@
+lov calendars (
+    name: CALENDARS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select short_name || ' - ' || calendar_name || decode(public_view_yn, 'Y', null, ' (Private)') d
+            , calendar_id r
+            from eba_ca_calendars c
+            where public_view_yn = 'Y'
+            or    exists (select 'x'
+                          from eba_ca_users u
+                          where u.username = :APP_USER
+                          and   (   instr(u.restricted_to, c.calendar_id) > 0
+                                 or (access_level_id = 3 and restricted_to is null)
+                                )
+                         ) 
+            order by 1
+            ```
+    }
+)
+

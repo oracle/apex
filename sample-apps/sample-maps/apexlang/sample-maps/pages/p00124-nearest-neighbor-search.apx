@@ -7,7 +7,6 @@ page 124 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     javaScript {
@@ -39,10 +38,6 @@ page 124 (
                 transform: translate(0, -10%) !important;
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -173,7 +168,7 @@ page 124 (
                 formatMask: YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -204,7 +199,7 @@ page 124 (
                 htmlExpression: #AIRPORT_NAME# (#IATA_CODE#)
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -221,7 +216,7 @@ page 124 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -237,7 +232,7 @@ page 124 (
                 sequence: 120
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -256,7 +251,7 @@ page 124 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -283,7 +278,7 @@ page 124 (
                 sequence: 80
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: K
@@ -307,7 +302,7 @@ page 124 (
                 formatMask: 9G999G999G999G990D0
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P
@@ -323,7 +318,7 @@ page 124 (
                 sequence: 100
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -342,7 +337,7 @@ page 124 (
                 sequence: 90
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: G
@@ -361,7 +356,7 @@ page 124 (
                 sequence: 130
             }
             source {
-                dataType: OTHER
+                dataType: other
             }
             advanced {
                 endUserAlias: M
@@ -380,7 +375,7 @@ page 124 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -399,7 +394,7 @@ page 124 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -418,7 +413,7 @@ page 124 (
                 sequence: 110
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -437,7 +432,7 @@ page 124 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -735,6 +730,7 @@ page 124 (
                      where COMMERCIAL_OPS > 100000
                     ```
                 pageItemsToSubmit: P121_ID
+                useVectorTiles: true
             }
             columnMapping {
                 geometryColumn: GEOMETRY

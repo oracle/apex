@@ -1,6 +1,6 @@
 app SAMPLE-CHARTS (
     name: Sample Charts
-    version: 26.1.0
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -41,11 +41,8 @@ app SAMPLE-CHARTS (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: 819AF279A51271862EE4DBFB2E2934664253791AF028E6C782E7061E27B3B9F4
     }
     sessionManagement {
         rejoinSessions: publicSessions
@@ -83,6 +80,7 @@ app SAMPLE-CHARTS (
             1.0.7 -> 1.0.8: Added "SQL Source" show/hide region to all pages.
             1.0.9 -> 1.0.10: Changed Authentication scheme to use new "ORA_WWV_PACKAGED_APPLICATIONS" cookie
             1.0.12 -> 1.0.13: Added D3 Collapsible Treemap region to page 16
+            26.2.0: Removed "ORA_WWV_PACKAGED_APPLICATIONS" cookie, minor UI update to page 10, added authorization check to Administration nav list entries
             ```
     }
 

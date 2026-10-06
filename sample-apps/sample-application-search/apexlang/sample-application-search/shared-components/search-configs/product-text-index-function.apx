@@ -1,0 +1,43 @@
+searchConfig product_text_index_function (
+    name: Product Search Configuration Oracle Text  Function
+    type: text
+    source {
+        sqlQuery:
+            ```sql
+            select p.product_id, 
+                   p.product_name, 
+                   '$' || p.unit_price unit_price,
+                   p.text_index_column,
+                   j.description,
+                   j.gender, 
+                   j.colour,
+                   j.brand
+              from eba_demo_search_products p,
+                   json_table (
+                       p.product_details, 
+                       '$' 
+                       columns ( 
+                           description varchar2(4000) path '$.description',
+                           colour      varchar2(4000) path '$.colour',
+                           gender      varchar2(4000) path '$.gender',
+                           brand       varchar2(4000) path '$.brand')) j
+            ```
+        oracleTextIndexColumn: TEXT_INDEX_COLUMN
+        type: sqlQuery
+    }
+    rowSearch {
+        textQueryFunction: custom
+        customFunctionName: eba_demo_search_text_pkg.convert_text_query
+    }
+    columnMapping {
+        primaryKey1Column: PRODUCT_ID
+        titleColumn: PRODUCT_NAME
+        subtitleColumn: BRAND
+        descriptionColumn: DESCRIPTION
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-package u-color-1-text
+    }
+)
+

@@ -14,10 +14,11 @@ page 4015 (
     dialog {
         chained: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @approvals
@@ -90,6 +91,9 @@ page 4015 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column APPROVAL_SEQ (
@@ -164,9 +168,6 @@ page 4015 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             formRegion: @initiative-approval-entry
@@ -371,6 +372,10 @@ page 4015 (
             column: INITIATIVE_APPROVAL_ID
             dataType: number
         }
+        readOnly {
+            type: itemIsNotNull
+            item: P4015_ID
+        }
     )
 
     pageItem P4015_INIT_ALTERNATE_END_DATE (
@@ -554,7 +559,7 @@ page 4015 (
         action native-alert (
             action: alert
             settings {
-                message: This person has pending approvals - inactivating them only affect future assignments.
+                message: This person has pending approvals - they will be reassigned or auto-approved if this is the last approver.
             }
             execution {
                 sequence: 10
@@ -577,6 +582,39 @@ page 4015 (
 
         action native-dialog-cancel (
             action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    dynamicAction change-approver (
+        name: change approver
+        execution {
+            sequence: 50
+        }
+        when {
+            selectionType: items
+            items: P4015_TEAM_MEMBER_ID
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_project_approval_chain
+                 where team_member_id = :P4015_TEAM_MEMBER_ID
+                   and status in ('PENDING','CLARIFICATION-REQUESTED')
+                ```
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                message: This person has pending approvals - this change only affects future assignments.
+            }
             execution {
                 sequence: 10
                 fireOnInit: false
@@ -877,7 +915,7 @@ page 4015 (
         name: Close Dialog
         type: closeDialog
         execution {
-            sequence: 50
+            sequence: 30
         }
         advanced {
             executionMappingIdentifier: 11756734846431114917
@@ -906,10 +944,14 @@ page 4015 (
         type: formAutoRowProcessing
         formRegion: @initiative-approval-entry
         execution {
-            sequence: 10
+            sequence: 20
         }
         advanced {
             executionMappingIdentifier: 11756734362975114916
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
         }
     )
 

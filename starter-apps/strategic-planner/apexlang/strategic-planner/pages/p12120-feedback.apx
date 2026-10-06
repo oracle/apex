@@ -13,9 +13,6 @@ page 12120 (
         chained: false
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -27,8 +24,6 @@ page 12120 (
     }
     security {
         authorizationScheme: @reader-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feedback

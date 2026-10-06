@@ -6,13 +6,8 @@ page 31 (
         pageTemplate: @/marquee
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -84,6 +79,9 @@ page 31 (
                 t-Report--inline
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No links for this task.
@@ -242,6 +240,9 @@ page 31 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -464,6 +465,9 @@ page 31 (
                 t-Report--inline
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No to dos for this task.

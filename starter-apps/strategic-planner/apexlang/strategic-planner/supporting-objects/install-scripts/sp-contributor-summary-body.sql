@@ -120,6 +120,7 @@ begin
                    -- activity core information
                    --
                    at.activity_type,
+                   ap.activity,
                    decode(greatest(length(ap.comments),l_max_text_length),l_max_text_length,ap.comments,substr(ap.comments,1,l_max_text_length)||'...') comments,
                    --
                    to_char(ap.start_date,'DD-MON')||' to '||to_char(ap.end_date,'DD-MON-YYYY') TIMELINE,
@@ -151,7 +152,8 @@ begin
                   tm.id = l_team_member_id and
                   ap.team_member_id = tm.id and
                   trunc(sysdate) <= ap.end_date and
-                  ap.start_date <= trunc(sysdate)
+                  ap.start_date <= trunc(sysdate) and
+                  nvl(ap.private_yn,'N') = 'N'  -- must exclude all private activities 
                   order by ap.end_date
         ) loop
             l_row_count := l_row_count + 1;
@@ -186,7 +188,7 @@ begin
             x2 := x2||'<li>'||
                   ' '||apex_escape.html(c1.TIMELINE)||
                   ' (<strong>'||apex_escape.html(c1.activity_type)||'</strong>) - '||
-                  apex_escape.html(c1.comments);
+                  apex_escape.html(c1.activity)||case when c1.comments is not null then ' - '||apex_escape.html(c1.comments) end;
             if c1.project is not null then 
                 x2 := x2||'<br>'||nvl(l_project_label,'Project')||': '||l_project;
             end if;
@@ -212,6 +214,7 @@ begin
                    -- activity core information
                    --
                    at.activity_type,
+                   ap.activity,
                    decode(greatest(length(ap.comments),l_max_text_length),l_max_text_length,ap.comments,substr(ap.comments,1,l_max_text_length)||'...') comments,
                    --
                    to_char(ap.start_date,'DD-MON-YYYY')||' to '||to_char(ap.end_date,'DD-MON-YYYY') TIMELINE,
@@ -241,7 +244,8 @@ begin
                   ap.activity_type_id = at.id and
                   tm.id = l_team_member_id and
                   ap.team_member_id = tm.id and
-                  ap.start_date > trunc(sysdate)
+                  ap.start_date > trunc(sysdate) and
+                  nvl(ap.private_yn,'N') = 'N'  -- must exclude all private activities
             order by ap.end_date
         ) loop
             l_row_count := l_row_count + 1;
@@ -276,7 +280,7 @@ begin
             x3 := x3||'<li>'||
                   ' '||apex_escape.html(c1.TIMELINE)||
                   ' (<strong>'||apex_escape.html(c1.activity_type)||'</strong>) - '||
-                  apex_escape.html(c1.comments);
+                  apex_escape.html(c1.activity)||case when c1.comments is not null then ' - '||apex_escape.html(c1.comments) end;
             if c1.project is not null then 
                x3 := x3||'<br>'||nvl(l_project_label,'Project')||': '||l_project;
             end if;
@@ -303,6 +307,7 @@ begin
                    -- activity core information
                    --
                    at.activity_type,
+                   ap.activity,
                    decode(greatest(length(ap.comments),l_max_text_length),l_max_text_length,ap.comments,substr(ap.comments,1,l_max_text_length)||'...') comments,
                    --
                    to_char(ap.start_date,'DD-MON-YYYY')||' to '||to_char(ap.end_date,'DD-MON-YYYY') TIMELINE,
@@ -328,7 +333,8 @@ begin
                   tm.id = l_team_member_id and
                   ap.team_member_id = tm.id and
                   ap.end_date > trunc(sysdate) - 7 and
-                  ap.end_date < trunc(sysdate)
+                  ap.end_date < trunc(sysdate) and
+                  nvl(ap.private_yn,'N') = 'N'  -- must exclude all private activities
             order by ap.end_date 
         ) loop
             l_row_count := l_row_count + 1;
@@ -338,7 +344,7 @@ begin
             x3 := x3||chr(10)||'<li>'||
                  ' '||apex_escape.html(c1.TIMELINE)||
                  ' (<strong>'||apex_escape.html(c1.activity_type)||'</strong>) - '||
-                 apex_escape.html(c1.comments);
+                 apex_escape.html(c1.activity) || case when c1.comments is not null then ' - '||apex_escape.html(c1.comments) end;
             --
             if c1.project is not null then 
                x3 := x3||'<br>'||nvl(l_project_label,'Project')||': '||apex_escape.html(c1.project);
@@ -447,7 +453,7 @@ begin
             elsif c1.review_cnt > 0 then l_role := 'Reviewer';
             elsif c1.milestone_cnt > 0 then l_role := 'Milestone Owner';
             elsif c1.other_task_cnt > 0 then l_role := 'Task Owner';
-            else select listagg(rt.resource_type, ', ') within group (order by rt.resource_type)
+            else select listagg(rt.resource_type, ', ' on overflow truncate with count) within group (order by rt.resource_type)
                    into l_role
                    from sp_project_contributors c,
                         sp_resource_types rt

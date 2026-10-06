@@ -10,13 +10,6 @@ page 82 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region tag-changes (
         name: Tag Changes
@@ -64,6 +57,9 @@ page 82 (
                 t-Report--rowHighlight
                 t-Report--noBorders
             ]
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: None Found

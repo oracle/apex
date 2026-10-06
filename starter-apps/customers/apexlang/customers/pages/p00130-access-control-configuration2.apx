@@ -11,13 +11,10 @@ page 130 (
         resizable: false
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -105,9 +102,6 @@ page 130 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
         }
-        validation {
-            valueRequired: true
-        }
         source {
             type: functionBody
             plsqlFunctionBody: return eba_cust_fw.get_preference_value('ACCESS_CONTROL_ENABLED');
@@ -150,9 +144,6 @@ page 130 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
-        }
-        validation {
-            valueRequired: true
         }
         source {
             type: functionBody

@@ -14,13 +14,8 @@ page 10 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region audit-info (
@@ -29,8 +24,8 @@ page 10 (
         source {
             plsqlFunctionBody:
                 ```plsql
-                return 'created '|| apex_util.get_since(to_date(:P10_CREATED)) ||' by '|| lower(:P10_CREATED_BY) ||'<br/>'||
-                       'last updated '|| apex_util.get_since(to_date(:P10_UPDATED)) ||' by '|| lower(:P10_UPDATED_BY);
+                return 'created '|| apex_util.get_since(to_date(:P10_CREATED)) ||' by '|| apex_escape.html(lower(:P10_CREATED_BY)) ||'<br/>'||
+                       'last updated '|| apex_util.get_since(to_date(:P10_UPDATED)) ||' by '|| apex_escape.html(lower(:P10_UPDATED_BY));
                 ```
         }
         layout {
@@ -91,7 +86,7 @@ page 10 (
     pageItem P10_CREATED (
         type: hidden
         layout {
-            sequence: 80
+            sequence: 70
             region: @related-project
             slot: regionBody
         }
@@ -108,7 +103,7 @@ page 10 (
     pageItem P10_CREATED_BY (
         type: hidden
         layout {
-            sequence: 70
+            sequence: 80
             region: @related-project
             slot: regionBody
         }
@@ -262,7 +257,7 @@ page 10 (
     pageItem P10_UPDATED (
         type: hidden
         layout {
-            sequence: 100
+            sequence: 90
             region: @related-project
             slot: regionBody
         }
@@ -279,7 +274,7 @@ page 10 (
     pageItem P10_UPDATED_BY (
         type: hidden
         layout {
-            sequence: 90
+            sequence: 100
             region: @related-project
             slot: regionBody
         }

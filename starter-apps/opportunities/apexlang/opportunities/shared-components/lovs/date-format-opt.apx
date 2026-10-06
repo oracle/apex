@@ -1,0 +1,20 @@
+lov date-format-opt (
+    name: DATE_FORMAT_OPT
+    source {
+        location: staticValues
+    }
+
+    entry provide-custom-formats-for-uploaded-columns (
+        sequence: 20
+        display: Provide custom formats for uploaded columns
+        return: N
+    )
+
+    entry use-application-standard-format-masks (
+        sequence: 10
+        display: Use application standard format masks
+        return: Y
+    )
+
+)
+

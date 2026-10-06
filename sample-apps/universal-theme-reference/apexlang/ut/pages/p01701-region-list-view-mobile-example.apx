@@ -23,11 +23,12 @@ page 1701 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
+        pageAccessProtection: unrestricted
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

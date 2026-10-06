@@ -7,9 +7,6 @@ page 140 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         executeWhenPageLoads:
             ```javascript-browser
@@ -22,8 +19,6 @@ page 140 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: Verify all rows contain the value "INSERT" or "UPDATE" in the "Action" column before clicking the <strong>Load Data</strong> button.

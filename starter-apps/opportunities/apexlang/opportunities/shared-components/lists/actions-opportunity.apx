@@ -1,0 +1,128 @@
+list actions-opportunity (
+    name: Actions - Opportunity
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: OPPORTUNITY
+                    P99_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: OPPORTUNITY
+                    P22_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-competition (
+        label: Add Competition
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 27
+                items: {
+                    P27_DEAL_ID: &P80_ID.
+                }
+                clearCache: 27
+            }
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: OPPORTUNITY
+                    P114_ENTITY_ID: &P80_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+    entry add-product (
+        label: Add Product
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 108
+                items: {
+                    P108_DEAL_ID: &P80_ID.
+                }
+                clearCache: 108
+            }
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry add-team-member (
+        label: Add Team Member
+        icon {
+            imageIconCssClasses: fa-user-plus
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 30
+                items: {
+                    P30_DEAL_ID: &P80_ID.
+                }
+                clearCache: 30
+            }
+        }
+    )
+
+)
+

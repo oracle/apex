@@ -15,13 +15,6 @@ page 161 (
         height: 600
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @kanban
     }
@@ -48,6 +41,9 @@ page 161 (
         }
         chartLayout {
             height: 800
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             sortOrder: valueAsc

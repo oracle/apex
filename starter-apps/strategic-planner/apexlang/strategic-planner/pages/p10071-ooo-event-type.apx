@@ -1,0 +1,555 @@
+page 10071 (
+    name: Out of Office Event Type
+    alias: OOO-EVENT-TYPE
+    title: Out of Office Event Type
+    pageGroup: @activities
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    security {
+        authorizationScheme: @administration-rights
+    }
+    config {
+        buildOption: @team-calendar
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region event-type (
+        name: Event Type
+        type: form
+        source {
+            location: localDatabase
+            tableName: SP_EVENT_TYPES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+    )
+
+    pageItem P10071_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        layout {
+            sequence: 70
+            region: @event-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @event-type
+            column: ACTIVE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Only active event types can be added.  If set to inactive, existing events will still display.
+        }
+    )
+
+    pageItem P10071_CALENDAR_EVENT_COLOR (
+        type: selectOne
+        label {
+            label: Calendar Event Color
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sharedComponent
+            lov: @apex-calendar-event-colors
+        }
+        layout {
+            sequence: 50
+            region: @event-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @event-type
+            column: CALENDAR_EVENT_COLOR
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10071_CREATED (
+        type: hidden
+        layout {
+            sequence: 90
+            region: @event-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @event-type
+            column: CREATED
+            dataType: date
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10071_CREATED_BY (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @event-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @event-type
+            column: CREATED_BY
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10071_EVENT_TYPE (
+        type: textField
+        label {
+            label: Event Type
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @event-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 60
+        }
+        source {
+            formRegion: @event-type
+            column: EVENT_TYPE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10071_GENERAL_EVENT_YN (
+        type: switch
+        label {
+            label: General Event
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @event-type
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @event-type
+            column: GENERAL_EVENT_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: Identifies if this Event Type is specific to a user (like Vacation) or if a general event (like Public Holiday).  If General, no Team Member will be associated.
+        }
+    )
+
+    pageItem P10071_ICON_CLASS (
+        type: textField
+        label {
+            label: Icon Class
+            alignment: left
+        }
+        layout {
+            sequence: 60
+            region: @event-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @event-type
+            column: ICON_CLASS
+            dataType: varchar2
+        }
+    )
+
+    pageItem P10071_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @event-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @event-type
+            column: ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10071_QUICK_PICK_YN (
+        type: switch
+        label {
+            label: Quick Pick
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @event-type
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @event-type
+            column: QUICK_PICK_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: Quick picks display beneath the normal type selector and should be the most common types.
+        }
+    )
+
+    pageItem P10071_UPDATED (
+        type: hidden
+        layout {
+            sequence: 110
+            region: @event-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @event-type
+            column: UPDATED
+            dataType: date
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P10071_UPDATED_BY (
+        type: hidden
+        layout {
+            sequence: 120
+            region: @event-type
+            slot: regionBody
+        }
+        source {
+            formRegion: @event-type
+            column: UPDATED_BY
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P10071_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+                t-Button--simple
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: &APP_TEXT$DELETE_MSG!RAW.
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10071_ID
+        }
+    )
+
+    button save (
+        buttonName: SAVE
+        label: Apply Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P10071_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation cannot-be-quick-pick-if-inactive (
+        name: cannot be quick pick if inactive
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: item=Value
+            item: P10071_QUICK_PICK_YN
+            value: N
+        }
+        error {
+            errorMessage: Cannot be a Quick Pick if inactive.
+            associatedItem: @P10071_QUICK_PICK_YN
+        }
+        serverSideCondition {
+            type: item=value
+            item: P10071_ACTIVE_YN
+            value: N
+        }
+    )
+
+    validation no-more-than-5-quick-picks (
+        name: No more than 5 quick picks
+        execution {
+            sequence: 20
+        }
+        validation {
+            type: functionBodyReturningBoolean
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (    
+                    select count(*) cnt    
+                      from sp_event_types
+                     where active_yn = 'Y'
+                       and quick_pick_yn = 'Y'
+                       and (:P10071_ID is null or :P10071_ID != id)
+                ) loop
+                    if c1.cnt = 5 then
+                        return FALSE;
+                    else
+                        return TRUE;
+                    end if;
+                end loop;
+                ```
+        }
+        error {
+            errorMessage: Can only have at most 5 Quick Picks.
+            associatedItem: @P10071_QUICK_PICK_YN
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P10071_ACTIVE_YN = 'Y' and :P10071_QUICK_PICK_YN = 'Y'
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 31743884094108585229
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-manage-activity-type (
+        name: Initialize form Manage Activity Type
+        type: formInitialization
+        formRegion: @event-type
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 31743881140922585226
+        }
+    )
+
+    process process-form-manage-event-type (
+        name: Process form Manage Event Type
+        type: formAutoRowProcessing
+        formRegion: @event-type
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Action Processed
+        }
+        advanced {
+            executionMappingIdentifier: 31743881534324585227
+        }
+    )
+
+)
+

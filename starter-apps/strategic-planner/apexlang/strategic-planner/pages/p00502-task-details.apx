@@ -6,9 +6,6 @@ page 502 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
@@ -51,8 +48,8 @@ page 502 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        deepLinking: true
+        pageAccessProtection: unrestricted
     }
 
     region breadcrumb (
@@ -94,6 +91,7 @@ page 502 (
                        null comment_date,
                        tm.first_name || ' ' || tm.last_name user_name,
                        --
+                       ic.comment_nbr,
                        ic.body_html comment_text,
                        case when lower(ic.created_by) = lower(:app_user)
                             then '<a href="'||apex_util.prepare_URL(
@@ -131,7 +129,7 @@ page 502 (
             pageItemsToSubmit: P502_TASK_ID
         }
         layout {
-            sequence: 90
+            sequence: 100
             slot: body
         }
         appearance {
@@ -149,15 +147,12 @@ page 502 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 7
+            reportColumnQueryId: 8
             derivedColumn: N
             heading {
                 heading: Actions
@@ -176,7 +171,7 @@ page 502 (
         )
 
         column ATTRIBUTE_1 (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Attribute 1
@@ -191,7 +186,7 @@ page 502 (
         )
 
         column ATTRIBUTE_2 (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Attribute 2
@@ -206,7 +201,7 @@ page 502 (
         )
 
         column ATTRIBUTE_3 (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Attribute 3
@@ -221,7 +216,7 @@ page 502 (
         )
 
         column ATTRIBUTE_4 (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Attribute 4
@@ -236,7 +231,7 @@ page 502 (
         )
 
         column AUTHOR_ID (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Author Id
@@ -251,7 +246,7 @@ page 502 (
         )
 
         column BODY (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Body
@@ -266,7 +261,7 @@ page 502 (
         )
 
         column BODY_HTML (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Body Html
@@ -298,8 +293,27 @@ page 502 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 280
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 7
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -311,8 +325,10 @@ page 502 (
             columnFormatting {
                 htmlExpression:
                     ```html
+                    <div class="is-markdownified">
                     {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
                     #COMMENT_TEXT#
+                    </div>
                     ```
             }
             sorting {
@@ -324,7 +340,7 @@ page 502 (
         )
 
         column CREATED (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created
@@ -342,7 +358,7 @@ page 502 (
         )
 
         column CREATED_BY (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 19
             derivedColumn: N
             heading {
                 heading: Created By
@@ -371,7 +387,7 @@ page 502 (
         )
 
         column ICON_MODIFIER (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Icon Modifier
@@ -401,7 +417,7 @@ page 502 (
         )
 
         column PRIVATE_COMMENT_LABEL (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Private Comment Label
@@ -415,7 +431,7 @@ page 502 (
         )
 
         column TEAM_MEMBER_ID (
-            reportColumnQueryId: 21
+            reportColumnQueryId: 22
             derivedColumn: N
             heading {
                 heading: User ID
@@ -429,7 +445,7 @@ page 502 (
         )
 
         column UPDATED (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 20
             derivedColumn: N
             type: hidden
             layout {
@@ -438,7 +454,7 @@ page 502 (
         )
 
         column UPDATED_BY (
-            reportColumnQueryId: 20
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: Updated By
@@ -477,6 +493,9 @@ page 502 (
             layout {
                 sequence: 170
             }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
+            }
             sorting {
                 sortable: false
             }
@@ -505,7 +524,7 @@ page 502 (
         name: Details
         type: staticContent
         layout {
-            sequence: 80
+            sequence: 90
             slot: body
         }
         appearance {
@@ -581,7 +600,7 @@ page 502 (
             pageItemsToSubmit: P502_TASK_ID
         }
         layout {
-            sequence: 110
+            sequence: 120
             slot: body
             startNewRow: false
             newColumn: false
@@ -600,6 +619,7 @@ page 502 (
                 page: 504
                 items: {
                     P504_ID: #ID#
+                    P504_ON_DELETE: CLOSE
                 }
                 clearCache: 504
             }
@@ -628,7 +648,7 @@ page 502 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -644,7 +664,7 @@ page 502 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -660,7 +680,7 @@ page 502 (
                 sequence: 100
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: I
@@ -688,7 +708,7 @@ page 502 (
                 charSetColumn: DOCUMENT_CHARSET
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: N
@@ -715,7 +735,7 @@ page 502 (
                 linkText: #DOCUMENT_FILENAME#
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -731,7 +751,7 @@ page 502 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -752,7 +772,7 @@ page 502 (
                 formatMask: FILESIZE
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -768,7 +788,7 @@ page 502 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -786,7 +806,7 @@ page 502 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -802,7 +822,7 @@ page 502 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -819,7 +839,7 @@ page 502 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -838,7 +858,7 @@ page 502 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: D
@@ -938,7 +958,7 @@ page 502 (
             pageItemsToSubmit: P502_TASK_ID
         }
         layout {
-            sequence: 100
+            sequence: 110
             slot: body
         }
         appearance {
@@ -983,7 +1003,7 @@ page 502 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: F
@@ -999,7 +1019,7 @@ page 502 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -1018,7 +1038,7 @@ page 502 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -1034,7 +1054,7 @@ page 502 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -1053,7 +1073,7 @@ page 502 (
                 htmlExpression: <a href="#LINK_URL_LINK#" target="_blank">#LINK_NAME#</a>
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -1069,7 +1089,7 @@ page 502 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -1085,7 +1105,7 @@ page 502 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -1103,7 +1123,7 @@ page 502 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: L
@@ -1122,7 +1142,7 @@ page 502 (
                 formatMask: SINCE_SHORT
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -1138,7 +1158,7 @@ page 502 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -1199,224 +1219,6 @@ page 502 (
 
     )
 
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 10
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action edit (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 10
-            }
-            behavior {
-                target: {
-                    page: 501
-                    items: {
-                        P501_ID: &P502_TASK_ID.
-                    }
-                    clearCache: 501
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            serverSideCondition {
-                type: rowsReturned
-                sqlQuery:
-                    ```sql
-                    select 1
-                      from sp_tasks t, sp_task_types tt
-                     where t.id = :P502_TASK_ID
-                       and t.task_type_id = tt.id
-                       and tt.STATIC_ID not in ('MILESTONE','REVIEW')
-                    ```
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
-        )
-
-        action edit-2 (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 30
-            }
-            behavior {
-                target: {
-                    page: 509
-                    items: {
-                        P509_ID: &P502_TASK_ID.
-                    }
-                    clearCache: 509
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            serverSideCondition {
-                type: rowsReturned
-                sqlQuery:
-                    ```sql
-                    select 1
-                      from sp_tasks t, sp_task_types tt
-                     where t.id = :P502_TASK_ID
-                       and t.task_type_id = tt.id
-                       and tt.STATIC_ID = 'REVIEW'
-                    ```
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
-        )
-
-        action edit-3 (
-            position: primaryActions
-            template: button
-            label: Edit
-            layout {
-                sequence: 20
-            }
-            behavior {
-                target: {
-                    page: 508
-                    items: {
-                        P508_ID: &P502_TASK_ID.
-                    }
-                    clearCache: 508
-                    action: resetPagination
-                }
-            }
-            appearance {
-                displayType: textWithIcon
-                icon: fa-edit
-                hot: true
-            }
-            serverSideCondition {
-                type: rowsReturned
-                sqlQuery:
-                    ```sql
-                    select 1
-                      from sp_tasks t, sp_task_types tt
-                     where t.id = :P502_TASK_ID
-                       and t.task_type_id = tt.id
-                       and tt.STATIC_ID = 'MILESTONE'
-                    ```
-            }
-            security {
-                authorizationScheme: @contribution-rights
-            }
-        )
-
-        action menu (
-            position: primaryActions
-            template: menu
-            label: menu
-            layout {
-                sequence: 40
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 30
-                }
-            )
-
-            menu find-screen-names (
-                label: Find Screen Names
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 123
-                    }
-                }
-                appearance {
-                    icon: fa-at
-                }
-            )
-
-            menu show-involved-people (
-                label: Show Involved People
-                layout {
-                    sequence: 20
-                }
-                behavior {
-                    target: {
-                        page: 96
-                        items: {
-                            P96_ID: &P502_PROJECT_ID.
-                        }
-                        clearCache: 96
-                    }
-                }
-                appearance {
-                    icon: fa-users-alt
-                }
-            )
-
-            menu view-history (
-                label: View History
-                layout {
-                    sequence: 10
-                }
-                behavior {
-                    target: {
-                        page: 507
-                        items: {
-                            P507_TASK_ID: &P502_TASK_ID.
-                        }
-                        clearCache: 507
-                    }
-                }
-                appearance {
-                    icon: fa-clock-o
-                }
-            )
-
-        )
-
-    )
-
     region rds (
         name: RDS
         type: regionDisplaySelector
@@ -1435,6 +1237,311 @@ page 502 (
         settings {
             includeShowAll: false
         }
+    )
+
+    region related (
+        name: Related
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select r.ID relation_id,
+                       'This Task ' ||
+                           nvl((select relation_type from sp_relation_types
+                                 where id = r.relation_type_id),'relates to') ||' "'||
+                           p.task ||
+                           case when p.task is not null then ' (' end ||
+                           (select task_type from sp_task_types rt where rt.id = p.task_type_id)||
+                            case when p.task_sub_type_id is not null 
+                                 then ': '||(select task_type from sp_task_types rt where rt.id = p.task_sub_type_id) 
+                                 end ||
+                                 case when p.task is not null then ')' end ||'"' relation,
+                       r.relation_details,
+                       (select case when first_name is not null or last_name is not null
+                                    then first_name||' '||last_name
+                                    else email
+                                    end
+                               from sp_team_members t where t.id = p.owner_id) owner,
+                       p.target_complete,
+                       r.CREATED,
+                       lower(r.created_by) created_by,
+                       r.updated,
+                       lower(r.updated_by) updated_by
+                  from SP_TASK_RELATED r,
+                       sp_tasks p
+                 where r.TASK_ID = :P502_TASK_ID
+                   and r.RELATED_TASK_ID = p.id
+                union
+                select r.ID relation_id,
+                       '"'||rp.task ||
+                           case when rp.task is not null then ' (' end ||
+                           (select task_type from sp_task_types rt where rt.id = rp.task_type_id)||
+                            case when rp.task_sub_type_id is not null 
+                                 then ': '||(select task_type from sp_task_types rt where rt.id = rp.task_sub_type_id) 
+                                 end ||
+                                 case when rp.task is not null then ')' end ||'" '||
+                        nvl((select nvl(relation_reverse,relation_type) from sp_relation_types
+                              where id = r.relation_type_id),'relates to') ||
+                       ' This Task' relation,
+                       r.relation_details,
+                       (select case when first_name is not null or last_name is not null
+                                    then first_name||' '||last_name
+                                    else email
+                                    end
+                               from sp_team_members t where t.id = rp.owner_id) owner,
+                       rp.target_complete,
+                       r.CREATED,
+                       lower(r.created_by) created_by,
+                       r.updated,
+                       lower(r.updated_by) updated_by
+                  from SP_TASK_RELATED r,
+                       sp_tasks rp
+                 where r.RELATED_TASK_ID = :P502_TASK_ID
+                   and r.task_id = rp.id
+                ```
+            pageItemsToSubmit: P502_TASK_ID
+        }
+        layout {
+            sequence: 130
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: RELATED
+            regionDisplaySelector: true
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t,
+                       sp_task_types tt
+                 where t.project_id = :P502_PROJECT_ID
+                   and t.id != :P502_TASK_ID
+                   and nvl(t.task_sub_type_id,t.task_type_id) = tt.id 
+                   and tt.static_id not like 'MILESTONE%'
+                   and tt.static_id not like 'REVIEW%'
+                ```
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 85
+                items: {
+                    P85_ID: #RELATION_ID#
+                }
+                clearCache: 85
+                action: resetPagination
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+            authorizationScheme: @contribution-rights
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        performance {
+            maxRowsToProcess: 1000000
+        }
+        advanced {
+            savedReportMappingIdentifier: 74091298310847318890
+        }
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 190
+            }
+            appearance {
+                formatMask: SINCE_SHORT
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column CREATED_BY (
+            type: plainText
+            heading {
+                heading: Created By
+            }
+            layout {
+                sequence: 200
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Related Task Owner
+            }
+            layout {
+                sequence: 160
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AH
+            }
+        )
+
+        column RELATION (
+            type: plainText
+            heading {
+                heading: Relation
+            }
+            layout {
+                sequence: 230
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AK
+            }
+        )
+
+        column RELATION_DETAILS (
+            type: plainText
+            heading {
+                heading: Relation Details
+            }
+            layout {
+                sequence: 180
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column RELATION_ID (
+            type: hidden
+            heading {
+                heading: Relation Id
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Related Task Target Complete
+            }
+            layout {
+                sequence: 170
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: AI
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 210
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column UPDATED_BY (
+            type: plainText
+            heading {
+                heading: Updated By
+            }
+            layout {
+                sequence: 220
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+        pageHeader {
+            pageHeaderText: Related
+        }
+
+        savedReport 10423246 (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn RELATION (
+                sequence: 1
+            )
+
+            displayColumn UPDATED (
+                sequence: 2
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+            sort (
+                column: CREATED
+                sort {
+                    direction: desc
+                    sequence: 2
+                }
+            )
+
+        )
+
     )
 
     region task (
@@ -1503,11 +1610,14 @@ page 502 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
         messages {
-            whenNoDataFound: no data found
+            whenNoDataFound: Task not found
         }
 
         column FOCUS_AREA (
@@ -1524,7 +1634,7 @@ page 502 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #FOCUS_AREA#
+                        P23_FOCUS_AREA: I#FOCUS_AREA#
                     }
                     clearCache: 23
                 }
@@ -1672,11 +1782,12 @@ page 502 (
             }
             link {
                 target: {
-                    page: 5
+                    page: 73
                     items: {
-                        P5_ID: #OWNER_ID#
+                        P73_TEAM_MEMBER_ID: #OWNER_ID#
                     }
-                    clearCache: 5
+                    clearCache: 73
+                    action: resetPagination
                 }
                 linkText: #THE_OWNER#
             }
@@ -1746,10 +1857,17 @@ page 502 (
                             data: {
                                 imageRefId: apex.item('P502_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'TASK',
+                            objectId: apex.items.P502_TASK_ID.value
+                        },
+                        docs: {
+                            scope: 'TASK',
+                            objectId: apex.items.P502_TASK_ID.value
                         }
                     });
                 }
-                
                 ```
         }
         security {
@@ -1824,7 +1942,7 @@ page 502 (
     pageItem P502_PARENT_TASK_TYPE (
         type: hidden
         layout {
-            sequence: 60
+            sequence: 70
             slot: body
         }
         security {
@@ -1835,7 +1953,7 @@ page 502 (
     pageItem P502_PREV_PAGE (
         type: hidden
         layout {
-            sequence: 10
+            sequence: 20
             slot: body
         }
         security {
@@ -1874,7 +1992,7 @@ page 502 (
     pageItem P502_PROJECT_ID (
         type: hidden
         layout {
-            sequence: 40
+            sequence: 50
             slot: body
         }
         security {
@@ -1883,10 +2001,104 @@ page 502 (
         }
     )
 
+    pageItem P502_PTID (
+        type: hidden
+        layout {
+            sequence: 10
+            slot: body
+        }
+        security {
+            restrictedChars: alphanumWithSpace
+        }
+    )
+
+    pageItem P502_RELATED_TASK_ID (
+        type: selectOne
+        label {
+            label: Related Task
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select t.task || case when t.task is not null then ' (' end || tt.task_type || 
+                                 case when t.task is not null then ')' end d, 
+                       t.id   
+                  from sp_tasks t,
+                       sp_task_types tt    
+                 where t.project_id = :P502_PROJECT_ID
+                   and nvl(t.task_sub_type_id,t.task_type_id) = tt.id 
+                   and tt.static_id not like 'MILESTONE%'
+                   and tt.static_id not like 'REVIEW%'
+                   and t.id not in (select r.related_task_id   
+                                      from sp_task_related r
+                                     where r.task_id = :P502_TASK_ID)
+                   and t.id not in (select r.task_id   
+                                      from sp_task_related r
+                                     where r.related_task_id = :P502_TASK_ID)
+                   and t.id != :P502_TASK_ID
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 20
+            region: @related
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 20
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    pageItem P502_RELATION_TYPE (
+        type: selectOne
+        label {
+            label: Relation Type
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select relation_type, id    
+                  from sp_relation_types
+                 where active_yn = 'Y'
+                 order by 1
+                ```
+        }
+        layout {
+            sequence: 10
+            region: @related
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
     pageItem P502_TASK (
         type: hidden
         layout {
-            sequence: 50
+            sequence: 60
             slot: body
         }
         security {
@@ -1897,7 +2109,7 @@ page 502 (
     pageItem P502_TASK_ID (
         type: hidden
         layout {
-            sequence: 20
+            sequence: 30
             slot: body
         }
         security {
@@ -1909,12 +2121,71 @@ page 502 (
     pageItem P502_TASK_LINK (
         type: hidden
         layout {
-            sequence: 70
+            sequence: 80
             slot: body
         }
         security {
             sessionStateProtection: restricted
         }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu show-involved-people (
+            label: Show Involved People
+            layout {
+                sequence: 20
+            }
+            behavior {
+                target: {
+                    page: 96
+                    items: {
+                        P96_ID: &P502_PROJECT_ID.
+                    }
+                    clearCache: 96
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-users-alt
+            }
+        )
+
+        menu view-history (
+            label: View History
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 507
+                    items: {
+                        P507_TASK_ID: &P502_TASK_ID.
+                    }
+                    clearCache: 507
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clock-o
+            }
+        )
+
     )
 
     button add-document (
@@ -1972,6 +2243,165 @@ page 502 (
         }
         behavior {
             action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button add-related-task (
+        buttonName: add_related_task
+        label: Add Related Task
+        layout {
+            sequence: 40
+            region: @related
+            slot: regionBody
+            startNewRow: false
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+                t-Button--gapTop
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-milestone (
+        buttonName: edit_milestone
+        label: Edit
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 508
+                items: {
+                    P508_ID: &P502_TASK_ID.
+                }
+                clearCache: 508
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P502_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID = 'MILESTONE'
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-other (
+        buttonName: edit_other
+        label: Edit
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 501
+                items: {
+                    P501_ID: &P502_TASK_ID.
+                }
+                clearCache: 501
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P502_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID not in ('MILESTONE','REVIEW')
+                ```
+        }
+        security {
+            authorizationScheme: @contribution-rights
+        }
+    )
+
+    button edit-review (
+        buttonName: edit_review
+        label: Edit
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-edit
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 509
+                items: {
+                    P509_ID: &P502_TASK_ID.
+                }
+                clearCache: 509
+                action: resetPagination
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_tasks t, sp_task_types tt
+                 where t.id = :P502_TASK_ID
+                   and t.task_type_id = tt.id
+                   and tt.STATIC_ID = 'REVIEW'
+                ```
         }
         security {
             authorizationScheme: @contribution-rights
@@ -2198,6 +2628,88 @@ page 502 (
 
     )
 
+    dynamicAction add-related (
+        name: add related
+        execution {
+            sequence: 100
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @add-related-task
+        }
+
+        action native-alert (
+            action: alert
+            settings {
+                title: Missing Related Task
+                message: Please select a related Task.
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: jsExpression
+                javaScriptExpression: $v('P502_RELATED_TASK_ID') === ''
+            }
+        )
+
+        action native-clear (
+            action: clear
+            affectedElements {
+                selectionType: items
+                items: [
+                    P502_RELATED_TASK_ID
+                    P502_RELATION_TYPE
+                ]
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+        action native-execute-plsql-code (
+            action: executeServerSideCode
+            settings {
+                plsqlCode:
+                    ```plsql
+                    if :P502_RELATED_TASK_ID is not null then
+                        insert into sp_task_related (task_id, related_task_id, relation_type_id)
+                         values (:P502_TASK_ID, :P502_RELATED_TASK_ID, :P502_RELATION_TYPE);
+                    end if;
+                    ```
+                itemsToSubmit: [
+                    P502_RELATED_TASK_ID
+                    P502_TASK_ID
+                    P502_RELATION_TYPE
+                ]
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+            clientSideCondition {
+                type: itemIsNotNull
+                item: P502_RELATED_TASK_ID
+            }
+        )
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @related
+            }
+            execution {
+                sequence: 50
+                fireOnInit: false
+            }
+        )
+
+    )
+
     dynamicAction contextual-info-dialog-close-refresh (
         name: contextual info dialog close refresh
         execution {
@@ -2239,6 +2751,30 @@ page 502 (
             }
             execution {
                 sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction new-links-in-comments-in-new-tab (
+        name: new links in comments in new tab
+        execution {
+            sequence: 90
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @comments
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
             }
         )
 
@@ -2442,10 +2978,35 @@ page 502 (
 
     )
 
+    dynamicAction refresh-related (
+        name: refresh related
+        execution {
+            sequence: 110
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: region
+            region: @related
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @related
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
     computation p502-parent-task-type (
         itemName: P502_PARENT_TASK_TYPE
         execution {
-            sequence: 20
+            sequence: 30
             point: beforeHeader
         }
         computation {
@@ -2460,10 +3021,46 @@ page 502 (
         }
     )
 
+    computation p502-prev-page (
+        itemName: P502_PREV_PAGE
+        execution {
+            sequence: 60
+            point: beforeHeader
+        }
+        computation {
+            type: staticValue
+            staticValue: 3
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P502_PREV_PAGE
+        }
+    )
+
+    computation p502-project-id (
+        itemName: P502_PROJECT_ID
+        execution {
+            sequence: 50
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select project_id
+                  from sp_tasks
+                 where id = :P502_TASK_ID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P502_PROJECT_ID
+        }
+    )
+
     computation p502-task (
         itemName: P502_TASK
         execution {
-            sequence: 10
+            sequence: 20
             point: beforeHeader
         }
         computation {
@@ -2479,10 +3076,30 @@ page 502 (
         }
     )
 
+    computation p502-task-id (
+        itemName: P502_TASK_ID
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        computation {
+            sqlQuery:
+                ```sql
+                select id
+                  from sp_tasks
+                 where id = :P502_PTID
+                ```
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P502_PTID
+        }
+    )
+
     computation p502-task-link (
         itemName: P502_TASK_LINK
         execution {
-            sequence: 30
+            sequence: 40
             point: beforeHeader
         }
         computation {
@@ -2494,10 +3111,29 @@ page 502 (
                                           p_application    => :APP_ID,
                                           p_page           => 'task-details',
                                           p_session        => null,
-                                          p_items          => 'P502_PREV_PAGE,P502_TASK_ID,P502_PROJECT_ID',
-                                          p_values         => '3,'||:P502_TASK_ID||','||:P502_PROJECT_ID,
+                                          p_items          => 'P502_PTID',
+                                          p_values         => :P502_TASK_ID,
                                           p_plain_url      => TRUE );
                 ```
+        }
+    )
+
+    process clear-ptid (
+        name: clear PTID
+        type: executeCode
+        source {
+            plsqlCode: :P502_PTID := null;
+        }
+        execution {
+            sequence: 10
+            point: afterHeader
+        }
+        advanced {
+            executionMappingIdentifier: 39222947257451272929
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P502_PTID
         }
     )
 

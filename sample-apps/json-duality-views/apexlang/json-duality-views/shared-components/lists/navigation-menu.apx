@@ -1,0 +1,65 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 5
+        }
+        isCurrent {
+            type: pages
+            pages: 1
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry purchase-orders-inbox (
+        label: Purchase Orders Inbox
+        icon {
+            imageIconCssClasses: fa-inbox
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry purchase-orders-stacked (
+        label: Purchase Orders Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                10
+                6
+            ]
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+)
+

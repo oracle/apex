@@ -88,7 +88,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 10
             }
             advanced {
-                diagram: {"position":{"x":570,"y":970},"z":1}
+                diagram: "{\"position\":{\"x\":570,\"y\":970},\"z\":1}"
             }
 
             connection (
@@ -147,7 +147,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 20
             }
             advanced {
-                diagram: {"position":{"x":660,"y":970},"z":2}
+                diagram: "{\"position\":{\"x\":660,\"y\":970},\"z\":2}"
             }
 
             connection (
@@ -171,13 +171,13 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
             }
             emailTemplate {
                 emailTemplate: @ORDER_CONFIRMATION
-                placeholderValues: {"ORDER_ID":"&V_ORDER_ID.","SHIPMENT_METHOD":"&V_SHIPMENT_METHOD.","ESTIMATED_DELIVERY":"&V_ESTIMATED_DELIVERY.","CUSTOMER_NAME":"&V_CUSTOMER_NAME.","STORE_NAME":"&V_STORE_NAME.","PRODUCT_NAME":"&V_PRODUCT_NAME.","QUANTITY":"&P_QUANTITY.","UNIT_PRICE":"&V_UNIT_PRICE.","TOTAL_AMOUNT":"&V_TOTAL_AMOUNT.","LOYALTY_TIER":"&V_LOYALTY_TIER.","PAYMENT_METHOD":"&P_PAYMENT_METHOD.","STREET":"&P_STREET.","CITY":"&P_CITY.","STATE":"&P_STATE.","POSTAL_CODE":"&P_POSTAL_CODE.","COUNTRY":"&P_COUNTRY."}
+                placeholderValues: "{\"ORDER_ID\":\"&V_ORDER_ID.\",\"SHIPMENT_METHOD\":\"&V_SHIPMENT_METHOD.\",\"ESTIMATED_DELIVERY\":\"&V_ESTIMATED_DELIVERY.\",\"CUSTOMER_NAME\":\"&V_CUSTOMER_NAME.\",\"STORE_NAME\":\"&V_STORE_NAME.\",\"PRODUCT_NAME\":\"&V_PRODUCT_NAME.\",\"QUANTITY\":\"&P_QUANTITY.\",\"UNIT_PRICE\":\"&V_UNIT_PRICE.\",\"TOTAL_AMOUNT\":\"&V_TOTAL_AMOUNT.\",\"LOYALTY_TIER\":\"&V_LOYALTY_TIER.\",\"PAYMENT_METHOD\":\"&P_PAYMENT_METHOD.\",\"STREET\":\"&P_STREET.\",\"CITY\":\"&P_CITY.\",\"STATE\":\"&P_STATE.\",\"POSTAL_CODE\":\"&P_POSTAL_CODE.\",\"COUNTRY\":\"&P_COUNTRY.\"}"
             }
             layout {
                 sequence: 110
             }
             advanced {
-                diagram: {"position":{"x":1560,"y":840},"z":11}
+                diagram: "{\"position\":{\"x\":1560,\"y\":840},\"z\":11}"
             }
 
             connection (
@@ -199,7 +199,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 30
             }
             advanced {
-                diagram: {"position":{"x":1830,"y":840},"z":3}
+                diagram: "{\"position\":{\"x\":1830,\"y\":840},\"z\":3}"
             }
         )
 
@@ -233,7 +233,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 50
             }
             advanced {
-                diagram: {"position":{"x":660,"y":830},"z":5}
+                diagram: "{\"position\":{\"x\":660,\"y\":830},\"z\":5}"
             }
 
             connection (
@@ -311,7 +311,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 60
             }
             advanced {
-                diagram: {"position":{"x":950,"y":830},"z":6}
+                diagram: "{\"position\":{\"x\":950,\"y\":830},\"z\":6}"
             }
 
             connection (
@@ -339,7 +339,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 80
             }
             advanced {
-                diagram: {"position":{"x":1240,"y":830},"z":8}
+                diagram: "{\"position\":{\"x\":1240,\"y\":830},\"z\":8}"
             }
 
             connection (
@@ -409,7 +409,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 90
             }
             advanced {
-                diagram: {"position":{"x":1240,"y":710},"z":9}
+                diagram: "{\"position\":{\"x\":1240,\"y\":710},\"z\":9}"
             }
 
             connection (
@@ -455,7 +455,7 @@ workflow ORDER_PLACEMENT_WORKFLOW_1 (
                 sequence: 100
             }
             advanced {
-                diagram: {"position":{"x":1240,"y":930},"z":10}
+                diagram: "{\"position\":{\"x\":1240,\"y\":930},\"z\":10}"
             }
 
             connection (

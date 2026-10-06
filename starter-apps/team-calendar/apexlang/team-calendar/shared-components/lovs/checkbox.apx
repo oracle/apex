@@ -1,0 +1,14 @@
+lov checkbox (
+    name: CHECKBOX
+    source {
+        location: staticValues
+    }
+
+    entry lov_data (
+        sequence: 1
+        display: " "
+        return: Y
+    )
+
+)
+

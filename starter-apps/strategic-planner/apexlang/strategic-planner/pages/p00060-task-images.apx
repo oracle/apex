@@ -7,13 +7,6 @@ page 60 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region breadcrumb (
         name: Breadcrumb
@@ -313,6 +306,9 @@ page 60 (
                 t-Report--hideNoPagination
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -334,7 +330,7 @@ page 60 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #FOCUS_AREA#
+                        P23_FOCUS_AREA: I#FOCUS_AREA#
                     }
                     clearCache: 23
                 }
@@ -624,10 +620,10 @@ page 60 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @images
+                region: @facets
             }
             execution {
-                sequence: 10
+                sequence: 20
                 fireOnInit: false
             }
         )
@@ -636,10 +632,10 @@ page 60 (
             action: refresh
             affectedElements {
                 selectionType: region
-                region: @facets
+                region: @images
             }
             execution {
-                sequence: 20
+                sequence: 10
                 fireOnInit: false
             }
         )

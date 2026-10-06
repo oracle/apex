@@ -8,7 +8,6 @@ page 405 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -33,7 +32,7 @@ page 405 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -113,6 +112,9 @@ page 405 (
                 #DEFAULT#
                 t-AVPList--leftAligned
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -217,6 +219,9 @@ page 405 (
                 t-MediaList--showDesc
                 t-MediaList--stack
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -446,9 +451,6 @@ page 405 (
                 t-Report--rowHighlight
                 t-Report--inline
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 5000

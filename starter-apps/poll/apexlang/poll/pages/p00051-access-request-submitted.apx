@@ -8,12 +8,11 @@ page 51 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -26,7 +25,7 @@ page 51 (
         name: hide nobody
         type: staticContent
         source {
-            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+            htmlCode: "<style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>"
         }
         layout {
             sequence: 10

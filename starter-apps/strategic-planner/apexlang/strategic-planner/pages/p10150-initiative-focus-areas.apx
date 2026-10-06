@@ -8,13 +8,8 @@ page 10150 (
         templateOptions: #DEFAULT#
         cssClasses: rw-pillar--sienna
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -57,6 +52,7 @@ page 10150 (
                        f.UPDATED,
                        f.UPDATED_BY,
                        f.description,
+                       f.external_key,
                        nvl(f.display_sequence,10) display_sequence,
                        decode(f.active_yn,'Y','Yes','N','No',f.active_yn) active,
                        --
@@ -88,6 +84,7 @@ page 10150 (
                 page: 10151
                 items: {
                     P10151_ID: \#ID#\
+                    P10151_PREV_PAGE: 10150
                 }
                 clearCache: 10151
                 action: resetPagination
@@ -114,7 +111,7 @@ page 10150 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -130,7 +127,7 @@ page 10150 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -149,7 +146,7 @@ page 10150 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: E
@@ -165,7 +162,7 @@ page 10150 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -181,7 +178,7 @@ page 10150 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: O
@@ -197,7 +194,7 @@ page 10150 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -215,10 +212,26 @@ page 10150 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
+            }
+        )
+
+        column EXTERNAL_KEY (
+            type: plainText
+            heading {
+                heading: External Key
+            }
+            layout {
+                sequence: 130
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: R
             }
         )
 
@@ -231,7 +244,7 @@ page 10150 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -248,7 +261,7 @@ page 10150 (
             }
             source {
                 primaryKey: true
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -264,7 +277,7 @@ page 10150 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -283,7 +296,7 @@ page 10150 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: G
@@ -299,7 +312,7 @@ page 10150 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -323,8 +336,8 @@ page 10150 (
                 target: {
                     page: 23
                     items: {
-                        P23_FOCUS_AREA: #AREA#
-                        P23_INITIATIVE: #INITIATIVE#
+                        P23_FOCUS_AREA: I#AREA#
+                        P23_INITIATIVE: I#INITIATIVE#
                         P23_INIT_FOCUS_AREA: #FOCUS_AREA#
                     }
                     clearCache: 23
@@ -333,7 +346,7 @@ page 10150 (
                 linkText: #USAGE_COUNT#
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -431,11 +444,13 @@ page 10150 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select 'insert into sp_initiatvie_focus_areas (ID, INITIATIVE_ID, FOCUS_AREA, description, ACTIVE_YN) values ('||
+                select 'insert into sp_initiatvie_focus_areas (ID, INITIATIVE_ID, DISPLAY_SEQUENCE, FOCUS_AREA, DESCRIPTION, EXTERNAL_KEY, ACTIVE_YN) values ('||
                        id||', '||
-                       INITIATIVE_ID||', '''||
+                       INITIATIVE_ID||', '||
+                       DISPLAY_SEQUENCE||','''||
                        FOCUS_AREA||''', '''||
                        description||''', '''||
+                       external_key||''', '''||
                        ACTIVE_YN||''');' SQL
                   from sp_initiative_focus_areas 
                 ```
@@ -466,9 +481,6 @@ page 10150 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column SQL (

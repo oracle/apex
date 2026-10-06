@@ -1,0 +1,20 @@
+lov distinct-job-codes-lov (
+    name: DISTINCT_JOB_CODES_LOV
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select job dv, job rv
+            from (
+                select distinct job from eba_demo_appr_emp
+            )
+            order by job
+            ```
+    }
+    columnMapping {
+        return: RV
+        display: DV
+        defaultSort: DV
+    }
+)
+

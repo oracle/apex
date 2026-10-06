@@ -1,0 +1,38 @@
+lov customized-poll-status (
+    name: CUSTOMIZED POLL STATUS
+    source {
+        location: staticValues
+    }
+
+    entry being-authored (
+        sequence: 14
+        display: Being Authored
+        return: 1
+    )
+
+    entry closed (
+        sequence: 4
+        display: Closed
+        return: 4
+    )
+
+    entry published (
+        sequence: 1
+        display: Published
+        return: 3N
+    )
+
+    entry published-invitees-only (
+        sequence: 2
+        display: Published, Invitees only
+        return: 3Y
+    )
+
+    entry testing-contributors-only (
+        sequence: 3
+        display: Testing, Contributors only
+        return: 2
+    )
+
+)
+

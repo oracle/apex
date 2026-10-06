@@ -1,0 +1,20 @@
+lov available-laptop-types (
+    name: AVAILABLE_LAPTOP_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry lenovo-t (
+        sequence: 2
+        display: Lenovo T490
+        return: WIN
+    )
+
+    entry macbook-pro (
+        sequence: 1
+        display: MacBook Pro 14"
+        return: MAC
+    )
+
+)
+

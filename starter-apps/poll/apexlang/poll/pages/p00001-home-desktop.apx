@@ -8,6 +8,7 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -332,8 +333,6 @@ page 1 (
     }
     security {
         authorizationScheme: @reader-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         reloadOnSubmit: always
@@ -558,9 +557,6 @@ page 1 (
         componentAppearance {
             template: @qp-content-row
             templateOptions: #DEFAULT#
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None found meeting your search criteria.
@@ -926,6 +922,9 @@ page 1 (
             templateOptions: #DEFAULT#
             showNullValuesAs: " "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -1251,9 +1250,6 @@ page 1 (
         componentAppearance {
             template: @qp-content-row
             templateOptions: #DEFAULT#
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         messages {
             whenNoDataFound: None found meeting your search criteria.

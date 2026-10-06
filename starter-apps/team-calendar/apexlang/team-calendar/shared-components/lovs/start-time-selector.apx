@@ -1,0 +1,16 @@
+lov start-time-selector (
+    name: START TIME SELECTOR
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select to_char(trunc(sysdate)+((i-1)/48),v('APP_TIME_FORMAT')) d,
+                   to_char(trunc(sysdate)+((i-1)/48),v('APP_TIME_FORMAT')) r
+              from wwv_flow_dual100
+             where i < 49
+            order by i
+            
+            ```
+    }
+)
+

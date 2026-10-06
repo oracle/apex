@@ -1,0 +1,353 @@
+list admin-lookup-values (
+    name: Admin - Lookup Values
+
+    entry activity-types (
+        label: Activity Types
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10700
+                clearCache: 10700
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Used to further describe logged activities
+            2: &P10000_ACTIVITY_TYPES.
+        }
+        config {
+            buildOption: @activity-planning
+        }
+    )
+
+    entry competencies (
+        label: Competencies
+        icon {
+            imageIconCssClasses: fa-users-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 154
+            }
+        }
+        userDefinedAttributes {
+            1: Associated with people and displayed under their profile
+            2: &P10000_COMPETENCIES.
+        }
+    )
+
+    entry contributor-roles (
+        label: Contributor Roles
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 10600
+                clearCache: 10600
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: How a person can be associated with a &NOMENCLATURE_PROJECT.
+            2: &P10000_RESOURCE_TYPES.
+        }
+    )
+
+    entry countries (
+        label: Countries
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 43
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_COUNTRIES.
+        }
+    )
+
+    entry nomenclature-initiative-focus-areas (
+        label: &NOMENCLATURE_INITIATIVE. Focus Areas
+        icon {
+            imageIconCssClasses: fa-user-magnifying-glass
+        }
+        layout {
+            sequence: 115
+        }
+        link {
+            target: {
+                page: 10150
+                clearCache: 10150
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Focus Areas that can be associated with &NOMENCLATURE_PROJECTS. (selection is limited by &NOMENCLATURE_INITIATIVE.)
+            2: &P10000_FOCUS_AREAS.
+        }
+    )
+
+    entry nomenclature-project-completeness-scales (
+        label: &NOMENCLATURE_PROJECT. Completeness Scales
+        icon {
+            imageIconCssClasses: fa-badge-check
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 10200
+            }
+        }
+        userDefinedAttributes {
+            1: Details of available completeness scales (from 0% to 100% in 10% increments) used for &NOMENCLATURE_PROJECTS.
+            2: &P10000_PROJECT_STATUS_SCALES.
+        }
+    )
+
+    entry nomenclature-project-default-tags (
+        label: &NOMENCLATURE_PROJECT. Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 10500
+                clearCache: 10500
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_DEFAULT_TAGS.
+        }
+    )
+
+    entry nomenclature-project-priorities (
+        label: &NOMENCLATURE_PROJECT. Priorities
+        icon {
+            imageIconCssClasses: fa-arrows-v
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 10800
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available &NOMENCLATURE_PROJECT. priorities
+            2: &P10000_PROJECT_PRIORITIES.
+        }
+    )
+
+    entry nomenclature-project-sizes (
+        label: &NOMENCLATURE_PROJECT. Sizes
+        icon {
+            imageIconCssClasses: fa-users-alt
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 10100
+            }
+        }
+        userDefinedAttributes {
+            1: Sizes for &NOMENCLATURE_PROJECTS. with associated level of effort
+            2: &P10000_PROJECT_SIZES.
+        }
+    )
+
+    entry nomenclature-project-statuses (
+        label: &NOMENCLATURE_PROJECT. Statuses
+        icon {
+            imageIconCssClasses: fa-wizard
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 10110
+            }
+        }
+        userDefinedAttributes {
+            1: Available statuses for &NOMENCLATURE_PROJECTS., used when active (as defined by selected completeness scale) and not 100% complete
+            2: &P10000_PROJECT_STATUSES.
+        }
+    )
+
+    entry out-of-office-event-types (
+        label: Out of Office Event Types
+        icon {
+            imageIconCssClasses: fa-plane
+        }
+        layout {
+            sequence: 55
+        }
+        link {
+            target: {
+                page: 10070
+            }
+        }
+        userDefinedAttributes {
+            1: Used to track out of the office events to assist with Team Calendar display and Team Member availability
+            2: &P10000_EVENT_TYPES.
+        }
+        config {
+            buildOption: @team-calendar
+        }
+    )
+
+    entry relation-types (
+        label: Relation Types
+        icon {
+            imageIconCssClasses: fa-clipboard-x
+        }
+        layout {
+            sequence: 135
+        }
+        link {
+            target: {
+                page: 10720
+            }
+        }
+        userDefinedAttributes {
+            1: Used to describe the relation between two tasks
+            2: &P10000_RELATION_TYPES.
+        }
+    )
+
+    entry release-milestone-default-tags (
+        label: Release Milestone Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 10515
+            }
+        }
+        userDefinedAttributes {
+            1: Configure quick picks for release milestone tags
+            2: &P10000_RM_DEFAULT_TAGS.
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry release-milestone-types (
+        label: Release Milestone Types
+        icon {
+            imageIconCssClasses: fa-clipboard-check-alt
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 10090
+            }
+        }
+        userDefinedAttributes {
+            1: Used to describe Release Milestones
+            2: &P10000_REL_MILESTONE_TYPES.
+        }
+        config {
+            buildOption: @releases
+        }
+    )
+
+    entry task-statuses (
+        label: Task Statuses
+        icon {
+            imageIconCssClasses: fa-wizard
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 10061
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available statuses for tasks
+            2: &P10000_TASK_STATUSES.
+        }
+    )
+
+    entry task-types (
+        label: Task Types
+        icon {
+            imageIconCssClasses: fa-clipboard-list
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 10064
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Available &NOMENCLATURE_PROJECT. task types
+            2: &P10000_TASK_TYPES.
+        }
+    )
+
+    entry team-member-default-tags (
+        label: Team Member Default Tags
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 10520
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure default quick picks for tags
+            2: &P10000_TEAM_MBR_DEFAULT_TAGS.
+        }
+    )
+
+)
+

@@ -1,0 +1,26 @@
+lov application-privs (
+    name: APPLICATION PRIVS
+    source {
+        location: staticValues
+    }
+
+    entry administrator (
+        sequence: 30
+        display: Administrator
+        return: A
+    )
+
+    entry read-only (
+        sequence: 20
+        display: Read Only
+        return: RO
+    )
+
+    entry read-write (
+        sequence: 10
+        display: Read Write
+        return: RW
+    )
+
+)
+

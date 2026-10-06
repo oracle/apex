@@ -1,0 +1,20 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry oracle-cloud-apps-rest-endpoints (
+        label: Oracle Cloud Apps REST Endpoints
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

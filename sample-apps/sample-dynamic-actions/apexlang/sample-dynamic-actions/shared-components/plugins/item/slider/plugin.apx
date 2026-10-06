@@ -120,7 +120,6 @@ plugin slider (
     }
     information {
         version: 5.0.1
-        aboutUrl: http://apex.oracle.com/plugins
         helpText: <p>Sliders are useful for allowing users to easily review and maintain numerical data represented on a scale.</p>
     }
 )

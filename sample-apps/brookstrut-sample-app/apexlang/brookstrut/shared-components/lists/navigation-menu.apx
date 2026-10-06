@@ -1,0 +1,184 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Administration
+        icon {
+            imageIconCssClasses: fa-gear
+        }
+        layout {
+            sequence: 80
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                4
+                8
+                9
+                13
+                15
+                16
+                17
+                24
+                21
+                40
+                41
+                42
+                45
+                23
+                39
+            ]
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry dashboard (
+        label: Dashboard
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                1
+                14
+            ]
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    entry products-products (
+        label: "Products [&PRODUCTS.]"
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                11
+                12
+            ]
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+    )
+
+    entry reports (
+        label: Reports
+        icon {
+            imageIconCssClasses: fa-file-o
+        }
+        layout {
+            sequence: 70
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                19
+                20
+                22
+                25
+                20
+                26
+                27
+                32
+                36
+                37
+                38
+                2
+                23
+                42
+            ]
+        }
+        link {
+            target: {
+                page: 19
+            }
+        }
+    )
+
+    entry stores-stores (
+        label: "Stores [&STORES.]"
+        icon {
+            imageIconCssClasses: fa-cart-full
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                6
+                7
+                3
+                43
+            ]
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry transactions (
+        label: Transactions
+        icon {
+            imageIconCssClasses: fa-credit-card
+        }
+        layout {
+            sequence: 60
+        }
+        isCurrent {
+            type: pages
+            pages: [
+                28
+                29
+                30
+                31
+                33
+                34
+                35
+            ]
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+)
+

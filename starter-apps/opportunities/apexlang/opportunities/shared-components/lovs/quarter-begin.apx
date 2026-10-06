@@ -1,0 +1,16 @@
+lov quarter-begin (
+    name: QUARTER BEGIN
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select PERIOD_NAME ||
+                   case when sysdate between first_day and last_day then ' *' end d,
+                   to_char(first_day,'YYYYMMDD') r 
+              from EBA_SALES_SALES_PERIODS
+             where sysdate >= first_day
+            order by first_day
+            ```
+    }
+)
+

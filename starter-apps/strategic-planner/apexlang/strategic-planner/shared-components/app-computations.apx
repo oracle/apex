@@ -1,3 +1,63 @@
+appComputation app-sysdate (
+    itemName: APP_SYSDATE
+    execution {
+        sequence: 20
+        point: afterAuthentication
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_systimestamp  timestamp with local time zone  := trunc(systimestamp at time zone 'UTC');
+            begin
+                for c1 in (
+                    select systimestamp at time zone timezone user_sysdate
+                      from sp_team_members
+                     where email = lower(:APP_USER)
+                       and timezone is not null
+                ) loop
+                    l_systimestamp := c1.user_sysdate;
+                end loop;
+            
+                return to_char(l_systimestamp, 'DD-MON-YYYY');
+            end;
+            ```
+    }
+)
+
+appComputation app-sysdate-2 (
+    itemName: APP_SYSDATE
+    execution {
+        sequence: 20
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_systimestamp  timestamp with local time zone  := trunc(systimestamp at time zone 'UTC');
+            begin
+                for c1 in (
+                    select systimestamp at time zone timezone user_sysdate
+                      from sp_team_members
+                     where email = lower(:APP_USER)
+                       and timezone is not null
+                ) loop
+                    l_systimestamp := c1.user_sysdate;
+                end loop;
+            
+                return to_char(l_systimestamp, 'DD-MON-YYYY');
+            end;
+            ```
+    }
+    serverSideCondition {
+        type: currentPage=page
+        page: 1
+    }
+)
+
 appComputation app-user-first-last-name (
     itemName: APP_USER_FIRST_LAST_NAME
     execution {
@@ -26,7 +86,7 @@ appComputation app-user-first-last-name (
 appComputation app-user-first-name (
     itemName: APP_USER_FIRST_NAME
     execution {
-        sequence: 10
+        sequence: 20
         point: beforeHeader
     }
     computation {
@@ -54,7 +114,7 @@ appComputation app-user-first-name (
 appComputation app-user-id (
     itemName: APP_USER_ID
     execution {
-        sequence: 10
+        sequence: 1
         point: beforeHeader
     }
     computation {
@@ -114,10 +174,49 @@ appComputation complete-task-status-ids (
         type: sqlQuerySingleValue
         sqlQuery:
             ```sql
-            select ':'||listagg(id, ':')||':'
+            select ':'||listagg(id, ':' on overflow truncate '' without count)||':'
               from sp_task_statuses
              where indicates_complete_yn = 'Y'
             ```
+    }
+    comments {
+        comments: should never have enough task statuses to need the overflow, but in place to avoid error - just in case
+    }
+)
+
+appComputation home-page-display (
+    itemName: HOME_PAGE_DISPLAY
+    execution {
+        sequence: 10
+        point: beforeHeader
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_display  varchar2(255) := ':ACT:INIT:PROJ:REL:';
+            begin
+                for c1 in (
+                    select ':'||
+                           case when hp_my_activities_yn = 'Y' then 'ACT:' end ||
+                           case when hp_my_initiatives_yn = 'Y' then 'INIT:' end ||
+                           case when hp_my_projects_yn = 'Y' then 'PROJ:' end ||
+                           case when hp_my_fav_projects_yn = 'Y' then 'FAV:' end ||
+                           case when hp_my_open_releases_yn = 'Y' then 'REL:' end display
+                      from sp_team_members
+                     where id = :APP_USER_ID
+                ) loop
+                    l_display := c1.display;
+                end loop;
+            
+                return l_display;
+            end;
+            ```
+    }
+    serverSideCondition {
+        type: itemIsNull
+        item: HOME_PAGE_DISPLAY
     }
 )
 
@@ -132,6 +231,24 @@ appComputation is-admin (
         plsqlFunctionBody:
             ```plsql
             if APEX_AUTHORIZATION.IS_AUTHORIZED (p_authorization_name => 'Administration Rights') then
+               return 'Y';
+            else return 'N';
+            end if;
+            ```
+    }
+)
+
+appComputation is-contributor (
+    itemName: IS_CONTRIBUTOR
+    execution {
+        sequence: 10
+        point: afterAuthentication
+    }
+    computation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            if APEX_AUTHORIZATION.IS_AUTHORIZED (p_authorization_name => 'Contribution Rights') then
                return 'Y';
             else return 'N';
             end if;

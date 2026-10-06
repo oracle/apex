@@ -1,0 +1,63 @@
+lov timeframe-2-weeks (
+    name: TIMEFRAME (2 WEEKS)
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select wwv_flow_lang.system_message('N_MINUTES','15') d, 
+            trim(to_char(15/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','30') d, 
+            trim(to_char(30/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOUR','1') d, 
+            trim(to_char(1/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_MINUTES','90') d, 
+            trim(to_char(90/(24*60),'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','2') d, 
+            trim(to_char(1/12,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','3') d, 
+            trim(to_char(3/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','4') d, 
+            trim(to_char(4/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','5') d, 
+            trim(to_char(5/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,'''))  t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','6') d, 
+            trim(to_char(6/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','8') d, 
+            trim(to_char(8/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','10') d, 
+            trim(to_char(10/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','12') d, 
+            trim(to_char(12/24,'00000.99999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_HOURS','16') d, 
+            trim(to_char(16/24,'00000.9999999999','NLS_NUMERIC_CHARACTERS=''.,''')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAY','1') d, trim(to_char(1,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','2') d, trim(to_char(2,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','3') d, trim(to_char(3,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','4') d, trim(to_char(4,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_DAYS','5') d, trim(to_char(5,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEK','1') d, trim(to_char(7,'00000.9999999999')) t from dual
+            union all 
+            select wwv_flow_lang.system_message('N_WEEKS','2') d, trim(to_char(14,'00000.9999999999')) t from dual
+            order by 2
+            ```
+    }
+)
+

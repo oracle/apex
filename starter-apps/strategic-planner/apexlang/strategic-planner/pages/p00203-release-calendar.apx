@@ -7,13 +7,6 @@ page 203 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     config {
         buildOption: @releases
     }
@@ -59,178 +52,6 @@ page 203 (
                 t-ButtonRegion--noUI
             ]
         }
-    )
-
-    region menubar (
-        name: Menubar
-        type: themeTemplateComponent/contentRow
-        source {
-            location: localDatabase
-            type: sqlQuery
-            sqlQuery: select 1 as actions from dual
-        }
-        layout {
-            sequence: 30
-            parentRegion: @breadcrumb
-            slot: subRegions
-        }
-        componentAppearance {
-            display: partial
-            cssClasses: header-actions
-        }
-
-        column ACTIONS (
-            layout {
-                sequence: 10
-            }
-            source {
-                databaseColumn: ACTIONS
-                dataType: number
-            }
-        )
-
-        action actions (
-            position: primaryActions
-            template: menu
-            label: Actions
-            layout {
-                sequence: 20
-            }
-            appearance {
-                displayType: icon
-                icon: fa-ellipsis-v
-            }
-
-            menu comp_menu_entry (
-                type: separator
-                layout {
-                    sequence: 70
-                }
-            )
-
-            menu comp_menu_entry-2 (
-                type: separator
-                layout {
-                    sequence: 20
-                }
-            )
-
-            menu refresh (
-                label: Refresh
-                layout {
-                    sequence: 80
-                }
-                behavior {
-                    target: {
-                        page: 203
-                    }
-                }
-                appearance {
-                    icon: fa-refresh
-                }
-            )
-
-            menu release-dashboard (
-                label: Release Dashboard
-                layout {
-                    sequence: 40
-                }
-                behavior {
-                    target: {
-                        page: 202
-                        items: {
-                            P202_RELEASE_ID: &P203_RELEASE_ID.
-                        }
-                        clearCache: 202
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-area-chart
-                }
-            )
-
-            menu release-home (
-                label: Release Home
-                layout {
-                    sequence: 10
-                }
-                behavior {
-                    target: {
-                        page: 117
-                        items: {
-                            P117_RELEASE_ID: &P203_RELEASE_ID.
-                        }
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-ship
-                }
-            )
-
-            menu release-nomenclature-projects (
-                label: Release &NOMENCLATURE_PROJECTS.
-                layout {
-                    sequence: 30
-                }
-                behavior {
-                    target: {
-                        page: 300
-                        items: {
-                            P300_RELEASE_ID: &P203_RELEASE_ID.
-                        }
-                        clearCache: 300
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-search
-                }
-            )
-
-            menu reset (
-                label: Reset
-                layout {
-                    sequence: 90
-                }
-                behavior {
-                    target: {
-                        page: 203
-                        items: {
-                            P203_RELEASE_ID: &P203_RELEASE_ID.
-                        }
-                        clearCache: 201
-                        action: resetRegions
-                    }
-                }
-                appearance {
-                    icon: fa-undo-alt
-                }
-            )
-
-            menu view-history (
-                label: View History
-                layout {
-                    sequence: 50
-                }
-                behavior {
-                    target: {
-                        page: 14
-                        items: {
-                            P14_RELEASE_ID: &P203_RELEASE_ID.
-                        }
-                        clearCache: 14
-                        action: resetPagination
-                    }
-                }
-                appearance {
-                    icon: fa-clock-o
-                }
-            )
-
-        )
-
     )
 
     region release (
@@ -294,6 +115,9 @@ page 203 (
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_REMAINING (
@@ -483,7 +307,7 @@ page 203 (
                 type: distinctValues
             }
             layout {
-                sequence: 70
+                sequence: 90
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -502,7 +326,7 @@ page 203 (
                 type: distinctValues
             }
             layout {
-                sequence: 40
+                sequence: 50
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -521,7 +345,7 @@ page 203 (
                 type: distinctValues
             }
             layout {
-                sequence: 50
+                sequence: 70
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -562,7 +386,7 @@ page 203 (
                 type: distinctValues
             }
             layout {
-                sequence: 60
+                sequence: 80
             }
             listEntries {
                 maxDisplayedEntries: 5
@@ -581,13 +405,35 @@ page 203 (
                 type: distinctValues
             }
             layout {
-                sequence: 80
+                sequence: 100
             }
             listEntries {
                 maxDisplayedEntries: 5
             }
             source {
                 databaseColumn: PRIORITY
+            }
+        )
+
+        facet P203_PROJECT_PCT_COMPLETE (
+            type: checkboxGroup
+            label {
+                label: &NOMENCLATURE_PROJECT. Percent Complete
+            }
+            lov {
+                type: distinctValues
+                sortDirection: desc
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                sortByTopCounts: false
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: PROJECT_PCT_COMPLETE
+                dataType: number
             }
         )
 
@@ -632,10 +478,6 @@ page 203 (
                        --
                        -- badge state
                        --
-                --       case when is_completed = 'Completed' then 'apex-cal-green'
-                --            when trunc("DATE") < trunc(sysdate) then 'apex-cal-red'
-                --            else 'apex-cal-yellow'
-                --       end as event_color,
                        case when calendar_event_color is not null
                             then 'apex-cal-'||calendar_event_color
                             end event_color,
@@ -647,6 +489,7 @@ page 203 (
                             when trunc("DATE") < trunc(sysdate) then 'Past Due'
                             else 'Open'
                        end as is_completed,
+                       pct_complete project_pct_complete,
                        --
                        -- badge icon
                        --
@@ -697,6 +540,7 @@ page 203 (
                             then tm.first_name||' '||tm.last_Name||', '
                             end ||'P'||p.priority_id||', '||p.PROJECT_SIZE  as event_detail,
                        decode(s.indicates_complete_yn,'N','Open','Y','Completed','Unknown')    as is_completed,
+                       null pct_complete,
                        p.FRIENDLY_IDENTIFIER fi,
                        p.PROJECT_URL_NAME pn,
                        p.priority_id,
@@ -718,11 +562,42 @@ page 203 (
                         tt.static_id like 'MILESTONE%' and
                         t.status_id = s.id
                 union all
+                select 'P' link_type,
+                       :NOMENCLATURE_PROJECT event_type,
+                       p.id as "ID",
+                       case when tm.id is not null
+                            then tm.first_name||' '||tm.last_Name
+                            end  owner,
+                       p.target_complete                                                 as "START_DATE",
+                       p.target_complete                                                 as "DATE",
+                       to_char(p.target_complete,'YYYY.MM')                              as "MONTH",
+                       'Target Complete'                                                 as milestone_type,
+                       'Target Complete'                                                 as milestone,
+                       p.project                                                         as event,
+                       case when tm.id is not null 
+                            then tm.first_name||' '||tm.last_Name||', '
+                            end ||'P'||p.priority_id||', '||p.PROJECT_SIZE  as event_detail,
+                       decode(p.pct_complete,100,'Completed','Open')    as is_completed,
+                       p.pct_complete pct_complete,
+                       p.FRIENDLY_IDENTIFIER fi,
+                       p.PROJECT_URL_NAME pn,
+                       p.priority_id,
+                       NVL((select focus_area from sp_initiative_focus_areas
+                             where id = p.focus_area_id),'Not Identified') focus_area,
+                       null calendar_event_color
+                  from sp_projects p,
+                       SP_TEAM_MEMBERS tm
+                  where p.OWNER_ID = tm.id (+) and
+                        p.target_complete is not null and
+                        p.RELEASE_ID = :P203_RELEASE_ID and
+                        p.ARCHIVED_YN = 'N' and 
+                        p.duplicate_of_project_id is null
+                union all
                 select 'R' link_type,
                        'Release' event_type,
                        RELEASE_ID as "ID",
                        null                               as owner,
-                       milestone_start_date               as "START_DATE",
+                       nvl(milestone_start_date,milestone_date) as "START_DATE",
                        milestone_date                     as "DATE",
                        to_char(milestone_date,'YYYY.MM')  as "MONTH",
                        t.milestone_type                   as milestone_type,
@@ -730,6 +605,7 @@ page 203 (
                        null                               as event,
                        milestone_description              as event_detail,
                        decode(milestone_completed_yn,'Y','Completed','Open')    as is_completed,
+                       null pct_complete,
                        null fi,
                        null pn,
                        null priority_id,
@@ -817,6 +693,134 @@ page 203 (
             sessionStateProtection: checksumRequiredSessionLevel
             restrictedChars: alphanumWithSpace
         }
+    )
+
+    button actions (
+        buttonName: actions
+        label: Actions
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: #DEFAULT#
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu refresh (
+            label: Refresh
+            layout {
+                sequence: 60
+            }
+            behavior {
+                target: {
+                    page: 203
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-refresh
+            }
+        )
+
+        menu release-calendar (
+            label: Dashboard
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 202
+                    items: {
+                        P202_RELEASE_ID: &P203_RELEASE_ID.
+                    }
+                    clearCache: 202
+                    action: resetRegions
+                }
+            }
+            appearance {
+                icon: fa-area-chart
+            }
+        )
+
+        menu release-home (
+            label: Release Home
+            layout {
+                sequence: 10
+            }
+            behavior {
+                target: {
+                    page: 117
+                    items: {
+                        P117_RELEASE_ID: &P203_RELEASE_ID.
+                    }
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-ship
+            }
+        )
+
+        menu reset (
+            label: Reset
+            layout {
+                sequence: 70
+            }
+            behavior {
+                target: {
+                    page: 203
+                    items: {
+                        P203_RELEASE_ID: &P203_RELEASE_ID.
+                    }
+                    clearCache: 203
+                    action: resetRegions
+                }
+            }
+            appearance {
+                icon: fa-undo-alt
+            }
+        )
+
+        menu sep1 (
+            type: separator
+            layout {
+                sequence: 20
+            }
+        )
+
+        menu sep2 (
+            type: separator
+            layout {
+                sequence: 50
+            }
+        )
+
+        menu view-history (
+            label: View History
+            layout {
+                sequence: 40
+            }
+            behavior {
+                target: {
+                    page: 14
+                    items: {
+                        P14_RELEASE_ID: &P203_RELEASE_ID.
+                    }
+                    clearCache: 14
+                    action: resetPagination
+                }
+            }
+            appearance {
+                icon: fa-clock-o
+            }
+        )
+
     )
 
     button report-view (

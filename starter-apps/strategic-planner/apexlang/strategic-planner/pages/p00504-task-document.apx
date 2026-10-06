@@ -14,13 +14,8 @@ page 504 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -75,6 +70,7 @@ page 504 (
             formRegion: @document
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -92,6 +88,7 @@ page 504 (
             formRegion: @document
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -207,14 +204,10 @@ page 504 (
     )
 
     pageItem P504_DOC_DESCRIPTION (
-        type: richTextEditor
+        type: textarea
         label {
             label: Description
             alignment: left
-        }
-        settings {
-            minHeight: 180
-            allowCustomHtml: true
         }
         layout {
             sequence: 40
@@ -225,6 +218,11 @@ page 504 (
         appearance {
             template: @/optional-floating
             templateOptions: #DEFAULT#
+            width: 30
+            height: 5
+        }
+        validation {
+            maxLength: 4000
         }
         source {
             formRegion: @document
@@ -278,11 +276,48 @@ page 504 (
         }
     )
 
+    pageItem P504_ON_DELETE (
+        type: hidden
+        layout {
+            sequence: 160
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P504_PREV_PAGE (
+        type: hidden
+        layout {
+            sequence: 170
+            region: @document
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
     pageItem P504_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+            maxValuesInList: 20
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
         }
         layout {
             sequence: 50
@@ -353,6 +388,7 @@ page 504 (
             formRegion: @document
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -370,6 +406,7 @@ page 504 (
             formRegion: @document
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -506,7 +543,27 @@ page 504 (
         }
         serverSideCondition {
             type: requestIsContainedInValue
-            value: CREATE,SAVE,DELETE
+            value: CREATE,SAVE
+        }
+    )
+
+    process close-dialog_1 (
+        name: Close Dialog
+        type: closeDialog
+        settings {
+            showSuccessMessages: false
+        }
+        execution {
+            sequence: 100
+        }
+        advanced {
+            executionMappingIdentifier: 19710761991700881510
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P504_ON_DELETE
+            value: CLOSE
         }
     )
 
@@ -561,6 +618,42 @@ page 504 (
         }
         advanced {
             executionMappingIdentifier: 18160051860861749418
+        }
+    )
+
+    branch (
+        name: delete, prev page
+        execution {
+            sequence: 10
+        }
+        behavior {
+            target: {
+                page: &P504_PREV_PAGE.
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P504_ON_DELETE
+            value: PREV_PAGE
+        }
+    )
+
+    branch (
+        name: delete, no prev page
+        execution {
+            sequence: 20
+        }
+        behavior {
+            target: {
+                page: 23
+            }
+        }
+        serverSideCondition {
+            whenButtonPressed: @delete
+            type: item=value
+            item: P504_ON_DELETE
+            value: HOME
         }
     )
 

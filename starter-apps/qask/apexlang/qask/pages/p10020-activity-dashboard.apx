@@ -8,14 +8,11 @@ page 10020 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administrator
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
         buildOption: @feature-activity-reporting
@@ -77,6 +74,9 @@ page 10020 (
                 i-h320
                 t-Region--scrollBody
             ]
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: enabled
@@ -198,6 +198,9 @@ page 10020 (
                 t-Report--inline
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -257,6 +260,9 @@ page 10020 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false
@@ -361,6 +367,9 @@ page 10020 (
                 t-Report--inline
             ]
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 500
         }
@@ -419,6 +428,9 @@ page 10020 (
         }
         chartAppearance {
             orientation: horizontal
+        }
+        performance {
+            lazyLoading: true
         }
         tooltip {
             showSeriesName: false

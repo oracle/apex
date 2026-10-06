@@ -13,15 +13,17 @@ page 100 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    css {
+        inline:
+            ```css
+            .t-Comments-comment img {
+              max-width: 1000px; 
+              height: auto;
+            }
+            ```
     }
 
     region buttons (
@@ -51,6 +53,7 @@ page 100 (
                        apex_util.get_since(pc.created) comment_date,
                        tm.first_name || ' ' || tm.last_name user_name,
                        --
+                       pc.comment_nbr,
                        pc.body_html comment_text,
                        case when pc.author_id = :APP_USER_ID
                             then '<a href="'||apex_util.prepare_URL(
@@ -59,6 +62,7 @@ page 100 (
                                   )||'">edit</a>'
                              end ||
                              decode(pc.private_yn,null,null,'N',null,'Y',' <strong>Private</strong>') actions,
+                       decode(pc.private_yn,null,null,'N',null,'Y',' Private Comment') private_comment_label,
                        ' ' attribute_1,
                        ' ' attribute_2,
                        ' ' attribute_3,
@@ -102,15 +106,12 @@ page 100 (
                 t-Comments--chat
             ]
         }
-        pagination {
-            type: nextAndPreviousLinks
-        }
         messages {
             whenNoDataFound: No Comments
         }
 
         column ACTIONS (
-            reportColumnQueryId: 6
+            reportColumnQueryId: 7
             derivedColumn: N
             heading {
                 heading: Actions
@@ -128,7 +129,7 @@ page 100 (
         )
 
         column ATTRIBUTE_1 (
-            reportColumnQueryId: 7
+            reportColumnQueryId: 9
             derivedColumn: N
             heading {
                 heading: Attribute 1
@@ -143,7 +144,7 @@ page 100 (
         )
 
         column ATTRIBUTE_2 (
-            reportColumnQueryId: 8
+            reportColumnQueryId: 10
             derivedColumn: N
             heading {
                 heading: Attribute 2
@@ -158,7 +159,7 @@ page 100 (
         )
 
         column ATTRIBUTE_3 (
-            reportColumnQueryId: 9
+            reportColumnQueryId: 11
             derivedColumn: N
             heading {
                 heading: Attribute 3
@@ -173,7 +174,7 @@ page 100 (
         )
 
         column ATTRIBUTE_4 (
-            reportColumnQueryId: 10
+            reportColumnQueryId: 12
             derivedColumn: N
             heading {
                 heading: Attribute 4
@@ -188,7 +189,7 @@ page 100 (
         )
 
         column BODY (
-            reportColumnQueryId: 13
+            reportColumnQueryId: 15
             derivedColumn: N
             heading {
                 heading: Body
@@ -203,7 +204,7 @@ page 100 (
         )
 
         column BODY_HTML (
-            reportColumnQueryId: 14
+            reportColumnQueryId: 16
             derivedColumn: N
             heading {
                 heading: Body Html
@@ -232,8 +233,27 @@ page 100 (
             }
         )
 
-        column COMMENT_TEXT (
+        column COMMENT_NBR (
             reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Comment Nbr
+                alignment: end
+            }
+            layout {
+                sequence: 240
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column COMMENT_TEXT (
+            reportColumnQueryId: 6
             derivedColumn: N
             heading {
                 heading: Comment Text
@@ -241,6 +261,15 @@ page 100 (
             }
             layout {
                 sequence: 160
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div class="is-markdownified">
+                    {if PRIVATE_COMMENT_LABEL/}<strong class="u-danger-text">#PRIVATE_COMMENT_LABEL#</strong><br />{endif/}
+                    #COMMENT_TEXT#
+                    </div>
+                    ```
             }
             sorting {
                 sortable: false
@@ -251,7 +280,7 @@ page 100 (
         )
 
         column CREATED (
-            reportColumnQueryId: 15
+            reportColumnQueryId: 17
             derivedColumn: N
             heading {
                 heading: Created
@@ -269,7 +298,7 @@ page 100 (
         )
 
         column CREATED_BY (
-            reportColumnQueryId: 16
+            reportColumnQueryId: 18
             derivedColumn: N
             heading {
                 heading: Created By
@@ -284,7 +313,7 @@ page 100 (
         )
 
         column ICON_MODIFIER (
-            reportColumnQueryId: 11
+            reportColumnQueryId: 13
             derivedColumn: N
             heading {
                 heading: Icon Modifier
@@ -313,8 +342,22 @@ page 100 (
             }
         )
 
+        column PRIVATE_COMMENT_LABEL (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Private Comment Label
+            }
+            layout {
+                sequence: 250
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
         column PROJECT_ID (
-            reportColumnQueryId: 12
+            reportColumnQueryId: 14
             derivedColumn: N
             heading {
                 heading: Project Id
@@ -329,7 +372,7 @@ page 100 (
         )
 
         column TEAM_MEMBER_ID (
-            reportColumnQueryId: 19
+            reportColumnQueryId: 21
             derivedColumn: N
             heading {
                 heading: User ID
@@ -343,7 +386,7 @@ page 100 (
         )
 
         column UPDATED (
-            reportColumnQueryId: 17
+            reportColumnQueryId: 19
             derivedColumn: N
             type: hidden
             layout {
@@ -352,7 +395,7 @@ page 100 (
         )
 
         column UPDATED_BY (
-            reportColumnQueryId: 18
+            reportColumnQueryId: 20
             derivedColumn: N
             heading {
                 heading: Updated By
@@ -390,6 +433,9 @@ page 100 (
             }
             layout {
                 sequence: 150
+            }
+            columnFormatting {
+                htmlExpression: Comment #COMMENT_NBR#, #USER_NAME#
             }
             sorting {
                 sortable: false
@@ -470,6 +516,14 @@ page 100 (
                             data: {
                                 imageRefId: apex.item('P100_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P100_PROJECT_ID.value
+                        },
+                        docs: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P100_PROJECT_ID.value
                         }
                     });
                 }
@@ -750,6 +804,30 @@ page 100 (
             }
             execution {
                 sequence: 10
+            }
+        )
+
+    )
+
+    dynamicAction new-links-in-comments-in-new-tab (
+        name: new links in comments in new tab
+        execution {
+            sequence: 40
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @comment-report
+        }
+
+        action native-javascript-code (
+            action: executeJsCode
+            settings {
+                jsCode: $('#COMMENTS a').attr('target','_blank');
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
             }
         )
 

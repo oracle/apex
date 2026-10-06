@@ -1,0 +1,41 @@
+list styling-data-labels (
+    name: Styling Data Labels
+
+    entry bar-chart-dual-y-axis-with-custom-labels-page (
+        label: Bar Chart (Dual Y Axis with custom Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Bar chart rendering data labels customized to use different font sizes and colors, via the CSS Classes declarative attribute
+        }
+    )
+
+    entry pareto-chart-pg (
+        label: Pareto Chart, pg 20
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Pareto Chart, based on a declaratively defined Combination Chart, with a Bar series and a Line series, where individual values are represented in descending order by bars, and the cumulative total is represented by the line.
+        }
+    )
+
+)
+

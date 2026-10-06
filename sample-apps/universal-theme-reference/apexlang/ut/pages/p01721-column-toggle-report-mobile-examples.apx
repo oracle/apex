@@ -23,7 +23,6 @@ page 1721 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -38,6 +37,8 @@ page 1721 (
     }
     security {
         authentication: public
+        pageAccessProtection: unrestricted
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always

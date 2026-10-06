@@ -1,5 +1,7 @@
 create or replace package body sp_summary_util as
 
+g_app_id  number;
+
 -- will enhance as necessary, escaping all markdown results in unreadable content
 function escape_markdown (
     p_markdown  in  clob
@@ -70,68 +72,103 @@ end ai_summary_info;
 
 procedure summarize_project (
     p_project_id           in  number,
-    p_summary_type         in  varchar2,
-    p_summary              out clob,
+    p_app_user_id          in  number  default null,
+    p_summary_type         in  varchar2, -- full, update, chat, high
+    p_summary_md           out clob,
+    p_summary_json         out clob,
     p_id_to_replace        out number )
 is
     l_last_priority        varchar2(4000);
     l_last_pct_complete    varchar2(4000);
     l_last_status          varchar2(4000);
+    l_last_tags            varchar2(4000);
     l_last_target_date     varchar2(4000);
     l_future_reviewer_cnt  number;
     x                      clob        := null;
     x2                     clob        := null;
+    j                      clob        := null;
+    j2                     clob        := null;
     l_id_to_replace        number;
     l_last_summary         date;
     l_first_yn             varchar2(1) := 'Y';
+    l_first2_yn            varchar2(1) := 'Y';
+    l_team_cal_yn          varchar2(1) := 'N';
 begin
+
+if g_app_id is null then
+    g_app_id := sp_util.get_setting (p_static_id => 'APP_ID');
+end if;
 
 for c1 in (
     select p.id project_id,
            p.project name,
+           case when p_summary_type = 'chat' and p_app_user_id is not null
+                then nvl((select 'Yes' from sp_favorites f where f.project_id = p.id and team_member_id = p_app_user_id),'No') 
+                end favorite,
            p.description,
-           a.area||' / '||i.initiative area_initiative,
+           a.area,
+           i.initiative,
            case when tm.id is null then 'No Owner' else tm.first_name||' '||tm.last_name end owner,
            p.project_size,
            nvl((select 'P'||priority from sp_project_priorities pp where pp.id = p.priority_id),'Not Prioritized') priority,
-           (select max(changed_on) 
-              from sp_project_history
-             where project_id = p.id
-               and attribute_column = 'PRIORITY'
-               and change_type = 'UPDATE') last_priority_update,
-           p.PCT_COMPLETE||'%' percent_complete,
-           (select max(changed_on) 
-              from sp_project_history
-             where project_id = p.id
-               and attribute_column = 'PCT_COMPLETE'
-               and change_type = 'UPDATE') last_pct_complete_update,
+           case when p_summary_type != 'high'
+                then (select max(changed_on) 
+                        from sp_project_history
+                       where project_id = p.id
+                         and attribute_column = 'PRIORITY'
+                         and change_type = 'UPDATE') 
+                end last_priority_update,
+           p.pct_complete,
+           p.PCT_COMPLETE||'%' percent_complete_display,
+           case when p_summary_type != 'high'
+                then (select max(changed_on) 
+                        from sp_project_history
+                       where project_id = p.id
+                         and attribute_column = 'PCT_COMPLETE'
+                         and change_type = 'UPDATE') 
+                end last_pct_complete_update,
            case when p.pct_complete >= s.min_pc_for_status 
                  and p.pct_complete != 100
                 then nvl((select status from sp_project_statuses where id = p.status_id),'Not Set')
                 else 'NA'
                 end status,
-           (select max(changed_on) 
-              from sp_project_history
-             where project_id = p.id
-               and attribute_column = 'STATUS'
-               and change_type = 'UPDATE') last_status_update,
+           case when p_summary_type != 'high'
+                then (select max(changed_on) 
+                        from sp_project_history
+                       where project_id = p.id
+                         and attribute_column = 'STATUS'
+                         and change_type = 'UPDATE') 
+                end last_status_update,
            lower(p.tags) tags,
+           case when p_summary_type != 'high'
+                then (select max(changed_on) 
+                        from sp_project_history
+                       where project_id = p.id
+                         and attribute_column = 'TAGS'
+                         and change_type = 'UPDATE') 
+                 end last_tag_update,
            nvl((select focus_area from sp_initiative_focus_areas where id = p.focus_area_id),'Not Identified') focus_area,
            case when p.target_complete is null then 'Not Set'
                 else to_char(p.target_complete,'DD-Mon-YYYY')
                 end target_completion_date,
-           (select max(changed_on) 
-              from sp_project_history
-             where project_id = p.id
-               and attribute_column = 'TARGET_COMPLETE'
-                and change_type = 'UPDATE') last_target_complete_update,
-           (select count(distinct app_user)
-              from sp_proj_interactions_log
-             where project_id = p.id
-               and page_rendered >= sysdate-30) views_last_30_days,
-           (select count(distinct app_user)
-              from sp_proj_interactions_log
-             where page_rendered >= sysdate-30) overall_views_last_30_days,
+           case when p_summary_type != 'high'
+                then (select max(changed_on) 
+                        from sp_project_history
+                       where project_id = p.id
+                         and attribute_column = 'TARGET_COMPLETE'
+                         and change_type = 'UPDATE') 
+                end last_target_complete_update,
+           case when p_summary_type != 'high'
+                then (select count(distinct app_user)
+                        from sp_proj_interactions_log
+                       where project_id = p.id
+                         and page_rendered >= sysdate-30) 
+                end views_last_30_days,
+           case when p_summary_type != 'high'
+                then (select count(distinct app_user)
+                        from sp_proj_interactions_log
+                       where page_rendered >= sysdate-30) 
+                end overall_views_last_30_days,
            p.requires_reviews_yn,
            p.initiative_id
       from sp_projects p,
@@ -148,8 +185,13 @@ for c1 in (
        and p.owner_id = tm.id (+)
 ) loop
 
+    -- added max because ran into a few projects with extra history records at the exact date which then caused an error
+
+    -- do not need for high level markdown
+    if p_summary_type != 'high' then
+
     if c1.last_priority_update is not null then
-       select old_value
+       select max(old_value)
          into l_last_priority
          from sp_project_history
         where project_id = p_project_id
@@ -159,7 +201,7 @@ for c1 in (
     end if;
 
     if c1.last_pct_complete_update is not null then
-       select old_value
+       select max(old_value)
          into l_last_pct_complete
          from sp_project_history
         where project_id = p_project_id
@@ -169,7 +211,7 @@ for c1 in (
     end if;
 
     if c1.last_status_update is not null then
-       select old_value
+       select max(old_value)
          into l_last_status
          from sp_project_history
         where project_id = p_project_id
@@ -178,8 +220,18 @@ for c1 in (
           and changed_on = c1.last_status_update;
     end if;
 
+    if c1.last_tag_update is not null then
+       select max(old_value)
+         into l_last_tags
+         from sp_project_history
+        where project_id = p_project_id
+          and attribute_column = 'TAGS'
+          and change_type = 'UPDATE'
+          and changed_on = c1.last_status_update;
+    end if;
+
     if c1.last_target_complete_update is not null then
-       select old_value
+       select max(old_value)
          into l_last_target_date
          from sp_project_history
         where project_id = p_project_id
@@ -188,46 +240,123 @@ for c1 in (
           and changed_on = c1.last_target_complete_update;
     end if;
 
+    end if; -- ending exclusion for 'high'
+
+
     x := '#### Project '||c1.name||chr(10)||
-            'description: '||chr(10)||c1.description||chr(10)||
-            case when c1.area_initiative is not null then
-                'area initiative: '||c1.area_initiative||chr(10) end ||
-            'owner: '||c1.owner||chr(10)||
-            'size: '||c1.project_size||chr(10)||
-            'priority: '||c1.priority||case when c1.last_priority_update is not null 
-                                            then ', set '||to_char(c1.last_priority_update,'DD-Mon-YYYY')
-                                            end ||
-                                       case when l_last_priority is not null
-                                            then ', prior value was '||l_last_priority
-                                            end ||chr(10)||
-            'percent complete: '||c1.percent_complete||case when c1.last_pct_complete_update is not null 
-                                                            then ', set '||to_char(c1.last_pct_complete_update,'DD-Mon-YYYY')
-                                                            end ||
-                                                       case when l_last_pct_complete is not null
-                                                            then ', prior value was '||l_last_pct_complete
-                                                            end ||chr(10)||
+            case when p_summary_type != 'high' then 'Description: '||chr(10)||nvl(c1.description,'none provided')||chr(10)||chr(10) end ||
+            case when p_summary_type = 'chat' then 'Favorite: '||c1.favorite||chr(10) end ||
+            case when c1.area is not null then 'Area: '||c1.area||chr(10) end ||
+            case when c1.initiative is not null then 'Initiative: '||c1.initiative||chr(10) end ||
+            'Owner: '||c1.owner||chr(10)||
+            'Size: '||c1.project_size||chr(10)||
+            'Priority: '||c1.priority||
+                          case when p_summary_type != 'high'
+                               then case when c1.last_priority_update is not null 
+                                         then ', set '||to_char(c1.last_priority_update,'DD-Mon-YYYY')
+                                         end ||
+                                    case when l_last_priority is not null
+                                         then ', prior value was '||l_last_priority
+                                         end 
+                          end ||chr(10)||
+            'Percent Complete: '||c1.percent_complete_display||
+                                  case when p_summary_type != 'high'
+                                       then case when c1.last_pct_complete_update is not null 
+                                                 then ', set '||to_char(c1.last_pct_complete_update,'DD-Mon-YYYY')
+                                                 end ||
+                                            case when l_last_pct_complete is not null
+                                                 then ', prior value was '||l_last_pct_complete
+                                                 end 
+                                  end ||chr(10)||
             case when c1.status != 'NA' 
-                 then 'status: '||c1.status||case when c1.last_status_update is not null 
-                                                  then ', set '||to_char(c1.last_status_update,'DD-Mon-YYYY')
-                                                  end ||
-                                             case when l_last_status is not null
-                                                  then ', prior value was '||l_last_status
-                                                  end ||chr(10)
+                 then 'Status: '||c1.status||
+                                  case when p_summary_type != 'high'
+                                       then case when c1.last_status_update is not null 
+                                                 then ', set '||to_char(c1.last_status_update,'DD-Mon-YYYY')
+                                                 end ||
+                                            case when l_last_status is not null
+                                                 then ', prior value was '||l_last_status
+                                                 end 
+                                  end ||chr(10)
                  end ||
-            case when c1.tags is not null then
-                'tags: '||c1.tags||chr(10) end ||
+            case when c1.tags is not null or c1.last_tag_update is not null then
+                'Tags: '||nvl(c1.tags,'-')||
+                          case when p_summary_type != 'high'
+                               then case when c1.last_tag_update is not null 
+                                         then ' set '||to_char(c1.last_tag_update,'DD-Mon-YYYY')
+                                         end ||
+                                    case when l_last_tags is not null
+                                         then ', prior value was '||nvl(l_last_tags,'-')
+                                         end 
+                          end ||chr(10)
+                end ||
             case when c1.focus_area is not null then
-                'focus area: '||c1.focus_area||chr(10) end ||
-            'target completion date: '||c1.target_completion_date||case when c1.last_target_complete_update is not null 
-                                                                        then ', set '||to_char(c1.last_target_complete_update,'DD-Mon-YYYY')
-                                                                        end ||
-                                                                   case when l_last_target_date is not null
-                                                                        then ', prior value was '||l_last_target_date
-                                                                        end ||chr(10)||
-            'distinct user views: '||c1.views_last_30_days||' users viewed in the last 30 days (out of '||c1.overall_views_last_30_days||' total)'||chr(10);
+                'Focus Area: '||c1.focus_area||chr(10) end ||
+            'Target Completion Date: '||c1.target_completion_date||
+                                        case when p_summary_type != 'high'
+                                             then case when c1.last_target_complete_update is not null 
+                                                       then ', set '||to_char(c1.last_target_complete_update,'DD-Mon-YYYY')
+                                                       end ||
+                                                  case when l_last_target_date is not null
+                                                       then ', prior value was '||l_last_target_date
+                                                       end 
+                                        end ||chr(10)||
+            case when p_summary_type != 'high'
+                 then 'Distinct User Views: '||c1.views_last_30_days||' users viewed in the last 30 days (out of '||c1.overall_views_last_30_days||' total)'||chr(10)
+                 end ||chr(10);
+
+if p_summary_type not in ('chat','high') then
+   j := '  {'||chr(10)||
+        '    "project": "'||apex_escape.json(c1.name)||'",'||chr(10)||
+        '    "attributes": {'||chr(10)||
+        '          "description": "'||apex_escape.json_clob(nvl(c1.description,'none provided'))||'",'||chr(10)||
+        case when c1.area is not null then
+        '          "area": "'||apex_escape.json(c1.area)||'",'||chr(10) end ||
+        case when c1.initiative is not null then
+        '          "initiative": "'||apex_escape.json(c1.initiative)||'",'||chr(10) end ||
+        '          "owner": "'||apex_escape.json(c1.owner)||'",'||chr(10)||
+        '          "size": "'||apex_escape.json(c1.project_size)||'",'||chr(10)||
+        '          "priority": "'||apex_escape.json(c1.priority)||case when c1.last_priority_update is not null 
+                                                     then ', set '||to_char(c1.last_priority_update,'DD-Mon-YYYY')
+                                                     end ||
+                                                case when l_last_priority is not null
+                                                     then ', prior value was '||apex_escape.json(l_last_priority)
+                                                     end ||'",'||chr(10)||
+        '          "percent complete": "'||c1.percent_complete_display||case when c1.last_pct_complete_update is not null 
+                                                                             then ', set '||to_char(c1.last_pct_complete_update,'DD-Mon-YYYY')
+                                                                             end ||
+                                                                        case when l_last_pct_complete is not null
+                                                                             then ', prior value was '||l_last_pct_complete
+                                                                             end ||'",'||chr(10)||
+        case when c1.status != 'NA' then
+        '          "status": "'||apex_escape.json(c1.status)||case when c1.last_status_update is not null 
+                                                 then ', set '||to_char(c1.last_status_update,'DD-Mon-YYYY')
+                                                 end ||
+                                            case when l_last_status is not null
+                                                 then ', prior value was '||apex_escape.json(l_last_status)
+                                                 end ||'",'||chr(10) end ||
+        case when c1.tags is not null or c1.last_tag_update is not null then
+        '          "tags": "'||apex_escape.json(nvl(c1.tags,'-'))||case when c1.last_tag_update is not null 
+                                                  then ' set '||to_char(c1.last_tag_update,'DD-Mon-YYYY')
+                                                  end ||
+                                             case when l_last_tags is not null
+                                                  then ', prior value was '||apex_escape.json(nvl(l_last_tags,'-'))
+                                                  end ||'",'||chr(10) end ||
+        case when c1.focus_area is not null then
+        '          "focus area": "'||apex_escape.json(c1.focus_area)||'",'||chr(10) end ||
+        '          "target completion date": "'||c1.target_completion_date||case when c1.last_target_complete_update is not null 
+                                                                                 then ', set '||to_char(c1.last_target_complete_update,'DD-Mon-YYYY')
+                                                                                 end ||
+                                                                            case when l_last_target_date is not null
+                                                                                 then ', prior value was '||l_last_target_date
+                                                                                 end||'",'||chr(10)||
+        '          "distinct user views": "'||c1.views_last_30_days||' users viewed in the last 30 days (out of '||c1.overall_views_last_30_days||' total)'||'"'||chr(10)||
+        '        }';
+
 
     -- if last summary is of the same type and within the threshold to replace
     --    set p_id_to_replace so it can be removed and pass the summary before that (only for update) 
+    -- only send last summary on update
     for c2 in (
         select id, created, summary_type, risk, summary,
                case when p_summary_type = 'update'
@@ -247,30 +376,50 @@ for c1 in (
         then
             p_id_to_replace := c2.id;
 
-            for c3 in (
-                select created, summary_type, risk, summary
-                  from sp_project_ai_summaries s
-                 where project_id = p_project_id
-                   and created = c2.previous_created
-            ) loop
-                   l_last_summary := c3.created;
-                   x2 := '##### Last Summary'||chr(10);
-                   x2 := x2||'risk was '||c3.risk||chr(10)||
-                             c3.summary ||chr(10);
-            end loop;
-        else
+            if p_summary_type = 'update' then
+                for c3 in (
+                    select created, summary_type, risk, summary
+                      from sp_project_ai_summaries s
+                     where project_id = p_project_id
+                       and created = c2.previous_created
+                ) loop
+                       l_last_summary := c3.created;
+                       x2 := '##### Last Summary'||chr(10);
+                       x2 := x2||'risk was '||c3.risk||chr(10)||
+                                 c3.summary ||chr(10);
+
+                       j2 := '    "last summary": {'||chr(10)||
+                             '          "risk": "'||apex_escape.json(c3.risk)||'",'||chr(10)||
+                             '          "summary": "'||apex_escape.json_clob(c3.summary)||'"'||chr(10)||
+                             '        }';
+                end loop;
+            end if;
+        elsif p_summary_type = 'update' then
             l_last_summary := c2.created;
             x2 := '##### Last Summary'||chr(10);
             x2 := x2||'risk was '||c2.risk||chr(10)||
                       c2.summary ||chr(10);
+
+            j2 := ','||chr(10)||
+                  '    "last summary": {'||chr(10)||
+                  '          "risk": "'||apex_escape.json(c2.risk)||'",'||chr(10)||
+                  '          "summary": "'||apex_escape.json_clob(c2.summary)||'"'||chr(10)||
+                  '        }';
         end if;
 
         exit;  -- to get just the latest
     end loop;
 
+end if;
+
     if x2 is not null then
         sys.dbms_lob.append(x, x2);
         x2 := null;
+    end if;
+
+    if j2 is not null then
+        sys.dbms_lob.append(j, j2);
+        j2 := null;
     end if;
 
     -- CONTRIBUTORS
@@ -284,11 +433,11 @@ for c1 in (
          where c.project_id = c1.project_id
            and c.team_member_id = t.id
            and ( (p_summary_type = 'update' and c.updated > nvl(l_last_summary,c.updated-1)) or
-                  p_summary_type = 'full')
+                   p_summary_type in ('full','chat','high'))
          order by 2
     ) loop
 
-      if l_first_yn = 'Y' and p_summary_type = 'full' then
+      if l_first_yn = 'Y' and  p_summary_type in ('full','chat','high') then
          x2 := '##### Contributors'||chr(10);
       elsif l_first_yn = 'Y' and p_summary_type = 'update' then
          x2 := '##### Contributor Changes'||chr(10);
@@ -296,9 +445,33 @@ for c1 in (
 
       x2 := x2||'* '||c2.name||', '||c2.responsibility||
                       case when c2.comments is not null
-                           then '('||c2.comments||')' end ||
+                           then ' ('||c2.comments||')' end ||
                       case when c2.tags is not null 
-                           then '-'||c2.tags end ||chr(10);
+                           then ' -'||c2.tags end ||chr(10);
+
+if p_summary_type not in ('chat','high') then
+      if l_first_yn = 'Y' and p_summary_type in ('full','chat') then
+          j2 := ','||chr(10)||
+                '      "contributors": [';
+      elsif l_first_yn = 'Y' and p_summary_type = 'update' then
+          j2 := ','||chr(10)||
+                '      "contributor changes": [';
+      else
+          j2 := j2||',';
+      end if; 
+
+      j2 := j2||chr(10)||
+            '        {'||chr(10)||
+            '          "name": "'||apex_escape.json(c2.name)||'",'||chr(10)||
+            '          "responsibility": "'||apex_escape.json(c2.responsibility)||'"'||
+                      case when c2.comments is not null then 
+                      ','||chr(10)||
+            '          "comments": "'||apex_escape.json(c2.comments)||'"' end ||
+                      case when c2.tags is not null then 
+                      ','||chr(10)||
+            '          "tags": "'||apex_escape.json(c2.tags)||'"' end ||chr(10)||
+            '        }';
+end if;
 
       l_first_yn := 'N';
     end loop;
@@ -306,7 +479,7 @@ for c1 in (
     if x2 is not null then
        x2 := x2||chr(10);
     else
-       if p_summary_type = 'full' then
+       if  p_summary_type in ('full','chat','high') then
            x2 := '##### Contributors'||chr(10)||'* None'||chr(10);
        elsif p_summary_type = 'update' then
            x2 := '##### Contributor Changes'||chr(10)||'* None'||chr(10);
@@ -316,8 +489,30 @@ for c1 in (
     sys.dbms_lob.append(x, x2);
     x2 := null;
 
+    if p_summary_type = 'high' then 
+        sys.dbms_lob.append(x, '##### Description'||chr(10)||nvl(c1.description,'none provided'));
+    end if;
+
+if p_summary_type not in ('chat','high') then
+    if j2 is not null then
+       j2 := j2||chr(10);
+    else
+       if p_summary_type = 'full' then
+           j2 := ','||chr(10)||
+                 '      "contributors": "none defined"';
+       elsif p_summary_type = 'update' then
+           j2 := ','||chr(10)||
+                 '      "contributor changes": "none"';
+       end if;
+    end if;
+
+    sys.dbms_lob.append(j, j2);
+    j2 := null;
+end if;
+
     l_first_yn := 'Y';
 
+if p_summary_type != 'high' then
     -- MILESTONES
     for c2 in (
         select r.id milestone_id,
@@ -340,14 +535,20 @@ for c1 in (
            and nvl(r.task_sub_type_id,r.task_type_id) = t.id
            and t.static_id like 'MILESTONE%'
            and ( (p_summary_type = 'update' and r.updated > nvl(l_last_summary,r.updated-1)) or
-                  p_summary_type = 'full')
+                   p_summary_type in ('full','chat'))
          order by t.display_seq
     ) loop
 
-      if l_first_yn = 'Y' and p_summary_type = 'full' then
+      if l_first_yn = 'Y' and  p_summary_type in ('full','chat') then
          x2 := '##### Milestones'||chr(10);
+         j2 := ','||chr(10)||
+               '      "milestones": [';
       elsif l_first_yn = 'Y' and p_summary_type = 'update' then
          x2 := '##### Milestone Changes'||chr(10);
+         j2 := ','||chr(10)||
+               '      "milestone changes": [';
+      else
+         j2 := j2||','||chr(10);
       end if; 
 
       x2 := x2||'* **'||c2.name||'**'||', owner: '||c2.owner||', status of '||c2.status||
@@ -364,6 +565,24 @@ for c1 in (
                  else 'no target date provided'
                  end ||chr(10);
 
+if p_summary_type != 'chat' then
+      j2 := j2||
+            '        {'||chr(10)||
+            '          "milestone": "'||apex_escape.json(c2.name)||'",'||chr(10)||
+            '          "owner": "'||apex_escape.json(c2.owner)||'",'||chr(10)||
+            '          "status": "'||apex_escape.json(c2.status)||'",'||chr(10)||
+            case when c2.description is not null then
+            '          "description": "'||apex_escape.json(c2.description)||'",'||chr(10) end ||
+            '          "schedule": "'||
+            case when c2.start_date is not null and c2.target_complete is not null
+                 then c2.start_date||'-'||c2.target_complete
+                 when c2.start_date is not null
+                 then 'start of '||c2.start_date||' with no target completion'
+                 when c2.target_complete is not null
+                 then 'target complete of '||c2.target_complete
+                 else 'no target date provided'
+                 end ||'"';
+end if;
       -- MILESTONE COMMENTS
       for c3 in (
           select * from
@@ -377,7 +596,7 @@ for c1 in (
             where pc.author_id = tm.id (+)
               and pc.task_id = c2.milestone_id
               and nvl(pc.private_yn,'N') = 'N'
-              and ( (p_summary_type = 'full' and pc.created > sysdate-90) or
+              and ( ( p_summary_type in ('full','chat') and pc.created > sysdate-90) or
                      pc.created >= nvl(l_last_summary,pc.updated-1) )
           )
           where last_added <= 3
@@ -387,7 +606,39 @@ for c1 in (
         x2 := x2||'    * comment added by '||c3.user_name||' on '||to_char(c3.created,'DD-Mon-YYYY')||chr(10)||
                          c3.comment_text||chr(10);
 
+if p_summary_type != 'chat' then
+        if l_first2_yn = 'Y' then
+           j2 := j2||','||chr(10);
+           if p_summary_type = 'full' then
+              j2 := j2||'        "comments from last 90 days": [';
+           else
+              j2 := j2||'        "new comments": [';
+           end if;
+        else
+          j2 := j2||','||chr(10);
+        end if; 
+
+        j2 := j2||chr(10)||
+              '          {'||chr(10)||
+              '            "added by": "'||apex_escape.json(c3.user_name)||'",'||chr(10)||
+              '            "added on": "'||to_char(c3.created,'DD-Mon-YYYY')||'",'||chr(10)||
+              '            "comment": "'||apex_escape.json_clob(c3.comment_text)||'" '||chr(10)||
+              '          }';
+end if;
+
+        l_first2_yn := 'N';
+
       end loop;
+
+      -- at least one comment found
+      if l_first2_yn = 'N' then
+         j2 := j2||chr(10)||
+             '                      ]';
+         l_first2_yn := 'Y';
+      end if;
+
+      j2 := j2||chr(10)||
+            '        }';
 
       l_first_yn := 'N';
     end loop;
@@ -395,7 +646,7 @@ for c1 in (
     if x2 is not null then
        x2 := x2||chr(10);
     else
-       if p_summary_type = 'full' then
+       if p_summary_type in ('full','chat') then
           x2 := '##### Milestones'||chr(10)||'* None'||chr(10);
        elsif p_summary_type = 'update' then
           x2 := '##### Milestone Changes'||chr(10)||'* None'||chr(10);
@@ -405,46 +656,87 @@ for c1 in (
     sys.dbms_lob.append(x, x2);
     x2 := null;
 
+if p_summary_type != 'chat' then
+    if j2 is not null then
+       j2 := j2||chr(10)||
+             '       ]';
+    else
+       if p_summary_type = 'full' then
+          j2 := ','||chr(10)||
+                '      "milestones": "none defined"'||chr(10);
+       elsif p_summary_type = 'update' then
+          j2 := ','||chr(10)||
+                '      "milestone changes": "none"'||chr(10);
+       end if;
+    end if;
+
+    sys.dbms_lob.append(j, j2);
+    j2 := null;
+end if;
+
     l_first_yn := 'Y';
 
     -- REVIEWS
+    if apex_application_admin.get_build_option_status (
+           p_application_id    => g_app_id,
+           p_build_option_name => 'Team Calendar') = 'INCLUDE'
+    then
+        l_team_cal_yn := 'Y';
+    end if;
+
     for c2 in (
         select r.id review_id,
                t.task_type name,
-               nvl((select case when first_name is not null or last_name is not null
-                                then first_name||' '||last_name
-                                else email
-                                end
-                      from sp_team_members t where t.id = r.owner_id),'None') owner,
+               case when tm.id is null 
+                    then 'None'
+                    when tm.first_name is not null or tm.last_name is not null
+                    then tm.first_name||' '||tm.last_name
+                    else tm.email 
+                    end owner,
+               tm.ooo_summary,
                case when length(r.description) > 500
                     then substr(r.description,1,500)||'...'
                     else r.description
                     end description,
-               (select status from sp_task_statuses where id = r.status_id) status,
+               s.status,
+               s.indicates_complete_yn,
                r.impact,
                r.start_date,
                r.target_complete
           from sp_tasks r,
-               sp_task_types t
-         where project_id = c1.project_id
+               sp_task_types t,
+               sp_task_statuses s,
+               sp_team_members tm
+         where r.project_id = c1.project_id
            and nvl(r.task_sub_type_id,r.task_type_id) = t.id
            and t.static_id like 'REVIEW%'
+           and r.status_id = s.id
+           and r.owner_id = tm.id (+)
            and ( (p_summary_type = 'update' and r.updated > nvl(l_last_summary,r.updated-1)) or
-                  p_summary_type = 'full')
+                  p_summary_type in ('full','chat'))
          order by t.display_seq
     ) loop
 
-      if l_first_yn = 'Y' and p_summary_type = 'full' then
+      if l_first_yn = 'Y' and p_summary_type in ('full','chat') then
          x2 := '##### Reviews'||chr(10);
+         j2 := ','||chr(10)||
+               '      "reviews": [';
       elsif l_first_yn = 'Y' and p_summary_type = 'update' then
          x2 := '##### Review Changes'||chr(10);
+         j2 := ','||chr(10)||
+               '      "review changes": [';
+      else
+         j2 := j2||',';
       end if; 
 
       x2 := x2||'* **'||c2.name||'**'||
             case when c2.impact is not null
                  then ', '|| c2.impact ||' impact'
                  end ||
-            ', owner: '||c2.owner||', status of '||c2.status||
+            ', owner: '||c2.owner||case when l_team_cal_yn = 'Y' and c2.indicates_complete_yn = 'N' and c2.ooo_summary is not null
+                                        then ' ('||c2.ooo_summary||')'
+                                        end||
+            ', status of '||c2.status||
             case when c2.description is not null
                  then ' ('||c2.description||'), '
                  else ', '
@@ -457,6 +749,27 @@ for c1 in (
                  then 'target complete of '||c2.target_complete
                  else 'no target date provided'
                  end ||chr(10);
+
+if p_summary_type != 'chat' then
+      j2 := j2||chr(10)||
+            '        {'||chr(10)||
+            '          "review": "'||apex_escape.json(c2.name)||'",'||chr(10)||
+            case when c2.impact is not null then
+            '          "impact": "'||apex_escape.json(c2.impact)||'",'||chr(10) end ||
+            '          "owner": "'||apex_escape.json(c2.owner)||'",'||chr(10)||
+            '          "status": "'||apex_escape.json(c2.status)||'",'||chr(10)||
+            case when c2.description is not null then
+            '          "description": '||apex_escape.json(c2.description)||'",'||chr(10) end ||
+            '          "schedule": "'||
+            case when c2.start_date is not null and c2.target_complete is not null
+                 then c2.start_date||'-'||c2.target_complete
+                 when c2.start_date is not null
+                 then 'start of '||c2.start_date||' with no target completion'
+                 when c2.target_complete is not null
+                 then 'target complete of '||c2.target_complete
+                 else 'no target date provided'
+                 end ||'"'||chr(10);
+end if;
 
       -- REVIEW COMMENTS
       for c3 in (
@@ -471,7 +784,7 @@ for c1 in (
             where pc.author_id = tm.id (+)
               and pc.task_id = c2.review_id
               and nvl(pc.private_yn,'N') = 'N'
-              and ( (p_summary_type = 'full' and pc.created > sysdate-90) or
+              and ( (p_summary_type in ('full','chat') and pc.created > sysdate-90) or
                      pc.created >= nvl(l_last_summary,pc.created-1) )
           )
           where last_added <= 3
@@ -480,15 +793,49 @@ for c1 in (
 
         x2 := x2||'    * comment added by '||c3.user_name||' on '||to_char(c3.created,'DD-Mon-YYYY')||chr(10)||
                          c3.comment_text||chr(10);
+
+if p_summary_type != 'chat' then
+        if l_first2_yn = 'Y' then
+           j2 := j2||','||chr(10);
+           if p_summary_type = 'full' then
+              j2 := j2||'        "comments from last 90 days": [';
+           else
+              j2 := j2||'        "new comments": [';
+           end if;
+        else
+          j2 := j2||','||chr(10);
+        end if; 
+
+        j2 := j2||chr(10)||
+              '          {'||chr(10)||
+              '            "added by": "'||apex_escape.json(c3.user_name)||'",'||chr(10)||
+              '            "added on": "'||to_char(c3.created,'DD-Mon-YYYY')||'",'||chr(10)||
+              '            "comment": "'||apex_escape.json_clob(c3.comment_text)||'" '||chr(10)||
+              '          }';
+end if;
+
+        l_first2_yn := 'N';
+
       end loop;
 
+      -- at least one comment found
+      if l_first2_yn = 'N' then
+         j2 := j2||chr(10)||
+             '                      ]';
+         l_first2_yn := 'Y';
+      end if;
+
+      j2 := j2||chr(10)||
+            '        }';
+
       l_first_yn := 'N';
+
     end loop;
 
     if x2 is not null then
        x2 := x2||chr(10);
     elsif nvl(c1.requires_reviews_yn,'Y') = 'Y' then
-       if p_summary_type = 'full' then
+       if p_summary_type in ('full','chat') then
           x2 := '##### Reviews'||chr(10)||'* None'||chr(10);
        elsif p_summary_type = 'update' then
          x2 := '##### Review Changes'||chr(10)||'* None'||chr(10);
@@ -499,6 +846,24 @@ for c1 in (
        sys.dbms_lob.append(x, x2);
        x2 := null;
     end if;
+
+if p_summary_type != 'chat' then
+    if j2 is not null then
+       j2 := j2||chr(10)||
+             '       ]';
+    else
+       if p_summary_type = 'full' then
+          j2 := ','||chr(10)||
+                '      "reviews": "none defined"'||chr(10);
+       elsif p_summary_type = 'update' then
+          j2 := ','||chr(10)||
+                '      "review changes": "none"'||chr(10);
+       end if;
+    end if;
+
+    sys.dbms_lob.append(j, j2);
+    j2 := null;
+end if;
 
     l_first_yn := 'Y';
 
@@ -528,14 +893,20 @@ for c1 in (
            and t.static_id not like 'MILESTONE%'
            and t.static_id not like 'REVIEW%'
            and ( (p_summary_type = 'update' and r.updated > nvl(l_last_summary,r.updated-1)) or
-                  p_summary_type = 'full')
+                  p_summary_type in ('full','chat'))
          order by t.display_seq
     ) loop
 
-      if l_first_yn = 'Y' and p_summary_type = 'full' then
+      if l_first_yn = 'Y' and p_summary_type in ('full','chat') then
          x2 := '##### Tasks'||chr(10);
+         j2 := ','||chr(10)||
+               '      "tasks": [';
       elsif l_first_yn = 'Y' and p_summary_type = 'update' then
          x2 := '##### Task Changes'||chr(10);
+         j2 := ','||chr(10)||
+               '      "task changes": [';
+      else
+         j2 := j2||','||chr(10);
       end if; 
 
       x2 := x2||'* **'||c2.name||'**'||', owner: '||c2.owner||', status of '||c2.status||
@@ -552,6 +923,89 @@ for c1 in (
                  else 'no target date provided'
                  end ||chr(10);
 
+if p_summary_type != 'chat' then
+      j2 := j2||
+            '        {'||chr(10)||
+            '          "task": "'||apex_escape.json(c2.name)||'",'||chr(10)||
+            '          "owner": "'||apex_escape.json(c2.owner)||'",'||chr(10)||
+            '          "status": "'||apex_escape.json(c2.status)||'",'||chr(10)||
+            case when c2.description is not null then
+            '          "description": "'||apex_escape.json(c2.description)||'",'||chr(10) end ||
+            '          "schedule": "'||
+            case when c2.start_date is not null and c2.target_complete is not null
+                 then c2.start_date||'-'||c2.target_complete
+                 when c2.start_date is not null
+                 then 'start of '||c2.start_date||' with no target completion'
+                 when c2.target_complete is not null
+                 then 'target complete of '||c2.target_complete
+                 else 'no target date provided'
+                 end ||'"';
+end if;
+
+      -- TASK RELATIONS
+      for c3 in (
+          select r.updated,
+                 'This Task ' ||
+                     nvl((select relation_type from sp_relation_types
+                           where id = r.relation_type_id),'relates to') ||' '||
+                     p.task ||
+                     case when p.task is not null then ' (' end ||
+                     (select task_type from sp_task_types rt where rt.id = p.task_type_id)||
+                      case when p.task_sub_type_id is not null 
+                           then ': '||(select task_type from sp_task_types rt where rt.id = p.task_sub_type_id) 
+                           end ||
+                           case when p.task is not null then ')' end  relation
+            from SP_TASK_RELATED r,
+                 sp_tasks p
+           where r.TASK_ID = c2.task_id
+             and r.RELATED_TASK_ID = p.id
+          union
+          select r.updated,
+                 rp.task ||
+                     case when rp.task is not null then ' (' end ||
+                     (select task_type from sp_task_types rt where rt.id = rp.task_type_id)||
+                      case when rp.task_sub_type_id is not null 
+                           then ': '||(select task_type from sp_task_types rt where rt.id = rp.task_sub_type_id) 
+                           end ||
+                           case when rp.task is not null then ')' end ||' '||
+                  nvl((select nvl(relation_reverse,relation_type) from sp_relation_types
+                        where id = r.relation_type_id),'relates to') ||
+                 ' This Task' relation
+            from SP_TASK_RELATED r,
+                 sp_tasks rp
+           where r.RELATED_TASK_ID = c2.task_id
+             and r.task_id = rp.id
+          order by updated desc
+      ) loop
+
+        x2 := x2||'    * '||c3.relation||chr(10);
+
+        if l_first2_yn = 'Y' then
+           j2 := j2||','||chr(10);
+           j2 := j2||'        "Related Tasks": [';
+        else
+          j2 := j2||','||chr(10);
+        end if; 
+
+if p_summary_type != 'chat' then
+        j2 := j2||chr(10)||
+              '          {'||chr(10)||
+              '            "related task": "'||apex_escape.json(c3.relation)||'" '||chr(10)||
+              '          }';
+end if;
+
+        l_first2_yn := 'N';
+
+      end loop;
+
+      -- at least one relation found
+      if l_first2_yn = 'N' then
+         j2 := j2||chr(10)||
+             '                      ]';
+         l_first2_yn := 'Y';
+      end if;
+
+
       -- TASK COMMENTS
       for c3 in (
           select * from
@@ -565,7 +1019,7 @@ for c1 in (
             where pc.author_id = tm.id (+)
               and pc.task_id = c2.task_id
               and nvl(pc.private_yn,'N') = 'N'
-              and ( (p_summary_type = 'full' and pc.created > sysdate-90) or
+              and ( (p_summary_type in ('full','chat') and pc.created > sysdate-90) or
                      pc.created >= nvl(l_last_summary,pc.updated-1) )
           )
           where last_added <= 3
@@ -575,187 +1029,320 @@ for c1 in (
         x2 := x2||'    * comment added by '||c3.user_name||' on '||to_char(c3.created,'DD-Mon-YYYY')||chr(10)||
                          c3.comment_text||chr(10);
 
+if p_summary_type != 'chat' then
+        if l_first2_yn = 'Y' then
+           j2 := j2||','||chr(10);
+           if p_summary_type = 'full' then
+              j2 := j2||'        "comments from last 90 days": [';
+           else
+              j2 := j2||'        "new comments": [';
+           end if;
+        else
+          j2 := j2||','||chr(10);
+        end if; 
+
+        j2 := j2||chr(10)||
+              '          {'||chr(10)||
+              '            "added by": "'||apex_escape.json(c3.user_name)||'",'||chr(10)||
+              '            "added on": "'||to_char(c3.created,'DD-Mon-YYYY')||'",'||chr(10)||
+              '            "comment": "'||apex_escape.json_clob(c3.comment_text)||'" '||chr(10)||
+              '          }';
+end if;
+        l_first2_yn := 'N';
+
       end loop;
+
+      -- at least one comment found
+      if l_first2_yn = 'N' then
+         j2 := j2||chr(10)||
+             '                      ]';
+         l_first2_yn := 'Y';
+      end if;
+
+      j2 := j2||chr(10)||
+            '        }';
 
       l_first_yn := 'N';
     end loop;
 
+    -- no mention of tasks if there are none (as not required)
+
     if x2 is not null then
        x2 := x2||chr(10);
        sys.dbms_lob.append(x, x2);
        x2 := null;
     end if;
 
+if p_summary_type != 'chat' then
+    if j2 is not null then
+       j2 := j2||chr(10)||
+             '       ]';
+       sys.dbms_lob.append(j, j2);
+       j2 := null;
+    end if;
+end if;
+
     l_first_yn := 'Y';
 
-    -- APPROVALS
-    for c2 in (
-        select a.id approval_id,
-               t.approval_type,
-               m.first_name||' '||m.last_name submitted_by,
-               to_char(a.submitted,'DD-Mon-YYYY') submitted_on_display,
-               initcap(replace(case when a.status = 'CLARIFICATION-REQUESTED' 
-                                    then 'Needs Clarification' 
-                                    when a.status = 'PENDING'
-                                    then 'Approval Pending'
-                                    else a.status 
-                                    end,'-',' ')) status_display,
-               a.status,
-               case when a.status = 'PENDING' then 'Justification: '||a.justification
-                    when a.status in ('CLARIFICATION-REQUESTED','REJECTED')
-                    then (select comments from 
-                                 (select comments, created, max(created) over (partition by project_approval_id) last_created
+    if apex_application_admin.get_build_option_status (
+           p_application_id    => g_app_id,
+           p_build_option_name => 'Approvals') = 'INCLUDE'
+    then
+
+        -- APPROVALS
+        for c2 in (
+            select a.id approval_id,
+                   t.approval_type,
+                   m.first_name||' '||m.last_name submitted_by,
+                   to_char(a.submitted,'DD-Mon-YYYY') submitted_on_display,
+                   initcap(replace(case when a.status = 'CLARIFICATION-REQUESTED' 
+                                        then 'Needs Clarification' 
+                                        when a.status = 'PENDING'
+                                        then 'Approval Pending'
+                                        else a.status 
+                                        end,'-',' ')) status_display,
+                   a.status,
+                   case when a.status = 'PENDING' then a.justification
+                        when a.status in ('CLARIFICATION-REQUESTED','REJECTED')
+                        then (select comments from 
+                                     (select comments, created, max(created) over (partition by project_approval_id) last_created
+                                        from sp_project_approval_chain
+                                       where a.id = project_approval_id)
+                                where last_created = created)
+                        end justification,
+                   to_char(a.updated,'DD-Mon-YYYY') last_update_display,
+                   case when p_summary_type = 'update' 
+                        then nvl((select max(last_status_on) 
                                     from sp_project_approval_chain
-                                   where a.id = project_approval_id)
-                            where last_created = created)
-                    end justification,
-               to_char(a.updated,'DD-Mon-YYYY') last_update_display,
-               case when p_summary_type = 'update' 
-                    then nvl((select max(last_status_on) 
-                                from sp_project_approval_chain
-                               where project_approval_id = a.id),a.submitted)
-                    end last_action
-          from sp_project_approvals a,
-               sp_approval_types t,
-               sp_team_members m
-         where a.project_id = c1.project_id
-           and a.approval_type_id = t.id    
-           and a.submitted_by_team_member_id = m.id
-         order by a.submitted desc
-    ) loop
+                                   where project_approval_id = a.id),a.submitted)
+                        end last_action
+              from sp_project_approvals a,
+                   sp_approval_types t,
+                   sp_team_members m
+             where a.project_id = c1.project_id
+               and a.approval_type_id = t.id    
+               and a.submitted_by_team_member_id = m.id
+             order by a.submitted desc
+        ) loop
 
-      if p_summary_type = 'full' or
-         (p_summary_type = 'update' and c2.last_action > nvl(l_last_summary,c2.last_action-1))
-      then
+          if p_summary_type in ('full','chat') or
+             (p_summary_type = 'update' and c2.last_action > nvl(l_last_summary,c2.last_action-1))
+          then
 
-         if l_first_yn = 'Y' and p_summary_type = 'full' then
-            x2 := '##### Approvals'||chr(10);
-         elsif l_first_yn = 'Y' and p_summary_type = 'update' then
-            x2 := '##### Approval Changes'||chr(10);
-         end if; 
+             if l_first_yn = 'Y' and p_summary_type in ('full','chat') then
+                x2 := '##### Approvals'||chr(10);
+             j2 := ','||chr(10)||
+                   '      "approvals": [';
+             elsif l_first_yn = 'Y' and p_summary_type = 'update' then
+                x2 := '##### Approval Changes'||chr(10);
+                j2 := ','||chr(10)||
+                      '      "approval changes": [';
+             else
+                 j2 := j2||','||chr(10);
+             end if; 
 
-         x2 := x2||'* **'||c2.approval_type||'**'||', submitted by '||c2.submitted_by||' on '||c2.submitted_on_display;
-         if c2.status = 'APPROVED' then
-             x2 := x2||', Received Final Approval on '||c2.last_update_display||chr(10);
-         elsif c2.status = 'WITHDRAWN' then
-             x2 := x2||', Withdrawn on '||c2.last_update_display||chr(10);
-         elsif c2.status = 'REJECTED' then
-             x2 := x2||', Rejected on '||c2.last_update_display||chr(10);
-         else
-             x2 := x2||', status is '||c2.status_display||chr(10);
-             x2 := x2||'    * '||c2.justification||chr(10);
+             x2 := x2||'* **'||c2.approval_type||'**'||', submitted by '||c2.submitted_by||' on '||c2.submitted_on_display;
+             j2 := j2||chr(10)||
+                   '        {'||chr(10)||
+                   '          "approval type": "'||apex_escape.json(c2.approval_type)||'",'||chr(10)||
+                   '          "submitted by": "'||apex_escape.json(c2.submitted_by)||'",'||chr(10)||
+                   '          "submitted on": "'||c2.submitted_on_display||'",'||chr(10);
+             if c2.status = 'APPROVED' then
+                 x2 := x2||', Received Final Approval on '||c2.last_update_display||chr(10);
+                 j2 := j2||'          "status": "received final approval on '||c2.last_update_display||'"'||chr(10)||
+                           '        }';
+             elsif c2.status = 'WITHDRAWN' then
+                 x2 := x2||', Withdrawn on '||c2.last_update_display||chr(10);
+                 j2 := j2||'          "status": "withdrawn on '||c2.last_update_display||'"'||chr(10)||
+                           '        }';
+             elsif c2.status = 'REJECTED' then
+                 x2 := x2||', Rejected on '||c2.last_update_display||chr(10);
+                 j2 := j2||'          "status": "rejected on '||c2.last_update_display||'"'||chr(10)||
+                           '        }';
+             else
+                 x2 := x2||', status is '||c2.status_display||chr(10);
+                 x2 := x2||'    * '||case when c2.status = 'PENDING' then 'Justification: ' end||apex_escape.json(c2.justification)||chr(10);
+    
+                 j2 := j2||'          "status": "'||apex_escape.json(c2.status_display)||'",'||chr(10);
+                 j2 := j2||'          "justification": " '||apex_escape.json(c2.justification)||'",'||chr(10);
 
-             -- current and past approvers
-             for c3 in (
-                 select to_char(c.last_status_on,'DD-Mon-YYYY') comment_date,
-                        t.first_name ||' '|| t.last_name user_name,
-                        initcap(replace(decode(c.status,'PENDING','Pending Approval'),'-',' ')) status,
-                        c.comments,
-                        case when c.response_by_team_member_id is not null
-                             then c.response||chr(10)||'By: '||(select first_name ||' '|| last_name from sp_team_members
-                                                                 where id = c.response_by_team_member_id) ||
-                                  ', '|| to_char(c.responded_on,'DD-Mon-YYYY')
-                             end response,
-                        c.last_status_on ob_date
-                   from sp_project_approval_chain c,
-                        sp_team_members t
-                  where c.project_approval_id = c2.approval_id
-                    and c.team_member_id = t.id
-                 order by ob_date asc
-             ) loop
-                 x2 := x2||'    * '|| c3.user_name ||' '|| c3.status ||', '|| c3.comment_date ||chr(10);
-                 if c3.comments is not null then
-                    x2 := x2||'      Comments: '||c3.comments||chr(10);
-                 end if;
-                 if c3.response is not null then
-                    x2 := x2||'      Response: '||c3.response||chr(10);
-                 end if;
-             end loop;
+                 -- current and past approvers
+                 for c3 in (
+                     select to_char(c.last_status_on,'DD-Mon-YYYY') comment_date,
+                            t.first_name ||' '|| t.last_name user_name,
+                            initcap(replace(decode(c.status,'PENDING','Pending Approval'),'-',' ')) status,
+                            c.comments,
+                            case when c.response_by_team_member_id is not null
+                                 then c.response||chr(10)||'By: '||(select first_name ||' '|| last_name from sp_team_members
+                                                                     where id = c.response_by_team_member_id) ||
+                                      ', '|| to_char(c.responded_on,'DD-Mon-YYYY')
+                                 end response,
+                            c.last_status_on ob_date
+                       from sp_project_approval_chain c,
+                            sp_team_members t
+                      where c.project_approval_id = c2.approval_id
+                        and c.team_member_id = t.id
+                     order by ob_date asc
+                 ) loop
+                     x2 := x2||'    * '|| c3.user_name ||' '|| c3.status ||', '|| c3.comment_date ||chr(10);
+                     if c3.comments is not null then
+                        x2 := x2||'      Comments: '||c3.comments||chr(10);
+                     end if;
+                     if c3.response is not null then
+                        x2 := x2||'      Response: '||c3.response||chr(10);
+                     end if;
 
-             -- future approvers
-             select count(*)
-               into l_future_reviewer_cnt
-               from sp_initiative_approval_chain c,
-                    sp_project_approvals a
-              where a.id = c2.approval_id
-                and a.initiative_approval_id = c.initiative_approval_id
-                and c.id not in (select initiative_approval_chain_id
-                                   from sp_project_approval_chain
-                                  where project_approval_id = c2.approval_id);
+if p_summary_type != 'chat' then
+                     if l_first2_yn = 'Y' then
+                        j2 := j2||','||chr(10)||
+                              '        "Approvers": [';
+                     else
+                        j2 := j2||',';
+                     end if; 
 
-             for c3 in (
-                 select rownum, reviewer
-                   from (
-                 select case when c.alternate_team_member_id is not null and   
-                                  (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
-                                  (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
-                             then 'Alternate - '||
-                                  (select last_name||', '||first_name
-                                     from sp_team_members
-                                    where id = c.alternate_team_member_id)
-                             else t.last_name||', '||t.first_name 
-                             end reviewer
+                     j2 := j2||chr(10)||
+                           '          {'||chr(10)||
+                           '            "approver": "'||apex_escape.json(c3.user_name)||'",'||chr(10)||
+                           '            "status": "'||apex_escape.json(c3.status)||'",'||chr(10)||
+                           '            "comment date": "'||c3.comment_date||'" ';
+                     if c3.comments is not null then
+                        j2 := j2||','||chr(10)||
+                              '            "comments": "'||apex_escape.json(c3.comments)||'" ';
+                     end if;
+                     if c3.response is not null then
+                        j2 := j2||','||chr(10)||
+                              '            "response": "'||apex_escape.json(c3.response)||'" ';
+                     end if;
+                     j2 := j2||chr(10)||
+                           '          }';
+end if;
+                     l_first2_yn := 'N';
+
+                 end loop;
+
+                 -- future approvers
+                 select count(*)
+                   into l_future_reviewer_cnt
                    from sp_initiative_approval_chain c,
-                        sp_project_approvals a,
-                        sp_team_members t
+                        sp_project_approvals a
                   where a.id = c2.approval_id
                     and a.initiative_approval_id = c.initiative_approval_id
-                    and c.team_member_id = t.id
                     and c.id not in (select initiative_approval_chain_id
                                        from sp_project_approval_chain
-                                      where project_approval_id = c2.approval_id)
-                  order by c.approval_seq
-                  )
-             ) loop
-                 x2 := x2||'    * '|| c3.reviewer;
-                 if c3.rownum = l_future_reviewer_cnt then
-                    x2 := x2||', final reviewer'||chr(10);
-                 elsif c3.rownum = 1 then
-                    x2 := x2||', next reviewer'||chr(10);
-                 else
-                    x2 := x2||chr(10);
-                 end if;
-              
-             end loop;
+                                      where project_approval_id = c2.approval_id);
 
-         end if;
+                 for c3 in (
+                     select rownum, reviewer
+                       from (
+                     select case when c.alternate_team_member_id is not null and   
+                                      (c.alternate_start_date <= sysdate or c.alternate_start_date is null) and 
+                                      (c.alternate_end_date+1 > sysdate or c.alternate_end_date is null)
+                                 then 'Alternate - '||
+                                      (select last_name||', '||first_name
+                                         from sp_team_members
+                                        where id = c.alternate_team_member_id)
+                                 else t.last_name||', '||t.first_name 
+                                 end reviewer
+                       from sp_initiative_approval_chain c,
+                            sp_project_approvals a,
+                            sp_team_members t
+                      where a.id = c2.approval_id
+                        and a.initiative_approval_id = c.initiative_approval_id
+                        and c.team_member_id = t.id
+                        and c.id not in (select initiative_approval_chain_id
+                                           from sp_project_approval_chain
+                                          where project_approval_id = c2.approval_id)
+                      order by c.approval_seq
+                      )
+                 ) loop
+                     x2 := x2||'    * '|| c3.reviewer;
+                     if c3.rownum = l_future_reviewer_cnt then
+                        x2 := x2||', final reviewer'||chr(10);
+                     elsif c3.rownum = 1 then
+                        x2 := x2||', next reviewer'||chr(10);
+                     else
+                        x2 := x2||chr(10);
+                     end if;
+
+if p_summary_type != 'chat' then
+                     j2 := j2||chr(10)||
+                           '          {'||chr(10)||
+                           '            "approver": "'||apex_escape.json(c3.reviewer)||'"'||chr(10);
+
+                     if c3.rownum = l_future_reviewer_cnt then
+                        j2 := j2||','||chr(10)||
+                              '            "note": "final reviewer"'||chr(10)||
+                              '          }';
+                     elsif c3.rownum = 1 then
+                        j2 := j2||','||chr(10)||
+                              '            "note": "next reviewer"'||chr(10)||
+                              '          }';
+                     else
+                        j2 := j2||chr(10)||
+                              '          }';
+                     end if;
+end if;
+                 end loop;
+
+             end if;
       
-         l_first_yn := 'N';
+             l_first_yn := 'N';
 
-       end if;
+           end if;
 
-    end loop;
+        end loop;
 
-    -- APPROVALS NOT YET REQUESTED
-    for c2 in (
-        select t.approval_type
-          from SP_INITIATIVE_APPROVALS a,
-               sp_approval_types t
-         where a.initiative_id = c1.initiative_id
-           and a.approval_type_id = t.id
-           and a.active_yn = 'Y'
-           and t.active_yn = 'Y'
-           and a.id not in (select initiative_approval_id
-                              from sp_project_approvals
-                             where project_id = c1.project_id)
-        order by t.display_seq
-    ) loop
-        -- if no approvals yet, need to include the heading
-        if l_first_yn = 'Y' then
-            x2 := x2||'##### Approvals'||chr(10);
-            l_first_yn := 'N';
+        -- APPROVALS NOT YET REQUESTED
+        if c1.pct_complete != 100 then
+            for c2 in (
+                select t.approval_type
+                  from SP_INITIATIVE_APPROVALS a,
+                       sp_approval_types t
+                 where a.initiative_id = c1.initiative_id
+                   and a.approval_type_id = t.id
+                   and a.active_yn = 'Y'
+                   and t.active_yn = 'Y'
+                   and a.id not in (select initiative_approval_id
+                                      from sp_project_approvals
+                                     where project_id = c1.project_id)
+                 order by t.display_seq
+            ) loop
+                -- if no approvals yet, need to include the heading
+                if l_first_yn = 'Y' then
+                    x2 := x2||'##### Approvals'||chr(10);
+                    j2 := j2||','||chr(10)||
+                              '        "approvals": ['||chr(10);
+                    l_first_yn := 'N';
+                else
+                    j2 := j2||','||chr(10);
+                end if;
+                x2 := x2||'* **'||c2.approval_type||'**'||', not yet requested'||chr(10);
+if p_summary_type != 'chat' then
+                j2 := j2||'          {'||chr(10)||
+                          '           "approval type": "'||apex_escape.json(c2.approval_type)||'",'||chr(10)||
+                          '           "status": "not yet requested"'||chr(10)||
+                          '          }';
+end if;
+            end loop;
         end if;
-        x2 := x2||'* **'||c2.approval_type||'**'||', not yet requested'||chr(10);
-    end loop;
 
-    if x2 is not null then
-       x2 := x2||chr(10);
-       sys.dbms_lob.append(x, x2);
-       x2 := null;
+        if x2 is not null then
+           x2 := x2||chr(10);
+           sys.dbms_lob.append(x, x2);
+           x2 := null;
+        end if;
+
+if p_summary_type != 'chat' then
+        if j2 is not null then
+           j2 := j2||chr(10)||
+             '          ]';
+           sys.dbms_lob.append(j, j2);
+           j2 := null;
+        end if;
+end if;
+        l_first_yn := 'Y';
+
     end if;
-
-
-    l_first_yn := 'Y';
 
     -- COMMENTS
     for c2 in (
@@ -770,7 +1357,7 @@ for c1 in (
         where pc.author_id = tm.id (+)
           and pc.project_id = c1.project_id
           and nvl(pc.private_yn,'N') = 'N'
-          and ( (p_summary_type = 'full' and pc.created > sysdate-90) or
+          and ( (p_summary_type in ('full','chat') and pc.created > sysdate-90) or
                  pc.created >=  nvl(l_last_summary,pc.updated-1) )
         )
         where last_added <= 10
@@ -780,9 +1367,24 @@ for c1 in (
       if l_first_yn = 'Y' then
          x2 := '##### Most Recent Comments'||chr(10);
       end if; 
-
       x2 := x2||'* comment added by '||c2.user_name||' on '||to_char(c2.created,'DD-Mon-YYYY')||chr(10)||
                    c2.comment_text||chr(10);
+
+if p_summary_type != 'chat' then
+      if l_first_yn = 'Y' then
+          j2 := ','||chr(10)||
+                '      "most recent comments": [';
+      else
+          j2 := j2||','||chr(10);
+      end if;
+
+      j2 := j2||chr(10)||
+            '          {'||chr(10)||
+            '            "added by": "'||apex_escape.json(c2.user_name)||'",'||chr(10)||
+            '            "added on": "'||to_char(c2.created,'DD-Mon-YYYY')||'",'||chr(10)||
+            '            "comment": "'||apex_escape.json_clob(c2.comment_text)||'" '||chr(10)||
+            '          }';
+end if;
 
       l_first_yn := 'N';
     end loop;
@@ -793,21 +1395,84 @@ for c1 in (
        x2 := null;
     end if;
 
+if p_summary_type != 'chat' then
+    if j2 is not null then
+       j2 := j2||chr(10)||
+             '          ]';
+       sys.dbms_lob.append(j, j2);
+       j2 := null;
+    end if;
+
+    j2 := chr(10)||
+          '          }';
+    sys.dbms_lob.append(j, j2);
+end if;
+
     l_first_yn := 'Y';
+
+end if; -- ENDING IF FOR HIGH
 
 end loop;
 
-p_summary := x;
+
+p_summary_md   := case when p_summary_type = 'chat' then replace(x,chr(10),'<br/>') else x end;
+p_summary_json := j;
 
 exception
     when others then
         sp_util.add_error_log (
-            p_package_name   => 'sp_summary_util',
-            p_procedure_name => 'summarize_project', 
-            p_error          => sqlerrm, 
-            p_arg1_name      => 'p_project_id',   p_arg1_val => p_project_id, 
-            p_arg2_name      => 'p_summary_type', p_arg2_val => p_summary_type );
+            p_package_name    => 'sp_summary_util',
+            p_procedure_name  => 'summarize_project', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_project_id',   p_arg1_val => p_project_id, 
+            p_arg2_name       => 'p_summary_type', p_arg2_val => p_summary_type );
 end summarize_project;
+
+
+function generate_project_md (
+    p_project_id           in  number,
+    p_app_user_id          in  number )
+    return clob
+is
+    l_project_details_md    clob;
+    l_project_details_json  clob;
+    l_id_to_replace         number;
+begin
+
+    summarize_project (
+        p_project_id    => p_project_id,
+        p_app_user_id   => p_app_user_id,
+        p_summary_type  => 'chat',
+        p_summary_md    => l_project_details_md,
+        p_summary_json  => l_project_details_json,
+        p_id_to_replace => l_id_to_replace );
+
+    return l_project_details_md;
+
+end generate_project_md;
+
+
+function generate_project_high_level (
+    p_project_id           in  number )
+    return clob
+is
+    l_project_details_md    clob;
+    l_project_details_json  clob;
+    l_id_to_replace         number;
+begin
+
+    summarize_project (
+        p_project_id    => p_project_id,
+        p_app_user_id   => null,
+        p_summary_type  => 'high',
+        p_summary_md    => l_project_details_md,
+        p_summary_json  => l_project_details_json,
+        p_id_to_replace => l_id_to_replace );
+
+    return l_project_details_md;
+
+end generate_project_high_level;
 
 
 -- can be run from APEX App UI (not SQL Commands) or from within a job (if session context is set)
@@ -817,16 +1482,21 @@ procedure generate_project_summary (
     p_ai_id         out  number,
     p_error_yn      out  varchar2 )
 as
-    l_system_prompt    clob;
-    l_project_details  clob;
-    l_id_to_replace    number;
-    l_ai_service       varchar2(60);
-    l_ai_sum           clob;
-    l_json_values      apex_json.t_values;
-    l_summary          clob;
-    l_highlights       varchar2(4000);
-    l_risk             varchar2(100);
+    l_system_prompt         clob;
+    l_project_details_md    clob;
+    l_project_details_json  clob;
+    l_id_to_replace         number;
+    l_ai_service            varchar2(60);
+    l_ai_sum                clob;
+    l_json_values           apex_json.t_values;
+    l_summary               clob;
+    l_highlights            varchar2(4000);
+    l_risk                  varchar2(100);
 begin
+
+    if g_app_id is null then
+        g_app_id := sp_util.get_setting (p_static_id => 'APP_ID');
+    end if;
 
     p_error_yn := 'N';
 
@@ -841,33 +1511,46 @@ begin
 
     summarize_project (
         p_project_id    => p_project_id,
+        p_app_user_id   => null,
         p_summary_type  => p_summary_type,
-        p_summary       => l_project_details,
+        p_summary_md    => l_project_details_md,
+        p_summary_json  => l_project_details_json,
         p_id_to_replace => l_id_to_replace );
 
-    if l_project_details is not null then
+    if l_project_details_md is not null then
 
         insert into sp_project_ai_summaries
-            (project_id, summary_type, prompt_sent, details_sent)
+            (project_id, summary_type, prompt_sent, details_sent, details_json)
         values 
-            (p_project_id, p_summary_type, l_system_prompt, l_project_details)
+            (p_project_id, p_summary_type, l_system_prompt, l_project_details_md, l_project_details_json)
         returning id into p_ai_id;
         commit;
 
-        l_ai_service := sp_util.get_setting (p_static_id => 'SUMMARY_AI_SERVICE');
+        l_ai_service := sp_util.get_setting (p_static_id => 'AI_SERVICE');
 
         if l_ai_service is not null and
            apex_application_admin.get_build_option_status (
-               p_application_id    => sp_util.get_setting (p_static_id => 'APP_ID'),
-               p_build_option_name => 'AI Project Summaries' ) = 'INCLUDE'
+               p_application_id    => g_app_id,
+               p_build_option_name => 'AI Project Summaries - Create' ) = 'INCLUDE'
         then
 
             -- wrapping to continue if ai error
             begin
                 l_ai_sum := apex_ai.generate (
-                                p_prompt            => 'Summarize the following project updates: ' || escape_markdown(l_project_details),
+                                p_prompt            => 'Summarize the following project updates: ' || l_project_details_json, --escape_markdown(l_project_details_md),
                                 p_system_prompt     => l_system_prompt,
                                 p_service_static_id => l_ai_service ); 
+
+                -- occassionally, it will return with a json wrapper
+                if l_ai_sum like '```json%' then
+                    l_ai_sum := regexp_replace(regexp_replace(l_ai_sum, '```json\n?', ''), '\n?```', '');
+                    sp_util.add_error_log ( 
+                        p_package_name   => 'sp_summary_util',
+                        p_procedure_name => 'generate_project_summary', 
+                        p_error          => 'needed to scrub json',
+                        p_arg1_name      => 'p_project_id', 
+                        p_arg1_val       => p_project_id );
+                end if;
 
                 -- store date_received in case the json parse fails
                 update sp_project_ai_summaries
@@ -906,12 +1589,13 @@ begin
                 when others then 
                     p_error_yn := 'Y';
                     sp_util.add_error_log (
-                        p_package_name   => 'sp_summary_util',
-                        p_procedure_name => 'generate_project_summary', 
-                        p_error          => sqlerrm, 
-                        p_arg1_name      => 'p_project_id',   p_arg1_val => p_project_id, 
-                        p_arg2_name      => 'p_summary_type', p_arg2_val => p_summary_type, 
-                        p_arg3_name      => 'p_ai_id', p_arg3_val => p_ai_id );
+                        p_package_name    => 'sp_summary_util',
+                        p_procedure_name  => 'generate_project_summary', 
+                        p_error           => sqlerrm, 
+                        p_error_backtrace => dbms_utility.format_error_backtrace, 
+                        p_arg1_name       => 'p_project_id',   p_arg1_val => p_project_id, 
+                        p_arg2_name       => 'p_summary_type', p_arg2_val => p_summary_type, 
+                        p_arg3_name       => 'p_ai_id',        p_arg3_val => p_ai_id );
             end;
         end if;
     else
@@ -929,7 +1613,6 @@ end generate_project_summary;
 
 -- run as a job, once a week
 procedure generate_project_summaries as
-    l_app_id           number;
     l_summary_type     varchar2(30);
     l_ai_id            number;
     l_error_yn         varchar2(1);
@@ -938,13 +1621,13 @@ procedure generate_project_summaries as
     l_max_errors       number := 3;  -- exit when this many errors 
 begin
 
-    l_app_id := sp_util.get_setting (p_static_id => 'APP_ID');
+    g_app_id := sp_util.get_setting (p_static_id => 'APP_ID');
 
     -- when run from a job, need a session
     for c1 in (
         select workspace, workspace_id
           from apex_applications
-         where application_id = l_app_id
+         where application_id = g_app_id
     ) loop
         apex_util.set_workspace (p_workspace => c1.workspace );
         apex_util.set_security_group_id(p_security_group_id => c1.workspace_id );
@@ -952,11 +1635,11 @@ begin
 
     -- if build not not enabled, nothing will be run (careful to not update build option names)
     if apex_util.get_build_option_status (
-           p_application_id    => l_app_id, 
-           p_build_option_name => 'AI Project Summaries') = 'INCLUDE'
+           p_application_id    => g_app_id, 
+           p_build_option_name => 'AI Project Summaries - Create') = 'INCLUDE'
     then
         apex_session.create_session (
-           p_app_id   => l_app_id,
+           p_app_id   => g_app_id,
            p_page_id  => 1,
            p_username => 'AI' );
 
@@ -1032,9 +1715,10 @@ begin
 exception
     when others then
         sp_util.add_error_log (
-            p_package_name   => 'sp_summary_util',
-            p_procedure_name => 'generate_project_summaries', 
-            p_error          => sqlerrm );
+            p_package_name    => 'sp_summary_util',
+            p_procedure_name  => 'generate_project_summaries', 
+            p_error           => sqlerrm,
+            p_error_backtrace => dbms_utility.format_error_backtrace );
 end generate_project_summaries;
 
 
@@ -1111,10 +1795,11 @@ p_summary := x;
 exception
     when others then
         sp_util.add_error_log (
-            p_package_name   => 'sp_summary_util',
-            p_procedure_name => 'summarize_release', 
-            p_error          => sqlerrm, 
-            p_arg1_name      => 'p_release_id', p_arg1_val => p_release_id );
+            p_package_name    => 'sp_summary_util',
+            p_procedure_name  => 'summarize_release', 
+            p_error           => sqlerrm, 
+            p_error_backtrace => dbms_utility.format_error_backtrace, 
+            p_arg1_name       => 'p_release_id', p_arg1_val => p_release_id );
 end summarize_release;
 
 
@@ -1133,6 +1818,10 @@ as
     l_summary          clob;
     l_highlights       varchar2(4000);
 begin
+
+    if g_app_id is null then
+        g_app_id := sp_util.get_setting (p_static_id => 'APP_ID');
+    end if;
 
     p_error_yn := 'N';
 
@@ -1164,12 +1853,12 @@ begin
         returning id into l_ai_id;
         commit;
 
-        l_ai_service := sp_util.get_setting (p_static_id => 'SUMMARY_AI_SERVICE');
+        l_ai_service := sp_util.get_setting (p_static_id => 'AI_SERVICE');
 
         if l_ai_service is not null and
            apex_application_admin.get_build_option_status (
-               p_application_id    => sp_util.get_setting (p_static_id => 'APP_ID'),
-               p_build_option_name => 'AI Release Summaries' ) = 'INCLUDE'
+               p_application_id    => g_app_id,
+               p_build_option_name => 'AI Release Summaries - Create' ) = 'INCLUDE'
         then
 
             -- wrapping to continue if ai error
@@ -1214,11 +1903,12 @@ begin
                 when others then 
                     p_error_yn := 'Y';
                     sp_util.add_error_log (
-                        p_package_name   => 'sp_summary_util',
-                        p_procedure_name => 'generate_release_summary', 
-                        p_error          => sqlerrm, 
-                        p_arg1_name      => 'p_release_id', p_arg1_val => p_release_id, 
-                        p_arg2_name      => 'l_ai_id',      p_arg2_val => l_ai_id );
+                        p_package_name    => 'sp_summary_util',
+                        p_procedure_name  => 'generate_release_summary', 
+                        p_error           => sqlerrm, 
+                        p_error_backtrace => dbms_utility.format_error_backtrace, 
+                        p_arg1_name       => 'p_release_id', p_arg1_val => p_release_id, 
+                        p_arg2_name       => 'l_ai_id',      p_arg2_val => l_ai_id );
             end;
         end if;
 

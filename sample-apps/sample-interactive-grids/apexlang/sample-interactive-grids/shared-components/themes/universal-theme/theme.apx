@@ -1,7 +1,7 @@
 theme universal-theme (
     name: Universal Theme
     themeNumber: 42
-    baseTheme: ut-26.1
+    baseTheme: ut-26.2
     style {
         currentThemeStyle: @/iris
     }
@@ -25,6 +25,9 @@ theme universal-theme (
         printerFriendlyPage: @/standard
         breadcrumb: @/breadcrumb
         button: @/text
+        defaultLabel: @/optional-floating
+        optionalLabel: @/optional-floating
+        requiredLabel: @/required-floating
         list: @/links-list
         region: @/standard
         classicReport: @/standard
@@ -47,7 +50,7 @@ theme universal-theme (
         library: fontApex
     }
     advanced {
-        filePrefix: #APEX_FILES#themes/theme_42/26.1/
+        filePrefix: #APEX_FILES#themes/theme_42/26.2/
         identifier: UNIVERSAL_THEME
     }
 )

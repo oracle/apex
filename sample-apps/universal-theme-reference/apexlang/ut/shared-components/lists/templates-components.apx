@@ -1,0 +1,894 @@
+list templates-components (
+    name: Templates - Components
+
+    entry alert (
+        label: Alert
+        icon {
+            imageIconCssClasses: fa-exclamation-triangle
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1202
+            }
+        }
+        userDefinedAttributes {
+            1: Display alerts, confirmations, and other action-oriented messages.
+            2: Region
+            3: LS
+        }
+    )
+
+    entry avatar (
+        label: Avatar
+        icon {
+            imageIconCssClasses: fa-user-circle
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 3001
+            }
+        }
+        userDefinedAttributes {
+            1: Display an icon, image, or initials.
+            2: Partial
+        }
+    )
+
+    entry badge (
+        label: Badge
+        icon {
+            imageIconCssClasses: fa-badges
+        }
+        layout {
+            sequence: 25
+        }
+        link {
+            target: {
+                page: 3002
+            }
+        }
+        userDefinedAttributes {
+            1: Display content within a badge.
+            2: Partial
+        }
+    )
+
+    entry badges-list (
+        label: Badges List
+        icon {
+            imageIconCssClasses: fa-badge-list
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 1304
+            }
+        }
+        userDefinedAttributes {
+            1: Display badges or counters.
+            2: List
+            3: BL
+        }
+    )
+
+    entry breadcrumb (
+        label: Breadcrumb
+        icon {
+            imageIconCssClasses: fa-breadcrumb
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 3810
+            }
+        }
+        userDefinedAttributes {
+            1: Indicate where the user is within the application with a hierarchical list of links.
+            2: Region
+        }
+    )
+
+    entry button (
+        label: Button
+        icon {
+            imageIconCssClasses: fa-button
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 1500
+            }
+        }
+        userDefinedAttributes {
+            1: Display text, icon or both within a button.
+            2: Button
+        }
+    )
+
+    entry button-container (
+        label: Button Container
+        icon {
+            imageIconCssClasses: fa-button-container
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 1250
+            }
+        }
+        userDefinedAttributes {
+            1: Organize buttons, toolbars, and simple horizontal forms.
+            2: Region
+            3: BC
+        }
+    )
+
+    entry button-group (
+        label: Button Group
+        icon {
+            imageIconCssClasses: fa-button-group
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 1204
+            }
+        }
+        userDefinedAttributes {
+            1: Group buttons to appear together to make a single control.
+            2: Button
+        }
+    )
+
+    entry calendar (
+        label: Calendar
+        icon {
+            imageIconCssClasses: fa-calendar
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 1800
+            }
+        }
+        userDefinedAttributes {
+            1: Display a calendar based on the Full Calendar library that supports drag and drop, multiple views, and more.
+            2: Region
+        }
+    )
+
+    entry card-regions (
+        label: Card Regions
+        icon {
+            imageIconCssClasses: fa-address-card-o
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 3110
+            }
+        }
+        userDefinedAttributes {
+            1: Present a variety of information in small blocks and can be heavily customized.
+            2: Region
+        }
+    )
+
+    entry card-templates (
+        label: Card Templates
+        icon {
+            imageIconCssClasses: fa-cards
+        }
+        layout {
+            sequence: 90
+        }
+        link {
+            target: {
+                page: 3100
+            }
+        }
+        userDefinedAttributes {
+            1: Style regions like Classic Reports or Lists to look like a Cards region.
+            2: Report, List
+        }
+    )
+
+    entry carousel (
+        label: Carousel
+        icon {
+            imageIconCssClasses: fa-carousel
+        }
+        layout {
+            sequence: 100
+        }
+        link {
+            target: {
+                page: 1205
+            }
+        }
+        userDefinedAttributes {
+            1: Show off one sub region at a time. For example, display a report and a chart, a slideshow, or different views of the same data.
+            2: Region
+            3: CS
+        }
+    )
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 110
+        }
+        link {
+            target: {
+                page: 1902
+            }
+        }
+        userDefinedAttributes {
+            1: Visualize data in a variety of different ways based on Oracle JavaScript Extension Toolkit (JET) Data Visualizations.
+            2: Region
+        }
+    )
+
+    entry classic-report (
+        label: Classic Report
+        icon {
+            imageIconCssClasses: fa-table
+        }
+        layout {
+            sequence: 120
+        }
+        link {
+            target: {
+                page: 1401
+            }
+        }
+        userDefinedAttributes {
+            1: Display tabular data in a default report template.
+            2: Report
+        }
+    )
+
+    entry collapsible (
+        label: Collapsible
+        icon {
+            imageIconCssClasses: fa-collapsible
+        }
+        layout {
+            sequence: 130
+        }
+        link {
+            target: {
+                page: 1206
+            }
+        }
+        userDefinedAttributes {
+            1: Toggle the visibility of a region's content on the page.
+            2: Region
+            3: DL
+        }
+    )
+
+    entry column-toggle-report (
+        label: Column Toggle Report
+        icon {
+            imageIconCssClasses: fa-toggle-on
+        }
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                page: 1720
+            }
+        }
+        userDefinedAttributes {
+            1: Quickly choose columns to display when screen size is limited.
+            2: Report
+        }
+    )
+
+    entry comments (
+        label: Comments
+        icon {
+            imageIconCssClasses: fa-comments-o
+        }
+        layout {
+            sequence: 150
+        }
+        link {
+            target: {
+                page: 3003
+            }
+        }
+        userDefinedAttributes {
+            1: Display user comments and status updates.
+            2: Region
+            3: CM
+        }
+    )
+
+    entry content-block (
+        label: Content Block
+        icon {
+            imageIconCssClasses: fa-align-justify
+        }
+        layout {
+            sequence: 160
+        }
+        link {
+            target: {
+                page: 1209
+            }
+        }
+        userDefinedAttributes {
+            1: Display region content in a simple block.
+            2: Region
+        }
+    )
+
+    entry content-row (
+        label: Content Row
+        icon {
+            imageIconCssClasses: fa-layout-list-left
+        }
+        layout {
+            sequence: 165
+        }
+        link {
+            target: {
+                page: 3004
+            }
+        }
+        userDefinedAttributes {
+            1: Display content using a column for selection, such as a checkbox or radio button, an icon, and actions.
+            2: Region
+        }
+    )
+
+    entry contextual-info (
+        label: Contextual Info
+        icon {
+            imageIconCssClasses: fa-layout-list-right
+        }
+        layout {
+            sequence: 170
+        }
+        link {
+            target: {
+                page: 1307
+            }
+        }
+        userDefinedAttributes {
+            1: Display key-value pairs in a report.
+            2: Report
+        }
+    )
+
+    entry flexbox-container (
+        label: Flexbox Container
+        icon {
+            imageIconCssClasses: fa-layout-modal-nav-left
+        }
+        layout {
+            sequence: 172
+        }
+        link {
+            target: {
+                page: 3008
+            }
+        }
+        userDefinedAttributes {
+            1: Suitable for arranging components in a flexible layout.
+            2: Region
+        }
+    )
+
+    entry form-field (
+        label: Form Field
+        icon {
+            imageIconCssClasses: fa-forms
+        }
+        layout {
+            sequence: 175
+        }
+        link {
+            target: {
+                page: 1600
+            }
+        }
+        userDefinedAttributes {
+            1: Position form field such as inputs, select lists and more on a page..
+            2: Form
+        }
+    )
+
+    entry help-text (
+        label: Help Text
+        icon {
+            imageIconCssClasses: fa-info-circle
+        }
+        layout {
+            sequence: 180
+        }
+        link {
+            target: {
+                page: 1903
+            }
+        }
+        userDefinedAttributes {
+            1: Provide page-level help to users.
+            2: Region
+        }
+    )
+
+    entry hero (
+        label: Hero
+        icon {
+            imageIconCssClasses: fa-bullhorn
+        }
+        layout {
+            sequence: 190
+        }
+        link {
+            target: {
+                page: 1203
+            }
+        }
+        userDefinedAttributes {
+            1: Capture attention and display an icon, heading, sub-headings, and buttons on a homepage, dashboard, and other introductory-style pages.
+            2: Region
+            3: HR
+        }
+    )
+
+    entry image (
+        label: Image
+        icon {
+            imageIconCssClasses: fa-image
+        }
+        layout {
+            sequence: 195
+        }
+        link {
+            target: {
+                page: 1210
+            }
+        }
+        userDefinedAttributes {
+            1: Display a single image without text in a region.
+            2: Region
+        }
+    )
+
+    entry inline-dialog (
+        label: Inline Dialog
+        icon {
+            imageIconCssClasses: fa-layout-modal-header
+        }
+        layout {
+            sequence: 200
+        }
+        link {
+            target: {
+                page: 1911
+            }
+        }
+        userDefinedAttributes {
+            1: Display a region on the current page within a modal dialog.
+            2: Region
+        }
+    )
+
+    entry interactive-grid (
+        label: Interactive Grid
+        icon {
+            imageIconCssClasses: fa-layout-modal-grid-2x
+        }
+        layout {
+            sequence: 210
+        }
+        link {
+            target: {
+                page: 1410
+            }
+        }
+        userDefinedAttributes {
+            1: Customize reports using powerful features in this native APEX component.
+            2: Report
+        }
+    )
+
+    entry interactive-report (
+        label: Interactive Report
+        icon {
+            imageIconCssClasses: fa-sort-amount-desc
+        }
+        layout {
+            sequence: 230
+        }
+        link {
+            target: {
+                page: 1402
+            }
+        }
+        userDefinedAttributes {
+            1: Create powerful reports using fixed headers, frozen columns, scroll pagination, multiple filters, sorting, aggregates, computations, and more.
+            2: Report
+        }
+    )
+
+    entry links-list (
+        label: Links List
+        icon {
+            imageIconCssClasses: fa-list
+        }
+        layout {
+            sequence: 240
+        }
+        link {
+            target: {
+                page: 1303
+            }
+        }
+        userDefinedAttributes {
+            1: Use a list of links for navigation and other action-oriented tasks, with the option to show badges, icons, sub-list items, and more.
+            2: List
+            3: LS
+        }
+    )
+
+    entry list-view (
+        label: List View
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 250
+        }
+        link {
+            target: {
+                page: 1700
+            }
+        }
+        userDefinedAttributes {
+            1: Display a simple list-based user interface that has a wide range of features such as built in search, list dividers, nested lists, and more.
+            2: List
+        }
+    )
+
+    entry media-list (
+        label: Media List
+        icon {
+            imageIconCssClasses: fa-media-list
+        }
+        layout {
+            sequence: 270
+        }
+        link {
+            target: {
+                page: 3005
+            }
+        }
+        userDefinedAttributes {
+            1: Design lists that involve an icon, heading, description, and a badge.
+            2: Region
+            3: ML
+        }
+    )
+
+    entry menu-bar (
+        label: Menu Bar
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 280
+        }
+        link {
+            target: {
+                page: 1305
+            }
+        }
+        userDefinedAttributes {
+            1: Display a menu bar control.
+            2: List
+        }
+    )
+
+    entry menu-popup (
+        label: Menu Popup
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 290
+        }
+        link {
+            target: {
+                page: 1306
+            }
+        }
+        userDefinedAttributes {
+            1: Display a menu that pops up on a page by using Lists and associating a button with the menu.
+            2: List
+        }
+    )
+
+    entry metric-card (
+        label: Metric Card
+        icon {
+            imageIconCssClasses: fa-credit-card-front
+        }
+        layout {
+            sequence: 295
+        }
+        link {
+            target: {
+                page: 3007
+            }
+        }
+        userDefinedAttributes {
+            1: Used to display a single key value alongside a label and supporting details.
+            2: Region
+        }
+    )
+
+    entry navigation-bar (
+        label: Navigation Bar
+        icon {
+            imageIconCssClasses: fa-layout-header
+        }
+        layout {
+            sequence: 300
+        }
+        link {
+            target: {
+                page: 407
+            }
+        }
+        userDefinedAttributes {
+            1: Determine how users navigate within an application.
+            2: List
+        }
+    )
+
+    entry pl-sql-dynamic-content (
+        label: PL/SQL Dynamic Content
+        icon {
+            imageIconCssClasses: fa-dynamic-content
+        }
+        layout {
+            sequence: 310
+        }
+        link {
+            target: {
+                page: 1908
+            }
+        }
+        userDefinedAttributes {
+            1: Render HTML or text using the PL/SQL Web Toolkit.
+            2: Region
+        }
+    )
+
+    entry reflow-report (
+        label: Reflow Report
+        icon {
+            imageIconCssClasses: fa-tablet
+        }
+        layout {
+            sequence: 320
+        }
+        link {
+            target: {
+                page: 1710
+            }
+        }
+        userDefinedAttributes {
+            1: Display data vertically to save space when screen size becomes small.
+            2: Report
+        }
+    )
+
+    entry region-display-selector (
+        label: Region Display Selector
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 330
+        }
+        link {
+            target: {
+                page: 1923
+            }
+        }
+        userDefinedAttributes {
+            1: Show and hide controls for regions.
+            2: Region
+        }
+    )
+
+    entry standard (
+        label: Standard
+        icon {
+            imageIconCssClasses: fa-layout-header
+        }
+        layout {
+            sequence: 350
+        }
+        link {
+            target: {
+                page: 1201
+            }
+        }
+        userDefinedAttributes {
+            1: Display widgets in a generic region template that can be heavily customized.
+            2: Region
+            3: SD
+        }
+    )
+
+    entry static-content (
+        label: Static Content
+        icon {
+            imageIconCssClasses: fa-code
+        }
+        layout {
+            sequence: 370
+        }
+        link {
+            target: {
+                page: 1905
+            }
+        }
+        userDefinedAttributes {
+            1: Use HTML markup directly on the page.
+            2: Region
+        }
+    )
+
+    entry tabs-container (
+        label: Tabs Container
+        icon {
+            imageIconCssClasses: fa-tabs
+        }
+        layout {
+            sequence: 390
+        }
+        link {
+            target: {
+                page: 1907
+                request: tab_list
+            }
+        }
+        userDefinedAttributes {
+            1: Improve navigation, flow, and usability of pages in an application.
+            2: Region, List
+        }
+    )
+
+    entry timeline (
+        label: Timeline
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 400
+        }
+        link {
+            target: {
+                page: 3006
+            }
+        }
+        userDefinedAttributes {
+            1: Display recent updates and interactions within an application.
+            2: Region
+            3: TL
+        }
+    )
+
+    entry title-bar (
+        label: Title Bar
+        icon {
+            imageIconCssClasses: fa-breadcrumb
+        }
+        layout {
+            sequence: 410
+        }
+        link {
+            target: {
+                page: 1207
+            }
+        }
+        userDefinedAttributes {
+            1: Group breadcrumbs, page title, and primary page actions at the top of the page.
+            2: Region
+            3: TB
+        }
+    )
+
+    entry tree (
+        label: Tree
+        icon {
+            imageIconCssClasses: fa-tree-org
+        }
+        layout {
+            sequence: 420
+        }
+        link {
+            target: {
+                page: 1901
+            }
+        }
+        userDefinedAttributes {
+            1: Perform hierarchical navigation control based on a SQL query.
+            2: Region
+        }
+    )
+
+    entry value-attribute-pairs (
+        label: Value Attribute Pairs
+        icon {
+            imageIconCssClasses: fa-pause
+        }
+        layout {
+            sequence: 430
+        }
+        link {
+            target: {
+                page: 1403
+            }
+        }
+        userDefinedAttributes {
+            1: Display attribute value / key value pairs with Row or Column based queries.
+            2: Report
+            3: VA
+        }
+    )
+
+    entry wizard (
+        label: Wizard
+        icon {
+            imageIconCssClasses: fa-magic
+        }
+        layout {
+            sequence: 440
+        }
+        link {
+            target: {
+                page: 1208
+            }
+        }
+        userDefinedAttributes {
+            1: Contain the Wizard Progress List and forms using this region template.
+            2: Region, List, Page
+            3: WZ
+        }
+    )
+
+)
+

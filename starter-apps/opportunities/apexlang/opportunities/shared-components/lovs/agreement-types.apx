@@ -1,0 +1,14 @@
+lov agreement-types (
+    name: AGREEMENT TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name as d,
+                   id as r
+              from eba_sales_agreement_types
+             order by 1
+            ```
+    }
+)
+

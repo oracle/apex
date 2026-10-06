@@ -12,12 +12,11 @@ page 3100 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -177,6 +176,9 @@ page 3100 (
             ]
             cssClasses: dm-TemplateOption-previewTarget
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column CARD_ICON (

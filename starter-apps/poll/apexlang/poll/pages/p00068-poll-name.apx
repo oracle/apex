@@ -15,7 +15,6 @@ page 68 (
         overrideUserInterfaceLevel: true
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -161,7 +160,7 @@ page 68 (
     }
     security {
         authorizationScheme: @can-view-poll-results-closed-active-or-staged-and-contributor
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -214,12 +213,14 @@ page 68 (
         chart {
             type: donut
         }
+        performance {
+            lazyLoading: true
+        }
         value {
             format: decimal
             decimalPlaces: 0
         }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         legend {
@@ -555,7 +556,7 @@ page 68 (
                 sequence: 1
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -581,7 +582,7 @@ page 68 (
                 sequence: 2
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -607,7 +608,7 @@ page 68 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -641,7 +642,7 @@ page 68 (
                 sequence: 42
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -675,7 +676,7 @@ page 68 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -702,7 +703,7 @@ page 68 (
                 sequence: 32
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -763,7 +764,7 @@ page 68 (
         name: hide nobody
         type: staticContent
         source {
-            htmlCode: <style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>
+            htmlCode: "<style>.userBlock{display: none !important} .logoBarNav {padding-top: 8px;visibility: hidden;}</style>"
         }
         layout {
             sequence: 10

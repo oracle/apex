@@ -6,9 +6,6 @@ page 121 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         fileUrls: #APP_FILES#jquery.qrcode.min.js
         executeWhenPageLoads:
@@ -50,8 +47,6 @@ page 121 (
     security {
         authorizationScheme: @host
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments: Displays bar chart results of the previous question and provides a link to ask a new question
@@ -136,7 +131,7 @@ page 121 (
                 sequence: 10
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -153,7 +148,7 @@ page 121 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: S
@@ -169,7 +164,7 @@ page 121 (
                 sequence: 20
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: U
@@ -185,7 +180,7 @@ page 121 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: X
@@ -211,7 +206,7 @@ page 121 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: Q
@@ -227,7 +222,7 @@ page 121 (
                 sequence: 40
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: T
@@ -248,7 +243,7 @@ page 121 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -268,7 +263,7 @@ page 121 (
                 sequence: 100
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: W
@@ -285,7 +280,7 @@ page 121 (
                 sequence: 80
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -301,7 +296,7 @@ page 121 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: V
@@ -381,6 +376,9 @@ page 121 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -541,6 +539,9 @@ page 121 (
                 t-ContextualInfo-label--stacked
             ]
         }
+        pagination {
+            type: showAll
+        }
 
         column QUESTION_OPEN (
             reportColumnQueryId: 2
@@ -595,6 +596,9 @@ page 121 (
         }
         chartLayout {
             height: 500
+        }
+        performance {
+            lazyLoading: true
         }
         value {
             format: decimal

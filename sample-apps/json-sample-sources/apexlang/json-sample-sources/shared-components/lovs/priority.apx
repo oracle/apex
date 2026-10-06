@@ -1,0 +1,20 @@
+lov priority (
+    name: PRIORITY
+    source {
+        location: jsonSource
+        jsonSource: @eba_demo_json_support_ticket
+    }
+    localPostProcessing {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select distinct priority
+              from #APEX$SOURCE_DATA#
+            ```
+    }
+    columnMapping {
+        return: PRIORITY
+        display: PRIORITY
+    }
+)
+

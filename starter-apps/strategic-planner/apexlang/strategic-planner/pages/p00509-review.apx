@@ -14,13 +14,8 @@ page 509 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -75,6 +70,7 @@ page 509 (
             formRegion: @task
             column: CREATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -92,6 +88,7 @@ page 509 (
             formRegion: @task
             column: CREATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -101,7 +98,7 @@ page 509 (
     pageItem P509_DESCRIPTION (
         type: textarea
         label {
-            label: Description
+            label: Details
             alignment: left
         }
         layout {
@@ -209,7 +206,11 @@ page 509 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+                select last_name||', '||first_name||' ('||lower(email)||')'||
+                       case when ooo_summary is not null
+                            then ' - '||ooo_summary
+                            end d, 
+                       id r
                   from SP_TEAM_MEMBERS
                  where is_current_yn = 'Y'
                     or id = :P509_OWNER_ID
@@ -354,10 +355,22 @@ page 509 (
     )
 
     pageItem P509_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
+        }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
         }
         layout {
             sequence: 150
@@ -427,7 +440,7 @@ page 509 (
                   from sp_task_types
                  where parent_type_id = :P509_TASK_TYPE_ID
                    and (include_yn = 'Y' or id = :P509_TASK_SUB_TYPE_ID)
-                 order by display_seq
+                 order by display_seq, task_type
                 ```
         }
         cascadingLov {
@@ -482,6 +495,7 @@ page 509 (
             formRegion: @task
             column: UPDATED
             dataType: date
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -499,6 +513,7 @@ page 509 (
             formRegion: @task
             column: UPDATED_BY
             dataType: varchar2
+            queryOnly: true
         }
         security {
             sessionStateProtection: checksumRequiredSessionLevel
@@ -834,8 +849,8 @@ page 509 (
                                           p_application    => :APP_ID,
                                           p_page           => 'task-details',
                                           p_session        => null,
-                                          p_items          => 'P502_PREV_PAGE,P502_TASK_ID,P502_PROJECT_ID',
-                                          p_values         => '3,'||:P509_ID||','||:P509_PROJECT_ID,
+                                          p_items          => 'P502_PTID',
+                                          p_values         => :P509_ID,
                                           p_plain_url      => TRUE );
                 
                     sp_util.assignment_notification (

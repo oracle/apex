@@ -1,0 +1,97 @@
+list advanced-list (
+    name: Advanced List
+
+    entry advanced-delete (
+        label: Advanced Delete
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 53
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to customize Interactive Grid to focus on the task of deleting. Includes a custom row delete button.
+        }
+    )
+
+    entry client-validation (
+        label: Client Validation
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 51
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates using HTML5 form validation to implement client side validations.
+        }
+    )
+
+    entry custom-server-processing (
+        label: Custom Server Processing
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 57
+                clearCache: 57
+            }
+        }
+        userDefinedAttributes {
+            1: "Shows how to process the submitted interactive grid rows with custom PL/SQL logic. "
+        }
+    )
+
+    entry feature-customization (
+        label: Feature Customization
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 50
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to use JavaScript to customize feature configuration settings.
+        }
+    )
+
+    entry item-type-plugins (
+        label: Item Type Plugins
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 56
+                clearCache: 56
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to use an Item Type Plug-In ("Modern Star Rating") within an interactive grid.
+        }
+    )
+
+    entry tooltips (
+        label: Tooltips
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 52
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to integrate jQuery UI Tooltips to provide tooltips for Interactive Grid rows and cells.
+        }
+    )
+
+)
+

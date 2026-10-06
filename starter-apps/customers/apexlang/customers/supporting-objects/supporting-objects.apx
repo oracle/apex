@@ -91,8 +91,5 @@ supportingObject (
         appSubstitutions: Customers Installation. You can configure the following attributes of your application.
         buildOptions: Customers Installation. You can choose to include the following build options.
     }
-    advanced {
-        includeInAppExport: true
-    }
 )
 

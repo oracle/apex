@@ -1,0 +1,32 @@
+lov territory-types (
+    name: TERRITORY TYPES
+    source {
+        location: staticValues
+    }
+
+    entry country (
+        sequence: 4
+        display: Country
+        return: COUNTRY
+    )
+
+    entry named-account (
+        sequence: 2
+        display: Named Account
+        return: NAMED_ACCOUNT
+    )
+
+    entry region (
+        sequence: 5
+        display: Region
+        return: REGION
+    )
+
+    entry state (
+        sequence: 1
+        display: State
+        return: STATE
+    )
+
+)
+

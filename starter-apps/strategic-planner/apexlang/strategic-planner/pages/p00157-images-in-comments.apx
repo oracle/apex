@@ -7,9 +7,6 @@ page 157 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -22,10 +19,6 @@ page 157 (
               color: var(--ut-region-text-color, var(--ut-component-text-default-color));
             }
             ```
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region breadcrumb (
@@ -67,6 +60,9 @@ page 157 (
         }
         chartLayout {
             height: 400
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false

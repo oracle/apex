@@ -8,13 +8,10 @@ page 10050 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authorizationScheme: @administrator
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText: <p>This report shows all email queued to be sent and those already sent.</p>
@@ -134,7 +131,7 @@ page 10050 (
                 sequence: 15
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: O
@@ -152,7 +149,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Q
@@ -170,7 +167,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -186,7 +183,7 @@ page 10050 (
                 sequence: 11
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: K
@@ -202,7 +199,7 @@ page 10050 (
                 sequence: 12
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: L
@@ -220,7 +217,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: T
@@ -238,7 +235,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: U
@@ -254,7 +251,7 @@ page 10050 (
                 sequence: 8
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: H
@@ -270,7 +267,7 @@ page 10050 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -286,7 +283,7 @@ page 10050 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -305,7 +302,7 @@ page 10050 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: M
@@ -321,7 +318,7 @@ page 10050 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -339,7 +336,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -355,7 +352,7 @@ page 10050 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: J
@@ -371,7 +368,7 @@ page 10050 (
                 sequence: 1
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -387,7 +384,7 @@ page 10050 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -403,7 +400,7 @@ page 10050 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -419,7 +416,7 @@ page 10050 (
                 sequence: 14
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -435,7 +432,7 @@ page 10050 (
                 sequence: 18
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: R
@@ -451,7 +448,7 @@ page 10050 (
                 sequence: 19
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: S
@@ -469,7 +466,7 @@ page 10050 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: P

@@ -1,0 +1,32 @@
+lov product-types (
+    name: PRODUCT_TYPES
+    source {
+        location: staticValues
+    }
+
+    entry drink (
+        sequence: 1
+        display: Drink
+        return: Drink
+    )
+
+    entry food (
+        sequence: 2
+        display: Food
+        return: Food
+    )
+
+    entry miscellaneous (
+        sequence: 3
+        display: Miscellaneous
+        return: Miscellaneous
+    )
+
+    entry soap (
+        sequence: 4
+        display: Soap
+        return: Soap
+    )
+
+)
+

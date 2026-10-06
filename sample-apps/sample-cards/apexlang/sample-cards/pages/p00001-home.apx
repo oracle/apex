@@ -6,13 +6,8 @@ page 1 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-app (
@@ -28,13 +23,13 @@ page 1 (
                 <p><strong>Note:</strong> Cards regions can be sourced by REST Data Sources.  The <strong>Embedded Video</strong>, <strong>Background Image</strong>, and <strong>Video Images with Durations</strong> pages (in <strong>Images and Media</strong> section) rely on REST Data Sources.  To run these pages without error, please use the links and instructions below.  You will need to get your own API keys that you will then use to create the necessary <strong>Web Credentials</strong> (in Shared Components) after importing this sample application.
                 
                 <ul>
-                    <li><a href="&GOOGLE_API." title="Google API Key" target="_blank">Google API Key</a>
+                    <li><a href="&GOOGLE_API." title="Google API Key" target="_blank" rel="noopener noreferrer external">Google API Key</a>
                         <ul>
                         <li>Credential Name: <em>key</em></li>
                         <li>Credential Secret: <em>{your key}</em></li>
                         </ul>
                     </li>
-                    <li><a href="&MOVIEDB_API." title="Movie Database API" target="_blank">The Movie Database (TMDb) API Key</a>
+                    <li><a href="&MOVIEDB_API." title="Movie Database API" target="_blank" rel="noopener noreferrer external">The Movie Database (TMDb) API Key</a>
                         <ul>
                         <li>Credential Name: <em>api_key</em></li>
                         <li>Credential Secret: <em>{your key}</em></li>

@@ -1,0 +1,20 @@
+lov invite-method (
+    name: INVITE METHOD
+    source {
+        location: staticValues
+    }
+
+    entry automated-email (
+        sequence: 10
+        display: Automated Email
+        return: EMAIL
+    )
+
+    entry manual (
+        sequence: 20
+        display: Manual
+        return: MANUAL
+    )
+
+)
+

@@ -1,0 +1,236 @@
+list ut-sample-menu-bar-list (
+    name: UT - Sample Menu Bar List
+
+    entry menu-item (
+        label: Menu Item 1
+        icon {
+            imageIconCssClasses: fa-cloud
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-2 (
+        label: Menu Item 2
+        icon {
+            imageIconCssClasses: fa-anchor
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-3 (
+        label: Menu Item 3
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry menu-item-4 (
+        label: Menu Item 4
+        layout {
+            sequence: 140
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item (
+        label: Sub Menu Item 1.1
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 40
+            parentEntry: @menu-item
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-10 (
+        label: Sub Menu Item 3.2
+        icon {
+            imageIconCssClasses: fa-camera
+        }
+        layout {
+            sequence: 100
+            parentEntry: @menu-item-3
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-2 (
+        label: Sub Menu Item 1.2
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 50
+            parentEntry: @menu-item
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-3 (
+        label: Sub Menu Item 1.3
+        icon {
+            imageIconCssClasses: fa-bar-chart-o
+        }
+        layout {
+            sequence: 60
+            parentEntry: @menu-item
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-4 (
+        label: Sub Menu Item 2.1
+        icon {
+            imageIconCssClasses: fa-bars
+        }
+        layout {
+            sequence: 70
+            parentEntry: @menu-item-2
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-5 (
+        label: Sub Menu Item 2.2
+        icon {
+            imageIconCssClasses: fa-beer
+        }
+        layout {
+            sequence: 80
+            parentEntry: @menu-item-2
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-6 (
+        label: Sub Menu Item 2.2.1
+        icon {
+            imageIconCssClasses: fa-binoculars
+        }
+        layout {
+            sequence: 110
+            parentEntry: @sub-menu-item-5
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-7 (
+        label: Sub Menu Item 2.2.2
+        icon {
+            imageIconCssClasses: fa-bomb
+        }
+        layout {
+            sequence: 120
+            parentEntry: @sub-menu-item-5
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-8 (
+        label: Sub Menu Item 2.2.3
+        icon {
+            imageIconCssClasses: fa-bug
+        }
+        layout {
+            sequence: 130
+            parentEntry: @sub-menu-item-5
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+    entry sub-menu-item-9 (
+        label: Sub Menu Item 3.1
+        icon {
+            imageIconCssClasses: fa-briefcase
+        }
+        layout {
+            sequence: 90
+            parentEntry: @menu-item-3
+        }
+        link {
+            target: {
+                type: url
+                url: #
+            }
+        }
+    )
+
+)
+

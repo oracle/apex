@@ -14,13 +14,8 @@ page 501 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -79,48 +74,14 @@ page 501 (
         }
     )
 
-    pageItem P501_CREATED (
-        type: hidden
-        layout {
-            sequence: 200
-            region: @task
-            slot: regionBody
-        }
-        source {
-            formRegion: @task
-            column: CREATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P501_CREATED_BY (
-        type: hidden
-        layout {
-            sequence: 210
-            region: @task
-            slot: regionBody
-        }
-        source {
-            formRegion: @task
-            column: CREATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
     pageItem P501_DESCRIPTION (
         type: textarea
         label {
-            label: Description
+            label: Details
             alignment: left
         }
         layout {
-            sequence: 120
+            sequence: 140
             region: @task
             slot: regionBody
             alignment: left
@@ -138,6 +99,31 @@ page 501 (
             formRegion: @task
             column: DESCRIPTION
             dataType: varchar2
+        }
+    )
+
+    pageItem P501_DISPLAY_SEQUENCE (
+        type: textField
+        label {
+            label: Display Sequence
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @task
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 10
+        }
+        source {
+            formRegion: @task
+            column: DISPLAY_SEQUENCE
+            dataType: number
         }
     )
 
@@ -162,7 +148,7 @@ page 501 (
     pageItem P501_OLD_OWNER_ID (
         type: hidden
         layout {
-            sequence: 150
+            sequence: 160
             region: @task
             slot: regionBody
         }
@@ -192,7 +178,11 @@ page 501 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+                select last_name||', '||first_name||' ('||lower(email)||')'||
+                       case when ooo_summary is not null
+                            then ' - '||ooo_summary
+                            end d, 
+                       id r
                   from SP_TEAM_MEMBERS
                  where is_current_yn = 'Y'
                     or id = :P01_OWNER_ID
@@ -200,7 +190,7 @@ page 501 (
                 ```
         }
         layout {
-            sequence: 140
+            sequence: 150
             region: @task
             slot: regionBody
             alignment: left
@@ -258,7 +248,7 @@ page 501 (
             alignment: left
         }
         layout {
-            sequence: 160
+            sequence: 170
             region: @task
             slot: regionBody
             alignment: left
@@ -324,7 +314,7 @@ page 501 (
     pageItem P501_STATUS_LAST_CHANGED_ON (
         type: hidden
         layout {
-            sequence: 190
+            sequence: 200
             region: @task
             slot: regionBody
         }
@@ -339,13 +329,25 @@ page 501 (
     )
 
     pageItem P501_TAGS (
-        type: textField
+        type: combobox
         label {
             label: Tags
             alignment: left
         }
+        settings {
+            multiSelection: true
+            infiniteScroll: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select 1 from dual where 1=2
+        }
+        multipleValues {
+            type: delimitedList
+            separator: ,
+        }
         layout {
-            sequence: 180
+            sequence: 190
             region: @task
             slot: regionBody
             alignment: left
@@ -379,7 +381,7 @@ page 501 (
             minItem: P501_START_DATE
         }
         layout {
-            sequence: 170
+            sequence: 180
             region: @task
             slot: regionBody
             alignment: left
@@ -405,7 +407,7 @@ page 501 (
             alignment: left
         }
         layout {
-            sequence: 110
+            sequence: 120
             region: @task
             slot: regionBody
             alignment: left
@@ -439,7 +441,7 @@ page 501 (
                   from sp_task_types
                  where parent_type_id = :P501_TASK_TYPE_ID
                    and (include_yn = 'Y' or id = :P501_TASK_SUB_TYPE_ID)
-                 order by display_seq
+                 order by display_seq, task_type
                 ```
         }
         cascadingLov {
@@ -483,6 +485,7 @@ page 501 (
                  order by display_seq
                 ```
             displayExtraValues: false
+            displayNullValue: false
         }
         layout {
             sequence: 70
@@ -502,40 +505,6 @@ page 501 (
             formRegion: @task
             column: TASK_TYPE_ID
             dataType: number
-        }
-    )
-
-    pageItem P501_UPDATED (
-        type: hidden
-        layout {
-            sequence: 220
-            region: @task
-            slot: regionBody
-        }
-        source {
-            formRegion: @task
-            column: UPDATED
-            dataType: date
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
-        }
-    )
-
-    pageItem P501_UPDATED_BY (
-        type: hidden
-        layout {
-            sequence: 230
-            region: @task
-            slot: regionBody
-        }
-        source {
-            formRegion: @task
-            column: UPDATED_BY
-            dataType: varchar2
-        }
-        security {
-            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 
@@ -655,43 +624,27 @@ page 501 (
 
     )
 
-    dynamicAction hide-show-status-hide-if-no-parent-task-type (
-        name: hide/show status (hide if no parent task type)
+    dynamicAction find-status-for-default-task (
+        name: find status for default task
         execution {
             sequence: 30
         }
         when {
-            selectionType: items
-            items: P501_TASK_TYPE_ID
+            event: ready
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P501_ID
         }
 
-        action native-hide (
-            action: hide
+        action native-refresh (
+            action: refresh
             affectedElements {
                 selectionType: items
                 items: P501_STATUS_ID
             }
             execution {
                 sequence: 10
-            }
-            clientSideCondition {
-                type: itemIsNull
-                item: P501_TASK_TYPE_ID
-            }
-        )
-
-        action native-show (
-            action: show
-            affectedElements {
-                selectionType: items
-                items: P501_STATUS_ID
-            }
-            execution {
-                sequence: 10
-            }
-            clientSideCondition {
-                type: itemIsNotNull
-                item: P501_TASK_TYPE_ID
             }
         )
 
@@ -938,7 +891,8 @@ page 501 (
                 begin
                 
                 for c1 in (
-                    select apex_escape.html(p.project) project, p.friendly_identifier fi,
+                    select apex_escape.html(p.project) project, 
+                           apex_escape.html(t.task) task,
                            apex_escape.html(tt.task_type) task_type, 
                            apex_escape.html((select task_type from sp_task_types t2
                                               where t.task_sub_type_id = t2.id)) sub_task,
@@ -959,8 +913,9 @@ page 501 (
                                           p_application    => :APP_ID,
                                           p_page           => 'task-details',
                                           p_session        => null,
-                                          p_items          => 'P502_PREV_PAGE,P502_TASK_ID,P502_PROJECT_ID',
-                                          p_values         => '3,'||:P501_ID||','||:P501_PROJECT_ID,
+                                          p_clear_cache    => 502,
+                                          p_items          => 'P502_PTID',
+                                          p_values         => :P501_ID,
                                           p_plain_url      => TRUE );
                 
                     sp_util.assignment_notification (
@@ -975,7 +930,7 @@ page 501 (
                         p_project_id     => :P501_PROJECT_ID,
                         p_task_id        => :P501_ID,
                         p_link           => l_task_link,
-                        p_view_what      => c1.task_type,
+                        p_view_what      => 'Task',
                         p_email_contents => 'Hi '||c1.first_name||'<br/><br/>'||
                                             'You have been assigned a '||c1.task_type||' task for the following '||:NOMENCLATURE_PROJECT||':<br/><br/>'||
                                             :NOMENCLATURE_PROJECT||': <a  style="font-weight:bold" href="'||l_task_link||'">'||c1.project||'</a><br/>'||
@@ -984,6 +939,9 @@ page 501 (
                                                                              case when c1.sub_task is not null
                                                                                   then ': '||c1.sub_task
                                                                              end ||'</strong><br/>'
+                                                 end ||
+                                            case when c1.task is not null 
+                                                 then 'Task: '||c1.task||'<br/>'
                                                  end ||
                                             case when c1.description is not null 
                                                  then 'Description: '||c1.description||'<br/>'

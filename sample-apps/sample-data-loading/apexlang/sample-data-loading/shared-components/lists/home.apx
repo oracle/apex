@@ -1,0 +1,46 @@
+list home (
+    name: Home
+
+    entry data-loading (
+        label: Data Loading
+        icon {
+            imageIconCssClasses: fa-database-arrow-up
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Load data using declarative data loading process type.
+        }
+    )
+
+    entry manual-data-loading (
+        label: Manual Data Loading
+        icon {
+            imageIconCssClasses: fa-wrench
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 32
+        }
+        link {
+            target: {
+                page: 30
+                clearCache: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Parse upload data manually using APEX_DATA_PARSER package and upload the data maually with DML.
+        }
+    )
+
+)
+

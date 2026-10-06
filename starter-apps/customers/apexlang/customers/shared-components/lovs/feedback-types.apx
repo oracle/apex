@@ -1,0 +1,8 @@
+lov feedback-types (
+    name: FEEDBACK TYPES
+    source {
+        type: legacySqlQuery
+        sqlQuery: select feedback_type, id from eba_cust_feedback_types order by id
+    }
+)
+

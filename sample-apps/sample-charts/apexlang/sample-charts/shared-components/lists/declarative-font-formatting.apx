@@ -1,0 +1,59 @@
+list declarative-font-formatting (
+    name: Declarative Font Formatting
+
+    entry bar-chart-dual-y-axis-with-formatted-labels-page (
+        label: Bar Chart (Dual Y Axis with formatted Labels) - Page 9
+        icon {
+            imageIconCssClasses: fa-bar-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the styling of the series-level labels
+        }
+    )
+
+    entry combination-chart-information-y-axis-value-formatting-page (
+        label: Combination Chart  Information (Y-Axis Value Formatting) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the styling of the y-axis title
+        }
+    )
+
+    entry line-chart-declarative-font-formatting-page (
+        label: Line Chart ( Declarative Font Formatting ) - Page 15
+        icon {
+            imageIconCssClasses: fa-text-height
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates the new axes, legend, and value declarative font formatting attributes, to style the text rendered on a chart.
+        }
+    )
+
+)
+

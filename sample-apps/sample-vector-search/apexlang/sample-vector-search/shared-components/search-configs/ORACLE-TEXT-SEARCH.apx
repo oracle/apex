@@ -1,0 +1,22 @@
+searchConfig ORACLE_TEXT_SEARCH (
+    name: ORACLE-TEXT-SEARCH-DATATABLE
+    type: text
+    source {
+        tableName: EBA_VECTOR_DATATABLE
+        oracleTextIndexColumn: COL1
+    }
+    columnMapping {
+        primaryKey1Column: ID
+        titleColumn: COL1
+        subtitleColumn: COL2
+        descriptionColumn: COL3
+    }
+    iconAndBadge {
+        iconSource: iconClass
+        iconCssClasses: fa-sitemap-vertical
+    }
+    performance {
+        maxRowsToReturn: 10
+    }
+)
+

@@ -1,0 +1,14 @@
+lov p68-product (
+    name: P68_PRODUCT
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select product_name d, id r
+            from   eba_cust_products
+            where id = :P68_PRODUCT_ID
+            order by 1
+            ```
+    }
+)
+

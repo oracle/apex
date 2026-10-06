@@ -12,12 +12,11 @@ page 1403 (
         ]
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -382,6 +381,9 @@ page 1403 (
             cssClasses: dm-TemplateOption-previewTarget
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column CREATED (
             reportColumnQueryId: 3
@@ -486,6 +488,9 @@ page 1403 (
             ]
             cssClasses: dm-TemplateOption-previewTarget
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column STATUS (

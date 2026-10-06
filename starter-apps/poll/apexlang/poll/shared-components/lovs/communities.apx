@@ -1,0 +1,13 @@
+lov communities (
+    name: COMMUNITIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name, id
+            from EBA_QPOLL_RESP_COMMUNITIES
+            order by 1
+            ```
+    }
+)
+

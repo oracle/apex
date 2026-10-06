@@ -1,0 +1,23 @@
+list oracle-apex-advanced-techniques (
+    name: Oracle APEX Advanced Techniques
+
+    entry 10-reporting-from-oracle-apex-collections (
+        label: 10. Reporting from Oracle APEX Collections
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 38
+                clearCache: 38
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates the technique of building reports based upon Oracle APEX collections.  This allows for result sets to be manipulated and cached before being reporting on.
+            2: reportIcon
+        }
+    )
+
+)
+

@@ -1,0 +1,127 @@
+list navigation-bar (
+    name: Navigation Bar
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select level,
+                   label, 
+                   target, 
+                   is_current_list_entry,
+                   image,
+                   null image_attribute,
+                   null image_alt_attribute,
+                   null attribute1,
+                   li_class attribute2
+              from ( 
+            
+            select 3 node_id,
+                   null parent_node_id,
+                   'Install App' label, 
+                   '#' target, 
+                   'NO' is_current_list_entry,
+                   'fa-cloud-download' image,
+                   0 seq,
+                   'a-pwaInstall' li_class
+              from dual
+            
+            union all
+            
+            select 0 node_id,
+                   null parent_node_id,
+                   'RTL' label, 
+                   'javascript:toggleRtl();' target, 
+                   'NO' is_current_list_entry,
+                   'fa-arrow-right' image,
+                   1 seq,
+                   null li_class
+              from dual
+            
+            union all
+            
+            select 1 node_id,
+                   null parent_node_id,
+                   'Theme Version' label, 
+                   '#' target, 
+                   'NO' is_current_list_entry,
+                   'fa-hashtag' image,
+                   1 seq,
+                   null li_class
+              from dual
+            
+            union all
+            
+            select 2 node_id,
+                   null parent_node_id,
+                   'Theme Style' label, 
+                   '#' target, 
+                   'NO' is_current_list_entry,
+                   'fa-paint-brush' image,
+                   2 seq,
+                   null li_class
+              from dual
+            
+            union all
+            
+            select null node_id,
+                   1 parent_node_id,
+                   regexp_substr( a.version, '\d+\.\d+' ) || case when a.application_id = apex_session_state.get_number('APP_ID') then ' (Current)' end label, 
+                   coalesce ( ( select apex_page.get_url (
+                                           p_application => ap.application_id,
+                                           p_page        => ap.page_id )
+                                  from apex_application_pages ap
+                                 where ap.application_id = a.application_id
+                                   and ap.page_id        = apex_session_state.get_number('APP_PAGE_ID') ), 
+                              apex_util.prepare_url ( p_url => 'f?p=' || a.application_id ) ) target, 
+                   case when a.application_id = apex_session_state.get_number('APP_ID') then 'YES' else 'NO' end is_current_list_entry,
+                   null image,
+                   row_number() over ( order by a.version desc ) seq,
+                   null li_class
+             from apex_applications a
+            where a.application_group = 'Universal Theme'
+            
+            union all
+            
+            select null node_id,
+                   2 parent_node_id,
+                   case 
+                     when ts.theme_roller_read_only = 'N' then ' (Sample) '
+                   end ||
+                   ts.name ||
+                   case 
+                     when :P0_THEME_STYLE_ID is not null and ts.theme_style_id = apex_session_state.get_number('P0_THEME_STYLE_ID') then ' (Current)' 
+                     when :P0_THEME_STYLE_ID is null and ts.is_current = 'Yes' then ' (Current)' 
+                     when name = 'Iris' then ' (Default)' 
+                   end 
+                   as label,
+                   'javascript:apex.jQuery(''.ut-TemplateOptions--preview input'').remove(); apex.page.submit( { request: ''APPLY_THEME_STYLE'', set: { ''P0_THEME_STYLE_ID'': ''' || ts.theme_style_id || ''' }, showWait: true } );' target, 
+                   case when ts.theme_style_id = apex_session_state.get_number('P0_THEME_STYLE_ID') then 'YES' else 'NO' end is_current_list_entry,
+                   null image,
+                   row_number() over (order by decode(ts.theme_roller_read_only, 'Y', 1, 2), ts.name) seq,
+                   null li_class
+             from apex_application_theme_styles ts
+            where application_id = apex_session_state.get_number('APP_ID')
+            
+            union all
+            
+            select null node_id,
+                   2 parent_node_id,
+                   '---' label, 
+                   'separator' target, 
+                   'NO' is_current_list_entry,
+                   null image,
+                   count(1) + 0.5 seq,
+                   null li_class
+             from apex_application_theme_styles
+            where application_id         = apex_session_state.get_number('APP_ID')
+              and theme_roller_read_only = 'Y'
+            
+              )
+            
+            start with parent_node_id is null
+            connect by prior node_id = parent_node_id
+            order siblings by seq
+            ```
+    }
+)
+

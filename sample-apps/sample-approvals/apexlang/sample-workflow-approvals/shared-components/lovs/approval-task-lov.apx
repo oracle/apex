@@ -1,0 +1,13 @@
+lov approval-task-lov (
+    name: APPROVAL_TASK_LOV
+    source {
+        type: sqlQuery
+        sqlQuery: select name,static_id from apex_appl_taskdefs where application_id = :APP_ID
+    }
+    columnMapping {
+        return: STATIC_ID
+        display: NAME
+        defaultSort: NAME
+    }
+)
+

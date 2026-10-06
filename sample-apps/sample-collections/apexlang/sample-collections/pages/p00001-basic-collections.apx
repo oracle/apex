@@ -7,6 +7,7 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -105,7 +106,7 @@ page 1 (
             ```
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -120,9 +121,8 @@ page 1 (
         source {
             htmlCode:
                 ```html
-                <p>This use case covers the basics of creating and editing an Oracle Application Express (APEX) collection. Collections are used to support vectors of APEX se
-                ssion-based data.  APEX Collections are commonly used in place of Oracle temporary tables, but they should not be used for millions of rows per user per APEX 
-                session.</p>
+                <p>This use case covers the basics of creating and editing an Oracle APEX collection. Collections are used to support vectors of APEX se
+                ssion-based data.  APEX Collections are commonly used in place of Oracle temporary tables, but they should not be used for millions of rows per user per APEX session.</p>
                 ```
         }
         layout {
@@ -195,7 +195,7 @@ page 1 (
                 sequence: 3
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -214,7 +214,7 @@ page 1 (
                 sequence: 4
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
@@ -233,7 +233,7 @@ page 1 (
                 sequence: 5
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
@@ -252,7 +252,7 @@ page 1 (
                 sequence: 6
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -271,7 +271,7 @@ page 1 (
                 sequence: 7
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -302,7 +302,7 @@ page 1 (
                 linkAttributes: class="t-Button t-Button--warning"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -321,7 +321,7 @@ page 1 (
                 sequence: 18
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -337,7 +337,7 @@ page 1 (
                 sequence: 15
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: O
@@ -353,7 +353,7 @@ page 1 (
                 sequence: 16
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: P
@@ -369,7 +369,7 @@ page 1 (
                 sequence: 17
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: Q
@@ -385,7 +385,7 @@ page 1 (
                 sequence: 12
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -406,7 +406,7 @@ page 1 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: H
@@ -427,7 +427,7 @@ page 1 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: I
@@ -448,7 +448,7 @@ page 1 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: J
@@ -469,7 +469,7 @@ page 1 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: B
@@ -488,7 +488,7 @@ page 1 (
                 sequence: 14
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N

@@ -1,0 +1,26 @@
+lov deal-status-all-open-closed (
+    name: DEAL STATUS ALL OPEN CLOSED
+    source {
+        location: staticValues
+    }
+
+    entry all (
+        sequence: 10
+        display: All
+        return: ALL
+    )
+
+    entry closed (
+        sequence: 30
+        display: Closed
+        return: CLOSED
+    )
+
+    entry open (
+        sequence: 20
+        display: Open
+        return: OPEN
+    )
+
+)
+

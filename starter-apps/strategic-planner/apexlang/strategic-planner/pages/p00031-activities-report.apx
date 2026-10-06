@@ -1,0 +1,744 @@
+page 31 (
+    name: Activities Report
+    alias: ACTIVITIES-REPORT
+    title: Activities
+    pageGroup: @reporting
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText: "All Activities with this application.  Activities can be optionally associated with &NOMENCLATURE_INITIATIVES. or &NOMENCLATURE_PROJECTS. and typically describe work done or to be done. "
+    }
+    config {
+        buildOption: @activity-planning
+    }
+
+    region activities-report (
+        name: Activities
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select ap.id, 
+                       ap.project_id,
+                       at.activity_type,
+                       ap.activity,
+                       ap.comments details,
+                       ap.start_date,
+                       ap.end_date,
+                       to_char(ap.start_date,'Day DD-Mon-YYYY')||' to '||to_char(ap.end_date,'Day DD-Mon-YYYY') TIMELINE,
+                       ap.end_date - ap.start_date days,
+                       round(ap.end_date - sysdate) days_remaining,
+                       ap.url,
+                       tm.first_name||' '||tm.last_name owner,
+                       tm.id team_member_id,
+                       decode(ap.private_yn,'Y','Yes','No') private,
+                       --
+                       --
+                       apex_util.get_since(ap.updated) last_updated,
+                       (select count(*) from sp_activity_comments 
+                         where activity_id = ap.id
+                           and (nvl(private_yn,'N') = 'N' or author_id = :APP_USER_ID)) comment_cnt,
+                       --
+                       -- project related
+                       --
+                       decode(ap.project_id,null,null,(select project              from sp_projects p where p.id = ap.project_id and p.ARCHIVED_YN = 'N' and p.DUPLICATE_OF_PROJECT_ID is null)) project,
+                       decode(ap.project_id,null,null,(select PROJECT_SIZE         from sp_projects p where p.id = ap.project_id and p.ARCHIVED_YN = 'N' and p.DUPLICATE_OF_PROJECT_ID is null)) PROJECT_SIZE,
+                       decode(ap.project_id,null,null,(select friendly_identifier  from sp_projects p where p.id = ap.project_id and p.ARCHIVED_YN = 'N' and p.DUPLICATE_OF_PROJECT_ID is null)) friendly_identifier,
+                       decode(ap.project_id,null,null,(select PROJECT_URL_NAME     from sp_projects p where p.id = ap.project_id and p.ARCHIVED_YN = 'N' and p.DUPLICATE_OF_PROJECT_ID is null)) PROJECT_URL_NAME,
+                       --
+                       -- release
+                       --
+                       case when ap.project_id is null
+                            then null
+                            else (select RELEASE_TRAIN||' '||RELEASE
+                                    from SP_RELEASE_TRAINS rt 
+                                   where rt.id = (select release_id 
+                                                    from sp_projects p 
+                                                   where p.id = ap.project_id))
+                            end release,
+                       --
+                       -- optional initiative
+                       --
+                       decode(ap.initiative_id,null,null,
+                                               (select initiative from sp_initiatives where id = ap.initiative_id)) initiative,
+                       --
+                       -- tags
+                       --
+                       tm.tags team_member_tags,
+                       ap.tags activity_tags,
+                       decode(ap.project_id,null,null,(select tags from sp_projects p where p.id = ap.project_id and p.ARCHIVED_YN = 'N')) project_tags,
+                       --
+                       -- timeframe
+                       --
+                       decode(trunc(sysdate),trunc(ap.end_date),'Current',
+                       decode(trunc(sysdate),trunc(ap.start_date),'Current',
+                           decode(
+                               greatest( trunc(sysdate), ap.start_date ),
+                               ap.start_date,
+                               'Future',
+                               decode(greatest( trunc(sysdate), ap.end_date), ap.end_date, 'Current','Past')))) timeframe,
+                       --
+                        ap.updated,
+                        ap.created
+                from sp_activities ap,
+                     sp_activity_types at,
+                     sp_team_members tm
+                where 
+                      (nvl(ap.private_yn,'N') = 'N' or ap.team_member_id = :APP_USER_ID) and
+                      ap.activity_type_id = at.id and
+                      ap.team_member_id = tm.id
+                
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: [
+                #DEFAULT#
+                t-IRR-region--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No data found.
+            whenMoreDataFound: The maximum row count for this report is #MAX_ROW_COUNT# rows.  Please apply a filter to reduce the number of records in your query.
+        }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: All Activities, along with the owner, timeframe and Project and Release, if appropriate.
+        }
+        actionsMenu {
+            flashback: false
+            subscription: false
+        }
+        advanced {
+            savedReportMappingIdentifier: 4022582097328773846
+        }
+
+        column ACTIVITY (
+            type: link
+            heading {
+                heading: Activity
+            }
+            layout {
+                sequence: 46
+            }
+            link {
+                target: {
+                    page: 140
+                    items: {
+                        P140_ID: #ID#
+                    }
+                    clearCache: 140
+                    action: resetPagination
+                }
+                linkText: #ACTIVITY#
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AB
+            }
+        )
+
+        column ACTIVITY_TAGS (
+            type: plainText
+            heading {
+                heading: Activity Tags
+            }
+            layout {
+                sequence: 22
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: V
+            }
+        )
+
+        column ACTIVITY_TYPE (
+            type: plainText
+            heading {
+                heading: Activity Type
+            }
+            layout {
+                sequence: 4
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+        )
+
+        column COMMENT_CNT (
+            type: plainText
+            heading {
+                heading: Comments
+                alignment: end
+            }
+            layout {
+                sequence: 36
+                columnAlignment: end
+            }
+            appearance {
+                formatMask: 999G999G999G999G999G999G990
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: AA
+            }
+        )
+
+        column CREATED (
+            type: plainText
+            heading {
+                heading: Created
+            }
+            layout {
+                sequence: 26
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: Z
+            }
+        )
+
+        column DAYS (
+            type: plainText
+            heading {
+                heading: Days
+                alignment: end
+            }
+            layout {
+                sequence: 9
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: I
+            }
+        )
+
+        column DAYS_REMAINING (
+            type: plainText
+            heading {
+                heading: Days Remaining
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: J
+            }
+        )
+
+        column DETAILS (
+            type: plainText
+            heading {
+                heading: Details
+            }
+            layout {
+                sequence: 56
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AC
+            }
+        )
+
+        column END_DATE (
+            type: plainText
+            heading {
+                heading: End Date
+            }
+            layout {
+                sequence: 7
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: G
+            }
+        )
+
+        column FRIENDLY_IDENTIFIER (
+            type: hidden
+            heading {
+                heading: Friendly Identifier
+            }
+            layout {
+                sequence: 17
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: Q
+            }
+        )
+
+        column ID (
+            type: hidden
+            heading {
+                heading: Id
+            }
+            layout {
+                sequence: 1
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+        )
+
+        column INITIATIVE (
+            type: plainText
+            heading {
+                heading: Initiative
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: T
+            }
+        )
+
+        column LAST_UPDATED (
+            type: plainText
+            heading {
+                heading: Last Updated
+            }
+            layout {
+                sequence: 14
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: N
+            }
+        )
+
+        column OWNER (
+            type: plainText
+            heading {
+                heading: Owner
+            }
+            layout {
+                sequence: 66
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AD
+            }
+        )
+
+        column PRIVATE (
+            type: plainText
+            heading {
+                heading: Private
+            }
+            layout {
+                sequence: 76
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AE
+            }
+        )
+
+        column PROJECT (
+            type: plainText
+            heading {
+                heading: Project
+            }
+            layout {
+                sequence: 15
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: O
+            }
+        )
+
+        column PROJECT_ID (
+            type: hidden
+            heading {
+                heading: Project Id
+            }
+            layout {
+                sequence: 2
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: B
+            }
+        )
+
+        column PROJECT_SIZE (
+            type: plainText
+            heading {
+                heading: Project Size
+            }
+            layout {
+                sequence: 16
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: P
+            }
+        )
+
+        column PROJECT_TAGS (
+            type: plainText
+            heading {
+                heading: Project Tags
+            }
+            layout {
+                sequence: 23
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: W
+            }
+        )
+
+        column PROJECT_URL_NAME (
+            type: hidden
+            heading {
+                heading: Project Url Name
+            }
+            layout {
+                sequence: 18
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: R
+            }
+        )
+
+        column RELEASE (
+            type: plainText
+            heading {
+                heading: Release
+            }
+            layout {
+                sequence: 19
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: S
+            }
+        )
+
+        column START_DATE (
+            type: plainText
+            heading {
+                heading: Start Date
+            }
+            layout {
+                sequence: 6
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: F
+            }
+        )
+
+        column TEAM_MEMBER_ID (
+            type: hidden
+            heading {
+                heading: Team Member Id
+            }
+            layout {
+                sequence: 13
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: M
+            }
+        )
+
+        column TEAM_MEMBER_TAGS (
+            type: plainText
+            heading {
+                heading: Team Member Tags
+            }
+            layout {
+                sequence: 21
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: U
+            }
+        )
+
+        column TIMEFRAME (
+            type: plainText
+            heading {
+                heading: Timeframe
+            }
+            layout {
+                sequence: 24
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: X
+            }
+        )
+
+        column TIMELINE (
+            type: plainText
+            heading {
+                heading: Timeline
+            }
+            layout {
+                sequence: 8
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: H
+            }
+        )
+
+        column UPDATED (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 25
+            }
+            appearance {
+                formatMask: SINCE
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: Y
+            }
+        )
+
+        column URL (
+            type: plainText
+            heading {
+                heading: URL
+            }
+            layout {
+                sequence: 11
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: K
+            }
+        )
+
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 50
+            }
+
+            displayColumn ACTIVITY (
+                sequence: 2
+            )
+
+            displayColumn ACTIVITY_TYPE (
+                sequence: 1
+            )
+
+            displayColumn END_DATE (
+                sequence: 5
+            )
+
+            displayColumn INITIATIVE (
+                sequence: 6
+            )
+
+            displayColumn OWNER (
+                sequence: 3
+            )
+
+            displayColumn PROJECT (
+                sequence: 7
+            )
+
+            displayColumn RELEASE (
+                sequence: 8
+            )
+
+            displayColumn START_DATE (
+                sequence: 4
+            )
+
+            displayColumn UPDATED (
+                sequence: 9
+            )
+
+            sort (
+                column: UPDATED
+                sort {
+                    direction: desc
+                    sequence: 1
+                }
+            )
+
+        )
+
+    )
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-undo-alt
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 31
+                clearCache: [
+                    CIR
+                    RIR
+                ]
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button up (
+        buttonName: UP
+        label: Navigate Up
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: up
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-arrow-up
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 41
+                action: resetPagination
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

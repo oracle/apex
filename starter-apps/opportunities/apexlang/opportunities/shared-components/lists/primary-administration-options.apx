@@ -1,0 +1,252 @@
+list primary-administration-options (
+    name: Primary Administration Options
+
+    entry application-preferences (
+        label: Application Preferences
+        icon {
+            imageIconCssClasses: fa-heart-o
+        }
+        layout {
+            sequence: 80
+        }
+        link {
+            target: {
+                page: 35
+                clearCache: 35
+            }
+        }
+        userDefinedAttributes {
+            1: Manage your application's preferences. Set the title text used to describe representatives in your line of business.
+        }
+    )
+
+    entry build-options (
+        label: Build Options
+        icon {
+            imageIconCssClasses: fa-bell-o
+        }
+        layout {
+            sequence: 70
+        }
+        link {
+            target: {
+                page: 110
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Enable and disable various features and functionality within the application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry competitors (
+        label: Competitors
+        icon {
+            imageIconCssClasses: fa-bullseye
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 51
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Manage a list of competitors.  Manage the domain of competitors available to be identified by opportunities.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @competitors
+        }
+    )
+
+    entry contract-terms (
+        label: Contract Terms
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 51
+        }
+        link {
+            target: {
+                page: 36
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the various contract terms that are used throughout the application. This facilitates opportunity tracking by contract term.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry lines-of-business (
+        label: Lines of Business
+        icon {
+            imageIconCssClasses: fa-building-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 144
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the lines of businesses that can be assigned to product families.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry notifications (
+        label: Notifications
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 77
+            }
+        }
+        userDefinedAttributes {
+            1: Manage notifications which are displayed on this applications home page.  Use notifications to communicate important information to users of this application.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry product-families (
+        label: Product Families
+        icon {
+            imageIconCssClasses: fa-object-group
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of product families available within this application. Opportunities can identify one or more products, each potentially belonging to a product family. This facilitates opportunity tracking by product and product family.
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry products (
+        label: Products
+        icon {
+            imageIconCssClasses: fa-archive
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: Manage the domain of products available within this application.  Opportunities can identify one or more products.  This facilitates opportunity tracking by product.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @products
+        }
+    )
+
+    entry rep-title-s (
+        label: &REP_TITLE.s
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Manage all &REP_TITLE.s.  Identify name, email, and role.
+            2: formIcon
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+    )
+
+    entry territories (
+        label: Territories
+        icon {
+            imageIconCssClasses: fa-globe
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: never
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: Accounts are organized into territories.  Each account must be in one and only one territory.  Territory's facilitate reporting and organization of opportunities.
+            2: formIcon
+            3: Manage
+        }
+        security {
+            authorizationScheme: @administration-rights
+        }
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+

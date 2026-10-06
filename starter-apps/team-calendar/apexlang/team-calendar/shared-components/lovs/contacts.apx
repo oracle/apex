@@ -1,0 +1,18 @@
+lov contacts (
+    name: CONTACTS
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select initcap(replace(decode(instr(username, '@'), 0, username, substr(username, 1, instr(username, '@') - 1)), '.', ' '))  d, upper(username) r
+            from eba_ca_users u
+            where exists (select 'x'
+                          from eba_ca_events e
+                          where instr(upper(e.contact_email), u.username) > 0
+                         )
+            order by 1
+            
+            ```
+    }
+)
+

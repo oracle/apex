@@ -14,13 +14,8 @@ page 22 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -291,13 +286,7 @@ page 22 (
         }
         lov {
             type: sqlQuery
-            sqlQuery:
-                ```sql
-                select 'research' tag from dual union all
-                select 'devops' tag from dual union all
-                select 'review' tag from dual
-                order by 1
-                ```
+            sqlQuery: select 1 from dual where 1=2
         }
         multipleValues {
             type: delimitedList

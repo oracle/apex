@@ -7,12 +7,7 @@ page 501 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -111,7 +106,7 @@ page 501 (
         name: File Items
         type: staticContent
         source {
-            htmlCode: <p>Download the <strong>states-full.json</strong> and <strong>airports-full.json</strong> files from <strong><a href="https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/" target="_blank">https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/</a></strong> and upload here.</p>
+            htmlCode: <p>Download the <strong>states-full.json</strong> and <strong>airports-full.json</strong> files from <strong><a href="https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/" target="_blank" rel="noopener noreferrer external">https://github.com/oracle/apex/tree/22.1/sample-apps/sample-maps/</a></strong> and upload here.</p>
         }
         layout {
             sequence: 10

@@ -1,0 +1,59 @@
+list administration (
+    name: administration
+
+    entry delete-files (
+        label: Delete Files
+        icon {
+            imageIconCssClasses: fa-remove
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Delete all rows from the EBA_DEMO_FILES table.
+        }
+    )
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+        userDefinedAttributes {
+            1: Recreate example projects data in the EBA_DEMO_FILE_PROJECTS table.
+        }
+    )
+
+    entry theme-style (
+        label: Theme Style
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+

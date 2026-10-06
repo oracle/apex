@@ -1,0 +1,66 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry account (
+        label: Account
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 20000
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry orders (
+        label: Orders
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry search (
+        label: Search
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                type: url
+                url: #action$open-search
+            }
+        }
+    )
+
+)
+

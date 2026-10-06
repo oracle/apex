@@ -13,17 +13,12 @@ page 17 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     readOnly {
         type: expression
         plsqlExpression: :P17_APPRAISAL_ID_PROVIDED = 'Y' or :P17_EXPECTING_INPUT_FROM != :APP_USER
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     advanced {
         enableDuplicatePageSubmissions: false
@@ -884,7 +879,7 @@ page 17 (
         name: Complete
         type: humanTaskManage
         action {
-            type: completeWithoutOutcome
+            type: complete
         }
         humanTask {
             taskIdItem: P17_TASK_ID

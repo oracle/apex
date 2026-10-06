@@ -1,0 +1,16 @@
+lov countries-p (
+    name: COUNTRIES_P2
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select country_name as d,
+                   id as r
+              from EBA_CUST_COUNTRIES
+             where display_yn = 'Y'
+               and region_id = :P2_GEOGRAPHY_ID
+             order by 1
+            ```
+    }
+)
+

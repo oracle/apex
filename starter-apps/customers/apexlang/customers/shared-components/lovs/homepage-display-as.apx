@@ -1,0 +1,39 @@
+lov homepage-display-as (
+    name: HOMEPAGE_DISPLAY_AS
+    source {
+        location: staticValues
+    }
+
+    entry cards-view (
+        sequence: 10
+        display: Cards View
+        return: CARDS
+        globalization {
+            template: <span class="t-Icon fa fa-cards" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+    entry logo-view (
+        sequence: 20
+        display: Logo View
+        return: LOGOS
+        globalization {
+            template: <span class="t-Icon fa fa-tiles-2x2" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: APEX_AUTHORIZATION.IS_AUTHORIZED(p_authorization_name => 'CONTRIBUTION RIGHTS')
+        }
+    )
+
+    entry report-view (
+        sequence: 30
+        display: Report View
+        return: REPORT
+        globalization {
+            template: <span class="t-Icon fa fa-table" title="#DISPLAY_VALUE#"></span><span class="u-VisuallyHidden">#DISPLAY_VALUE#</span>
+        }
+    )
+
+)
+

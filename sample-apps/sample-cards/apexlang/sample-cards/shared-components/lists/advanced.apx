@@ -1,0 +1,59 @@
+list advanced (
+    name: Advanced
+
+    entry charts (
+        label: Charts
+        icon {
+            imageIconCssClasses: fa-dial-gauge-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to display charts inside cards using Oracle JET Data Visualizations
+        }
+    )
+
+    entry no-data-found (
+        label: No Data Found
+        icon {
+            imageIconCssClasses: fa-emoji-worry
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define No Data Found messages for Cards regions
+        }
+    )
+
+    entry template-directives (
+        label: Template Directives
+        icon {
+            imageIconCssClasses: fa-file-brackets
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+        userDefinedAttributes {
+            1: Learn how to define template directives for Cards regions
+        }
+    )
+
+)
+

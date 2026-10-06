@@ -1,0 +1,47 @@
+lov search-page-include-options (
+    name: SEARCH PAGE, INCLUDE OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry accounts (
+        sequence: 20
+        display: Accounts
+        return: ACCOUNTS
+    )
+
+    entry contacts (
+        sequence: 30
+        display: Contacts
+        return: CONTACTS
+    )
+
+    entry leads (
+        sequence: 5
+        display: Leads
+        return: LEADS
+    )
+
+    entry opportunities (
+        sequence: 10
+        display: Opportunities
+        return: OPPORTUNITIES
+    )
+
+    entry products (
+        sequence: 40
+        display: Products
+        return: PRODUCTS
+    )
+
+    entry territories (
+        sequence: 15
+        display: Territories
+        return: TERRITORIES
+        config {
+            buildOption: @territories
+        }
+    )
+
+)
+

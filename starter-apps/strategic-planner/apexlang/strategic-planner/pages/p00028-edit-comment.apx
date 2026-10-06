@@ -14,13 +14,14 @@ page 28 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -126,6 +127,14 @@ page 28 (
                             data: {
                                 imageRefId: apex.item('P28_NEW_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P28_PROJECT_ID.value
+                        },
+                        docs: {
+                            scope: 'PROJECT',
+                            objectId: apex.items.P28_PROJECT_ID.value
                         }
                     });
                 }

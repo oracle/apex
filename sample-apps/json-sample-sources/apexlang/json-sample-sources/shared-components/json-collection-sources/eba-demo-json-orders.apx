@@ -1,0 +1,257 @@
+jsonSource eba_demo_json_orders (
+    name: EBA_DEMO_JSON_ORDERS
+    type: tableWithJsonColumn
+    source {
+        location: localDatabase
+        tableName: EBA_DEMO_JSON_ORDERS
+    }
+    dataProfile {
+        name: order_source
+        rowSelector: .
+    }
+
+    dataProfileColumn customer-id (
+        columnName: CUSTOMER_ID
+        source {
+            sequence: 3
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: CUSTOMER_ID
+        }
+    )
+
+    dataProfileColumn delivery-address-city (
+        columnName: DELIVERY_ADDRESS_CITY
+        source {
+            sequence: 13
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.city
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-country (
+        columnName: DELIVERY_ADDRESS_COUNTRY
+        source {
+            sequence: 15
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.country
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-postal-code (
+        columnName: DELIVERY_ADDRESS_POSTAL_CODE
+        source {
+            sequence: 16
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.postal_code
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-state-province (
+        columnName: DELIVERY_ADDRESS_STATE_PROVINCE
+        source {
+            sequence: 17
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.state_province
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn delivery-address-street (
+        columnName: DELIVERY_ADDRESS_STREET
+        source {
+            sequence: 14
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: delivery_address.street
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn notes (
+        columnName: NOTES
+        source {
+            sequence: 7
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: notes
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn order-datetime (
+        columnName: ORDER_DATETIME
+        source {
+            sequence: 2
+            type: tableColumn
+            dataType: timestamp
+        }
+        parsing {
+            tableColumn: ORDER_DATETIME
+        }
+    )
+
+    dataProfileColumn order-id (
+        columnName: ORDER_ID
+        source {
+            sequence: 1
+            type: tableColumn
+            dataType: number
+            primaryKey: true
+        }
+        parsing {
+            tableColumn: ORDER_ID
+        }
+    )
+
+    dataProfileColumn order-metadata (
+        columnName: ORDER_METADATA
+        source {
+            sequence: 6
+            type: tableColumn
+            dataType: jsonDocument
+        }
+        parsing {
+            tableColumn: ORDER_METADATA
+        }
+        advanced {
+            common: false
+        }
+    )
+
+    dataProfileColumn order-status (
+        columnName: ORDER_STATUS
+        source {
+            sequence: 4
+            type: tableColumn
+            dataType: varchar2
+        }
+        parsing {
+            tableColumn: ORDER_STATUS
+        }
+    )
+
+    dataProfileColumn payment-method (
+        columnName: PAYMENT_METHOD
+        source {
+            sequence: 8
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: payment.method
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn payment-status (
+        columnName: PAYMENT_STATUS
+        source {
+            sequence: 9
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: payment.status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-estimated-delivery (
+        columnName: SHIPMENT_ESTIMATED_DELIVERY
+        source {
+            sequence: 12
+            parentColumn: @order-metadata
+            dataType: date
+        }
+        parsing {
+            pathExpression: shipment.estimated_delivery
+            formatMask: YYYY"-"MM"-"DD
+            hasTimeZone: false
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-method (
+        columnName: SHIPMENT_METHOD
+        source {
+            sequence: 10
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: shipment.method
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn shipment-status (
+        columnName: SHIPMENT_STATUS
+        source {
+            sequence: 11
+            parentColumn: @order-metadata
+            dataType: varchar2
+        }
+        parsing {
+            pathExpression: shipment.status
+        }
+        advanced {
+            sourceDataType: string
+        }
+    )
+
+    dataProfileColumn store-id (
+        columnName: STORE_ID
+        source {
+            sequence: 5
+            type: tableColumn
+            dataType: number
+        }
+        parsing {
+            tableColumn: STORE_ID
+        }
+    )
+
+)
+

@@ -1,0 +1,8 @@
+lov projects (
+    name: PROJECTS
+    source {
+        type: legacySqlQuery
+        sqlQuery: select distinct project d, project r from EBA_DEMO_IR_PROJECTS order by 1
+    }
+)
+

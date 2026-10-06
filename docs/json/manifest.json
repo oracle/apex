@@ -3,12 +3,11 @@
         {
             "internalName": "APEX_PWA_REFERENCE",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-apex-pwa-reference.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/apex-pwa-reference",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apex-pwa-reference/sql/apex-pwa-reference.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apex-pwa-reference/sql/apex-pwa-reference.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apex-pwa-reference/apexlang/apex-pwa-reference.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-apex-pwa-reference.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/apex-pwa-reference",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/apex-pwa-reference/sql/apex-pwa-reference.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/apex-pwa-reference/sql/apex-pwa-reference.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -56,12 +55,11 @@
         {
             "internalName": "APEX_TO_GO",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-apextogo.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/apextogo",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apextogo/sql/apextogo.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apextogo/sql/apextogo.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/apextogo/apexlang/apextogo.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-apextogo.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/apextogo",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/apextogo/sql/apextogo.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/apextogo/sql/apextogo.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -109,12 +107,11 @@
         {
             "internalName": "BROOKSTRUT_SAMPLE_APP",
             "author": "Oracle",
-            "version": "26.1.1",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-brookstrut-sample-app.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/brookstrut-sample-app",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/brookstrut-sample-app/apexlang/brookstrut.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-brookstrut-sample-app.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/brookstrut-sample-app",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/brookstrut-sample-app/sql/brookstrut-sample-app.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -162,12 +159,11 @@
         {
             "internalName": "IMAGE_SUPPORT_RTE",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-image-support-rte.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/image-support-rte",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/image-support-rte/sql/image-support-rte.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/image-support-rte/sql/image-support-rte.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/image-support-rte/apexlang/image-support-rte.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-image-support-rte.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/image-support-rte",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/image-support-rte/sql/image-support-rte.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/image-support-rte/sql/image-support-rte.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -215,11 +211,11 @@
         {
             "internalName": "JSON_SAMPLE_SOURCES",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-json-sample-sources.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/json-sample-sources",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-sample-sources/sql/json-sample-sources.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-sample-sources/sql/json-sample-sources.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-json-sample-sources.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/json-sample-sources",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/json-sample-sources/sql/json-sample-sources.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/json-sample-sources/sql/json-sample-sources.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -267,12 +263,11 @@
         {
             "internalName": "SAMPLE_APPLICATION_SEARCH",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-application-search.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-application-search",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-application-search/sql/sample-application-search.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-application-search/sql/sample-application-search.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-application-search/apexlang/sample-application-search.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-application-search.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-application-search",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-application-search/sql/sample-application-search.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-application-search/sql/sample-application-search.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -320,12 +315,11 @@
         {
             "internalName": "SAMPLE_APPROVALS",
             "author": "Oracle",
-            "version": "26.1.1",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-approvals.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-approvals",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/sql/sample-approvals.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/sql/sample-approvals.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-approvals/apexlang/sample-workflow-approvals.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-approvals.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-approvals",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-approvals/sql/sample-approvals.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-approvals/sql/sample-approvals.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -373,12 +367,11 @@
         {
             "internalName": "SAMPLE_CALENDAR",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-calendar.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-calendar",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-calendar/sql/sample-calendar.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-calendar/sql/sample-calendar.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-calendar/apexlang/sample-calendar.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-calendar",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-calendar/sql/sample-calendar.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-calendar/sql/sample-calendar.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -426,12 +419,11 @@
         {
             "internalName": "SAMPLE_CARDS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-cards.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-cards",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-cards/sql/sample-cards.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-cards/sql/sample-cards.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-cards/apexlang/sample-cards.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-cards.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-cards",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-cards/sql/sample-cards.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-cards/sql/sample-cards.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -479,12 +471,11 @@
         {
             "internalName": "SAMPLE_CHARTS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-charts.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-charts",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-charts/sql/sample-charts.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-charts/sql/sample-charts.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-charts/apexlang/sample-charts.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-charts.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-charts",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-charts/sql/sample-charts.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-charts/sql/sample-charts.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -532,12 +523,11 @@
         {
             "internalName": "SAMPLE_COLLECTIONS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-collections.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-collections",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-collections/sql/sample-collections.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-collections/sql/sample-collections.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-collections/apexlang/sample-collections.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-collections.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-collections",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-collections/sql/sample-collections.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-collections/sql/sample-collections.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -585,12 +575,11 @@
         {
             "internalName": "SAMPLE_DATA_LOADING",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-data-loading.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-data-loading",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-data-loading/sql/sample-data-loading.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-data-loading/sql/sample-data-loading.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-data-loading/apexlang/sample-data-loading.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-data-loading.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-data-loading",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-data-loading/sql/sample-data-loading.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-data-loading/sql/sample-data-loading.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -638,12 +627,11 @@
         {
             "internalName": "SAMPLE_DOCUMENT_GENERATOR",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-document-generator.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-document-generator",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/sql/sample-document-generator.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/sql/sample-document-generator.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-document-generator/apexlang/sample-docgen.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-document-generator.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-document-generator",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-document-generator/sql/sample-document-generator.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-document-generator/sql/sample-document-generator.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -691,12 +679,11 @@
         {
             "internalName": "SAMPLE_DYNAMIC_ACTIONS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-dynamic-actions.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-dynamic-actions",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-dynamic-actions/sql/sample-dynamic-actions.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-dynamic-actions/sql/sample-dynamic-actions.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-dynamic-actions/apexlang/sample-dynamic-actions.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-dynamic-actions.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-dynamic-actions",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-dynamic-actions/sql/sample-dynamic-actions.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-dynamic-actions/sql/sample-dynamic-actions.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -744,12 +731,11 @@
         {
             "internalName": "SAMPLE_EMAIL_AUTH",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-email-authentication.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-email-authentication",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/sql/sample-email-authentication.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/sql/sample-email-authentication.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-email-authentication/apexlang/ema.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-email-authentication.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-email-authentication",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-email-authentication/sql/sample-email-authentication.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-email-authentication/sql/sample-email-authentication.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -797,12 +783,11 @@
         {
             "internalName": "SAMPLE_FILE_UPLOAD_DOWNLOAD",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-file-upload-download.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-file-upload-download",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-file-upload-download/sql/sample-file-upload-download.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-file-upload-download/sql/sample-file-upload-download.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-file-upload-download/apexlang/sample-file-upload-download.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-file-upload-download.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-file-upload-download",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-file-upload-download/sql/sample-file-upload-download.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-file-upload-download/sql/sample-file-upload-download.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -850,12 +835,11 @@
         {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-interactive-grids.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-interactive-grids",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-interactive-grids/sql/sample-interactive-grids.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-interactive-grids/sql/sample-interactive-grids.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-interactive-grids/apexlang/sample-interactive-grids.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-interactive-grids.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-interactive-grids",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-interactive-grids/sql/sample-interactive-grids.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-interactive-grids/sql/sample-interactive-grids.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -903,12 +887,11 @@
         {
             "internalName": "SAMPLE_JSON_DUALITY_VIEWS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-json-duality-views.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/json-duality-views",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/sql/json-duality-views.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/sql/json-duality-views.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/json-duality-views/apexlang/json-duality-views.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-json-duality-views.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/json-duality-views",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/json-duality-views/sql/json-duality-views.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/json-duality-views/sql/json-duality-views.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -956,12 +939,11 @@
         {
             "internalName": "SAMPLE_MAPS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-maps.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-maps",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-maps/sql/sample-maps.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-maps/sql/sample-maps.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-maps/apexlang/sample-maps.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-maps.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-maps",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-maps/sql/sample-maps.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-maps/sql/sample-maps.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1009,12 +991,11 @@
         {
             "internalName": "SAMPLE_MASTER_DETAIL",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-master-detail.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-master-detail",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-master-detail/sql/sample-master-detail.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-master-detail/sql/sample-master-detail.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-master-detail/apexlang/sample-master-detail.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-master-detail.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-master-detail",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-master-detail/sql/sample-master-detail.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-master-detail/sql/sample-master-detail.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1062,12 +1043,11 @@
         {
             "internalName": "SAMPLE_REPORTING",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-reporting.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-reporting",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-reporting/sql/sample-reporting.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-reporting/sql/sample-reporting.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-reporting/apexlang/sample-reporting.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-reporting.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-reporting",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-reporting/sql/sample-reporting.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-reporting/sql/sample-reporting.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1115,12 +1095,11 @@
         {
             "internalName": "SAMPLE_RESTFUL_SERVICES",
             "author": "Oracle",
-            "version": "26.1.1",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-rest-services.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-rest-services",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-rest-services/sql/sample-rest-services.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-rest-services/sql/sample-rest-services.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-rest-services/apexlang/sample-rest-services.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-rest-services.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-rest-services",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-rest-services/sql/sample-rest-services.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-rest-services/sql/sample-rest-services.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1168,12 +1147,11 @@
         {
             "internalName": "SAMPLE_TREES",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-trees.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-trees",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-trees/sql/sample-trees.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-trees/sql/sample-trees.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-trees/apexlang/sample-trees.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-trees.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-trees",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-trees/sql/sample-trees.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-trees/sql/sample-trees.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1221,12 +1199,11 @@
         {
             "internalName": "SAMPLE_UNIVERSAL_THEME",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-universal-theme-reference.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/universal-theme-reference",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/sql/universal-theme-reference.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/sql/universal-theme-reference.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/universal-theme-reference/apexlang/ut.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-universal-theme-reference.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/universal-theme-reference",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/universal-theme-reference/sql/universal-theme-reference.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/universal-theme-reference/sql/universal-theme-reference.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1274,11 +1251,11 @@
         {
             "internalName": "SAMPLE_UX_PATTERN_CATALOG",
             "author": "Oracle",
-            "version": "26.1.6",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-ux-pattern-catalog.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/ux-pattern-catalog",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-ux-pattern-catalog.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/ux-pattern-catalog",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/ux-pattern-catalog/sql/ux-pattern-catalog.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1326,12 +1303,11 @@
         {
             "internalName": "SAMPLE_VECTOR_SEARCH",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-sample-vector-search.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/sample-apps/sample-vector-search",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-vector-search/sql/sample-vector-search.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-vector-search/sql/sample-vector-search.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/sample-apps/sample-vector-search/apexlang/sample-vector-search.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-vector-search.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-vector-search",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-vector-search/sql/sample-vector-search.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-vector-search/sql/sample-vector-search.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1381,12 +1357,11 @@
         {
             "internalName": "APP_CUSTOMERS",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-customers.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/customers",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/customers/sql/customers.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/customers/sql/customers.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/customers/apexlang/customers.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-customers.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/customers",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/customers/sql/customers.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/customers/sql/customers.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1434,12 +1409,11 @@
         {
             "internalName": "APP_OPPORTUNITIES",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-opportunities.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/opportunities",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/opportunities/sql/opportunities.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/opportunities/sql/opportunities.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/opportunities/apexlang/opportunities.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-opportunities.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/opportunities",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/opportunities/sql/opportunities.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/opportunities/sql/opportunities.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1487,12 +1461,11 @@
         {
             "internalName": "APP_POLL",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-poll.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/poll",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/poll/sql/poll.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/poll/sql/poll.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/poll/apexlang/poll.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-poll.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/poll",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/poll/sql/poll.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/poll/sql/poll.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1540,12 +1513,11 @@
         {
             "internalName": "APP_QASK",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-qask.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/qask",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/qask/sql/qask.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/qask/sql/qask.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/qask/apexlang/qask.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-qask.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/qask",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/qask/sql/qask.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/qask/sql/qask.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1593,12 +1565,11 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "26.1.1",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-strategic-planner.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/strategic-planner",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/strategic-planner/sql/strategic-planner.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/strategic-planner/sql/strategic-planner.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/strategic-planner/apexlang/strategic-planner.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-strategic-planner.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/strategic-planner",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/strategic-planner/sql/strategic-planner.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/strategic-planner/sql/strategic-planner.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1646,12 +1617,11 @@
         {
             "internalName": "APP_TEAM_CALENDAR",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-team-calendar.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/starter-apps/team-calendar",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/team-calendar/sql/team-calendar.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/team-calendar/sql/team-calendar.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/starter-apps/team-calendar/apexlang/team-calendar.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-team-calendar.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/team-calendar",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/team-calendar/sql/team-calendar.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/team-calendar/sql/team-calendar.zip",
             "license": "",
             "i18n": {
                 "en": {
@@ -1701,12 +1671,11 @@
         {
             "internalName": "APP_CLOUD_APPS_REST_EXPLORER",
             "author": "Oracle",
-            "version": "26.1.0",
-            "icon": "https://raw.githubusercontent.com/oracle/apex/26.1/docs/img/apps/app-cloud-apps-rest-explorer.svg",
-            "url": "https://github.com/oracle/apex/tree/26.1/utility-apps/cloud-apps-rest-explorer",
-            "source": "https://raw.githubusercontent.com/oracle/apex/26.1/utility-apps/cloud-apps-rest-explorer/sql/cloud-apps-rest-explorer.sql",
-            "zip": "https://raw.githubusercontent.com/oracle/apex/26.1/utility-apps/cloud-apps-rest-explorer/sql/cloud-apps-rest-explorer.zip",
-            "apexlangZip": "https://raw.githubusercontent.com/oracle/apex/26.1/utility-apps/cloud-apps-rest-explorer/apexlang/cloud-apps-rest-explorer.zip",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-cloud-apps-rest-explorer.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/utility-apps/cloud-apps-rest-explorer",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/utility-apps/cloud-apps-rest-explorer/sql/cloud-apps-rest-explorer.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/utility-apps/cloud-apps-rest-explorer/sql/cloud-apps-rest-explorer.zip",
             "license": "",
             "i18n": {
                 "en": {

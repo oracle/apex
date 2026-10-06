@@ -1,6 +1,6 @@
 app TEAM-CALENDAR (
     name: Team Calendar
-    version: 26.1.0
+    version: 26.2.0
     group: @starter-apps
     logo {
         type: text
@@ -53,11 +53,8 @@ app TEAM-CALENDAR (
     security {
         deepLinking: true
         embedInFrames: allowSameOrigin
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        allowUrlsCreatedAfter: 1999-08-04T00:00:00
-        checksumSalt: B5CDC6F5068EB5D3291A15B06CECC9BAF767EF48F62733C466BFBC9C2C1A8583
     }
     sessionManagement {
         rejoinSessions: publicSessions

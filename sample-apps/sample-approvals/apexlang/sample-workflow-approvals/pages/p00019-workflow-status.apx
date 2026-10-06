@@ -6,13 +6,8 @@ page 19 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @operations-team
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region about-this-page (
@@ -380,6 +375,9 @@ page 19 (
             layout {
                 sequence: 70
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -403,6 +401,9 @@ page 19 (
             layout {
                 sequence: 90
             }
+            listEntries {
+                allowToExclude: false
+            }
             suggestions {
                 type: dynamic
             }
@@ -422,6 +423,9 @@ page 19 (
             }
             layout {
                 sequence: 80
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -455,6 +459,7 @@ page 19 (
             }
             listEntries {
                 sortByTopCounts: false
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic
@@ -474,6 +479,9 @@ page 19 (
             }
             layout {
                 sequence: 20
+            }
+            listEntries {
+                allowToExclude: false
             }
             suggestions {
                 type: dynamic

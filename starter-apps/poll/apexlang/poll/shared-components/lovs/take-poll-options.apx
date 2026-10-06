@@ -1,0 +1,26 @@
+lov take-poll-options (
+    name: TAKE POLL OPTIONS
+    source {
+        location: staticValues
+    }
+
+    entry has-errors (
+        sequence: 3
+        display: Has Errors
+        return: Has Errors
+    )
+
+    entry take-it (
+        sequence: 1
+        display: Take It
+        return: Take It
+    )
+
+    entry update (
+        sequence: 2
+        display: Update
+        return: Update
+    )
+
+)
+

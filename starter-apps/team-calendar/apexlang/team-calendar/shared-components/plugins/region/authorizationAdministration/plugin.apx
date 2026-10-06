@@ -114,7 +114,6 @@ plugin authorizationAdministration (
     }
     information {
         version: 5.0.1
-        aboutUrl: http://apex.oracle.com/plugins
         helpText:
             ```
             <p>Authorization Administration displays the current authentication scheme together with a count of public pages, pages requiring authentication, and pages with an authorization defined.</p>

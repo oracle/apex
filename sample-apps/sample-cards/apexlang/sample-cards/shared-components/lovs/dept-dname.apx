@@ -1,0 +1,11 @@
+lov dept-dname (
+    name: DEPT.DNAME
+    source {
+        tableName: EBA_DEMO_CARD_DEPT
+    }
+    columnMapping {
+        return: DEPTNO
+        display: DNAME
+    }
+)
+

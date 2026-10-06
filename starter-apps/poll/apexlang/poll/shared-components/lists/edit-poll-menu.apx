@@ -1,0 +1,247 @@
+list edit-poll-menu (
+    name: Edit Poll Menu
+
+    entry add-question (
+        label: Add Question
+        icon {
+            imageIconCssClasses: fa-question-square-o
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 88
+                items: {
+                    P88_POLL_ID: &POLL_ID.
+                }
+                clearCache: 88
+            }
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select status_id 
+                     from eba_qpoll_polls
+                    where id = :POLL_ID
+                
+                ) loop
+                   -- if closed, cannot add new
+                   if c1.status_id = 4 then
+                      return FALSE;
+                   -- if using sections, must have one to create a question
+                   elsif :P100_USE_SECTIONS_YN = 'Y' then
+                      for c1 in (
+                         select count(*) c
+                           from EBA_QPOLL_SECTIONS
+                          where POLL_ID = :POLL_ID
+                      ) loop
+                         if c1.c = 0 then
+                            return FALSE;
+                         end if;
+                      end loop;
+                   end if;
+                
+                   return TRUE;
+                
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    entry add-section (
+        label: Add Section
+        icon {
+            imageIconCssClasses: fa-layout-3row
+        }
+        layout {
+            sequence: 17
+        }
+        link {
+            target: {
+                page: 38
+                clearCache: 38
+            }
+        }
+        serverSideCondition {
+            type: functionBody
+            plsqlFunctionBody:
+                ```plsql
+                for c1 in (
+                   select status_id 
+                     from eba_qpoll_polls
+                    where id = :POLL_ID
+                
+                ) loop
+                   -- if closed, cannot add new
+                   if c1.status_id = 4 then
+                      return FALSE;
+                   else
+                      return TRUE;
+                   end if;
+                end loop;
+                
+                return FALSE;
+                ```
+        }
+    )
+
+    entry close (
+        label: Close
+        icon {
+            imageIconCssClasses: fa-check-square-o
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 11
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                from EBA_QPOLL_POLLS p
+                where id = :POLL_ID
+                and status_id = 3
+                ```
+        }
+    )
+
+    entry delete (
+        label: Delete
+        icon {
+            imageIconCssClasses: fa-trash
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 28
+            }
+        }
+    )
+
+    entry edit-poll-details (
+        label: Edit Poll Details
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 48
+                items: {
+                    P48_ID: &POLL_ID.
+                }
+            }
+        }
+    )
+
+    entry history (
+        label: History
+        icon {
+            imageIconCssClasses: fa-history
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 18
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from eba_qpoll_history
+                 where table_name = 'QUESTIONS'
+                   and poll_id = :POLL_ID
+                   and column_name = 'QUESTION'
+                ```
+        }
+    )
+
+    entry preview (
+        label: Preview
+        icon {
+            imageIconCssClasses: fa-eye
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 67
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS p,
+                       eba_qpoll_questions q
+                 where p.id = :POLL_ID
+                   and p.id = q.poll_id
+                   and p.status_id in (1,2,3)
+                ```
+        }
+    )
+
+    entry publish (
+        label: Publish
+        icon {
+            imageIconCssClasses: fa-box-arrow-out-east
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from EBA_QPOLL_POLLS p,
+                       eba_qpoll_questions q
+                 where p.id = :POLL_ID
+                   and p.id = q.poll_id
+                   and p.status_id in (1,2)
+                ```
+        }
+    )
+
+    entry view-poll-details (
+        label: View Poll Details
+        icon {
+            imageIconCssClasses: fa-layout-grid-3x
+        }
+        layout {
+            sequence: 5
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+    )
+
+)
+

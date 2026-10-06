@@ -6,9 +6,6 @@ page 120 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -19,8 +16,6 @@ page 120 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -72,6 +67,9 @@ page 120 (
         }
         chartLayout {
             height: 220
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             show: false
@@ -193,6 +191,9 @@ page 120 (
         chartLayout {
             height: 220
         }
+        performance {
+            lazyLoading: true
+        }
         legend {
             show: false
         }
@@ -282,6 +283,9 @@ page 120 (
         }
         chart {
             type: pyramid
+        }
+        performance {
+            lazyLoading: true
         }
         value {
             format: decimal
@@ -383,6 +387,9 @@ page 120 (
         }
         chart {
             type: bubble
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: bottom
@@ -505,6 +512,9 @@ page 120 (
         }
         chart {
             type: radar
+        }
+        performance {
+            lazyLoading: true
         }
         legend {
             position: bottom
@@ -1357,6 +1367,9 @@ page 120 (
         chart {
             type: stock
         }
+        performance {
+            lazyLoading: true
+        }
         componentAdvanced {
             initJavaScriptFunction:
                 ```javascript-browser
@@ -1454,6 +1467,9 @@ page 120 (
         }
         chartLayout {
             height: 180
+        }
+        performance {
+            lazyLoading: true
         }
         settings {
             timeAxisType: enabled

@@ -67,7 +67,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 40
             }
             advanced {
-                diagram: {"position":{"x":1200,"y":770},"z":-123}
+                diagram: "{\"position\":{\"x\":1200,\"y\":770},\"z\":-123}"
             }
 
             connection (
@@ -95,7 +95,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 60
             }
             advanced {
-                diagram: {"position":{"x":890,"y":890},"z":-125}
+                diagram: "{\"position\":{\"x\":890,\"y\":890},\"z\":-125}"
             }
 
             connection (
@@ -170,7 +170,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 90
             }
             advanced {
-                diagram: {"position":{"x":890,"y":1140},"z":-127}
+                diagram: "{\"position\":{\"x\":890,\"y\":1140},\"z\":-127}"
             }
 
             connection (
@@ -193,7 +193,7 @@ workflow LAPTOP_REQUEST (
             }
             emailTemplate {
                 emailTemplate: @LAPTOP_DELIVERED_NOTIFICATION
-                placeholderValues: {"P_LAPTOP_TYPE":"&LAPTOP_TYPE.","P_ENAME":"&ENAME.","P_DELIVERED_FROM_STOCK":"&V_DELIVERED_FROM_STOCK."}
+                placeholderValues: "{\"P_LAPTOP_TYPE\":\"&LAPTOP_TYPE.\",\"P_ENAME\":\"&ENAME.\",\"P_DELIVERED_FROM_STOCK\":\"&V_DELIVERED_FROM_STOCK.\"}"
             }
             emailDispatchMode {
                 sendImmediately: true
@@ -213,7 +213,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 130
             }
             advanced {
-                diagram: {"position":{"x":1510,"y":1140},"z":-131}
+                diagram: "{\"position\":{\"x\":1510,\"y\":1140},\"z\":-131}"
             }
 
             connection (
@@ -264,7 +264,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 100
             }
             advanced {
-                diagram: {"position":{"x":1690,"y":890},"z":-120}
+                diagram: "{\"position\":{\"x\":1690,\"y\":890},\"z\":-120}"
             }
 
             connection (
@@ -286,7 +286,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 10
             }
             advanced {
-                diagram: {"position":{"x":970,"y":670},"z":1}
+                diagram: "{\"position\":{\"x\":970,\"y\":670},\"z\":1}"
             }
 
             connection (
@@ -312,7 +312,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 180
             }
             advanced {
-                diagram: {"position":{"x":1380,"y":890},"z":-122}
+                diagram: "{\"position\":{\"x\":1380,\"y\":890},\"z\":-122}"
             }
 
             connection (
@@ -354,7 +354,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 150
             }
             advanced {
-                diagram: {"position":{"x":1270,"y":890},"z":22}
+                diagram: "{\"position\":{\"x\":1270,\"y\":890},\"z\":22}"
             }
 
             connection (
@@ -380,7 +380,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 190
             }
             advanced {
-                diagram: {"position":{"x":1220,"y":1140},"z":36}
+                diagram: "{\"position\":{\"x\":1220,\"y\":1140},\"z\":36}"
             }
 
             connection (
@@ -412,7 +412,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 140
             }
             advanced {
-                diagram: {"position":{"x":1790,"y":1040},"z":12}
+                diagram: "{\"position\":{\"x\":1790,\"y\":1040},\"z\":12}"
             }
         )
 
@@ -427,7 +427,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 160
             }
             advanced {
-                diagram: {"position":{"x":890,"y":1020},"z":-126}
+                diagram: "{\"position\":{\"x\":890,\"y\":1020},\"z\":-126}"
             }
 
             connection (
@@ -469,7 +469,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 170
             }
             advanced {
-                diagram: {"position":{"x":1220,"y":1270},"z":-130}
+                diagram: "{\"position\":{\"x\":1220,\"y\":1270},\"z\":-130}"
             }
 
             connection (
@@ -511,7 +511,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 20
             }
             advanced {
-                diagram: {"position":{"x":890,"y":770},"z":-124}
+                diagram: "{\"position\":{\"x\":890,\"y\":770},\"z\":-124}"
             }
 
             connection (
@@ -628,7 +628,7 @@ workflow LAPTOP_REQUEST (
                 sequence: 50
             }
             advanced {
-                diagram: {"position":{"x":1480,"y":770},"z":-121}
+                diagram: "{\"position\":{\"x\":1480,\"y\":770},\"z\":-121}"
             }
 
             connection (

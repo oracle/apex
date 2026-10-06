@@ -1,0 +1,13 @@
+lov std-time-zones (
+    name: STD TIME ZONES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select distinct tzname d, tzname r
+              from V$TIMEZONE_NAMES
+             order by 1
+            ```
+    }
+)
+

@@ -1,0 +1,13 @@
+lov active-event-types (
+    name: ACTIVE EVENT_TYPES
+    source {
+        tableName: SP_EVENT_TYPES
+        whereClause: active_yn = 'Y'
+    }
+    columnMapping {
+        return: ID
+        display: EVENT_TYPE
+        defaultSort: EVENT_TYPE
+    }
+)
+

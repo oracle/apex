@@ -1,0 +1,95 @@
+list sql-analytic-examples (
+    name: SQL Analytic Examples
+
+    entry lead-and-lag (
+        label: LEAD and LAG
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates use of LEAD and LAG functions to get next and previous data.
+        }
+    )
+
+    entry listagg (
+        label: LISTAGG
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 30
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates ordering data within each group and concatenate the values in a comma delimited list.
+        }
+    )
+
+    entry rank-and-dense-rank (
+        label: RANK and DENSE_RANK
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 31
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to rank the records based on a column value or expression.
+        }
+    )
+
+    entry ratio-to-report (
+        label: RATIO_TO_REPORT
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 33
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to compare the current value against the sum of another set of values.
+        }
+    )
+
+    entry row-number (
+        label: ROW_NUMBER
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 32
+            }
+        }
+        userDefinedAttributes {
+            1: Demonstrates how to assign a serial number to a partition of records. This is very useful in reporting, especially in places where different partitions have their own serial numbers.
+        }
+    )
+
+    entry top-n-queries (
+        label: Top N Queries
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+        userDefinedAttributes {
+            1: Top-N queries provide a method for limiting the number of rows returned from ordered sets of data.
+        }
+    )
+
+)
+

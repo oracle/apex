@@ -1,0 +1,38 @@
+lov event-recurrence (
+    name: EVENT RECURRENCE
+    source {
+        location: staticValues
+    }
+
+    entry 2w (
+        sequence: 4
+        display: Every 2 Weeks (same day of week)
+        return: 2W
+    )
+
+    entry d (
+        sequence: 1
+        display: Daily
+        return: D
+    )
+
+    entry m (
+        sequence: 5
+        display: Each Month (same date)
+        return: M
+    )
+
+    entry w (
+        sequence: 3
+        display: Every Week (same day of week)
+        return: W
+    )
+
+    entry wd (
+        sequence: 2
+        display: Every Weekday (M-F)
+        return: WD
+    )
+
+)
+

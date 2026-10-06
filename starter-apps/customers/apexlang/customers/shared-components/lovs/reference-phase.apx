@@ -1,0 +1,12 @@
+lov reference-phase (
+    name: REFERENCE PHASE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select status||' - '||description, id 
+            from EBA_CUST_REF_PHASE order by 1
+            ```
+    }
+)
+

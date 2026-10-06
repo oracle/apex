@@ -6,9 +6,6 @@ page 130 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
         inline:
             ```css
@@ -19,8 +16,6 @@ page 130 (
     }
     security {
         authentication: public
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     help {
         helpText:
@@ -162,6 +157,9 @@ page 130 (
         }
         chartLayout {
             height: 250
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             renderGapAsZero: false
@@ -351,6 +349,9 @@ page 130 (
         }
         title {
             title: Opportunities Conversion
+        }
+        performance {
+            lazyLoading: true
         }
         componentAdvanced {
             initJavaScriptFunction:
@@ -823,6 +824,9 @@ page 130 (
         chartAppearance {
             orientation: horizontal
         }
+        performance {
+            lazyLoading: true
+        }
         multiSeriesChartData {
             fillGapsInChartData: false
         }
@@ -944,6 +948,9 @@ page 130 (
         }
         chartLayout {
             height: 250
+        }
+        performance {
+            lazyLoading: true
         }
         multiSeriesChartData {
             fillGapsInChartData: false

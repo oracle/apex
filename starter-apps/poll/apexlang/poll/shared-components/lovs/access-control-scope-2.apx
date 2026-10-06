@@ -1,0 +1,20 @@
+lov access-control-scope-2 (
+    name: ACCESS CONTROL SCOPE1
+    source {
+        location: staticValues
+    }
+
+    entry contributors (
+        sequence: 2
+        display: Contributors
+        return: PUBLIC_CONTRIBUTE
+    )
+
+    entry readers (
+        sequence: 1
+        display: Readers
+        return: PUBLIC_READONLY
+    )
+
+)
+

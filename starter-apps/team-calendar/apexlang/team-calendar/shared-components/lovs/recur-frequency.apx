@@ -1,0 +1,44 @@
+lov recur-frequency (
+    name: RECUR FREQUENCY
+    source {
+        location: staticValues
+    }
+
+    entry daily (
+        sequence: 1
+        display: Daily
+        return: D
+    )
+
+    entry each-month-same-date (
+        sequence: 5
+        display: each Month (same date)
+        return: M
+    )
+
+    entry every-2-weeks-same-day-of-week (
+        sequence: 4
+        display: every 2 Weeks (same day of week)
+        return: 2W
+    )
+
+    entry every-3-months-same-date (
+        sequence: 6
+        display: every 3 Months (same date)
+        return: Q
+    )
+
+    entry every-week-same-day-of-week (
+        sequence: 3
+        display: every Week (same day of week)
+        return: W
+    )
+
+    entry every-weekday-m-f (
+        sequence: 2
+        display: every Weekday (M-F)
+        return: WD
+    )
+
+)
+

@@ -1,0 +1,38 @@
+lov auto-refresh (
+    name: AUTO REFRESH
+    source {
+        location: staticValues
+    }
+
+    entry every-1-minute (
+        sequence: 40
+        display: Every 1 minute
+        return: 40
+    )
+
+    entry every-10-seconds (
+        sequence: 20
+        display: Every 10 seconds
+        return: 10
+    )
+
+    entry every-30-seconds (
+        sequence: 30
+        display: Every 30 seconds
+        return: 30
+    )
+
+    entry every-5-seconds (
+        sequence: 10
+        display: Every 5 seconds
+        return: 5
+    )
+
+    entry every-second (
+        sequence: 1
+        display: Every Second
+        return: 1
+    )
+
+)
+

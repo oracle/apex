@@ -6,9 +6,6 @@ page 21 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     javaScript {
         functionAndGlobalVariableDeclaration:
             ```javascript-browser
@@ -69,8 +66,6 @@ page 21 (
     security {
         authentication: public
         deepLinking: false
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     comments {
         comments: Confirms the users answer to a question was counted and provides navigation to the next question if and when it becomes available

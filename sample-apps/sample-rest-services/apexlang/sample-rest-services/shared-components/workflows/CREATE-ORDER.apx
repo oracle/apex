@@ -34,7 +34,7 @@ workflow CREATE_ORDER (
                 sequence: 30
             }
             advanced {
-                diagram: {"position":{"x":-270,"y":100},"z":3}
+                diagram: "{\"position\":{\"x\":-270,\"y\":100},\"z\":3}"
             }
 
             connection (
@@ -86,7 +86,7 @@ workflow CREATE_ORDER (
                 sequence: 10
             }
             advanced {
-                diagram: {"position":{"x":-390,"y":100},"z":1}
+                diagram: "{\"position\":{\"x\":-390,\"y\":100},\"z\":1}"
             }
 
             connection (
@@ -113,7 +113,7 @@ workflow CREATE_ORDER (
                 sequence: 50
             }
             advanced {
-                diagram: {"position":{"x":500,"y":100},"z":5}
+                diagram: "{\"position\":{\"x\":500,\"y\":100},\"z\":5}"
             }
 
             connection (
@@ -174,7 +174,7 @@ workflow CREATE_ORDER (
                 sequence: 20
             }
             advanced {
-                diagram: {"position":{"x":1030,"y":100},"z":2}
+                diagram: "{\"position\":{\"x\":1030,\"y\":100},\"z\":2}"
             }
         )
 
@@ -193,7 +193,7 @@ workflow CREATE_ORDER (
                 sequence: 60
             }
             advanced {
-                diagram: {"position":{"x":770,"y":100},"z":6}
+                diagram: "{\"position\":{\"x\":770,\"y\":100},\"z\":6}"
             }
 
             connection (
@@ -221,7 +221,7 @@ workflow CREATE_ORDER (
                 sequence: 70
             }
             advanced {
-                diagram: {"position":{"x":160,"y":100},"z":7}
+                diagram: "{\"position\":{\"x\":160,\"y\":100},\"z\":7}"
             }
 
             connection (
@@ -268,7 +268,7 @@ workflow CREATE_ORDER (
                 sequence: 80
             }
             advanced {
-                diagram: {"position":{"x":240,"y":-90},"z":8}
+                diagram: "{\"position\":{\"x\":240,\"y\":-90},\"z\":8}"
             }
         )
 
@@ -283,7 +283,7 @@ workflow CREATE_ORDER (
                 sequence: 40
             }
             advanced {
-                diagram: {"position":{"x":30,"y":100},"z":4}
+                diagram: "{\"position\":{\"x\":30,\"y\":100},\"z\":4}"
             }
 
             connection (

@@ -1,0 +1,100 @@
+list use-cases (
+    name: Use Cases
+
+    entry custom-search-result-template (
+        label: Custom Search Result Template
+        icon {
+            imageIconCssClasses: fa-design
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 204
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: "Demonstrates how to customize the default search results display template. "
+        }
+    )
+
+    entry filter-search-configurations (
+        label: Filter Search Configurations
+        icon {
+            imageIconCssClasses: fa-filter
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 206
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to add filters to search page to refine search results.
+        }
+    )
+
+    entry link-search-result-to-form (
+        label: Link Search Result To Form
+        icon {
+            imageIconCssClasses: fa-external-link
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 202
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to link form to search result row.
+        }
+    )
+
+    entry multiple-search-regions (
+        label: Multiple Search Regions
+        icon {
+            imageIconCssClasses: fa-layout-2col
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 207
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to add multiple Search regions to a single page.
+        }
+    )
+
+    entry search-query-prefix (
+        label: Search Query Prefix
+        icon {
+            imageIconCssClasses: fa-tag
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        userDefinedAttributes {
+            translatable: true
+            1: Demonstrates how to use Search Query Prefix to perform targeted searches when using multiple search configurations.
+        }
+    )
+
+)
+

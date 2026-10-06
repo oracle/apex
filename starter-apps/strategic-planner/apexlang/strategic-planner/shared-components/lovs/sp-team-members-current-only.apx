@@ -1,0 +1,18 @@
+lov sp-team-members-current-only (
+    name: SP_TEAM_MEMBERS - CURRENT ONLY
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select last_name||', '||first_name||' ('||lower(email)||')' d, id r
+            from SP_TEAM_MEMBERS
+            where is_current_yn = 'Y'
+            order by 1
+            ```
+    }
+    columnMapping {
+        return: R
+        display: D
+    }
+)
+

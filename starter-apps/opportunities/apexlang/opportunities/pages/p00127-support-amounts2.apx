@@ -15,15 +15,8 @@ page 127 (
         cssClasses: view-supportamounts-dialog
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
-        inline: .t-Dialog-body {padding: 0; overflow: hidden;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".t-Dialog-body {padding: 0; overflow: hidden;}"
     }
 
     region support-amounts (
@@ -93,7 +86,7 @@ page 127 (
                 sequence: 50
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: E
@@ -112,7 +105,7 @@ page 127 (
                 formatMask: DD-MON-YYYY
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -132,7 +125,7 @@ page 127 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -149,7 +142,7 @@ page 127 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -180,7 +173,7 @@ page 127 (
                 linkAttributes: title="Edit #NAME#"
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: A
@@ -208,7 +201,7 @@ page 127 (
                 sequence: 20
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -239,7 +232,7 @@ page 127 (
                 formatMask: FML999G999G999G999G999
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: F
@@ -258,7 +251,7 @@ page 127 (
                 sequence: 40
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: D
@@ -277,7 +270,7 @@ page 127 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -294,7 +287,7 @@ page 127 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I

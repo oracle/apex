@@ -1,6 +1,6 @@
 app SAMPLE-WORKFLOW-APPROVALS (
     name: Sample Workflow, Approvals, and Tasks
-    version: 26.1.1
+    version: 26.2.0
     group: @sample-apps
     logo {
         type: text
@@ -47,10 +47,8 @@ app SAMPLE-WORKFLOW-APPROVALS (
         publicUser: APEX_PUBLIC_USER
     }
     security {
+        allowBotAccess: true
         runtimeApiUsage: modifyThisApp
-    }
-    sessionStateProtection {
-        checksumSalt: 073D2A321C647E45DE1D181F58E08FF828CFF5DDD1FEE2D7FF84D619829C3794
     }
     globalization {
         documentDirection: leftToRight

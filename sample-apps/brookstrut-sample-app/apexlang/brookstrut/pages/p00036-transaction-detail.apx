@@ -13,13 +13,6 @@ page 36 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region transaction-detail (
         name: Transaction Detail
@@ -63,6 +56,9 @@ page 36 (
                 t-BadgeList--dash
                 t-BadgeList--fixed
             ]
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 500
@@ -186,9 +182,6 @@ page 36 (
                 t-Report--altRowsDefault
                 t-Report--rowHighlight
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
 
         column ID (

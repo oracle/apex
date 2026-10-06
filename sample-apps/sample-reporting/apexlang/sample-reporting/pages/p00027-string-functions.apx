@@ -7,15 +7,10 @@ page 27 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .highlight {background-color: yellow;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".highlight {background-color: yellow;}"
     }
     advanced {
         reloadOnSubmit: always
@@ -117,6 +112,9 @@ page 27 (
                 t-Report--stretch
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found
@@ -340,6 +338,9 @@ page 27 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: no data found
         }
@@ -535,6 +536,9 @@ page 27 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: no data found
         }
@@ -729,6 +733,9 @@ page 27 (
                 t-Report--stretch
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found
@@ -926,6 +933,9 @@ page 27 (
                 t-Report--stretch
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found
@@ -1285,6 +1295,9 @@ page 27 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         messages {
             whenNoDataFound: no data found
         }
@@ -1479,6 +1492,9 @@ page 27 (
                 t-Report--stretch
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: no data found

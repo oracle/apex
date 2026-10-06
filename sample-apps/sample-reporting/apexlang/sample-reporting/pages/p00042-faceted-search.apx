@@ -6,13 +6,6 @@ page 42 (
         pageTemplate: @/left-side-column
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
 
     region about-this-page (
         name: About this page
@@ -114,6 +107,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -143,6 +137,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 100
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -173,6 +168,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 100
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -199,6 +195,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -237,6 +234,7 @@ page 42 (
             }
             listEntries {
                 maxDisplayedEntries: 5
+                allowToExclude: false
             }
             actionsMenu {
                 filter: false
@@ -285,9 +283,6 @@ page 42 (
                 t-Report--inline
                 t-Report--hideNoPagination
             ]
-        }
-        pagination {
-            type: nextAndPreviousLinks
         }
         performance {
             maxRowsToProcess: 100000

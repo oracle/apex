@@ -1,0 +1,203 @@
+list js-customizations (
+    name: JS Customizations
+
+    entry area-chart-legend-javascript-code-customization-page (
+        label: Area Chart ( Legend JavaScript Code Customization ) - Page 2
+        icon {
+            imageIconCssClasses: fa-area-chart
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates an Area chart with custom icons used in the legend, based on Static Application Files.
+        }
+    )
+
+    entry combination-chart-regular-v-mixed-frequency-time-axis-page (
+        label: Combination Chart (Regular v Mixed Frequency Time Axis) - Page 25
+        icon {
+            imageIconCssClasses: fa-combo-chart
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 25
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Combination chart rendering DateTime information on the x-axis, using the Time Axis Type attribute
+        }
+    )
+
+    entry funnel-chart-3d-effect-page (
+        label: Funnel Chart (3D Effect) - Page 22
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 45
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a 3D Funnel chart, setting the threeDEffect attribute of the ojChart API via custom JavaScript code.
+        }
+    )
+
+    entry funnel-chart-multi-select-selection-mode-page (
+        label: Funnel Chart ( Multi-select Selection Mode) - Page 22
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 22
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Funnel chart with an optionChange listener added to the initialization of the chart.
+        }
+    )
+
+    entry gantt-chart-reference-object-via-javascript-code-page (
+        label: Gantt Chart (Reference Object via JavaScript Code) - Page 3
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 75
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Gantt chart rendering a Reference Object line for the current date, via some custom JavaScript code
+        }
+    )
+
+    entry line-chart-reference-object-via-javascript-customizations-page (
+        label: Line Chart (Reference Object via JavaScript Customizations) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 65
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart rendering a Reference Object line, via some custom JavaScript code
+        }
+    )
+
+    entry line-chart-time-axis-page (
+        label: Line Chart (Time Axis) - Page 15
+        icon {
+            imageIconCssClasses: fa-line-chart
+        }
+        layout {
+            sequence: 15
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Line chart rendering DateTime information on the x-axis, using the Time Axis Type attribute
+        }
+    )
+
+    entry pie-chart-dashboard-page-page (
+        label: Pie Chart ( Dashboard Page ) - Page 24
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 85
+        }
+        link {
+            target: {
+                page: 24
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a dashboard of Pie & Donut charts, using custom JavaScript code to style the chart title during chart initialization.
+        }
+    )
+
+    entry pie-chart-master-detail-chart-links-page (
+        label: Pie Chart ( Master Detail Chart Links ) - Page 4
+        icon {
+            imageIconCssClasses: fa-funnel-chart
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a 3D Pie chart, using custom JavaScript code to set the 3D effect during chart initialization.
+        }
+    )
+
+    entry scatter-dynamic-y-axis-min-max-via-javascript-code-page (
+        label: Scatter (Dynamic Y-Axis Min/Max via JavaScript Code) -  Page 8
+        icon {
+            imageIconCssClasses: fa-scatter-chart
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 8
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates how to dynamically change the y-axis minimum and maximum values, based upon values selected by the end user
+        }
+    )
+
+    entry stock-page (
+        label: Stock - Page 7
+        icon {
+            imageIconCssClasses: fa-stock-chart
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+        userDefinedAttributes {
+            1: This example demonstrates a Donut chart with custom labels defined
+        }
+    )
+
+)
+

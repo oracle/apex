@@ -1,0 +1,86 @@
+lov apex-calendar-event-colors (
+    name: APEX_CALENDAR_EVENT_COLORS
+    source {
+        location: staticValues
+    }
+
+    entry black (
+        sequence: 13
+        display: Black
+        return: black
+    )
+
+    entry blue (
+        sequence: 3
+        display: Blue
+        return: blue
+    )
+
+    entry bluesky (
+        sequence: 4
+        display: Blue Sky
+        return: bluesky
+    )
+
+    entry brown (
+        sequence: 9
+        display: Brown
+        return: brown
+    )
+
+    entry cyan (
+        sequence: 2
+        display: Cyan
+        return: cyan
+    )
+
+    entry darkblue (
+        sequence: 5
+        display: Dark Blue
+        return: darkblue
+    )
+
+    entry gray (
+        sequence: 12
+        display: Gray
+        return: gray
+    )
+
+    entry green (
+        sequence: 6
+        display: Green
+        return: green
+    )
+
+    entry lime (
+        sequence: 10
+        display: Lime
+        return: lime
+    )
+
+    entry orange (
+        sequence: 14
+        display: Orange
+        return: orange
+    )
+
+    entry red (
+        sequence: 1
+        display: Red
+        return: red
+    )
+
+    entry silver (
+        sequence: 8
+        display: Silver
+        return: silver
+    )
+
+    entry yellow (
+        sequence: 7
+        display: Yellow
+        return: yellow
+    )
+
+)
+

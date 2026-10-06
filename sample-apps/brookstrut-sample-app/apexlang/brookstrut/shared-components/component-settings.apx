@@ -78,6 +78,7 @@ componentSetting (
     name: interactiveReport
     settings {
         actionsMenuStructure: legacy
+        autoResetButton: false
     }
 )
 

@@ -1,0 +1,42 @@
+list administration (
+    name: Administration
+
+    entry manage-sample-data (
+        label: Manage Sample Data
+        icon {
+            imageIconCssClasses: fa-edit
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 27
+            }
+        }
+        userDefinedAttributes {
+            1: This application ships with sample data.  You can remove or recreate sample data using this administrative page.
+        }
+    )
+
+    entry theme-styles (
+        label: Theme Styles
+        icon {
+            imageIconCssClasses: fa-desktop
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 10
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Change user interface theme style for all users.
+        }
+    )
+
+)
+

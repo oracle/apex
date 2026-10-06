@@ -7,10 +7,11 @@ page 8 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     security {
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -106,7 +107,7 @@ page 8 (
                 <strong>Dynamic Action</strong> - Use a dynamic action, triggerd by the click of a button, to update the chart with y-axis minimum and maximum values selected by the end user.<p/>
                 
                 <p>
-                For more information on the Oracle JET ojChart yAxis object, refer to the Oracle JET ojChart API <a href="&OJCHART_API_URL.#yAxis.min" target="_blank">ojChart: yAxis object</a>.
+                For more information on the Oracle JET ojChart yAxis object, refer to the Oracle JET ojChart API <a href="&OJCHART_API_URL.#yAxis.min" target="_blank" rel="noopener noreferrer external">ojChart: yAxis object</a>.
                 ```
         }
         layout {
@@ -156,8 +157,10 @@ page 8 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -260,8 +263,10 @@ page 8 (
         chartLayout {
             height: 400
         }
+        performance {
+            lazyLoading: true
+        }
         animation {
-            onDisplay: none
             onDataChange: none
         }
         tooltip {
@@ -345,7 +350,7 @@ page 8 (
                 <strong>Custom Tooltip</strong> - Use this series-level attribute to include custom data in the tooltips displayed as the mouse moves over the data points of the chart.<p/>
                 
                 <p>
-                For more information on the Oracle JET Scatter chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=scatterChart&demo=attrGroups" target="_blank">Scatter Chart: Attribute Groups</a> example. The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank">OECD Pensions at a Glance 2013</a> report.
+                For more information on the Oracle JET Scatter chart, refer to the Oracle JET Cookbook <a href="https://www.oracle.com/webfolder/technetwork/jet/jetCookbook.html?component=scatterChart&demo=attrGroups" target="_blank" rel="noopener noreferrer external">Scatter Chart: Attribute Groups</a> example. The chart data is based on information contained in the <a href="http://www.oecd.org/pensions/public-pensions/OECDPensionsAtAGlance2013.pdf" target="_blank" rel="noopener noreferrer external">OECD Pensions at a Glance 2013</a> report.
                 ```
         }
         layout {

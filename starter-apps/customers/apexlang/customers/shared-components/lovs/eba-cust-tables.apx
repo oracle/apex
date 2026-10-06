@@ -1,0 +1,14 @@
+lov eba-cust-tables (
+    name: EBA_CUST_TABLES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select table_name d, table_name r
+            from   user_tables
+            where table_name like 'EBA_CUST_%'
+            order by 1
+            ```
+    }
+)
+

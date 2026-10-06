@@ -1,0 +1,39 @@
+lov p705-update-affects (
+    name: P705_UPDATE_AFFECTS
+    source {
+        location: staticValues
+    }
+
+    entry all (
+        sequence: 2
+        display: All days
+        return: ALL
+    )
+
+    entry future (
+        sequence: 3
+        display: This and future days
+        return: FUTURE
+        serverSideCondition {
+            type: rowsReturned
+            sqlQuery:
+                ```sql
+                select 1
+                  from sp_events e1,
+                       sp_events e2
+                 where e1.id = :P705_EVENT_ID
+                   and e1.series_id = e2.series_id
+                   and e2.event_date > e1.event_date
+                   and e1.id != e2.id
+                ```
+        }
+    )
+
+    entry only (
+        sequence: 1
+        display: Only the selected day
+        return: ONLY
+    )
+
+)
+

@@ -7,6 +7,7 @@ page 1 (
         templateOptions: #DEFAULT#
     }
     navigation {
+        cursorFocus: firstItemOnPage
         warnOnUnsavedChanges: false
     }
     css {
@@ -69,7 +70,7 @@ page 1 (
     }
     security {
         authorizationScheme: mustNotBePublicUser
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -84,7 +85,7 @@ page 1 (
         source {
             htmlCode:
                 ```html
-                <p>This application highlights Application Data Loading functionality in Oracle Application Express (APEX).   You can define a data loading definition to allow end users to upload data into an existing table or a collection.</p>
+                <p>This application highlights Application Data Loading functionality in Oracle APEX. You can define a data loading definition to allow end users to upload data into an existing table or a collection.</p>
                 
                 <ul>
                 <li>Application Data Loading Supports CSV, XLSX, XML, and JSON formats.</li>

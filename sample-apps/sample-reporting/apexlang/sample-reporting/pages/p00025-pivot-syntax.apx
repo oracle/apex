@@ -7,15 +7,10 @@ page 25 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
-        inline: .highlight {background-color: yellow;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".highlight {background-color: yellow;}"
     }
     advanced {
         reloadOnSubmit: always

@@ -1,0 +1,66 @@
+list activity-reports (
+    name: Activity Reports
+    config {
+        buildOption: @feature-activity-reporting
+    }
+
+    entry application-error-log (
+        label: Application Error Log
+        icon {
+            imageIconCssClasses: fa-exclamation
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 10022
+                clearCache: 10022
+            }
+        }
+        userDefinedAttributes {
+            1: Report of errors logged by this application
+        }
+    )
+
+    entry email-reporting (
+        label: Email Reporting
+        icon {
+            imageIconCssClasses: fa-envelope-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 10050
+                clearCache: 10050
+            }
+        }
+        userDefinedAttributes {
+            1: Report of all email queued to be sent and those already sent
+        }
+    )
+
+    entry logged-messages (
+        label: Logged Messages
+        icon {
+            imageIconCssClasses: fa-warning
+        }
+        layout {
+            sequence: 35
+        }
+        link {
+            target: {
+                page: 10026
+                clearCache: 10026
+                action: resetRegions
+            }
+        }
+        userDefinedAttributes {
+            1: Report of messages logged by the apis supporting this application
+        }
+    )
+
+)
+

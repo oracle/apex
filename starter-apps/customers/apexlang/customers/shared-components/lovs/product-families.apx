@@ -1,0 +1,13 @@
+lov product-families (
+    name: PRODUCT FAMILIES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name d, id r
+            from eba_cust_product_families
+            order by lower(name)
+            ```
+    }
+)
+

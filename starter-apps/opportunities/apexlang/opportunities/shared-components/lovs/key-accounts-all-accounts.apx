@@ -1,0 +1,20 @@
+lov key-accounts-all-accounts (
+    name: KEY ACCOUNTS ALL ACCOUNTS
+    source {
+        location: staticValues
+    }
+
+    entry all-accounts (
+        sequence: 10
+        display: All Accounts
+        return: ALL
+    )
+
+    entry key-accounts (
+        sequence: 20
+        display: Key Accounts
+        return: KEY
+    )
+
+)
+

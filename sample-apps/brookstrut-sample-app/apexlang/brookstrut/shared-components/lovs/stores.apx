@@ -1,0 +1,13 @@
+lov stores (
+    name: STORES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select STORE_NAME d, ID r
+            from   OOW_DEMO_stores
+            order by 1
+            ```
+    }
+)
+

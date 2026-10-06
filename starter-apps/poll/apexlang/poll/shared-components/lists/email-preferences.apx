@@ -1,0 +1,65 @@
+list email-preferences (
+    name: Email Preferences
+
+    entry default-email-addresses (
+        label: Default Email Addresses
+        icon {
+            imageIconCssClasses: fa-user
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 58
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Configure the application's default "From" and "Reply To" email addresses.
+            2: formIcon
+        }
+    )
+
+    entry email-history (
+        label: Email History
+        icon {
+            imageIconCssClasses: fa-envelope-search
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 59
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Review previous emails that have been sent via this application.
+            2: reportIcon
+        }
+    )
+
+    entry opt-out-user-list (
+        label: Opt Out User List
+        icon {
+            imageIconCssClasses: fa-envelope-user
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 34
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: List of users that have opted out of receiving emails from &APPLICATION_TITLE..  Users can be removed and added by administrators.
+            2: formIcon
+        }
+    )
+
+)
+

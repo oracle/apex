@@ -1,0 +1,12 @@
+lov unique-timezones (
+    name: UNIQUE TIMEZONES
+    source {
+        type: sqlQuery
+        sqlQuery: select unique tzname from V$TIMEZONE_NAMES order by 1
+    }
+    columnMapping {
+        return: TZNAME
+        display: TZNAME
+    }
+)
+

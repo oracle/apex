@@ -1,5 +1,5 @@
 /*!
- Copyright (c) 2020, 2024, Oracle and/or its affiliates.
+ Copyright (c) 2020, 2025, Oracle and/or its affiliates.
  */
 
 :root {
@@ -10,6 +10,19 @@
   --ut-treeview-badge-font-family: unset;
   /* Better grid borders when backgrounds set on rows */
   --a-gv-cell-border-color: rgba(0, 0, 0, .05);
+  --a-md-blockquote-border-width: 5px;
+  --a-md-code-padding-x: 2px;
+  --a-md-code-padding-y: 2px;
+  --a-md-code-border-color: 2px;
+  --a-md-code-background-color: hsla(0,0%,78%,.5);
+  --a-md-code-font-size: 12px;
+  --a-md-code-border-width: 0px;
+  --a-md-blockquote-font-size: 14px;
+  --a-md-blockquote-padding-y: 0;
+  --a-md-pre-background-color: hsla(0,0%,78%,.3);
+  --a-md-pre-border-color: #c4c4c4;
+  --a-md-pre-font-size: 12px;
+  --a-md-pre-padding: 12px;
 }
 
 .header-actions {
@@ -104,4 +117,87 @@
   opacity: 0;
 }
 
-.t-Comments-comment img {max-width: 100%; height: auto;}
+.t-Comments-comment img {
+  max-width: 1000px; 
+  height: auto;
+}
+
+.apex-side-nav.js-navCollapsed .t-TreeNav .a-TreeView-label .a-TreeView-badge {
+  display: none;
+}
+
+.mention__item {
+  display: flex !important;
+  align-items: center !important;
+  padding: 10px 14px !important;
+  cursor: pointer !important;
+  transition: background-color 0.15s ease !important;
+  border-bottom: 1px solid #f0f0f0 !important;
+}
+
+.mention__item:last-child {
+  border-bottom: none !important;
+}
+
+.mention__item:hover,
+.mention__item:focus-visible {
+  background-color: #f8f9fa !important;
+}
+
+/* PROFILE PICTURE – THIS IS THE KEY PART */
+.mention__item__avatar {
+  width: 40px !important;
+  height: 40px !important;
+  background-size: cover !important;
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  border-radius: 50% !important;
+  flex-shrink: 0 !important;
+  margin-right: 14px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08) !important;
+  border: 1px solid #e5e7eb !important;
+  
+  /* Automatic fallback when your ${item.avatarUrl} fails to load */
+  background-color: #e5e7eb !important;
+}
+
+/* Details (unchanged from before – just included for completeness) */
+.mention__item__details {
+  flex: 1 !important;
+  min-width: 0 !important;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif !important;
+}
+
+.mention__item__user-name,
+.mention__item__full-name {
+  display: inline !important;
+  white-space: nowrap !important;
+}
+
+.mention__item__user-name {
+  font-weight: 700 !important;
+  font-size: 15px !important;
+  color: #1f2937 !important;
+}
+
+.mention__item__full-name {
+  font-weight: 400 !important;
+  font-size: 15px !important;
+  color: #6b7280 !important;
+  margin-left: 2px !important;
+}
+
+body .ck.ck-editor__main>.ck-editor__editable,
+body .ck.ck-input-text {
+  font-size: 14px;
+}
+
+.is-markdownified pre {
+  border-radius: 2px;
+  margin-block: 10px;
+}
+
+.u-colors .t-Avatar--noShape.u-color {
+    background-color: transparent !important;
+    color: var(--u-color) !important;
+}

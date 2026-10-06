@@ -13,15 +13,8 @@ page 147 (
     dialog {
         resizable: false
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     css {
-        inline: .t-Dialog-body {padding: 0; overflow: hidden;}
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+        inline: ".t-Dialog-body {padding: 0; overflow: hidden;}"
     }
     help {
         helpText: No help is available for this page.
@@ -85,7 +78,7 @@ page 147 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
                 timezoneAware: Y
             }
             advanced {
@@ -102,7 +95,7 @@ page 147 (
                 sequence: 10
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: A
@@ -118,7 +111,7 @@ page 147 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C

@@ -8,7 +8,6 @@ page 100 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -25,7 +24,7 @@ page 100 (
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -94,6 +93,9 @@ page 100 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column "Average Score" (
@@ -216,6 +218,9 @@ page 100 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         performance {
             maxRowsToProcess: 10000
@@ -404,6 +409,9 @@ page 100 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 10000
         }
@@ -534,6 +542,9 @@ page 100 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column "Unique Invitations" (
@@ -798,6 +809,9 @@ page 100 (
             ]
             showNullValuesAs: " - "
         }
+        pagination {
+            type: showAll
+        }
         performance {
             maxRowsToProcess: 10000
         }
@@ -1016,6 +1030,9 @@ page 100 (
                 t-Report--inline
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No questions.
@@ -1258,6 +1275,9 @@ page 100 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column "Average Score" (
@@ -1637,6 +1657,9 @@ page 100 (
             ]
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column "Response Rate" (
             reportColumnQueryId: 1
@@ -1714,6 +1737,9 @@ page 100 (
             ]
             showNullValuesAs: -
         }
+        pagination {
+            type: showAll
+        }
 
         column "Response Rate" (
             reportColumnQueryId: 1
@@ -1779,6 +1805,9 @@ page 100 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column Responses (
@@ -1875,6 +1904,9 @@ page 100 (
                 t-Report--rowHighlight
             ]
             showNullValuesAs: " - "
+        }
+        pagination {
+            type: showAll
         }
         messages {
             whenNoDataFound: No sections have been defined for this poll yet.
@@ -2066,6 +2098,9 @@ page 100 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column "Test Responses" (

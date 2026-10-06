@@ -14,13 +14,14 @@ page 83 (
     dialog {
         resizable: false
     }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
     javaScript {
         fileUrls: #APP_FILES#js/spCommentImageSupport#MIN#.js
     }
     security {
         authorizationScheme: @contribution-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
 
     region buttons (
@@ -75,7 +76,7 @@ page 83 (
             allowCustomHtml: true
         }
         layout {
-            sequence: 40
+            sequence: 30
             region: @release-comment
             slot: regionBody
             alignment: left
@@ -98,6 +99,14 @@ page 83 (
                             data: {
                                 imageRefId: apex.item('P83_NEW_IMAGE_REF_ID').getValue()
                             }
+                        },
+                        mentions: {
+                            scope: 'RELEASE',
+                            objectId: apex.items.P83_RELEASE_ID.value
+                        },
+                        docs: {
+                            scope: 'RELEASE',
+                            objectId: apex.items.P83_RELEASE_ID.value
                         }
                     });
                 }
@@ -134,7 +143,7 @@ page 83 (
     pageItem P83_NEW_IMAGE_REF_ID (
         type: hidden
         layout {
-            sequence: 150
+            sequence: 50
             region: @release-comment
             slot: regionBody
         }
@@ -154,7 +163,7 @@ page 83 (
             alignment: left
         }
         layout {
-            sequence: 50
+            sequence: 40
             region: @release-comment
             slot: regionBody
             alignment: left
@@ -171,6 +180,23 @@ page 83 (
         default {
             type: static
             staticValue: N
+        }
+    )
+
+    pageItem P83_RELEASE_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @release-comment
+            slot: regionBody
+        }
+        source {
+            formRegion: @release-comment
+            column: RELEASE_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
         }
     )
 

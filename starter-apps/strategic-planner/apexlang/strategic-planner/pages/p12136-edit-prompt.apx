@@ -11,16 +11,11 @@ page 12136 (
             js-dialog-class-t-Drawer--pullOutEnd
         ]
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
     }
     config {
-        buildOption: @ai-project-summaries
+        buildOption: @ai-project-summaries-create
     }
 
     region buttons (

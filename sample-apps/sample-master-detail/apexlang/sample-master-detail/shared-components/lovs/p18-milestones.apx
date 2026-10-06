@@ -1,0 +1,15 @@
+lov p18-milestones (
+    name: P18_MILESTONES
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select name || ' [' || due_date || ']' as display
+            , id as return
+            from eba_demo_md_milestones
+            where project_id = :P18_PROJECT_ID
+            order by due_date
+            ```
+    }
+)
+

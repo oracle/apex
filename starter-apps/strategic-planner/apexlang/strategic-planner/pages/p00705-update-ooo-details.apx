@@ -1,0 +1,645 @@
+page 705 (
+    name: Update Out of Office Details
+    alias: UPDATE-OOO-DETAILS
+    title: Update Out of Office Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    config {
+        buildOption: @team-calendar
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            outputAs: text
+        }
+    )
+
+    region event-details (
+        name: Event Details
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region update-affects (
+        name: Update Affects
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        comments {
+            comments:
+                ```
+                :P704_RECURS = 'Y' and
+                (:P705_EVENT_TYPE != :P705_NEW_EVENT_TYPE or
+                 nvl(:P705_EVENT_NAME,'~') != nvl(:P705_NEW_EVENT_NAME,'~') or
+                 nvl(:P705_EVENT_DETAILS,'~') != nvl(:P705_NEW_EVENT_DETAILS,'~') )
+                ```
+        }
+    )
+
+    pageItem P705_EVENT_DATE (
+        type: displayOnly
+        label {
+            label: Event Date
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 40
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_EVENT_DATE
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_EVENT_DETAILS (
+        type: displayOnly
+        label {
+            label: Event Details
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 80
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_EVENT_DETAILS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_EVENT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @event-details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P705_EVENT_NAME (
+        type: displayOnly
+        label {
+            label: Event Name
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 50
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_EVENT_NAME
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_EVENT_TYPE (
+        type: displayOnly
+        label {
+            label: Event Type
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 20
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_EVENT_TYPE
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_FOR_USER (
+        type: displayOnly
+        label {
+            label: For User
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 70
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_FOR_USER
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_NEW_EVENT_DETAILS (
+        type: displayOnly
+        label {
+            label: New Event Details
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 90
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--boldDisplay
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_NEW_EVENT_DETAILS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_NEW_EVENT_NAME (
+        type: displayOnly
+        label {
+            label: New Event Name
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 60
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--boldDisplay
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_NEW_EVENT_NAME
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_NEW_EVENT_TYPE (
+        type: displayOnly
+        label {
+            label: New Event Type
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 30
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--boldDisplay
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_NEW_EVENT_TYPE
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_NEW_REPEATS (
+        type: displayOnly
+        label {
+            label: New Repeats
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 110
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--boldDisplay
+            ]
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_NEW_REPEATS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_REPEATS (
+        type: displayOnly
+        label {
+            label: Repeats
+            alignment: left
+        }
+        settings {
+            sendOnPageSubmit: false
+        }
+        layout {
+            sequence: 100
+            region: @event-details
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P705_REPEATS
+        }
+        security {
+            sessionStateProtection: restricted
+        }
+    )
+
+    pageItem P705_UPDATE_AFFECTS (
+        type: radioGroup
+        label {
+            label: Update Affects
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @p705-update-affects
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @update-affects
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY_CHANGES
+        label: Apply Changes
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    dynamicAction close (
+        name: close
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close (
+        name: close
+        type: closeDialog
+        execution {
+            sequence: 30
+        }
+        advanced {
+            executionMappingIdentifier: 32729373531585020160
+        }
+        serverSideCondition {
+            whenButtonPressed: @apply-changes
+        }
+    )
+
+    process reload-ooo-summary-if-necessary (
+        name: reload OOO Summary, if necessary
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_for_user_id  number;
+                    l_updated_yn   varchar2(1);
+                begin
+                
+                l_for_user_id := case :P704_EVENT_FOR when 'E' 
+                                                      then :P704_FOR_USER_ID
+                                                      when 'M'
+                                                      then :APP_USER_ID
+                                                      end;
+                
+                if :P704_PREVIOUS_FOR_USER_ID != l_for_user_id then
+                    sp_event_util.load_one_ooo (
+                        p_team_member_id => :P704_PREVIOUS_FOR_USER_ID,
+                        p_updated_yn     => l_updated_yn );
+                end if;
+                
+                if l_for_user_id is not null then
+                    sp_event_util.load_one_ooo (
+                        p_team_member_id => l_for_user_id,
+                        p_updated_yn     => l_updated_yn );
+                end if;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        advanced {
+            executionMappingIdentifier: 34862771998169242135
+        }
+    )
+
+    process save-changes (
+        name: Save Changes
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                sp_event_util.update_event ( 
+                    p_event_id       => :P705_EVENT_ID, 
+                    p_event_type_id  => :P704_EVENT_TYPE_ID, 
+                    p_event_date     => to_date(:P704_START_DATE,'DD-Mon-YYYY'), 
+                    p_event_name     => :P704_EVENT_NAME, 
+                    p_for_user_id    => case :P704_EVENT_FOR when 'E' 
+                                                      then :P704_FOR_USER_ID
+                                                      when 'M'
+                                                      then :APP_USER_ID
+                                                      end,
+                    p_event_details  => :P704_EVENT_DETAILS, 
+                    p_recur_freq     => :P704_RECUR_FREQ, 
+                    p_recur_end_date => to_date(:P704_END_DATE,'DD-Mon-YYYY'), 
+                    p_update_type    => :P705_UPDATE_AFFECTS
+                );
+                ```
+        }
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Event(s) updated.
+        }
+        advanced {
+            executionMappingIdentifier: 32729373122415020159
+        }
+        serverSideCondition {
+            whenButtonPressed: @apply-changes
+        }
+    )
+
+    process set-values (
+        name: set values
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_start_date  date := to_date(:P704_START_DATE,'DD-Mon-YYYY');
+                    l_end_date    date := to_date(:P704_END_DATE,'DD-Mon-YYYY');
+                begin
+                
+                for c1 in (
+                    select (select event_type from sp_event_types
+                             where id = e.event_type_id) event_type,
+                           event_type_id,
+                           event_date,
+                           event_name event_name,
+                           event_details event_details,
+                           (select first_name||' '||last_name
+                              from sp_team_members
+                             where id = e.for_user_id) for_user,
+                           series_id
+                      from sp_events e
+                     where id = :P705_EVENT_ID
+                ) loop
+                    :P705_EVENT_TYPE := c1.event_type;
+                    if :P704_EVENT_TYPE_ID != c1.event_type_id then
+                        for c2 in (
+                            select event_type from sp_event_types
+                             where id = :P704_EVENT_TYPE_ID
+                        ) loop
+                            :P705_NEW_EVENT_TYPE := c2.event_type;
+                        end loop;
+                    end if;
+                
+                    :P705_EVENT_DATE := to_char(c1.event_date,'Mon fmDD, YYYY');
+                
+                    :P705_EVENT_NAME := c1.event_name;
+                    if :P704_EVENT_NAME != :P705_EVENT_NAME then
+                        :P705_NEW_EVENT_NAME := :P704_EVENT_NAME;
+                    end if;
+                
+                    :P705_FOR_USER := c1.for_user;
+                    :P705_EVENT_DETAILS := c1.event_details;
+                    if nvl(:P704_EVENT_DETAILS,'~') != nvl(c1.event_details,'~') then
+                        :P705_NEW_EVENT_DETAILS := :P704_EVENT_DETAILS;
+                    end if;
+                
+                    for c2 in (
+                        select recur_freq,
+                               decode(recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
+                                                  '2W', 'Every 2 Weeks', 'M', 'Monthly', recur_freq) recur_freq_display,
+                               start_date, end_date
+                          from sp_event_series
+                         where id = c1.series_id
+                    ) loop
+                        :P705_REPEATS := c2.recur_freq_display||', '||
+                                         case when to_char(c2.start_date,'MONYYYY') = to_char(c2.end_date,'MONYYYY') 
+                                              then to_char(c2.start_date,'Mon fmDD')||'-'||to_char(c2.end_date,'fmDD, YYYY')
+                                              when to_char(c2.start_date,'YYYY') = to_char(c2.end_date,'YYYY') 
+                                              then to_char(c2.start_date,'Mon fmDD')||' until '||to_char(c2.end_date,'Mon fmDD, YYYY')
+                                              else to_char(c2.start_date,'Mon fmDD, YYYY')||' until '||to_char(c2.end_date,'Mon fmDD YYYY')
+                                              end;
+                
+                        if :P704_RECURS = 'N' then
+                            :P705_NEW_REPEATS := 'No recurrence';
+                        elsif :P704_RECUR_FREQ != c2.recur_freq or
+                           l_start_date != c2.start_date or
+                           l_end_date != c2.end_date
+                        then
+                            :P705_NEW_REPEATS := case :P704_RECUR_FREQ
+                                                      when 'D'  then 'Daily'
+                                                      when 'WD' then 'Weekdays' when 'W' then 'Weekly'
+                                                      when '2W' then 'Every 2 Weeks' when 'M' then 'Monthly'
+                                                      end ||', '||
+                                         case when to_char(l_start_date,'MONYYYY') = to_char(l_end_date,'MONYYYY') 
+                                              then to_char(l_start_date,'Mon fmDD')||'-'||to_char(l_end_date,'fmDD, YYYY')
+                                              when to_char(l_start_date,'YYYY') = to_char(l_end_date,'YYYY') 
+                                              then to_char(l_start_date,'Mon fmDD')||' until '||to_char(l_end_date,'Mon fmDD, YYYY')
+                                              else to_char(l_start_date,'Mon fmDD, YYYY')||' until '||to_char(l_end_date,'Mon fmDD YYYY')
+                                              end;
+                        end if;
+                
+                    end loop;
+                end loop;
+                
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 32729373910206020160
+        }
+    )
+
+)
+

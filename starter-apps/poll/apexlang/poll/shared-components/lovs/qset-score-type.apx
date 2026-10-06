@@ -1,0 +1,26 @@
+lov qset-score-type (
+    name: QSET_SCORE_TYPE
+    source {
+        location: staticValues
+    }
+
+    entry average (
+        sequence: 2
+        display: Average
+        return: A
+    )
+
+    entry cumulative (
+        sequence: 3
+        display: Cumulative
+        return: C
+    )
+
+    entry none (
+        sequence: 1
+        display: None
+        return: N
+    )
+
+)
+

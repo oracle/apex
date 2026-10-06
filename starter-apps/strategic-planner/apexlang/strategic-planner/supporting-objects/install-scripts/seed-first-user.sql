@@ -1,5 +1,6 @@
 declare
-    l_app_user  varchar2(255) := apex_custom_auth.get_username;
+    l_app_user     varchar2(255) := apex_custom_auth.get_username;
+    l_app_user_id  number;
 begin
     --
     -- get email of developer installing the app
@@ -48,8 +49,13 @@ begin
                 insert into SP_TEAM_MEMBERS 
                     (email, first_name, last_name) 
                 values 
-                    (u.email, u.first_name, u.last_name);
+                    (u.email, u.first_name, u.last_name)
+                returning id into l_app_user_id;
                 commit;
+                insert into sp_activities
+                    (id, activity_type_id, team_member_id, start_date, end_date, activity)
+                    values
+                    (1, 3, l_app_user_id, sysdate, sysdate+7, 'Review Strategic Planner features and then remove demo data');
                 exit;
             end loop;
             exit;

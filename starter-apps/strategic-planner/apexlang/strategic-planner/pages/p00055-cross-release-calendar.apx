@@ -7,15 +7,16 @@ page 55 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
+    help {
+        helpText: Calendar showing all Release Milestones.
     }
     config {
         buildOption: @releases
+    }
+    comments {
+        comments: Filterable by Release Status, Release Train (product), Release, Milestone Type and Milestone Status.
     }
 
     region breadcrumb (
@@ -122,6 +123,9 @@ page 55 (
                 #DEFAULT#
                 t-ContextualInfo-label--stacked
             ]
+        }
+        pagination {
+            type: showAll
         }
 
         column DAYS_REMAINING (

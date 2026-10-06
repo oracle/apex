@@ -362,7 +362,7 @@ customAttribute BADGE_COL_WIDTH (
 )
 
 customAttribute BADGE_ICON (
-    apexlangName: icon
+    apexlangName: icon2
     attribute: 16
     name: Icon
     type: icon
@@ -430,7 +430,7 @@ customAttribute BADGE_LABEL_DISPLAY (
 )
 
 customAttribute BADGE_SHAPE (
-    apexlangName: shape
+    apexlangName: shape2
     attribute: 19
     name: Shape
     type: selectList
@@ -480,7 +480,7 @@ customAttribute BADGE_SHAPE (
 )
 
 customAttribute BADGE_SIZE (
-    apexlangName: size
+    apexlangName: size2
     attribute: 21
     name: Size
     type: selectList

@@ -1,0 +1,14 @@
+lov score (
+    name: SCORE
+    source {
+        type: legacySqlQuery
+        sqlQuery:
+            ```sql
+            select i-1 d, i-1 r
+            from wwv_flow_dual100 
+            where i < 12
+            order by 1
+            ```
+    }
+)
+

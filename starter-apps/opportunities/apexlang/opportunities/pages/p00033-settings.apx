@@ -8,7 +8,6 @@ page 33 (
         templateOptions: #DEFAULT#
     }
     navigation {
-        cursorFocus: doNotFocusCursor
         warnOnUnsavedChanges: false
     }
     css {
@@ -156,7 +155,7 @@ page 33 (
     }
     security {
         authorizationScheme: @administration-rights
-        pageAccessProtection: argumentsMustHaveChecksum
+        formAutoComplete: true
     }
     advanced {
         reloadOnSubmit: always
@@ -549,6 +548,9 @@ page 33 (
                 t-BadgeList--circular
             ]
             showNullValuesAs: -
+        }
+        pagination {
+            type: showAll
         }
 
         column ADMIN_COUNT (

@@ -149,7 +149,6 @@ plugin modernStarRating (
     }
     information {
         version: 1.1
-        aboutUrl: http://www.oracleapex.info/
         helpText:
             ```
             <p><strong>Modern Star Rating Item</strong></p>

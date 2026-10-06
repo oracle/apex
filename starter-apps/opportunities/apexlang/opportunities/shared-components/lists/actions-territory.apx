@@ -1,0 +1,103 @@
+list actions-territory (
+    name: Actions - Territory
+
+    entry add-attachment (
+        label: Add Attachment
+        icon {
+            imageIconCssClasses: fa-paperclip
+        }
+        layout {
+            sequence: 50
+        }
+        link {
+            target: {
+                page: 99
+                items: {
+                    P99_ENTITY_TYPE: TERRITORY
+                    P99_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 99
+            }
+        }
+    )
+
+    entry add-comment (
+        label: Add Comment
+        icon {
+            imageIconCssClasses: fa-comment-o
+        }
+        layout {
+            sequence: 60
+        }
+        link {
+            target: {
+                page: 22
+                items: {
+                    P22_ENTITY_TYPE: TERRITORY
+                    P22_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 22
+            }
+        }
+    )
+
+    entry add-country (
+        label: Add Country
+        icon {
+            imageIconCssClasses: fa-map-pin
+        }
+        layout {
+            sequence: 20
+        }
+        link {
+            target: {
+                page: 124
+                items: {
+                    P124_TERRITORY_ID: &P93_ID.
+                }
+                clearCache: 124
+            }
+        }
+    )
+
+    entry add-link (
+        label: Add Link
+        icon {
+            imageIconCssClasses: fa-link
+        }
+        layout {
+            sequence: 40
+        }
+        link {
+            target: {
+                page: 114
+                items: {
+                    P114_ENTITY_TYPE: TERRITORY
+                    P114_ENTITY_ID: &P93_ID.
+                }
+                clearCache: 114
+            }
+        }
+    )
+
+    entry add-state (
+        label: Add State
+        icon {
+            imageIconCssClasses: fa-map-pin
+        }
+        layout {
+            sequence: 30
+        }
+        link {
+            target: {
+                page: 126
+                items: {
+                    P126_TERRITORY_ID: &P93_ID.
+                }
+                clearCache: 126
+            }
+        }
+    )
+
+)
+

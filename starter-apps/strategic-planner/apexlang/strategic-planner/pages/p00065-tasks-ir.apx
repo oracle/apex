@@ -7,15 +7,11 @@ page 65 (
         pageTemplate: @/standard
         templateOptions: #DEFAULT#
     }
-    navigation {
-        cursorFocus: doNotFocusCursor
-    }
-    security {
-        pageAccessProtection: argumentsMustHaveChecksum
-        formAutoComplete: false
-    }
     help {
         helpText: Milestones, Reviews and Tasks across all unarchived &NOMENCLATURE_PROJECTS..  Includes who they are assigned to and completion status.
+    }
+    comments {
+        comments: The &NOMENCLATURE_PROJECT. owner, focus area, percent complete, completion status, tags, target complete are also available.
     }
 
     region breadcrumb (
@@ -75,6 +71,7 @@ page 65 (
                        p.project project,
                        (select first_name ||' '||last_name from sp_team_members
                          where id = p.owner_id) project_owner,
+                       p.target_complete project_target_complete,
                        t.id task_id,
                        rt.task_type parent_task_type,
                        case when t.task_sub_type_id is not null 
@@ -109,7 +106,32 @@ page 65 (
                             end completion_status,
                        (select focus_area
                           from sp_initiative_focus_areas
-                         where p.focus_area_id = id) focus_area
+                         where p.focus_area_id = id) focus_area,
+                       (select listagg(d, ', ' on overflow truncate with count) within group (order by d)
+                          from (select rt2.relation_type||' '||
+                                       t2.task || case when t2.task is not null then ' (' end || tt2.task_type || 
+                                                  case when t2.task is not null then ')' end d
+                                  from sp_tasks t2,
+                                       sp_task_types tt2,
+                                       sp_task_related l2,
+                                       sp_relation_types rt2
+                                 where nvl(t2.task_sub_type_id,t2.task_type_id) = tt2.id
+                                   and t2.id = l2.related_task_id
+                                   and l2.relation_type_id = rt2.id
+                                   and l2.task_id = t.id
+                                 union all
+                                select nvl(rt2.relation_reverse,rt2.relation_type)||' '||
+                                       t2.task || case when t2.task is not null then ' (' end || tt2.task_type || 
+                                                  case when t2.task is not null then ')' end d
+                                  from sp_tasks t2,
+                                       sp_task_types tt2,
+                                       sp_task_related l2,
+                                       sp_relation_types rt2
+                                 where nvl(t2.task_sub_type_id,t2.task_type_id) = tt2.id
+                                   and t2.id = l2.task_id
+                                   and l2.relation_type_id = rt2.id
+                                   and l2.related_task_id = t.id
+                                )) related_tasks
                   from sp_tasks t,
                        sp_projects p,
                        sp_task_types rt,
@@ -150,6 +172,10 @@ page 65 (
         performance {
             maxRowsToProcess: 1000000
         }
+        genAI {
+            naturalLanguageSupport: true
+            reportContext: Milestones, Reviews and Tasks across all unarchived Projects.  Includes who they are assigned to and completion status.
+        }
         advanced {
             savedReportMappingIdentifier: 11754624110807858844
         }
@@ -163,7 +189,7 @@ page 65 (
                 sequence: 110
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: L
@@ -179,7 +205,7 @@ page 65 (
                 sequence: 140
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: P
@@ -197,7 +223,7 @@ page 65 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AD
@@ -213,7 +239,7 @@ page 65 (
                 sequence: 230
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Z
@@ -232,7 +258,7 @@ page 65 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: J
@@ -248,7 +274,7 @@ page 65 (
                 sequence: 70
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: G
@@ -264,7 +290,7 @@ page 65 (
                 sequence: 290
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AH
@@ -280,7 +306,7 @@ page 65 (
                 sequence: 250
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AB
@@ -296,7 +322,7 @@ page 65 (
                 sequence: 50
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: B
@@ -312,7 +338,7 @@ page 65 (
                 sequence: 60
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: C
@@ -339,10 +365,13 @@ page 65 (
                 linkAttributes: title="Quick Look"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: E
+            }
+            genAI {
+                columnContext: Name of Milestone, Review or Task
             }
         )
 
@@ -355,7 +384,7 @@ page 65 (
                 sequence: 160
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: R
@@ -382,10 +411,13 @@ page 65 (
                 linkAttributes: title="&NOMENCLATURE_PROJECT. Quick Look"
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: D
+            }
+            genAI {
+                columnContext: Name of associated Project
             }
         )
 
@@ -398,7 +430,7 @@ page 65 (
                 sequence: 280
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AG
@@ -414,7 +446,7 @@ page 65 (
                 sequence: 240
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: AA
@@ -432,10 +464,13 @@ page 65 (
                 columnAlignment: end
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: AC
+            }
+            genAI {
+                columnContext: Percent complete of the associated project, on a scale from 0 to 100 (in increments of 10)
             }
         )
 
@@ -448,10 +483,45 @@ page 65 (
                 sequence: 190
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: U
+            }
+        )
+
+        column PROJECT_TARGET_COMPLETE (
+            type: plainText
+            heading {
+                heading: Project Target Complete
+            }
+            layout {
+                sequence: 310
+            }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: AJ
+            }
+        )
+
+        column RELATED_TASKS (
+            type: plainText
+            heading {
+                heading: Related Tasks
+            }
+            layout {
+                sequence: 300
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: AI
             }
         )
 
@@ -464,7 +534,7 @@ page 65 (
                 sequence: 130
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: N
@@ -479,8 +549,11 @@ page 65 (
             layout {
                 sequence: 170
             }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: S
@@ -496,7 +569,7 @@ page 65 (
                 sequence: 150
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: Q
@@ -512,7 +585,7 @@ page 65 (
                 sequence: 120
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: M
@@ -527,8 +600,11 @@ page 65 (
             layout {
                 sequence: 180
             }
+            appearance {
+                formatMask: DD-Mon-YYYY
+            }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: T
@@ -544,7 +620,7 @@ page 65 (
                 sequence: 220
             }
             source {
-                dataType: NUMBER
+                dataType: number
             }
             advanced {
                 endUserAlias: Y
@@ -560,7 +636,7 @@ page 65 (
                 sequence: 30
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: F
@@ -579,7 +655,7 @@ page 65 (
                 formatMask: SINCE
             }
             source {
-                dataType: DATE
+                dataType: date
             }
             advanced {
                 endUserAlias: H
@@ -595,7 +671,7 @@ page 65 (
                 sequence: 90
             }
             source {
-                dataType: STRING
+                dataType: varchar2
             }
             advanced {
                 endUserAlias: I
@@ -861,24 +937,24 @@ page 65 (
                 }
             )
 
-            filter ir-condition-2 (
+            filter ir-condition (
                 column: NAME
                 value: Review: Functional Testing
             )
 
-            filter ir-condition-3 (
+            filter ir-condition-2 (
                 column: PROJECT_PCT_COMPLETE
                 operator: >=
                 value: 90
             )
 
-            filter ir-condition-4 (
+            filter ir-condition-3 (
                 column: STATUS
                 operator: !=
                 value: Not Needed
             )
 
-            highlight ir-condition (
+            highlight ir-condition-4 (
                 condition {
                     column: ASSIGNED_TO
                     operator: isNull
