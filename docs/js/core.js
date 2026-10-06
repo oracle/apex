@@ -16,7 +16,7 @@
 
     function loadAPEXVersions() {
         const versionURL = getURLParamValue( "version" ),
-              apexVersions = ["21.1", "21.2", "22.1", "22.2", "23.1", "23.2", "24.1", "24.2", "26.1"];
+              apexVersions = ["21.1", "21.2", "22.1", "22.2", "23.1", "23.2", "24.1", "24.2", "26.1", "26.2"];
 
         // Newest versions are listed first and used as the default selection.
         for ( let i = apexVersions.length - 1; i >= 0; i-- ) {
