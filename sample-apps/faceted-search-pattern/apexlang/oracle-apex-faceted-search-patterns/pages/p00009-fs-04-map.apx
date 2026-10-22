@@ -1,0 +1,345 @@
+page 9 (
+    name: FS-04 - Map
+    alias: FS-04-MAP
+    title: FS-04 - Map
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern to filter geographically distributed data and explore matching results on a map. It suits use cases such as finding offices, stores, service centers, or facilities by location, category, status, and capacity.</p>
+            
+            <h3>About this pattern page</h3>
+            <p>Geographic Region and Office Type support multiple selections; Location Status supports one selection. Country and Opened Month use select lists, with months ordered newest first. Capacity and Employee Count use numeric ranges to narrow results by size. Search finds locations by name, city, or country.</p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region fs_04_filters (
+        name: Filter Locations
+        type: facetedSearch
+        source {
+            filteredRegion: @fs_04_map
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+            icon: fa-filter
+        }
+        accessibility {
+            landmarkLabel: Location filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: true
+        }
+
+        facet P9_F_CAPACITY (
+            type: range
+            label {
+                label: Capacity
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC2:<=100;|100,100-500;100|500,500-1#G#000;500|1000,1#G#000 - 2#G#000;1000|2000
+            }
+            layout {
+                sequence: 70
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: CAPACITY
+                dataType: number
+            }
+            comments {
+                comments: Uses a numeric range against location capacity.
+            }
+        )
+
+        facet P9_F_COUNTRY (
+            type: checkboxGroup
+            label {
+                label: Country
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: COUNTRY_NAME
+            }
+            comments {
+                comments: Country values depend on the selected geographic region.
+            }
+        )
+
+        facet P9_F_OFFICE_TYPE (
+            type: checkboxGroup
+            label {
+                label: Office Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                zeroCountEntries: disable
+                sortByTopCounts: false
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: OFFICE_TYPE
+            }
+            comments {
+                comments: Refines locations by office classification.
+            }
+        )
+
+        facet P9_F_REGION (
+            type: checkboxGroup
+            label {
+                label: Geographic Region
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 10
+            }
+            source {
+                databaseColumn: GEOGRAPHIC_REGION
+            }
+            comments {
+                comments: Narrows markers to a geographic region.
+            }
+        )
+
+        facet P9_F_SEARCH (
+            type: search
+            label {
+                label: Search Locations
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: LOCATION_NAME,CITY,COUNTRY_NAME
+            }
+            comments {
+                comments: Searches the explicit location name, city, and country allowlist.
+            }
+        )
+
+        facet P9_F_STATUS (
+            type: checkboxGroup
+            label {
+                label: Location Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: LOCATION_STATUS
+            }
+            comments {
+                comments: Selects one lifecycle status, with readable labels and native LOV value icons.
+            }
+        )
+
+    )
+
+    region fs_04_map (
+        name: Workforce Locations
+        type: map
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select l.location_id,
+                       l.location_name,
+                       l.office_type,
+                       initcap(replace(l.office_type, '_', ' ')) as office_type_label,
+                       l.city,
+                       c.country_name,
+                       c.region as geographic_region,
+                       l.location_status,
+                       initcap(lower(l.location_status)) as location_status_label,
+                       l.opened_date,
+                       to_char(
+                         l.opened_date,
+                         'FMMonth YYYY',
+                         'NLS_DATE_LANGUAGE=English'
+                       ) as opened_month,
+                       to_char(l.opened_date, 'YYYY-MM') as opened_month_key,
+                       to_char(
+                         l.opened_date,
+                         'DD Mon YYYY',
+                         'NLS_DATE_LANGUAGE=English'
+                       ) as opened_date_display,
+                       l.timezone,
+                       case l.office_type
+                         when 'HEADQUARTERS' then 'fa-building'
+                         when 'REGIONAL' then 'fa-building-o'
+                         when 'SATELLITE' then 'fa-map-marker'
+                         else 'fa-wifi'
+                       end as marker_icon,
+                       case l.office_type
+                         when 'HEADQUARTERS' then '#056AC8'
+                         when 'REGIONAL' then '#117733'
+                         when 'SATELLITE' then '#C66A00'
+                         else '#6B7280'
+                       end as marker_color,
+                       l.capacity,
+                       l.latitude,
+                       l.longitude,
+                       nvl(ec.employee_count, 0) as employee_count
+                  from fsp_locations l
+                  join fsp_countries c
+                    on c.country_code_alpha2 = l.country_code_alpha2
+                  left join (
+                    select location_id,
+                           count(*) as employee_count
+                      from fsp_employees
+                     group by location_id
+                  ) ec
+                    on ec.location_id = l.location_id
+                 order by l.location_name;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                js-showMaximizeButton
+            ]
+            icon: fa-map-marker
+        }
+        accessibility {
+            landmarkLabel: Workforce location map
+        }
+        map {
+            background: builtIn
+            height: 800
+        }
+        controls {
+            options: [
+                rectangleZoom
+                scaleBar
+                infiniteMap
+                distanceTool
+            ]
+        }
+        legend {
+            title: Office Types
+        }
+        attributes {
+            messagesPosition: below
+        }
+
+        layer locations_layer (
+            name: Locations
+            layout {
+                sequence: 10
+            }
+            source {
+                location: regionSource
+                useSpatialIndex: true
+            }
+            columnMapping {
+                geometryColumnDataType: longitudeLatitude
+                longitudeColumn: LONGITUDE
+                latitudeColumn: LATITUDE
+                primaryKeyColumn: LOCATION_ID
+            }
+            pointObjects {
+                shape: Street View
+                shapeScale: 2
+            }
+            appearance {
+                fillColor: &MARKER_COLOR.
+            }
+            tooltip {
+                advancedFormatting: true
+                htmlExpression:
+                    ```html
+                    <strong>&LOCATION_NAME!HTML.</strong><br>
+                    &CITY!HTML., &COUNTRY_NAME!HTML.<br>
+                    &OFFICE_TYPE_LABEL!HTML. · &LOCATION_STATUS_LABEL!HTML.<br>
+                    Employees: &EMPLOYEE_COUNT!HTML.<br>
+                    Capacity: &CAPACITY!HTML.
+                    ```
+            }
+            messages {
+                whenNoDataFound: No locations match the selected filters. Clear a filter to broaden the map.
+                noDataFoundIcon: fa-map-marker
+            }
+        )
+
+    )
+
+)
+

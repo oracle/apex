@@ -781,6 +781,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_FACETED_SEARCH_PATTERNS",
+            "author": "Oracle",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-faceted-search-pattern.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/faceted-search-pattern",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/faceted-search-pattern/sql/faceted-search-pattern.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/faceted-search-pattern/sql/faceted-search-pattern.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Oracle APEX Faceted Search Patterns",
+                    "description": "Faceted Search Patterns is a reference catalog for developers and designers choosing how users find, filter, review, and compare records in Oracle APEX. Each example combines Faceted Search with a result component or supporting interaction."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_FILE_UPLOAD_DOWNLOAD",
             "author": "Oracle",
             "version": "26.2.0",

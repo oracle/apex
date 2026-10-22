@@ -1,0 +1,325 @@
+installScript faceted_search_patterns_data_model (
+    execution {
+        sequence: 5
+    }
+    script {
+        contentFile: faceted-search-patterns-data-model.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_COST_CENTERS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_COUNTRIES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_EMPLOYEES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_EMPLOYEE_EVENTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_EMPLOYEE_GROUPS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_EMPLOYEE_SKILLS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_GROUPS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_LOCATIONS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_PATTERNS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_SKILLS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: FSP_TASKS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_COST_CENTERS_CODE_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_COST_CENTER_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_COUNTRIES_ALPHA3_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_COUNTRIES_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_CAREER_LEVEL_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_COST_CENTER_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_EMAIL_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_HIRE_DATE_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_LOCATION_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_MANAGER_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_STATUS_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEES_USER_ID_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_EVENTS_CODE_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_EVENTS_LOCATION_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_EVENTS_START_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_EVENTS_TYPE_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_EVENT_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_GROUPS_EMPLOYEE_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_GROUPS_GROUP_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_GROUPS_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_GROUP_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_SKILLS_SKILL_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_SKILLS_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_EMPLOYEE_SKILL_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_GROUPS_GROUP_NAME_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_GROUP_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_LOCATIONS_CODE_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_LOCATIONS_COUNTRY_I
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_LOCATION_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_PATTERNS_CODE_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_PATTERNS_PAGE_NO_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_PATTERN_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_SKILLS_CODE_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_SKILLS_NAME_UK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_SKILL_ID_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: index
+        name: FSP_TASKS_PK
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: FSP_EMPLOYEE_EVENTS_V
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: FSP_EMPLOYEE_ORG_V
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: view
+        name: FSP_EMPLOYEE_ORG_V2
+    )
+
+)
+
+installScript faceted_search_patterns_data_pkg (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: faceted-search-patterns-data-pkg.sql
+    }
+)
+

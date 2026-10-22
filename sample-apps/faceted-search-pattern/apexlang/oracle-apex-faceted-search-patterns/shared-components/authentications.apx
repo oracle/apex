@@ -1,0 +1,8 @@
+authentication oracle-apex-accounts (
+    name: Oracle APEX Accounts
+    type: noAuth
+    settings {
+        username: nobody
+    }
+)
+

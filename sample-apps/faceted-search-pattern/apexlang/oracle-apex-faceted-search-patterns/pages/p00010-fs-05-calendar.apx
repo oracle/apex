@@ -1,0 +1,308 @@
+page 10 (
+    name: FS-05 - Calendar
+    alias: FS-05-CALENDAR
+    title: FS-05 - Calendar
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern to filter scheduled activities and explore matching results over time. It suits use cases such as finding appointments, training sessions, meetings, or maintenance activities by category, status, delivery mode, and duration.</p>
+            
+            <h3>About this pattern page</h3>
+            <p>Event Type and Geographic Region support multiple selections; Event Status and Delivery Mode support one selection. Event Scope, Cost Center, and Start Month use select lists to focus the schedule. Duration Hours uses a numeric range to filter activities by length.</p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 40
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region fs_05_calendar (
+        name: Workforce Events Calendar
+        type: calendar
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT event_id,
+                       event_title,
+                       event_display,
+                       event_start,
+                       start_month,
+                       event_end,
+                       event_type,
+                       event_status,
+                       event_scope,
+                       delivery_mode,
+                       duration_hours,
+                       event_summary,
+                       description,
+                       employee_name,
+                       geographic_region,
+                       cost_center,
+                       CASE event_type 
+                       WHEN 'PERFORMANCE_REVIEW' THEN 'u-color-20-bg u-color-35-text u-color-20-border' 
+                       WHEN 'TRAINING' THEN 'u-color-24-bg u-color-39-text u-color-24-border' 
+                       WHEN 'CERTIFICATION' THEN 'u-color-23-bg u-color-38-text u-color-23-border' 
+                       ELSE 'u-color-18-bg u-color-33-text u-color-18-border' 
+                       END AS event_class
+                  FROM fsp_employee_events_v
+                 ORDER BY event_start, event_id
+                 ;
+                ```
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: fs_05_calendar
+        }
+        readOnly {
+            type: always
+        }
+        security {
+            escapeSpecialChars: false
+        }
+        settings {
+            displayColumn: EVENT_DISPLAY
+            startDateColumn: EVENT_START
+            endDateColumn: EVENT_END
+            pkColumn: EVENT_ID
+            showTime: true
+            showTooltip: false
+            calendarViewsAndNavigation: [
+                month
+                navigation
+            ]
+            viewEditLink: {
+                page: 11
+                items: {
+                    P11_EVENT_ID: &EVENT_ID.
+                }
+            }
+            maxEventsDay: 3
+            cssClass: EVENT_CLASS
+            export: ical
+        }
+        performance {
+            lazyLoading: true
+        }
+        componentAdvanced {
+            initJavaScriptFunction:
+                ```javascript-browser
+                function (pOptions) {   
+                    pOptions.contentHeight = "auto";
+                    return pOptions;
+                }
+                ```
+        }
+    )
+
+    region fs_05_filters (
+        name: Filter Workforce Events
+        type: facetedSearch
+        source {
+            filteredRegion: @fs_05_calendar
+        }
+        layout {
+            sequence: 20
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            icon: fa-filter
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: true
+        }
+
+        facet P10_F_COST_CENTER (
+            type: checkboxGroup
+            label {
+                label: Cost Center
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: COST_CENTER
+            }
+            comments {
+                comments: Selects one cost center for a focused planning view.
+            }
+        )
+
+        facet P10_F_DELIVERY_MODE (
+            type: radioGroup
+            label {
+                label: Delivery Mode
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 60
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: DELIVERY_MODE
+            }
+            comments {
+                comments: A real-world workforce scheduling attribute: In Person, Hybrid, or Virtual.
+            }
+        )
+
+        facet P10_F_REGION (
+            type: checkboxGroup
+            label {
+                label: Geographic Region
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 90
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 10
+            }
+            source {
+                databaseColumn: GEOGRAPHIC_REGION
+            }
+            comments {
+                comments: Refines events using the employee geographic region.
+            }
+        )
+
+        facet P10_F_SCOPE (
+            type: checkboxGroup
+            label {
+                label: Event Scope
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 50
+            }
+            listEntries {
+                maxDisplayedEntries: 7
+            }
+            source {
+                databaseColumn: EVENT_SCOPE
+            }
+            comments {
+                comments: Selects one operational scope for a focused schedule view.
+            }
+        )
+
+        facet P10_F_SEARCH (
+            type: search
+            label {
+                label: Search Workforce Events
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: EVENT_TITLE,EMPLOYEE_NAME,DESCRIPTION
+            }
+            comments {
+                comments: Searches event title, employee, and description.
+            }
+        )
+
+        facet P10_F_STATUS (
+            type: radioGroup
+            label {
+                label: Event Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: EVENT_STATUS
+            }
+            comments {
+                comments: A single lifecycle state is appropriate, so this uses a radio group.
+            }
+        )
+
+        facet P10_F_TYPE (
+            type: checkboxGroup
+            label {
+                label: Event Type
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                showSelectedFirst: true
+                maxDisplayedEntries: 5
+            }
+            source {
+                databaseColumn: EVENT_TYPE
+            }
+            comments {
+                comments: Refines events by event type.
+            }
+        )
+
+    )
+
+)
+

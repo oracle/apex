@@ -1,0 +1,412 @@
+page 7 (
+    name: FS-03 - Search Only Classic Report
+    alias: FS-03-SEARCH-ONLY-CLASSIC-REPORT
+    title: FS-03 - Search Only Classic Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>
+              Use this pattern when a single search term is enough to find records
+              and a table helps users compare values. It suits employee directories
+              and similar searches without separate category or range filters.
+            </p>
+            
+            <h3>About this pattern page</h3>
+            <p>
+              One Search facet filters employee records; no category or range facets
+              are included. The Classic Report shows employee names with initials
+              avatars, email addresses, and career levels, alongside country,
+              job title, employment type, and work arrangement. Badges highlight
+              employment type and work arrangement. Search updates the results
+              without a full page submission. Clearing Search or selecting Reset
+              restores all rows.
+            </p>
+            ```
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region faceted-search (
+        name: Faceted Search
+        type: facetedSearch
+        source {
+            filteredRegion: @fs-03-search-only-classic-report
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+            displayChartForTopNValues: 10
+        }
+
+        facet P7_SEARCH_FS (
+            type: search
+            label {
+                label: Search Fs
+            }
+            settings {
+                inputField: externalPageItem
+                externalPageItem: P7_SEARCH
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    region fs-03-search-only-classic-report (
+        name: FS-03 - Search Only Classic Report
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                SELECT employee_id,
+                       first_name,
+                       last_name,
+                       first_name || ' ' || last_name AS employee_name,
+                       upper(substr(first_name, 1, 1) || substr(last_name, 1, 1)) AS initials,
+                       email,
+                       country,
+                       career_level,
+                       job_title,
+                       employment_status,
+                       INITCAP(REPLACE(employment_type, '_', ' ')) AS employment_type,
+                       INITCAP(work_arrangement) AS work_arrangement
+                  FROM fsp_employees
+                 ORDER BY last_name, first_name;
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--staticRowColors
+                t-Report--rowHighlight
+                t-Report--horizontalBorders
+                t-Report--hideNoPagination
+            ]
+        }
+        messages {
+            whenNoDataFound: No data found.
+        }
+        printing {
+            enabled: true
+        }
+        output {
+            linkText: Download
+            format: pdf
+        }
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        column CAREER_LEVEL (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Career Level
+            }
+            layout {
+                sequence: 120
+            }
+        )
+
+        column COUNTRY (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            heading {
+                heading: Country
+            }
+            layout {
+                sequence: 150
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+        column EMPLOYEE_ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 40
+            }
+        )
+
+        column EMPLOYEE_NAME (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Name
+            }
+            layout {
+                sequence: 70
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      TITLE:=#EMPLOYEE_NAME#
+                      DESCRIPTION:=#EMAIL# 
+                      ITEM_CSS_CLASSES:=u-padding-xs
+                      DISPLAY_AVATAR:=Y
+                      AVATAR_TYPE:=initials
+                      AVATAR_INITIALS:=#INITIALS#
+                      AVATAR_SIZE:=t-Avatar--xs
+                      AVATAR_SHAPE:=t-Avatar--circle
+                      AVATAR_CSS_CLASSES:=u-color-subtle u-text-secondary
+                    {apply THEME$CONTENT_ROW/}
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column EMPLOYMENT_STATUS (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 160
+            }
+        )
+
+        column EMPLOYMENT_TYPE (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            heading {
+                heading: Employment Type
+            }
+            layout {
+                sequence: 130
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      LABEL:=Employment Type
+                      VALUE:=#EMPLOYMENT_TYPE#
+                      STATE:={case EMPLOYMENT_TYPE/}{when Full Time/}success{when Part Time/}info{when Contractor/}warning{otherwise/}neutral{endcase/}
+                      LABEL_DISPLAY:=N
+                      STYLE:=t-Badge--subtle
+                      SHAPE:=t-Badge--circle
+                    {apply THEME$BADGE/}
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column FIRST_NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column INITIALS (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 170
+            }
+        )
+
+        column JOB_TITLE (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Job Title
+            }
+            layout {
+                sequence: 140
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column LAST_NAME (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 60
+            }
+        )
+
+        column WORK_ARRANGEMENT (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            heading {
+                heading: Work Arrangement
+            }
+            layout {
+                sequence: 180
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      LABEL:=Work Arrangement
+                      VALUE:=#WORK_ARRANGEMENT#
+                      STATE:={case WORK_ARRANGEMENT/}{when Remote/}info{when Hybrid/}warning{when Onsite/}success{otherwise/}info{endcase/}
+                      LABEL_DISPLAY:=N
+                      STYLE:=t-Badge--subtle
+                      SHAPE:=t-Badge--circle
+                      SIZE:=t-Badge--md
+                    {apply THEME$BADGE/}
+                    ```
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+    )
+
+    pageItem P7_SEARCH (
+        type: textField
+        label {
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: searchFieldAndSmartFilters
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--xlarge
+            ]
+            icon: fa-search
+            width: 75
+            valuePlaceholder: Search...
+        }
+    )
+
+    button employee (
+        buttonName: Employee
+        label: Employee
+        layout {
+            sequence: 30
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--primary
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 15
+                clearCache: 15
+            }
+        }
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 20
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 7
+                clearCache: 4
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

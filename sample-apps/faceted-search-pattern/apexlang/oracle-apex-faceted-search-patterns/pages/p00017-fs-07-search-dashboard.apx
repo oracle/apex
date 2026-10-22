@@ -1,0 +1,879 @@
+page 17 (
+    name: FS-07 - Search Dashboard
+    alias: FS-07-SEARCH-DASHBOARD
+    title: FS-07 - Search Dashboard
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern to filter records and review both matching details and aggregate summaries. It suits use cases such as exploring a workforce, inventory, or service portfolio where counts and charts help reveal the distribution of the filtered results.</p>
+            
+            <h3>About this pattern page</h3>
+            <p>Search matches employee details. Job, Cost Center, Employment Status, and Work Arrangement facets support multiple selections. Choices within a facet match any selected value; different facets combine to narrow results. The Classic Report lists matching employees, metric cards summarize employee, job-role, and cost-center counts, and donut charts show their distribution. All summaries reflect the complete filtered result set, not just the current report page. Reset clears all selections.</p>
+            ```
+    }
+
+    region breadcrumb (
+        name: FS-07 - Search Dashboard
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region cost-center-chart (
+        name: Cost center distribution
+        type: chart
+        layout {
+            sequence: 30
+            slot: body
+            columnSpan: 6
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+            icon: fa-badge-dollar
+        }
+        advanced {
+            htmlDomId: cost-center-chart
+        }
+        chart {
+            type: donut
+        }
+        performance {
+            lazyLoading: true
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series employee-counts (
+            name: Matching employees
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                        with employee_data as (
+                            select e.employee_id id,
+                                   trim(e.first_name || ' ' || e.last_name) name,
+                                   e.email,
+                                   e.job_title job,
+                                   coalesce(c.cost_center_description, c.cost_center_code, 'Unassigned') cost_center,
+                                   e.timezone time_zone,
+                                   initcap(e.work_arrangement) work_mode,
+                                   initcap(e.employment_status) employment_status,
+                                   e.country,
+                                   e.career_level,
+                                   e.cost_center_id
+                              from fsp_employees e
+                              left join fsp_cost_centers c on c.cost_center_id = e.cost_center_id
+                        ), search_terms as (
+                            select lower(replace(
+                                       case when substr(token, 1, 1) = '"' and substr(token, -1) = '"'
+                                            then substr(token, 2, length(token) - 2) else token end,
+                                       '""', '"')) term
+                              from (
+                                select regexp_substr(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+', 1, level) token
+                                  from dual
+                                connect by level <= regexp_count(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+')
+                              )
+                        ), matches as (
+                            select e.*
+                              from employee_data e
+                             where (:P17_COST_CENTER is null or e.cost_center in (
+                                        select column_value from table(apex_string.split(:P17_COST_CENTER, ':'))))
+                               and (:P17_JOB is null or e.job in (
+                                        select column_value from table(apex_string.split(:P17_JOB, ':'))))
+                               and (:P17_STATUS is null or e.employment_status in (
+                                        select column_value from table(apex_string.split(:P17_STATUS, ':'))))
+                               and (:P17_WORK_MODE is null or e.work_mode in (
+                                        select column_value from table(apex_string.split(:P17_WORK_MODE, ':'))))
+                               and not exists (
+                                        select 1 from search_terms t
+                                         where t.term is not null
+                                           and instr(lower(nvl(e.name, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.email, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.job, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.cost_center, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.time_zone, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.work_mode, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.employment_status, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.country, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.career_level, ' ')), t.term) = 0)
+                        )
+                        select cost_center label, count(*) employee_count
+                          from matches
+                         group by cost_center
+                         order by employee_count desc, label
+                    ```
+                pageItemsToSubmit: [
+                    P17_SEARCH
+                    P17_COST_CENTER
+                    P17_JOB
+                    P17_STATUS
+                    P17_WORK_MODE
+                ]
+            }
+            columnMapping {
+                label: LABEL
+                value: EMPLOYEE_COUNT
+            }
+        )
+
+    )
+
+    region dashboard-metrics (
+        name: Matching employee metrics
+        type: themeTemplateComponent/metricCard
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                    with employee_data as (
+                        select e.employee_id id,
+                               trim(e.first_name || ' ' || e.last_name) name,
+                               e.email,
+                               e.job_title job,
+                               coalesce(c.cost_center_description, c.cost_center_code, 'Unassigned') cost_center,
+                               e.timezone time_zone,
+                               initcap(e.work_arrangement) work_mode,
+                               initcap(e.employment_status) employment_status,
+                               e.country,
+                               e.career_level,
+                               e.cost_center_id
+                          from fsp_employees e
+                          left join fsp_cost_centers c on c.cost_center_id = e.cost_center_id
+                    ), search_terms as (
+                        select lower(replace(
+                                   case when substr(token, 1, 1) = '"' and substr(token, -1) = '"'
+                                        then substr(token, 2, length(token) - 2) else token end,
+                                   '""', '"')) term
+                          from (
+                            select regexp_substr(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+', 1, level) token
+                              from dual
+                            connect by level <= regexp_count(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+')
+                          )
+                    ), matches as (
+                        select e.*
+                          from employee_data e
+                         where (:P17_COST_CENTER is null or e.cost_center in (
+                                    select column_value from table(apex_string.split(:P17_COST_CENTER, ':'))))
+                           and (:P17_JOB is null or e.job in (
+                                    select column_value from table(apex_string.split(:P17_JOB, ':'))))
+                           and (:P17_STATUS is null or e.employment_status in (
+                                    select column_value from table(apex_string.split(:P17_STATUS, ':'))))
+                           and (:P17_WORK_MODE is null or e.work_mode in (
+                                    select column_value from table(apex_string.split(:P17_WORK_MODE, ':'))))
+                           and not exists (
+                                    select 1 from search_terms t
+                                     where t.term is not null
+                                       and instr(lower(nvl(e.name, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.email, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.job, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.cost_center, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.time_zone, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.work_mode, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.employment_status, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.country, ' ')), t.term) = 0
+                                       and instr(lower(nvl(e.career_level, ' ')), t.term) = 0)
+                    ), stats as (
+                        select count(*) employee_count,
+                               count(distinct job) job_count,
+                               count(distinct cost_center_id) cost_center_count
+                          from matches
+                    )
+                    select 1 sort_order, 'Employees count' label,
+                           to_char(employee_count, 'FM999G999G990') metric_value, 'fa-users' icon from stats
+                    union all
+                    select 2, 'Job roles represented',
+                           to_char(job_count, 'FM999G999G990'), 'fa-briefcase' from stats
+                    union all
+                    select 3, 'Cost centers represented',
+                           to_char(cost_center_count, 'FM999G999G990'), 'fa-building-o' from stats
+                ```
+            pageItemsToSubmit: [
+                P17_SEARCH
+                P17_COST_CENTER
+                P17_JOB
+                P17_STATUS
+                P17_WORK_MODE
+            ]
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: SORT_ORDER
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+            icon: fa-id-card
+        }
+        advanced {
+            htmlDomId: dashboard-metrics
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            metric: &METRIC_VALUE.
+            metricCssClasses: "u-text-subheading-md u-color-1-text "
+            meta: &LABEL.
+            layout: 3Columns
+        }
+        plugin-avatar {
+            displayAvatar: true
+            icon: &ICON.
+            style: subtle
+            position: inline
+        }
+
+        column ICON (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: ICON
+                dataType: varchar2
+            }
+        )
+
+        column LABEL (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: LABEL
+                dataType: varchar2
+            }
+        )
+
+        column METRIC_VALUE (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: METRIC_VALUE
+                dataType: varchar2
+            }
+        )
+
+        column SORT_ORDER (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: SORT_ORDER
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+    )
+
+    region search (
+        name: Filter employees
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: employee-filters
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+        }
+
+        facet P17_COST_CENTER (
+            type: checkboxGroup
+            label {
+                label: Cost Center
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 90
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: COST_CENTER
+            }
+        )
+
+        facet P17_JOB (
+            type: checkboxGroup
+            label {
+                label: Job
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: JOB
+            }
+        )
+
+        facet P17_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: NAME,EMAIL,JOB,COST_CENTER,TIME_ZONE,WORK_MODE,EMPLOYMENT_STATUS,COUNTRY,CAREER_LEVEL
+            }
+        )
+
+        facet P17_STATUS (
+            type: checkboxGroup
+            label {
+                label: Employment Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            listEntries {
+                maxDisplayedEntries: 10
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: EMPLOYMENT_STATUS
+            }
+        )
+
+        facet P17_WORK_MODE (
+            type: checkboxGroup
+            label {
+                label: Work Arrangement
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 110
+            }
+            listEntries {
+                maxDisplayedEntries: 10
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: WORK_MODE
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Matching employees
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                    select e.employee_id id,
+                           trim(e.first_name || ' ' || e.last_name) name,
+                           apex_string.get_initials(e.first_name || ' ' || e.last_name) as initials,
+                           e.email,
+                           e.job_title job,
+                           coalesce(c.cost_center_description, c.cost_center_code, 'Unassigned') cost_center,
+                           e.timezone time_zone,
+                           initcap(e.work_arrangement) work_mode,
+                           initcap(e.employment_status) employment_status,
+                           e.country,
+                           e.career_level,
+                           e.cost_center_id,
+                           case  when e.job_title =ANY ('Application Developer','BI Developer','Senior Software Engineer','Software Engineer')  then 'success' 
+                                 when e.job_title =ANY ('IT Service Manager','Enterprise Sales Manager') then 'warning'
+                                 when e.job_title =ANY ('Compliance Analyst','Compliance Counsel','Ethics and Compliance Analyst') then 'danger'
+                                 else 'info' end job_title_state,
+                           case  loweR(e.employment_status) when 'active' then 'fa fa-check-circle-o' when 'inactive' then 'fa fa-times-circle-o'   else 'fa fa-minus-circle-o' end STATUS_ICON,
+                           case  loweR(e.employment_status) when  'active' then 'u-success-text'  when 'inactive' then 'u-danger-text' else 'u-warning-text' end STATUS_STATE
+                      from fsp_employees e
+                      left join fsp_cost_centers c on c.cost_center_id = e.cost_center_id
+                ```
+        }
+        layout {
+            sequence: 60
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: #DEFAULT#
+            icon: fa-id-card
+        }
+        advanced {
+            htmlDomId: search-results
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--stretch
+                t-Report--horizontalBorders
+            ]
+        }
+        performance {
+            maxRowsToProcess: 100000
+        }
+        messages {
+            whenNoDataFound: No employees match these filters. Remove a filter or shorten your search.
+        }
+        printing {
+            enabled: true
+        }
+        output {
+            linkText: <span class="fa fa-download" aria-hidden="true"></span> Download
+            format: pdf
+        }
+        page {
+            borderWidth: 0.5
+            borderColor: #666666
+        }
+
+        column CAREER_LEVEL (
+            reportColumnQueryId: 11
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 90
+            }
+        )
+
+        column COST_CENTER (
+            reportColumnQueryId: 6
+            derivedColumn: N
+            heading {
+                heading: Cost Center
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column COST_CENTER_ID (
+            reportColumnQueryId: 12
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 100
+            }
+        )
+
+        column COUNTRY (
+            reportColumnQueryId: 10
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 80
+            }
+        )
+
+        column EMAIL (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 20
+            }
+        )
+
+        column EMPLOYMENT_STATUS (
+            reportColumnQueryId: 9
+            derivedColumn: N
+            heading {
+                heading: Employment Status
+                alignment: center
+            }
+            layout {
+                sequence: 70
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression: <span class="#STATUS_ICON# #STATUS_STATE#"></span>
+            }
+            security {
+                escapeSpecialChars: false
+            }
+        )
+
+        column ID (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 0
+            }
+        )
+
+        column INITIALS (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 140
+            }
+        )
+
+        column JOB (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Job
+                alignment: center
+            }
+            layout {
+                sequence: 30
+                columnAlignment: center
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    {with/}
+                      LABEL:=Status
+                      VALUE:=#JOB#
+                      STATE:=#JOB_TITLE_STATE#
+                      LABEL_DISPLAY:=N
+                      STYLE:=t-Badge--subtle t-Badge--circle
+                      SIZE:=t-Badge--md
+                    {apply THEME$BADGE/}
+                    ```
+            }
+            sorting {
+                defaultSequence: 2
+            }
+        )
+
+        column JOB_TITLE_STATE (
+            reportColumnQueryId: 13
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 110
+            }
+        )
+
+        column NAME (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Employee
+            }
+            layout {
+                sequence: 10
+            }
+            columnFormatting {
+                htmlExpression:
+                    ```html
+                    <div style="display:flex; align-items:center; gap:8px;">
+                      {with/}
+                      TYPE:=INITIALS
+                      INITIALS:=#INITIALS#
+                      SIZE:=t-Avatar--xs
+                    SHAPE:=t-Avatar--circle
+                    CSS_CLASSES:=u-color-subtle u-text-secondary
+                      {apply THEME$AVATAR/}
+                      <span>#NAME#</span>
+                    </div>
+                    ```
+            }
+            sorting {
+                defaultSequence: 1
+            }
+        )
+
+        column STATUS_ICON (
+            reportColumnQueryId: 14
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 120
+            }
+        )
+
+        column STATUS_STATE (
+            reportColumnQueryId: 15
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 130
+            }
+        )
+
+        column TIME_ZONE (
+            reportColumnQueryId: 7
+            derivedColumn: N
+            type: hidden
+            layout {
+                sequence: 50
+            }
+        )
+
+        column WORK_MODE (
+            reportColumnQueryId: 8
+            derivedColumn: N
+            heading {
+                heading: Work Arrangement
+            }
+            layout {
+                sequence: 60
+            }
+        )
+
+    )
+
+    region work-mode-chart (
+        name: Work arrangement distribution
+        type: chart
+        layout {
+            sequence: 40
+            slot: body
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/standard
+            templateOptions: #DEFAULT#
+            icon: fa-laptop
+        }
+        advanced {
+            htmlDomId: work-mode-chart
+        }
+        chart {
+            type: donut
+        }
+        performance {
+            lazyLoading: true
+        }
+        value {
+            format: decimal
+            decimalPlaces: 0
+            formatScaling: none
+        }
+
+        series employee-counts (
+            name: Matching employees
+            execution {
+                sequence: 10
+            }
+            source {
+                type: sqlQuery
+                sqlQuery:
+                    ```sql
+                        with employee_data as (
+                            select e.employee_id id,
+                                   trim(e.first_name || ' ' || e.last_name) name,
+                                   e.email,
+                                   e.job_title job,
+                                   coalesce(c.cost_center_description, c.cost_center_code, 'Unassigned') cost_center,
+                                   e.timezone time_zone,
+                                   initcap(e.work_arrangement) work_mode,
+                                   initcap(e.employment_status) employment_status,
+                                   e.country,
+                                   e.career_level,
+                                   e.cost_center_id
+                              from fsp_employees e
+                              left join fsp_cost_centers c on c.cost_center_id = e.cost_center_id
+                        ), search_terms as (
+                            select lower(replace(
+                                       case when substr(token, 1, 1) = '"' and substr(token, -1) = '"'
+                                            then substr(token, 2, length(token) - 2) else token end,
+                                       '""', '"')) term
+                              from (
+                                select regexp_substr(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+', 1, level) token
+                                  from dual
+                                connect by level <= regexp_count(:P17_SEARCH, '"([^"]|"")*"|[^[:space:]]+')
+                              )
+                        ), matches as (
+                            select e.*
+                              from employee_data e
+                             where (:P17_COST_CENTER is null or e.cost_center in (
+                                        select column_value from table(apex_string.split(:P17_COST_CENTER, ':'))))
+                               and (:P17_JOB is null or e.job in (
+                                        select column_value from table(apex_string.split(:P17_JOB, ':'))))
+                               and (:P17_STATUS is null or e.employment_status in (
+                                        select column_value from table(apex_string.split(:P17_STATUS, ':'))))
+                               and (:P17_WORK_MODE is null or e.work_mode in (
+                                        select column_value from table(apex_string.split(:P17_WORK_MODE, ':'))))
+                               and not exists (
+                                        select 1 from search_terms t
+                                         where t.term is not null
+                                           and instr(lower(nvl(e.name, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.email, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.job, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.cost_center, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.time_zone, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.work_mode, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.employment_status, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.country, ' ')), t.term) = 0
+                                           and instr(lower(nvl(e.career_level, ' ')), t.term) = 0)
+                        )
+                        select nvl(work_mode, 'Unspecified') label, count(*) employee_count
+                          from matches
+                         group by work_mode
+                         order by employee_count desc, label
+                    ```
+                pageItemsToSubmit: [
+                    P17_SEARCH
+                    P17_COST_CENTER
+                    P17_JOB
+                    P17_STATUS
+                    P17_WORK_MODE
+                ]
+            }
+            columnMapping {
+                label: LABEL
+                value: EMPLOYEE_COUNT
+            }
+            label {
+                show: true
+            }
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 17
+                clearCache: 17
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+    dynamicAction refresh-dashboard-regions (
+        name: Refresh Dashboard After Results Refresh
+        execution {
+            sequence: 20
+            eventScope: dynamic
+        }
+        when {
+            event: apexafterrefresh
+            selectionType: region
+            region: @search-results
+        }
+        comments {
+            comments: Each metric/chart region submits the five facet items and queries the local employee table directly. After Refresh keeps the summaries aligned with the completed Classic Report refresh. Initial summaries are rendered by their native SQL sources.
+        }
+
+        action refresh-cost-center-chart (
+            name: Refresh Cost Center Distribution
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @cost-center-chart
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+        action refresh-metrics (
+            name: Refresh Matching Employee Metrics
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @dashboard-metrics
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-work-mode-chart (
+            name: Refresh Work Arrangement Distribution
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @work-mode-chart
+            }
+            execution {
+                sequence: 30
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

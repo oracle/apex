@@ -1,0 +1,122 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry employee-profile (
+        name: Employee Profile
+        pageNumber: 15
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 15
+            }
+        }
+    )
+
+    entry fs-01-content-row (
+        name: FS-01 - Content Row
+        pageNumber: 4
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry fs-02-cards (
+        name: FS-02 - Cards
+        pageNumber: 5
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry fs-03-search-only-classic-report (
+        name: FS-03 - Search Only Classic Report
+        pageNumber: 7
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry fs-04-map (
+        name: FS-04 - Map
+        pageNumber: 9
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry fs-05-calendar (
+        name: FS-05 - Calendar
+        pageNumber: 10
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry fs-06-timeline (
+        name: FS-06 - Timeline
+        pageNumber: 12
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry fs-07-search-dashboard (
+        name: FS-07 - Search Dashboard
+        pageNumber: 17
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry fs-10-grouped-rows (
+        name: FS-08 - Grouped Rows
+        pageNumber: 20
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+)
+

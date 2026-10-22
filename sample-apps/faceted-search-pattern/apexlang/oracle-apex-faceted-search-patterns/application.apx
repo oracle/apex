@@ -1,0 +1,58 @@
+app ORACLE-APEX-FACETED-SEARCH-PATTERNS (
+    name: Oracle APEX Faceted Search Patterns
+    version: 26.2.0
+    logo {
+        type: text
+        text: Oracle APEX Faceted Search Patterns
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: LOGIN
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleB
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+        addBuiltWithApexToFooter: false
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+    }
+    reportPrinting {
+        type: useInstanceSettings
+    }
+    runtime {
+        allowFeedback: true
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Oracle APEX Faceted Search Patterns
+        }
+    )
+
+)
+

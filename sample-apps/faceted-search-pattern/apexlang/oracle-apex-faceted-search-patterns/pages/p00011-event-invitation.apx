@@ -1,0 +1,187 @@
+page 11 (
+    name: Event Invitation
+    alias: EVENT-INVITATION
+    title: Event Invitation
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            t-Dialog--noPadding
+            js-dialog-class-t-Drawer--pullOutEnd
+            t-PageBody--noContentPadding
+        ]
+    }
+    dialog {
+        width: 560
+        height: auto
+        maxWidth: 640
+        chained: false
+        resizable: false
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+
+    region invite_details (
+        name: Invite Details
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                with invitation as (
+                    select ev.event_title,
+                           initcap(replace(ev.event_type, '_', ' ')) as event_type_label,
+                           e.first_name || ' ' || e.last_name as attendee_name,
+                           e.job_title,
+                           e.email,
+                           ev.event_start,
+                           ev.event_end,
+                           ev.event_status,
+                           ev.event_scope,
+                           initcap(replace(ev.delivery_mode, '_', ' ')) as delivery_mode_label,
+                           l.location_name,
+                           c.country_name,
+                           cc.cost_center_description as cost_center,
+                           ev.description
+                      from fsp_employee_events_v ev
+                      join fsp_employees e on e.employee_id = ev.employee_id
+                      left join fsp_cost_centers cc on cc.cost_center_id = e.cost_center_id
+                      left join fsp_locations l on l.location_id = ev.location_id
+                      left join fsp_countries c on c.country_code_alpha2 = l.country_code_alpha2
+                     where ev.event_id = :P11_EVENT_ID
+                )
+                select detail_label, detail_value, display_sequence
+                  from (
+                    select 'Invitation' as detail_label,
+                           event_title as detail_value,
+                           10 as display_sequence
+                      from invitation
+                    union all
+                    select 'Activity Type', event_type_label, 20 from invitation
+                    union all
+                    select 'Attendee', attendee_name || ' · ' || job_title, 30 from invitation
+                    union all
+                    select 'Email', email, 40 from invitation
+                    union all
+                    select 'When',
+                           to_char(event_start, 'FMDay, FMDD Mon YYYY, HH:MI AM') ||
+                           ' – ' || to_char(event_end, 'HH:MI AM'),
+                           50
+                      from invitation
+                    union all
+                    select 'Duration',
+                           to_char(round((cast(event_end as date) - cast(event_start as date)) * 24, 2), 'FM990D0') || ' hours',
+                           60
+                      from invitation
+                    union all
+                    select 'Delivery Mode', delivery_mode_label, 70 from invitation
+                    union all
+                    select 'Status', initcap(lower(event_status)), 80 from invitation
+                    union all
+                    select 'Scope', initcap(lower(event_scope)), 90 from invitation
+                    union all
+                    select 'Location', location_name || ' · ' || country_name, 100 from invitation
+                    union all
+                    select 'Cost Center', cost_center, 110 from invitation
+                    union all
+                    select 'Invitation Notes', description, 120 from invitation
+                  )
+                 order by display_sequence
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--removeHeader js-removeLandmark
+                t-Region--noBorder
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Report--horizontalBorders
+            ]
+        }
+        pagination {
+            type: rowRangesXToYNoPagination
+        }
+        messages {
+            whenNoDataFound: The selected calendar invitation is not available.
+        }
+
+        column DETAIL_LABEL (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Detail
+            }
+            layout {
+                sequence: 10
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DETAIL_VALUE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Invitation Information
+            }
+            layout {
+                sequence: 20
+            }
+            sorting {
+                sortable: false
+            }
+        )
+
+        column DISPLAY_SEQUENCE (
+            reportColumnQueryId: 3
+            derivedColumn: Y
+            type: hidden
+            layout {
+                sequence: 30
+            }
+        )
+
+    )
+
+    pageItem P11_EVENT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @invite_details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P11_NAME (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @invite_details
+            slot: regionBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+)
+

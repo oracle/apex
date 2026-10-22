@@ -1,0 +1,171 @@
+page 1 (
+    name: Faceted Search Patterns
+    alias: FACETED-SEARCH-PATTERNS
+    title: Faceted Search Patterns
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    security {
+        formAutoComplete: true
+    }
+    help {
+        helpText:
+            ```html
+            <p><strong>Purpose:</strong> Faceted Search Patterns is a reference catalog for developers and designers choosing how users find, filter, review, and compare records in Oracle APEX. Each example combines Faceted Search with a result component or supporting interaction.</p>
+            <h3>When to use this catalog</h3>
+            <p>Use the catalog to choose a search experience for a new page, compare result layouts, or understand how filtering works with lists, cards, reports, maps, calendars, timelines, summaries, and selection.</p>
+            <h3>Components used on the home page</h3>
+            <ul>
+            <li><strong>Cards region:</strong> Displays each available pattern with its name, description, category badge, and Open example action.</li>
+            <li><strong>Navigation Menu:</strong> Provides direct links to the individual pattern pages.</li>
+            <li><strong>Shared Page Help dialog:</strong> Explains the selected page's pattern combination, components, interaction, and usage.</li>
+            </ul>
+            <h3>How to explore the app</h3>
+            <ol>
+            <li><strong>Browse and search:</strong> Start with FS-01 - Content Row, FS-02 - Cards, and FS-03 - Search Only Classic Report to compare compact rows, visual cards, and tabular results.</li>
+            <li><strong>Location and time:</strong> Explore FS-04 - Map, FS-05 - Calendar, and FS-06 - Timeline when records are best understood by location, scheduled date, or chronology.</li>
+            <li><strong>Analysis and comparison:</strong> Explore FS-07 - Search Dashboard and FS-08 - Grouped Results for summaries and grouped lists.</li>
+            <li>Open an example and change its search criteria. Observe how the result component responds, then open Help to understand the components used and how they work together.</li>
+            <li>Choose a combination that suits your user's task and adapt its filtering, result presentation, and actions to your application data.</li>
+            </ol>
+            <h3>Understanding the examples</h3>
+            <p>Employee and task examples use APEX sample data. Map and Calendar use generated demonstration records. The data illustrates each interaction; the reusable part is the component combination and page behavior.</p>
+            <p>Most examples combine a native Faceted Search region with a native result component. Search Dashboard adds synchronized summaries. Each page's help identifies these supporting components.</p>
+            ```
+    }
+    comments {
+        comments: Landing page for the faceted-search examples. Use the native cards to compare the same employee dataset across focused APEX result components.
+    }
+
+    region pattern-index (
+        name: Available Patterns
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 1 as pattern_id,
+                       'FS-01 - Content Row' as pattern_title,
+                       'Core' as pattern_badge,
+                       'Filter and sort' as pattern_subtitle,
+                       'Scan employee rows, narrow the matches with filters, and open a profile or email action.' as pattern_description,
+                       'fa fa-sort-amount-desc' as pattern_icon,
+                       4 as target_page
+                  from dual
+                union all
+                select 2,
+                       'FS-02 - Cards',
+                       'Core',
+                       'Filter and arrange',
+                       'Browse employee avatars and summaries, filter and sort the cards, and open a profile.',
+                       'fa fa-layout-header-nav-left-cards',
+                       5
+                  from dual
+                union all
+                select 3,
+                       'FS-03 - Search Only Classic Report',
+                       'Core',
+                       'Search only',
+                       'Search employee name, job, or salary with one search facet and compare the matching table rows.',
+                       'fa fa-table-search',
+                       7
+                  from dual
+                union all
+                select 4,
+                       'FS-04 - Map',
+                       'Extension',
+                       'Filter by location',
+                       'Faceted employee search paired with a location-aware map overview.',
+                       'fa fa-map-marker',
+                       9
+                  from dual
+                union all
+                select 5,
+                       'FS-05 - Calendar',
+                       'Extension',
+                       'Filter by date',
+                       'Faceted search with date filtering beside a calendar result view.',
+                       'fa fa-calendar',
+                       10
+                  from dual
+                union all
+                select 6,
+                       'FS-06 - Timeline',
+                       'Extension',
+                       'Review tasks by month',
+                       'Filter tasks by start month, assignee, and status, then open a task for more detail.',
+                       'fa fa-clock-o',
+                       12
+                  from dual
+                union all
+                select 9, 'FS-07 - Search Dashboard', 'Extension', 'Explore matching employee metrics', 'See employee counts, job-role and cost-center metrics, plus cost-center and work-arrangement charts update with your filters.', 'fa fa-dashboard', 17
+                  from dual
+                union all
+                select 10, 'FS-08 - Grouped Results', 'Extension', 'Browse employees by department', 'Filter employees and scan content rows grouped under department headings.', 'fa fa-list-alt', 20
+                  from dual
+                order by pattern_id
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                u-colors
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            gridColumns: 4
+        }
+        card {
+            primaryKeyColumn1: PATTERN_ID
+        }
+        title {
+            column: PATTERN_TITLE
+            cssClasses: u-color-44-text
+        }
+        subtitle {
+            column: PATTERN_SUBTITLE
+        }
+        body {
+            column: PATTERN_DESCRIPTION
+            cssClasses: u-text-muted-color
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: PATTERN_ICON
+            badgeColumn: PATTERN_BADGE
+        }
+
+        action open (
+            label: Open example
+            layout {
+                position: secondary
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&TARGET_PAGE.:&SESSION.::&DEBUG.:::
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-external-link
+                cssClasses: [
+                    t-Button--primary
+                    t-Button--simple
+                ]
+            }
+        )
+
+    )
+
+)
+

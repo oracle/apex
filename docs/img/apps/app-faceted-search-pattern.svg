@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" fill="none" role="img" aria-labelledby="title desc">
+  <title id="title">APEX Faceted Search Patterns</title>
+  <desc id="desc">Two softly illuminated interface cards fan outward on a muted teal background. One card shows search facets and filters; the other shows search results.</desc>
+  <defs>
+    <linearGradient id="background" x1="40" y1="28" x2="476" y2="490" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#398B99"/>
+      <stop offset=".48" stop-color="#1D7182"/>
+      <stop offset="1" stop-color="#07586F"/>
+    </linearGradient>
+    <radialGradient id="backgroundGlow" cx="0" cy="0" r="1" gradientTransform="matrix(0 380 -440 0 256 98)" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#80CFCA" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#5DB8B9" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cardFill" x1="25" y1="0" x2="200" y2="294" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#F1FBFC"/>
+    </linearGradient>
+    <linearGradient id="inputFill" x1="20" y1="20" x2="195" y2="57" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F1FCFA"/>
+      <stop offset="1" stop-color="#E6F7F5"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="20" y1="0" x2="190" y2="0" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#35B8B0"/>
+      <stop offset="1" stop-color="#147B8B"/>
+    </linearGradient>
+    <linearGradient id="tileFill" x1="15" y1="0" x2="70" y2="58" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#B9F0E6"/>
+      <stop offset="1" stop-color="#8DDED9"/>
+    </linearGradient>
+    <filter id="cardShadow" x="-24%" y="-18%" width="148%" height="154%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="9" stdDeviation="9" flood-color="#063B50" flood-opacity=".3"/>
+      <feDropShadow dx="0" dy="0" stdDeviation="2" flood-color="#8BF3E8" flood-opacity=".42"/>
+    </filter>
+    <filter id="softShadow" x="-40%" y="-50%" width="180%" height="200%" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#0D5668" flood-opacity=".12"/>
+    </filter>
+    <clipPath id="cardClip">
+      <rect width="220" height="294" rx="22"/>
+    </clipPath>
+  </defs>
+
+  <rect width="512" height="512" fill="url(#background)"/>
+  <rect width="512" height="512" fill="url(#backgroundGlow)"/>
+
+  <!-- Results card, angled outward to the right -->
+  <g transform="translate(221 108) rotate(9 110 147)" filter="url(#cardShadow)">
+    <rect width="220" height="294" rx="22" fill="url(#cardFill)" stroke="#9EE6E2" stroke-width="2.5"/>
+    <g clip-path="url(#cardClip)">
+      <rect x="18" y="18" width="184" height="28" rx="14" fill="#F0FBFA"/>
+      <circle cx="31" cy="32" r="3.3" fill="#2B9BA0"/>
+      <rect x="42" y="29" width="45" height="5" rx="2.5" fill="#82C9C9"/>
+      <circle cx="191" cy="32" r="2" fill="#338D99"/>
+      <circle cx="198" cy="32" r="2" fill="#338D99"/>
+
+      <rect x="18" y="59" width="54" height="53" rx="9" fill="url(#tileFill)"/>
+      <rect x="84" y="65" width="88" height="7" rx="3.5" fill="url(#accent)"/>
+      <rect x="84" y="80" width="114" height="6" rx="3" fill="#A9D2D5"/>
+      <rect x="84" y="94" width="91" height="6" rx="3" fill="#B8DADD"/>
+      <path d="M18 124H202" stroke="#D8EEEE" stroke-width="1.5"/>
+
+      <rect x="18" y="137" width="54" height="53" rx="9" fill="url(#tileFill)"/>
+      <rect x="84" y="143" width="79" height="7" rx="3.5" fill="url(#accent)"/>
+      <rect x="84" y="158" width="111" height="6" rx="3" fill="#A9D2D5"/>
+      <rect x="84" y="172" width="83" height="6" rx="3" fill="#B8DADD"/>
+      <path d="M18 202H202" stroke="#D8EEEE" stroke-width="1.5"/>
+
+      <rect x="18" y="215" width="54" height="53" rx="9" fill="url(#tileFill)"/>
+      <rect x="84" y="221" width="72" height="7" rx="3.5" fill="url(#accent)"/>
+      <rect x="84" y="236" width="108" height="6" rx="3" fill="#A9D2D5"/>
+      <rect x="84" y="250" width="78" height="6" rx="3" fill="#B8DADD"/>
+    </g>
+  </g>
+
+  <!-- Faceted-search card, angled outward to the left -->
+  <g transform="translate(71 108) rotate(-9 110 147)" filter="url(#cardShadow)">
+    <rect width="220" height="294" rx="22" fill="url(#cardFill)" stroke="#9EE6E2" stroke-width="2.5"/>
+    <g clip-path="url(#cardClip)">
+      <rect x="18" y="18" width="184" height="38" rx="19" fill="url(#inputFill)" stroke="#D3F0EE"/>
+      <circle cx="34" cy="37" r="6.5" stroke="#147B8B" stroke-width="2.8"/>
+      <path d="m39 42 5 5" stroke="#147B8B" stroke-width="2.8" stroke-linecap="round"/>
+      <rect x="52" y="34" width="78" height="6" rx="3" fill="#64B7B8"/>
+
+      <g filter="url(#softShadow)">
+        <rect x="18" y="66" width="82" height="25" rx="12.5" fill="#B7EEE4"/>
+        <rect x="27" y="76" width="43" height="5" rx="2.5" fill="url(#accent)"/>
+        <path d="m83 74 8 8m0-8-8 8" stroke="#167B88" stroke-width="2.5" stroke-linecap="round"/>
+        <rect x="108" y="66" width="94" height="25" rx="12.5" fill="#B7EEE4"/>
+        <rect x="117" y="76" width="47" height="5" rx="2.5" fill="url(#accent)"/>
+        <path d="m185 74 8 8m0-8-8 8" stroke="#167B88" stroke-width="2.5" stroke-linecap="round"/>
+      </g>
+      <path d="M18 103H202" stroke="#D8EEEE" stroke-width="1.5"/>
+
+      <rect x="20" y="114" width="48" height="6" rx="3" fill="#278F99"/>
+      <path d="m190 115 5 5 5-5" stroke="#187B88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="20" y="129" width="12" height="12" rx="2.5" fill="#168493"/>
+      <path d="m23 135 2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="39" y="132" width="75" height="5" rx="2.5" fill="#238F99"/>
+      <rect x="39" y="142" width="109" height="5" rx="2.5" fill="#ADD4D7"/>
+      <rect x="20" y="151" width="12" height="12" rx="2.5" fill="#F6FCFC" stroke="#88C8CC" stroke-width="2"/>
+      <rect x="39" y="154" width="91" height="5" rx="2.5" fill="#B3D9DB"/>
+      <rect x="20" y="170" width="12" height="12" rx="2.5" fill="#F6FCFC" stroke="#88C8CC" stroke-width="2"/>
+      <rect x="39" y="173" width="72" height="5" rx="2.5" fill="#B3D9DB"/>
+      <path d="M18 191H202" stroke="#D8EEEE" stroke-width="1.5"/>
+
+      <rect x="20" y="201" width="48" height="6" rx="3" fill="#278F99"/>
+      <path d="m190 202 5 5 5-5" stroke="#187B88" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M25 229H195" stroke="#A8DCD8" stroke-width="5" stroke-linecap="round"/>
+      <path d="M25 229H118" stroke="url(#accent)" stroke-width="5" stroke-linecap="round"/>
+      <circle cx="43" cy="229" r="8" fill="#2CAFA9"/>
+      <circle cx="118" cy="229" r="8" fill="#2CAFA9"/>
+      <rect x="20" y="244" width="34" height="5" rx="2.5" fill="#B6DADD"/>
+      <rect x="108" y="244" width="33" height="5" rx="2.5" fill="#B6DADD"/>
+      <path d="M18 258H202" stroke="#D8EEEE" stroke-width="1.5"/>
+
+      <rect x="20" y="268" width="12" height="12" rx="2.5" fill="#168493"/>
+      <path d="m23 274 2.5 2.5 4.5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+      <rect x="39" y="271" width="72" height="5" rx="2.5" fill="#238F99"/>
+      <rect x="39" y="281" width="105" height="5" rx="2.5" fill="#B3D9DB"/>
+    </g>
+  </g>
+</svg>

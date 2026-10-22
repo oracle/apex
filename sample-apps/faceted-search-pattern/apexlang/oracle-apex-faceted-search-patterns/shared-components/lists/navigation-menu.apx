@@ -1,0 +1,172 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry fs-01-content-row (
+        label: FS-01 - Content Row
+        icon {
+            imageIconCssClasses: fa-sort-amount-desc
+        }
+        layout {
+            sequence: 15
+        }
+        isCurrent {
+            type: pages
+            pages: 4
+        }
+        link {
+            target: {
+                page: 4
+            }
+        }
+    )
+
+    entry fs-02-cards (
+        label: FS-02 - Cards
+        icon {
+            imageIconCssClasses: fa-layout-header-nav-left-cards
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 5
+        }
+        link {
+            target: {
+                page: 5
+            }
+        }
+    )
+
+    entry fs-03-search-only-classic-report (
+        label: FS-03 - Search Only Classic Report
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 22
+        }
+        isCurrent {
+            type: pages
+            pages: 7
+        }
+        link {
+            target: {
+                page: 7
+            }
+        }
+    )
+
+    entry fs-04-map (
+        label: FS-04 - Map
+        icon {
+            imageIconCssClasses: fa-map-marker-o
+        }
+        layout {
+            sequence: 25
+        }
+        isCurrent {
+            type: pages
+            pages: 9
+        }
+        link {
+            target: {
+                page: 9
+            }
+        }
+    )
+
+    entry fs-05-calendar (
+        label: FS-05 - Calendar
+        icon {
+            imageIconCssClasses: fa-calendar-search
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 10
+        }
+        link {
+            target: {
+                page: 10
+            }
+        }
+    )
+
+    entry fs-06-timeline (
+        label: FS-06 - Timeline
+        icon {
+            imageIconCssClasses: fa-clock-o
+        }
+        layout {
+            sequence: 35
+        }
+        isCurrent {
+            type: pages
+            pages: 12
+        }
+        link {
+            target: {
+                page: 12
+            }
+        }
+    )
+
+    entry fs-07-search-dashboard (
+        label: FS-07 - Search Dashboard
+        icon {
+            imageIconCssClasses: fa-dashboard
+        }
+        layout {
+            sequence: 40
+        }
+        isCurrent {
+            type: pages
+            pages: 17
+        }
+        link {
+            target: {
+                page: 17
+            }
+        }
+    )
+
+    entry fs-08-grouped-rows (
+        label: FS-08 - Grouped Rows
+        icon {
+            imageIconCssClasses: fa-list-alt
+        }
+        layout {
+            sequence: 45
+        }
+        isCurrent {
+            type: pages
+            pages: 20
+        }
+        link {
+            target: {
+                page: 20
+            }
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

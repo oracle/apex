@@ -1,0 +1,708 @@
+page 20 (
+    name: FS-08 - Grouped Rows
+    alias: FS-08-GROUPED-ROWS
+    title: FS-08 - Grouped Rows
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern to browse employee records and scan key details in a compact list. It suits directories where users need to search, filter by shared attributes, sort, select records, or take actions.</p>
+            
+            <h3>About this pattern page</h3>
+            <p>Search and the Job Title, Business Unit, and Tags List filters narrow the employee list; facet counts show available matches. Each row shows an employee’s name, email, tags, and business unit. Use the Job control to sort the list. Select employees using the checkboxes or Select All, and use the row’s actions menu for available actions.</p>
+            ```
+    }
+    comments {
+        comments: Content Row adds explicit ordering to the baseline faceted-search and content-row pattern so users can change result priority without changing the active filters.
+    }
+
+    region breadcrumb (
+        name: FS-08 - Grouped Results
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Button Bar
+        type: staticContent
+        source {
+            htmlCode: <div id="active_facets"></div>
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region search (
+        name: Filter employees
+        type: facetedSearch
+        source {
+            filteredRegion: @search-results
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: selector
+            currentFacetsSelector: #active_facets
+        }
+
+        facet P20_BUSINESS_UNIT (
+            type: checkboxGroup
+            label {
+                label: Business Unit
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 90
+            }
+            listEntries {
+                maxDisplayedEntries: 5
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: BUSINESS_UNIT
+            }
+        )
+
+        facet P20_JOB_TITLE (
+            type: checkboxGroup
+            label {
+                label: Job Title
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 5
+            }
+            listEntries {
+                maxDisplayedEntries: 10
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: JOB_TITLE
+            }
+        )
+
+        facet P20_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: NAME,EMAIL,JOB_TITLE,BUSINESS_UNIT,WORK_ARRANGEMENT
+            }
+        )
+
+        facet P20_WORK_ARRANGEMENT (
+            type: checkboxGroup
+            label {
+                label: Work Arrangement
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 110
+            }
+            listEntries {
+                maxDisplayedEntries: 10
+                allowToExclude: false
+            }
+            source {
+                databaseColumn: WORK_ARRANGEMENT
+            }
+        )
+
+    )
+
+    region search-results (
+        name: Employees
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select
+                    fe.employee_id,
+                    fe.first_name || ' ' || fe.last_name as name,
+                    fe.job_title,
+                    fcc.business_unit,
+                    fe.email,
+                    fe.phone_country_code || ' ' || fe.phone_number as phone_number,
+                    fe.tags as tags_json,
+                    (
+                        select listagg(jt.tag_value, ':')
+                                   within group (order by jt.tag_order)
+                        from json_table(
+                            fe.tags,
+                            '$[*]' columns (
+                                tag_order for ordinality,
+                                tag_value varchar2(4000) path '$'
+                            )
+                        ) jt
+                    ) as tags_list,
+                    initcap(fe.work_arrangement) as work_arrangement,
+                    to_char(fe.hire_date, 'DD Mon YYYY') as hire_date,
+                    initcap(fe.employment_status) as employment_status,
+                    fe.country,
+                    fe.career_level,
+                    case fe.employment_status
+                        when 'ACTIVE'   then 'success'
+                        when 'INACTIVE' then 'danger'
+                        when 'LEAVE'    then 'warning'
+                    end as badge_state,
+                    case fe.employment_status
+                        when 'ACTIVE'   then 'fa-check-circle-o'
+                        when 'INACTIVE' then 'fa-times-circle-o'
+                        when 'LEAVE'    then 'fa-minus-circle-o'
+                    end as badge_icon,
+                    fe.avatar
+                from fsp_employees fe
+                join fsp_cost_centers fcc
+                    on fe.cost_center_id = fcc.cost_center_id
+                ```
+        }
+        orderBy {
+            type: item
+            item: {
+                itemName: P20_ORDER_BY
+                orderBys: {
+                    BUSINESS_UNIT: BUSINESS_UNIT ASC
+                    JOB_TITLE: JOB_TITLE ASC
+                    ENAME: NAME ASC
+                }
+            }
+        }
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h1
+                t-ContentBlock--lightBG
+                t-Region--removeHeader js-removeLandmark
+            ]
+        }
+        advanced {
+            htmlDomId: search-results
+        }
+        comments {
+            comments: Uses the title-link and compact row-menu pattern from ux-pattern-catalog page 220. Each employee row includes an image avatar, a department badge, and profile and email actions. Order By varies the presentation order.
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &WORK_ARRANGEMENT.
+            title: &NAME.
+            description:
+                ```html
+                &EMAIL.
+                
+                {if TAGS_LIST/}<br>{loop ":" TAGS_LIST/}
+                {with/}
+                  LABEL:=Tag
+                  VALUE:=&APEX$ITEM.
+                  LABEL_DISPLAY:=N
+                  STYLE:=t-Badge--subtle t-Badge--circle u-text-muted-color
+                  SIZE:=t-Badge--md
+                {apply THEME$BADGE/}{endloop/}{endif/}
+                ```
+            miscellaneous: Business Unit: &BUSINESS_UNIT.
+            displayAvatar: true
+        }
+        plugin-avatar {
+            type: image
+            image: {
+                type: url
+                url: #APEX_FILES#sample_data&AVATAR.
+            }
+            shape: circular
+        }
+        plugin-grouping {
+            title: &BUSINESS_UNIT.
+        }
+        rowSelection {
+            type: multipleSelection
+            selectAllPageItem: P20_SELECT_ALL
+        }
+
+        column AVATAR (
+            layout {
+                sequence: 180
+            }
+            source {
+                databaseColumn: AVATAR
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_ICON (
+            layout {
+                sequence: 170
+            }
+            source {
+                databaseColumn: BADGE_ICON
+                dataType: varchar2
+            }
+        )
+
+        column BADGE_STATE (
+            layout {
+                sequence: 160
+            }
+            source {
+                databaseColumn: BADGE_STATE
+                dataType: varchar2
+            }
+        )
+
+        column BUSINESS_UNIT (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: BUSINESS_UNIT
+                dataType: varchar2
+            }
+            appearance {
+                group: true
+            }
+        )
+
+        column CAREER_LEVEL (
+            layout {
+                sequence: 150
+            }
+            source {
+                databaseColumn: CAREER_LEVEL
+                dataType: varchar2
+            }
+        )
+
+        column COUNTRY (
+            layout {
+                sequence: 140
+            }
+            source {
+                databaseColumn: COUNTRY
+                dataType: varchar2
+            }
+        )
+
+        column EMAIL (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: EMAIL
+                dataType: varchar2
+                primaryKey: true
+            }
+        )
+
+        column EMPLOYEE_ID (
+            layout {
+                sequence: 190
+            }
+            source {
+                databaseColumn: EMPLOYEE_ID
+                dataType: number
+            }
+        )
+
+        column EMPLOYMENT_STATUS (
+            layout {
+                sequence: 130
+            }
+            source {
+                databaseColumn: EMPLOYMENT_STATUS
+                dataType: varchar2
+            }
+        )
+
+        column HIRE_DATE (
+            layout {
+                sequence: 120
+            }
+            source {
+                databaseColumn: HIRE_DATE
+                dataType: varchar2
+            }
+        )
+
+        column JOB_TITLE (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: JOB_TITLE
+                dataType: varchar2
+            }
+        )
+
+        column NAME (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: NAME
+                dataType: varchar2
+            }
+        )
+
+        column PHONE_NUMBER (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: PHONE_NUMBER
+                dataType: varchar2
+            }
+        )
+
+        column TAGS_JSON (
+            layout {
+                sequence: 200
+            }
+            source {
+                databaseColumn: TAGS_JSON
+                dataType: clob
+            }
+        )
+
+        column TAGS_LIST (
+            layout {
+                sequence: 210
+            }
+            source {
+                databaseColumn: TAGS_LIST
+                dataType: varchar2
+            }
+        )
+
+        column WORK_ARRANGEMENT (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: WORK_ARRANGEMENT
+                dataType: varchar2
+            }
+        )
+
+        action action (
+            position: titleLink
+            layout {
+                sequence: 30
+            }
+            behavior {
+                target: {
+                    page: 15
+                    items: {
+                        P15_EMPLOYEE_ID: &EMPLOYEE_ID.
+                        P15_RETURN_PAGE: 20
+                    }
+                    clearCache: 15
+                }
+            }
+        )
+
+        action employee-actions (
+            position: primaryActions
+            template: menu
+            label: Employee actions
+            layout {
+                sequence: 20
+            }
+            appearance {
+                displayType: icon
+                icon: fa-ellipsis-v
+                cssClasses: t-Button--noUI
+            }
+
+            menu delete (
+                label: Delete
+                layout {
+                    sequence: 40
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: #
+                }
+                appearance {
+                    icon: fa-trash-o
+                }
+            )
+
+            menu email-employee (
+                label: Email employee
+                layout {
+                    sequence: 20
+                }
+                behavior {
+                    type: redirectUrl
+                    targetUrl: mailto:&EMAIL.
+                }
+                appearance {
+                    icon: fa-envelope-o
+                }
+                serverSideCondition {
+                    type: itemIsNotNull
+                    item: EMAIL
+                }
+            )
+
+            menu new (
+                type: separator
+                layout {
+                    sequence: 30
+                }
+            )
+
+            menu view-profile (
+                label: View profile
+                layout {
+                    sequence: 10
+                }
+                behavior {
+                    target: {
+                        page: 15
+                        items: {
+                            P15_EMPLOYEE_ID: &EMPLOYEE_ID.
+                            P15_RETURN_PAGE: 20
+                        }
+                        clearCache: 15
+                    }
+                }
+                appearance {
+                    icon: fa-user
+                }
+            )
+
+        )
+
+    )
+
+    pageItem P20_ORDER_BY (
+        type: selectList
+        label {
+            label: Order By
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC2:Job;JOB_TITLE,Employee Name;ENAME,Business Unit;BUSINESS_UNIT
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 10
+            region: @button-bar
+            slot: next
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: #DEFAULT#
+            icon: fa-sort
+            height: 1
+        }
+        validation {
+            valueRequired: true
+        }
+        advanced {
+            cssClasses: no-item-ui
+            warnOnUnsavedChanges: ignore
+        }
+        default {
+            type: static
+            staticValue: BUSINESS_UNIT
+        }
+    )
+
+    pageItem P20_SELECT_ALL (
+        type: checkbox
+        label {
+            label: Select All
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @button-bar
+            slot: previous
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+    )
+
+    button bulk-actions (
+        buttonName: BULK_ACTIONS
+        label: Bulk Actions
+        layout {
+            sequence: 40
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+            ]
+            icon: fa-ellipsis-v
+        }
+        behavior {
+            type: menu
+        }
+
+        menu export (
+            label: Export
+            layout {
+                sequence: 50
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                icon: fa-download
+            }
+        )
+
+        menu new (
+            type: separator
+            layout {
+                sequence: 40
+            }
+        )
+
+        menu update-department (
+            label: Change department
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                icon: fa-building-o
+            }
+        )
+
+        menu update-job-title (
+            label: Change job title
+            layout {
+                sequence: 20
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                icon: fa-briefcase
+            }
+        )
+
+        menu update-location (
+            label: Change Location
+            layout {
+                sequence: 30
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: #
+            }
+            appearance {
+                icon: fa-location-circle-o
+            }
+        )
+
+    )
+
+    button reset (
+        buttonName: RESET
+        label: Reset
+        layout {
+            sequence: 10
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-undo
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 20
+                clearCache: 20
+                action: resetRegions
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+    )
+
+)
+

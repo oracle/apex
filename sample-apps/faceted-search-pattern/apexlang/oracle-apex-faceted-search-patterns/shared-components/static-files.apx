@@ -1,0 +1,80 @@
+file "APEX$DATA$PKG/FSP_COST_CENTERS$188552.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_COUNTRIES$663609.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_EMPLOYEES$534467.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_EMPLOYEE_EVENTS$50463.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_EMPLOYEE_GROUPS$182398.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_EMPLOYEE_SKILLS$908337.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_GROUPS$17017.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_LOCATIONS$280096.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_PATTERNS$674302.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_SKILLS$950790.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "APEX$DATA$PKG/FSP_TASKS$682287.zip" (
+    mimeType: application/zip
+    charSet: utf-8
+)
+
+file "icons/app-icon-144-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-192.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-256-rounded.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-32.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+
+file "icons/app-icon-512.png" (
+    mimeType: image/png
+    charSet: utf-8
+)
+

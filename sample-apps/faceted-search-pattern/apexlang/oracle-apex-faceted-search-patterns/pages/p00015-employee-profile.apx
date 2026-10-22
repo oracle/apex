@@ -1,0 +1,763 @@
+page 15 (
+    name: Employee Profile
+    alias: EMPLOYEE-PROFILE
+    title: Employee Profile
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    help {
+        helpText:
+            ```html
+                <p>Review the employee selected from a search result. This supporting page demonstrates navigation from a result component to a record detail view.</p>
+                <h3>Components used</h3>
+                <ul>
+                <li><strong>Form region:</strong> Reads the selected employee from APEX sample data.</li>
+                <li><strong>Form Initialization process:</strong> Loads the record identified by the primary-key page item.</li>
+                <li><strong>Display Only page items:</strong> Present the record fields for review.</li>
+                <li><strong>Hidden page items and return buttons:</strong> Carry the record identifier and support returning to the search context.</li>
+                </ul>
+                <h3>How the components work together</h3>
+                <p>The result action passes the employee identifier to this page. Form Initialization loads that record and the Display Only items present its details. Back to search returns to the originating search page with its search filters preserved.</p>
+            ```
+    }
+    comments {
+        comments: Uses the native sample-data form and Form Initialization pattern from ux-pattern-catalog page 410. The primary key selects one record; fields are read-only and returning preserves search filters.
+    }
+
+    region breadcrumb (
+        name: Employee Profile
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region button-bar (
+        name: Employee Profile Actions
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: body
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: [
+                #DEFAULT#
+                t-ButtonRegion--noPadding
+                t-ButtonRegion--noUI
+            ]
+        }
+    )
+
+    region profile (
+        name: Employee Profile
+        type: form
+        source {
+            location: localDatabase
+            tableName: FSP_EMPLOYEES
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--removeHeader js-removeLandmark
+                t-Region--scrollBody
+            ]
+        }
+        readOnly {
+            type: always
+        }
+    )
+
+    pageItem P15_AVATAR (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: AVATAR
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_CAREER_LEVEL (
+        type: textField
+        label {
+            label: Career Level
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 50
+        }
+        source {
+            formRegion: @profile
+            column: CAREER_LEVEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_CITY (
+        type: textField
+        label {
+            label: City
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @profile
+            column: CITY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_COST_CENTER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: COST_CENTER_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_COUNTRY (
+        type: textField
+        label {
+            label: Country
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @profile
+            column: COUNTRY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_DIRECT_REPORTS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: DIRECT_REPORTS
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_EMAIL (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: EMAIL
+            dataType: varchar2
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_EMPLOYEE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: EMPLOYEE_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_EMPLOYMENT_STATUS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: EMPLOYMENT_STATUS
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_EMPLOYMENT_TYPE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: EMPLOYMENT_TYPE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_FIRST_NAME (
+        type: textField
+        label {
+            label: First Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @profile
+            column: FIRST_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_GENDER (
+        type: textField
+        label {
+            label: Gender
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 1
+        }
+        source {
+            formRegion: @profile
+            column: GENDER
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_GEOGRAPHIC_REGION (
+        type: textField
+        label {
+            label: Geographic Region
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @profile
+            column: GEOGRAPHIC_REGION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_HIRE_DATE (
+        type: datePicker
+        label {
+            label: Hire Date
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @profile
+            column: HIRE_DATE
+            dataType: date
+        }
+    )
+
+    pageItem P15_JOB_TITLE (
+        type: textField
+        label {
+            label: Job Title
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 200
+        }
+        source {
+            formRegion: @profile
+            column: JOB_TITLE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_LAST_NAME (
+        type: textField
+        label {
+            label: Last Name
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @profile
+            column: LAST_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_LAST_PROMOTION_DATE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: LAST_PROMOTION_DATE
+            dataType: date
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_LOCATION_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: LOCATION_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_MANAGER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: MANAGER_ID
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_ORG_SIZE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: ORG_SIZE
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_PERMALINK (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: PERMALINK
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_PHONE_COUNTRY_CODE (
+        type: textField
+        label {
+            label: Phone Country Code
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 8
+        }
+        source {
+            formRegion: @profile
+            column: PHONE_COUNTRY_CODE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_PHONE_NUMBER (
+        type: textField
+        label {
+            label: Phone Number
+            alignment: left
+        }
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 32
+        }
+        source {
+            formRegion: @profile
+            column: PHONE_NUMBER
+            dataType: varchar2
+        }
+    )
+
+    pageItem P15_PROFILE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: PROFILE
+            dataType: clob
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_REMOTE_ELIGIBLE_YN (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: REMOTE_ELIGIBLE_YN
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_RETURN_PAGE (
+        type: hidden
+        layout {
+            sequence: 200
+            region: @button-bar
+            slot: regionBody
+        }
+        default {
+            type: static
+            staticValue: 4
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_TAGS (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: TAGS
+            dataType: clob
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_TIMEZONE (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: TIMEZONE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_USER_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: USER_ID
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P15_WORK_ARRANGEMENT (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @profile
+            slot: regionBody
+        }
+        source {
+            formRegion: @profile
+            column: WORK_ARRANGEMENT
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button back-to-search (
+        buttonName: BACK_TO_SEARCH
+        label: Back to search
+        layout {
+            sequence: 120
+            region: @breadcrumb
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            templateOptions: [
+                #DEFAULT#
+                t-Button--noUI
+                t-Button--iconLeft
+            ]
+            icon: fa-arrow-left
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: &P15_RETURN_PAGE.
+            }
+            warnOnUnsavedChanges: doNotCheck
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_RETURN_PAGE
+        }
+    )
+
+    process initialize-profile (
+        name: Initialize Employee Profile
+        type: formInitialization
+        formRegion: @profile
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 4395121736209103215
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P15_EMPLOYEE_ID
+        }
+    )
+
+)
+
