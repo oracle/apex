@@ -1,0 +1,95 @@
+searchConfig employees (
+    name: Employees
+    type: text
+    source {
+        sqlQuery:
+            ```sql
+            select employee_id,
+                   first_name,
+                   last_name,
+                   first_name || ' ' || last_name as name,
+                   email,
+                   user_id,
+                   country,
+                   country_code,
+                   geographic_region,
+                   city,
+                   career_level,
+                   job_title,
+                   cost_center_id,
+                   manager_id,
+                   org_size,
+                   direct_reports,
+                   phone_country_code,
+                   phone_number,
+                   profile,
+                   tags,
+                   permalink,
+                   to_char( systimestamp at time zone timezone, 'HH24:MI' ) as current_local_time,
+                   timezone
+              from eba_srch_txt_employees
+            
+            ```
+        oracleTextIndexColumn: LAST_NAME
+        type: sqlQuery
+    }
+    rowSearch {
+        textQueryFunction: custom
+        customFunctionName: eba_search_text_helper.get_name_search_query
+    }
+    columnMapping {
+        primaryKey1Column: EMPLOYEE_ID
+        titleColumn: NAME
+        subtitleColumn: CITY
+        descriptionColumn: JOB_TITLE
+        customColumn1: PHONE_NUMBER
+    }
+    link {
+        type: redirectThisApp
+        target: {
+            page: 4
+            items: {
+                P4_EMPLOYEE_ID: &EMPLOYEE_ID.
+            }
+        }
+    }
+    iconAndBadge {
+        iconSource: initials
+    }
+    columnFormatting {
+        htmlExpression:
+            ```html
+            <article class="a-ResultsItem u-flex u-align-items-center u-gap-4 &RESULT_CSS_CLASSES!ATTR.">
+              {if ?ICON_VALUE/}
+                <span class="t-Avatar t-Avatar--initials t-Avatar--md u-color u-flex-shrink-0"
+                      aria-hidden="true">&ICON_VALUE.</span>
+              {endif/}
+            
+              <div class="u-flex u-flex-col u-gap-1 u-min-w-0">
+                <h3 class="a-ResultsItem-title u-margin-0 u-text-md">
+                  <a href="&LINK!ATTR.">&NAME.</a>
+                </h3>
+            
+                <div class="u-text-sm u-text-secondary">&JOB_TITLE.</div>
+            
+                <div class="u-flex u-flex-wrap u-align-items-center u-gap-x-4 u-gap-y-1 u-text-sm u-text-secondary">
+                  <span class="u-inline-flex u-align-items-center u-gap-2"
+                        {if ?CURRENT_LOCAL_TIME/}title="Local time: &CURRENT_LOCAL_TIME!ATTR. &TIMEZONE!ATTR."{endif/}>
+                    <span class="fa fa-flag-&COUNTRY_CODE!ATTR." aria-hidden="true"></span>
+                    <span>{if ?CITY/}&CITY. &middot; {endif/}&COUNTRY.</span>
+                  </span>
+            
+                  {if ?EMAIL/}
+                    <a href="mailto:&EMAIL!ATTR." class="u-wrap-anywhere">&EMAIL.</a>
+                  {endif/}
+            
+                  {if ?PHONE_NUMBER/}
+                    <span>&PHONE_COUNTRY_CODE. &PHONE_NUMBER.</span>
+                  {endif/}
+                </div>
+              </div>
+            </article>
+            ```
+    }
+)
+

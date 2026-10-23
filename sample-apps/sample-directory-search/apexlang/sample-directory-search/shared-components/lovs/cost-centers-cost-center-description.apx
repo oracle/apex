@@ -1,0 +1,12 @@
+lov cost-centers-cost-center-description (
+    name: COST_CENTERS.COST_CENTER_DESCRIPTION
+    source {
+        tableName: EBA_SRCH_TXT_COST_CENTERS
+    }
+    columnMapping {
+        return: COST_CENTER_ID
+        display: COST_CENTER_DESCRIPTION
+        defaultSort: COST_CENTER_DESCRIPTION
+    }
+)
+

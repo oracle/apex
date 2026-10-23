@@ -1,0 +1,122 @@
+page 0 (
+    name: Global Page
+
+    region help-region (
+        name: Help Region
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: dialogsDrawersAndPopups
+        }
+        appearance {
+            template: @/inline-popup
+            templateOptions: [
+                #DEFAULT#
+                js-dialog-autoheight
+                js-popup-callout
+                js-dialog-size600x400
+            ]
+        }
+        advanced {
+            customAttributes: data-parent-element="#HELP"
+        }
+    )
+
+    region new (
+        name: Help Text
+        type: dynamicContent
+        source {
+            plsqlFunctionBody:
+                ```plsql
+                declare
+                    l_text clob;
+                begin
+                    for c1 in (
+                        select help_text
+                          from apex_application_pages
+                         where page_id        = :APP_PAGE_ID
+                           and application_id = :APP_ID )
+                    loop
+                        if c1.help_text is null then
+                            l_text := 'No help is available for this page.';
+                        else
+                            l_text := l_text || '<p>' || c1.help_text || '</p>';
+                        end if;
+                    end loop;
+                
+                    return l_text;
+                end;
+                ```
+        }
+        layout {
+            sequence: 10
+            parentRegion: @help-region
+            slot: subRegions
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+            cssClasses: u-text-body-sm
+        }
+    )
+
+    button help (
+        buttonName: HELP
+        label: Help
+        layout {
+            sequence: 10
+            slot: beforeNavigationBar
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--simple
+                t-Button--iconLeft
+            ]
+            cssClasses: u-color-1
+            icon: fa-question-circle-o
+        }
+        behavior {
+            action: triggerAction
+        }
+        advanced {
+            htmlDomId: HELP
+        }
+        serverSideCondition {
+            type: currentPageInList
+            pages: [
+                2
+                3
+                6
+                201
+            ]
+        }
+
+        triggerAction native-open-region (
+            action: openRegion
+            affectedElements {
+                selectionType: region
+                region: @help-region
+            }
+            execution {
+                sequence: 20
+            }
+        )
+
+        triggerAction native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @new
+            }
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+)
+

@@ -1,0 +1,12 @@
+lov employees-first-name (
+    name: EMPLOYEES.FIRST_NAME
+    source {
+        tableName: EBA_SRCH_TXT_EMPLOYEES
+    }
+    columnMapping {
+        return: EMPLOYEE_ID
+        display: FIRST_NAME
+        defaultSort: FIRST_NAME
+    }
+)
+

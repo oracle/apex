@@ -1,0 +1,18 @@
+lov cost-center (
+    name: COST_CENTER
+    source {
+        type: sqlQuery
+        sqlQuery:
+            ```sql
+            select cost_center_description, cost_center_id
+              from eba_srch_txt_cost_centers
+             
+            ```
+    }
+    columnMapping {
+        return: COST_CENTER_ID
+        display: COST_CENTER_DESCRIPTION
+        defaultSort: COST_CENTER_DESCRIPTION
+    }
+)
+

@@ -1,0 +1,12 @@
+lov groups (
+    name: GROUPS
+    source {
+        tableName: EBA_SRCH_TXT_GROUPS
+    }
+    columnMapping {
+        return: GROUP_ID
+        display: GROUP_NAME
+        defaultSort: GROUP_NAME
+    }
+)
+

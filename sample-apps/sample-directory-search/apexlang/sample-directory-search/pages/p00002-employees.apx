@@ -1,0 +1,228 @@
+page 2 (
+    name: Employees Search Region
+    alias: EMPLOYEES
+    title: Employees Search Region
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: [
+            #DEFAULT#
+            t-DeferredRendering
+            t-PageBody--verticalMiddle
+        ]
+    }
+    navigation {
+        warnOnUnsavedChanges: false
+    }
+    css {
+        inline:
+            ```css
+            /* Set Search Field to be XXL */
+            .t-Form--xlarge, .t-Form-fieldContainer--xlarge {
+                --ut-field-input-icon-size: 1.5rem;
+                --ut-field-input-icon-padding-x: .75rem;
+                --a-field-input-padding-y: 1rem;
+                --a-field-input-padding-x: 1rem;
+            }
+            
+            /* Fix wrapping of Quick Picks during page load */
+            .t-Form-itemWrapper:has(.apex-quick-picks) {
+                flex-wrap: wrap;
+            
+               .apex-quick-picks {
+                    order: 5;
+               }
+            }
+            
+            /* Add margin to quick picks and center */
+            .apex-quick-picks {
+                margin-block-start: .25rem;
+                text-align: center;
+            }
+            
+            /* Result tweaks */
+            .a-SearchResults-list {
+              --a-resultsitem-background-color: var(--ut-component-toolbar-background-color);
+              --a-searchresults-gap: .5rem;
+            }
+            
+            /* Animate Results In */
+            .t-ResultsRegion {
+              interpolate-size: allow-keywords;
+              block-size: 0;
+              overflow: clip;
+              transition: block-size 1s ease;
+            
+              &:has(.a-SearchResults-item) {
+                block-size: auto;
+              }
+            }
+            ```
+    }
+    security {
+        authentication: public
+    }
+    help {
+        helpText:
+            ```html
+            <h3>Search Configuration and Search Region</h3>
+            <p>
+                This page provides full text search on the employee directory using the <code>Employees</code> <strong>Search Configuration</strong>. 
+                The Search Configuration is based on an Oracle Text index, which allows to provide exact, fuzzy or name search. The
+                index is configured to first do exact search on names, following by fuzzy search on names, and then on other attributes, 
+                so that the most relevant results are first.
+            </p>
+            <p>
+                See the <em>Quick Picks</em> under the search field for examples.
+            </p>
+            <p><strong>Search Options</strong></p>
+            <dl>
+                <dt><code>Müller</code></dt>
+                <dd>Search for <strong>Müller</strong> across all attributes, starting with the name. Apply normal and fuzzy search.</dd>
+                <dt><code>email:jochen.margraf.30@example.invalid</code></dt>
+                <dd>The <strong>email</strong> prefix initiates exact search for the given email address. Useful if that address is known.</dd>
+                <dt><code>phone:4711</code> or <code>4711</code></dt>
+                <dd>If a plain number is detected, then the search is done for phone numbers ending with the provided number.</dd>
+                <dt><code>New York</code></dt>
+                <dd>If the name of a known city is entered, then the search is done for the city.</dd>
+                <dt><code>United States</code></dt>
+                <dd>If the name of a known country is entered, then the search is done for the country.</dd>
+            </dl>
+            
+            
+            ```
+    }
+
+    region employees (
+        name: Employees
+        type: staticContent
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/blank-with-attributes-no-grid
+            templateOptions: [
+                #DEFAULT#
+                margin-top-md
+                margin-bottom-md
+            ]
+            cssClasses: [
+                mxw800
+                margin-auto
+            ]
+        }
+        accessibility {
+            landmarkType: search
+        }
+    )
+
+    region search-results (
+        name: Search Results
+        type: search
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/search-results-container
+            templateOptions: #DEFAULT#
+            cssClasses: [
+                mxw800
+                margin-auto
+            ]
+        }
+        settings {
+            searchPageItem: P2_SEARCH
+            minChars: 1
+        }
+        pagination {
+            resultsPerPage: 30
+        }
+        messages {
+            noResultsFoundMessage:
+                ```html
+                <p class="u-tC u-margin-5 u-text-muted-color">No results found. Please check your spelling or try selecting one of the QuickPick suggestions above.</p>
+                
+                ```
+        }
+
+        searchSource employees (
+            name: Employees
+            searchConfig: @employees
+            layout {
+                sequence: 10
+            }
+        )
+
+    )
+
+    pageItem P2_SEARCH (
+        type: textField
+        label {
+            label: Search
+            alignment: left
+        }
+        settings {
+            subtype: search
+        }
+        layout {
+            sequence: 10
+            region: @employees
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/hidden
+            templateOptions: [
+                #DEFAULT#
+                t-Form-fieldContainer--stretchInputs
+                t-Form-fieldContainer--xlarge
+                t-Form-fieldContainer--noPadding
+            ]
+            icon: fa-search
+            valuePlaceholder: Search by name, email or last digits of phone number.
+        }
+        advanced {
+            warnOnUnsavedChanges: ignore
+        }
+        quickPicks {
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 'Müller'                              d, 'Müller'                              r from sys.dual                                                             union all 
+                select 'city:' || lower(city) || ' müller'   d, 'city:' || lower(city) || ' müller'   r from eba_srch_txt_employees where last_name = 'Muller' and rownum=1   union all
+                select 'New York'                            d, 'New York'                            r from sys.dual                                                             union all
+                select 'France'                              d, 'France'                              r from sys.dual                                                             union all
+                select 'email:' || email                     d, 'email:' || email                     r from eba_srch_txt_employees where country = 'France'   and rownum = 1 union all
+                select 'phone:' || substr(phone_number, -3 ) d, 'phone:' || substr(phone_number, -3 ) r from eba_srch_txt_employees where country = 'Germany'  and rownum = 1
+                
+                ```
+        }
+    )
+
+    dynamicAction new (
+        name: Refresh Results on Change (click on Quick Pick)
+        execution {
+            sequence: 10
+        }
+        when {
+            selectionType: items
+            items: P2_SEARCH
+        }
+
+        action native-refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @search-results
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

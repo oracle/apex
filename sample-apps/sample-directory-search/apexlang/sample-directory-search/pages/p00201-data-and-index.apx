@@ -1,0 +1,214 @@
+page 201 (
+    name: Data and Index
+    alias: DATA-AND-INDEX
+    title: Data and Index
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    security {
+        authorizationScheme: mustNotBePublicUser
+    }
+    help {
+        helpText: This page provides a brief overview on the data tables and the details of the Oracle Text Index.
+    }
+
+    region breadcrumb (
+        name: Breadcrumb
+        type: breadcrumb
+        source {
+            breadcrumb: @breadcrumb
+        }
+        layout {
+            sequence: 10
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useBreadcrumbTitle
+            ]
+        }
+        componentAppearance {
+            breadcrumbTemplate: @/breadcrumb
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region data-details (
+        name: Data
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select (select count(*) from eba_srch_txt_employees)    as employees_count,
+                       (select count(*) from eba_srch_txt_cost_centers) as cost_center_count,
+                       (select count(*) from eba_srch_txt_groups)       as groups_count
+                from sys.dual
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column COST_CENTER_COUNT (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Cost Center Count
+                alignment: end
+            }
+            layout {
+                sequence: 20
+                columnAlignment: end
+            }
+        )
+
+        column EMPLOYEES_COUNT (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Employees Count
+                alignment: end
+            }
+            layout {
+                sequence: 10
+                columnAlignment: end
+            }
+        )
+
+        column GROUPS_COUNT (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Groups Count
+                alignment: end
+            }
+            layout {
+                sequence: 30
+                columnAlignment: end
+            }
+        )
+
+    )
+
+    region text-index-details (
+        name: Text Index
+        type: classicReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select idx_name,
+                       idx_table,
+                       idx_sync_type,
+                       idx_status,
+                       idx_last_ddl_time
+                  from ctx_user_indexes
+                 where idx_name = 'FT_EBA_SRCH_TXT_EMPS_FTIDX_IDX'
+                ```
+        }
+        layout {
+            sequence: 20
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+        componentAppearance {
+            template: @/value-attribute-pairs-column
+            templateOptions: [
+                #DEFAULT#
+                t-AVPList--leftAligned
+                t-Report--hideNoPagination
+            ]
+        }
+
+        column IDX_LAST_DDL_TIME (
+            reportColumnQueryId: 5
+            derivedColumn: N
+            heading {
+                heading: Last DDL Time
+            }
+            layout {
+                sequence: 50
+            }
+            appearance {
+                formatMask: SINCE
+            }
+        )
+
+        column IDX_NAME (
+            reportColumnQueryId: 1
+            derivedColumn: N
+            heading {
+                heading: Index Name
+            }
+            layout {
+                sequence: 10
+            }
+        )
+
+        column IDX_STATUS (
+            reportColumnQueryId: 4
+            derivedColumn: N
+            heading {
+                heading: Status
+            }
+            layout {
+                sequence: 40
+            }
+        )
+
+        column IDX_SYNC_TYPE (
+            reportColumnQueryId: 3
+            derivedColumn: N
+            heading {
+                heading: Synchronization
+            }
+            layout {
+                sequence: 30
+            }
+        )
+
+        column IDX_TABLE (
+            reportColumnQueryId: 2
+            derivedColumn: N
+            heading {
+                heading: Table Name
+            }
+            layout {
+                sequence: 20
+            }
+        )
+
+    )
+
+)
+

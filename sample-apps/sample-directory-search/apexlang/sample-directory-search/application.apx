@@ -1,0 +1,72 @@
+app EMPLOYEE-DIRECTORY-SEARCH (
+    name: Employee Directory Search
+    version: 26.2.0
+    logo {
+        type: text
+        text: Employee Directory Search
+    }
+    navigation {
+        homeUrl: {
+            page: 1
+        }
+        loginUrl: {
+            page: 9999
+        }
+    }
+    navigationMenu {
+        listTemplate: @/side-navigation-menu
+        templateOptions: [
+            #DEFAULT#
+            js-defaultCollapsed
+            js-navCollapsed--hidden
+            t-TreeNav--styleB
+        ]
+        list: @navigation-menu
+    }
+    navigationBar {
+        list: @navigation-bar
+        listTemplate: @/navigation-bar
+        templateOptions: #DEFAULT#
+    }
+    userInterface {
+        currentTheme: @universal-theme
+        globalPage: 0
+    }
+    appFormatMasks {
+        date: DS
+        timestamp: DS
+        timestampTimeZone: DS
+    }
+    authentication {
+        scheme: @oracle-apex-accounts
+    }
+    security {
+        deepLinking: true
+        allowBotAccess: true
+    }
+    sessionManagement {
+        rejoinSessions: publicSessions
+    }
+    rowSearch {
+        textQueryFunction: custom
+        customFunctionName: eba_search_text_helper.get_name_search_query
+    }
+    advanced {
+        modernizeApp: true
+        copyrightBanner:
+            ```
+            Name: #APP_NAME#
+            Copyright (c) 2012, #YEAR# Oracle and/or its affiliates.
+            Licensed under the Universal Permissive License v 1.0
+            as shown at https://oss.oracle.com/licenses/upl/
+            ```
+    }
+
+    substitution APP_NAME (
+        value {
+            staticValue: Employee Directory Search
+        }
+    )
+
+)
+

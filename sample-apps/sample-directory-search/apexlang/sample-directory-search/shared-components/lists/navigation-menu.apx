@@ -1,0 +1,127 @@
+list navigation-menu (
+    name: Navigation Menu
+
+    entry administration (
+        label: Data and Index
+        icon {
+            imageIconCssClasses: fa-sign-in
+        }
+        layout {
+            sequence: 90
+        }
+        isCurrent {
+            type: pages
+            pages: 201
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+        userDefinedAttributes {
+            1: Review summary on employee data and the Oracle Text index.
+        }
+    )
+
+    entry employee-faceted-search (
+        label: Faceted Search
+        icon {
+            imageIconCssClasses: fa-table-search
+        }
+        layout {
+            sequence: 50
+        }
+        isCurrent {
+            type: pages
+            pages: 6
+        }
+        link {
+            target: {
+                page: 6
+                clearCache: [
+                    6
+                    RR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: <strong>Faceted Search</strong> utilizing Oracle Text for the search facet.
+        }
+    )
+
+    entry employees (
+        label: Search (Search Region)
+        icon {
+            imageIconCssClasses: fa-search
+        }
+        layout {
+            sequence: 20
+        }
+        isCurrent {
+            type: pages
+            pages: 2
+        }
+        link {
+            target: {
+                page: 2
+                clearCache: [
+                    2
+                    RR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Employee Search using Oracle Text. Uses APEX <strong>Search Configuration</strong> and a <strong>Search Region</strong>.
+        }
+    )
+
+    entry employees-content-row (
+        label: Search (Content Row)
+        icon {
+            imageIconCssClasses: fa-media-list
+        }
+        layout {
+            sequence: 30
+        }
+        isCurrent {
+            type: pages
+            pages: 3
+        }
+        link {
+            target: {
+                page: 3
+                clearCache: [
+                    3
+                    RR
+                ]
+                action: resetPagination
+            }
+        }
+        userDefinedAttributes {
+            1: Employee Search using <strong>Content Row</strong> region, based on a SQL Query using Oracle Text CONTAINS.
+        }
+    )
+
+    entry home (
+        label: Home
+        icon {
+            imageIconCssClasses: fa-home
+        }
+        layout {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+        userDefinedAttributes {
+            1: Application Home Page
+            4: home-page-item
+        }
+    )
+
+)
+

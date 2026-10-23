@@ -1,0 +1,54 @@
+installScript "Create Tables" (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: create-tables.sql
+    }
+)
+
+installScript Initialize (
+    execution {
+        sequence: 60
+    }
+    script {
+        contentFile: initialize.sql
+    }
+)
+
+installScript "eba_search_text_data body" (
+    execution {
+        sequence: 31
+    }
+    script {
+        contentFile: eba-search-text-data-body.sql
+    }
+)
+
+installScript "eba_search_text_data spec" (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: eba-search-text-data-spec.sql
+    }
+)
+
+installScript "eba_search_text_helper body" (
+    execution {
+        sequence: 50
+    }
+    script {
+        contentFile: eba-search-text-helper-body.sql
+    }
+)
+
+installScript "eba_search_text_helper spec" (
+    execution {
+        sequence: 40
+    }
+    script {
+        contentFile: eba-search-text-helper-spec.sql
+    }
+)
+

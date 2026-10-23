@@ -1,0 +1,70 @@
+breadcrumb breadcrumb (
+    name: Breadcrumb
+
+    entry administration (
+        name: Data and Index
+        pageNumber: 201
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 201
+            }
+        }
+    )
+
+    entry employee-faceted-search (
+        name: Employee Faceted Search
+        pageNumber: 6
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 6
+            }
+        }
+    )
+
+    entry employees (
+        name: Employees
+        pageNumber: 2
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 2
+            }
+        }
+    )
+
+    entry employees-content-row (
+        name: Employees Content Row
+        pageNumber: 3
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 3
+            }
+        }
+    )
+
+    entry home (
+        name: Home
+        pageNumber: 1
+        execution {
+            sequence: 10
+        }
+        link {
+            target: {
+                page: 1
+            }
+        }
+    )
+
+)
+

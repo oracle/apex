@@ -1,0 +1,44 @@
+validation "Is Database 23ai or higher?" (
+    execution {
+        sequence: 10
+    }
+    validation {
+        type: expression
+        plsqlExpression: sys.dbms_db_version.version >= 23
+    }
+    error {
+        errorMessage: Database Version must be at least 26ai.
+    }
+)
+
+validation "Oracle TEXT available" (
+    execution {
+        sequence: 20
+    }
+    validation {
+        type: functionBody
+        plsqlFunctionBody:
+            ```plsql
+            begin
+                execute immediate 
+                     'declare ' 
+                  || 'procedure do_txt_check '
+                  || 'is '
+                  || 'begin '
+                  || 'ctx_ddl.create_preference(''pref'', ''user_datastore'');'
+                  || 'end do_txt_check;'
+                  || 'begin null; end;';
+            
+                return true;
+            exception
+                when others then
+                    return false;
+            end;
+            
+            ```
+    }
+    error {
+        errorMessage: Oracle TEXT is not available to this database schema. Check CTXAPP role.
+    }
+)
+

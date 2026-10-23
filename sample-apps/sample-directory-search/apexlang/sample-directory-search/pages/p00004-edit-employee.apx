@@ -1,0 +1,668 @@
+page 4 (
+    name: Employee Details
+    alias: EDIT-EMPLOYEE
+    title: Employee Details
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    readOnly {
+        type: always
+    }
+    security {
+        authentication: public
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region edit-employee (
+        name: Employee Details
+        type: form
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select EMPLOYEE_ID,
+                       FIRST_NAME,
+                       LAST_NAME,
+                       EMAIL,
+                       USER_ID,
+                       COUNTRY,
+                       COUNTRY_CODE,
+                       GEOGRAPHIC_REGION,
+                       CITY,
+                       CAREER_LEVEL,
+                       JOB_TITLE,
+                       COST_CENTER_ID,
+                       MANAGER_ID,
+                       ORG_SIZE,
+                       DIRECT_REPORTS,
+                       TAGS,
+                       EMPLOYEE_GROUPS, 
+                       PHONE_COUNTRY_CODE || ' ' || PHONE_NUMBER as phone_number,
+                       to_char( systimestamp at time zone TIMEZONE, 'HH24:MI' ) || ' ' || timezone as timezone 
+                  from eba_srch_txt_EMPLOYEES
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region job-information (
+        name: Job Information
+        type: staticContent
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    region tags-and-groups (
+        name: Tags and Groups
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: contentBody
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noUI
+                t-Region--scrollBody
+            ]
+        }
+    )
+
+    pageItem P4_CAREER_LEVEL (
+        type: textField
+        label {
+            label: Career Level
+            alignment: left
+        }
+        layout {
+            sequence: 180
+            region: @job-information
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 50
+        }
+        source {
+            formRegion: @edit-employee
+            column: CAREER_LEVEL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_CITY (
+        type: textField
+        label {
+            label: City
+            alignment: left
+        }
+        layout {
+            sequence: 130
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @edit-employee
+            column: CITY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_COST_CENTER_ID (
+        type: selectList
+        label {
+            label: Cost Center
+            alignment: left
+        }
+        lov {
+            type: sharedComponent
+            lov: @cost-centers-cost-center-description
+        }
+        layout {
+            sequence: 200
+            region: @job-information
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @edit-employee
+            column: COST_CENTER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P4_COUNTRY (
+        type: textField
+        label {
+            label: Country
+            alignment: left
+        }
+        layout {
+            sequence: 140
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-flag-&P4_COUNTRY_CODE.
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @edit-employee
+            column: COUNTRY
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_COUNTRY_CODE (
+        type: hidden
+        layout {
+            sequence: 30
+            region: @edit-employee
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-employee
+            column: COUNTRY_CODE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_DIRECT_REPORTS (
+        type: numberField
+        label {
+            label: Direct Reports
+            alignment: left
+        }
+        layout {
+            sequence: 210
+            region: @job-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @edit-employee
+            column: DIRECT_REPORTS
+            dataType: number
+        }
+        serverSideCondition {
+            type: itemIsNotNullAndNotZero
+            item: P4_DIRECT_REPORTS
+        }
+    )
+
+    pageItem P4_EMAIL (
+        type: textField
+        label {
+            label: Email
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 60
+        }
+        validation {
+            valueRequired: true
+            maxLength: 320
+        }
+        source {
+            formRegion: @edit-employee
+            column: EMAIL
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_EMPLOYEE_GROUPS (
+        type: selectMany
+        label {
+            label: Groups
+            alignment: left
+        }
+        settings {
+            useDefaults: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select group_name d, group_id r from eba_srch_txt_groups
+        }
+        multipleValues {
+            type: jsonArray
+        }
+        layout {
+            sequence: 230
+            region: @tags-and-groups
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @edit-employee
+            column: EMPLOYEE_GROUPS
+            dataType: clob
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: ":P4_EMPLOYEE_GROUPS is not null and :P4_EMPLOYEE_GROUPS != '[]'"
+        }
+    )
+
+    pageItem P4_EMPLOYEE_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @edit-employee
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-employee
+            column: EMPLOYEE_ID
+            dataType: number
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_FIRST_NAME (
+        type: textField
+        label {
+            label: First Name
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @edit-employee
+            column: FIRST_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_GEOGRAPHIC_REGION (
+        type: textField
+        label {
+            label: Region
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @edit-employee
+            column: GEOGRAPHIC_REGION
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_JOB_TITLE (
+        type: textField
+        label {
+            label: Job Title
+            alignment: left
+        }
+        layout {
+            sequence: 170
+            region: @job-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 200
+        }
+        source {
+            formRegion: @edit-employee
+            column: JOB_TITLE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_LAST_NAME (
+        type: textField
+        label {
+            label: Last Name
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @edit-employee
+            column: LAST_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_MANAGER_ID (
+        type: selectList
+        label {
+            label: Manager
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select first_name || ' ' || last_name as d, employee_id r from eba_srch_txt_employees
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 190
+            region: @job-information
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            height: 1
+        }
+        source {
+            formRegion: @edit-employee
+            column: MANAGER_ID
+            dataType: number
+        }
+    )
+
+    pageItem P4_ORG_SIZE (
+        type: hidden
+        layout {
+            sequence: 40
+            region: @edit-employee
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-employee
+            column: ORG_SIZE
+            dataType: number
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P4_PHONE_NUMBER (
+        type: textField
+        label {
+            label: Phone Number
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+            startNewRow: false
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 32
+        }
+        validation {
+            maxLength: 32
+        }
+        source {
+            formRegion: @edit-employee
+            column: PHONE_NUMBER
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_TAGS (
+        type: selectMany
+        label {
+            label: Tags
+            alignment: left
+        }
+        settings {
+            infiniteScroll: false
+            useDefaults: false
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: "select null d, null r from sys.dual "
+        }
+        multipleValues {
+            type: jsonArray
+        }
+        layout {
+            sequence: 220
+            region: @tags-and-groups
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        source {
+            formRegion: @edit-employee
+            column: TAGS
+            dataType: clob
+        }
+    )
+
+    pageItem P4_TIMEZONE (
+        type: textField
+        label {
+            label: Local Time
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @edit-employee
+            slot: regionBody
+            alignment: left
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 30
+        }
+        validation {
+            maxLength: 256
+        }
+        source {
+            formRegion: @edit-employee
+            column: TIMEZONE
+            dataType: varchar2
+        }
+    )
+
+    pageItem P4_USER_ID (
+        type: hidden
+        layout {
+            sequence: 20
+            region: @edit-employee
+            slot: regionBody
+        }
+        source {
+            formRegion: @edit-employee
+            column: USER_ID
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    button cancel (
+        buttonName: CLOSE
+        label: Close
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: close
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: triggerAction
+        }
+
+        triggerAction native-dialog-cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 3229645066459763
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,SAVE,DELETE
+        }
+    )
+
+    process initialize-form-edit-employee (
+        name: Initialize form Edit Employee
+        type: formInitialization
+        formRegion: @edit-employee
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 3228883698459761
+        }
+    )
+
+)
+

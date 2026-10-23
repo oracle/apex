@@ -1,0 +1,17 @@
+supportingObject (
+    installation {
+        objectNames: [
+            EBA_SEARCH_TEXT_DATA
+            EBA_SEARCH_TEXT_HELPER
+            EBA_SRCH_TXT_COUNTRIES
+            EBA_SRCH_TXT_EMPLOYEES
+            EBA_SRCH_TXT_GROUPS
+            EBA_SRCH_TXT_COST_CENTERS
+            EBA_SRCH_TXT_EMPLOYEE_ORG_V
+        ]
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+)
+

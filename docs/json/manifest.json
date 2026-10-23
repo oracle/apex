@@ -625,6 +625,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_DIRECTORY_SEARCH",
+            "author": "Oracle",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-directory-search.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-directory-search",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-directory-search/sql/sample-directory-search.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-directory-search/sql/sample-directory-search.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Sample Directory Search",
+                    "description": "This application showcases search functionality on an employee directory, using APEX and Oracle Text. Search functionality, like fuzzy search, name searching, progressive relaxation and relevance scoring is utilized by APEX components like Search Configurations, Content Row Regions or Faceted Search. This application requires Oracle AI Database 26ai or higher, and Oracle Text available in the workspace schema (CTXAPP role)."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_DOCUMENT_GENERATOR",
             "author": "Oracle",
             "version": "26.2.0",
