@@ -1,0 +1,973 @@
+page 2 (
+    name: Expense Report
+    alias: EXPENSE-REPORT
+    title: Expense Report
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use a full-page form when a record has enough fields to benefit from named sections and more space than a modal provides.</p>
+            <h3>About this form</h3>
+            <p>The native section selector offers Show All, Report and Employee, Trip Details, Accounting and Approval Contact, and Justification and Reimbursement. The fields demonstrate required text, email and phone inputs, dates, lookup choices, a CLOB-backed justification longer than 32 KB, and signed advances or credits. Travel End must be on or after Travel Start when both dates are provided.</p>
+            <h3>How the components work together</h3>
+            <ul>
+            <li><strong>Form Initialization:</strong> Uses the hidden report identifier to load a record.</li>
+            <li><strong>Form region and native items:</strong> Bind fields to the report table and apply their validation settings.</li>
+            <li><strong>Automatic Row Processing and a page branch:</strong> Save the record and return to the report list after Create, Save, or Delete.</li>
+            </ul>
+            <p>Cancel returns without saving report-field edits. Add Expense is available for a saved report and opens a drawer with that report selected. Saving an expense is separate from saving the report; canceling the report does not undo an expense already saved in the drawer.</p>
+            <p>Delete requires confirmation and also removes the report's expense lines and receipts. Status and Policy Reviewed are demonstration fields; no approval or payment workflow is executed.</p>
+            ```
+    }
+
+    region approval (
+        name: Justification and Reimbursement
+        type: staticContent
+        layout {
+            sequence: 42
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region buttons (
+        name: Expense Report
+        type: staticContent
+        layout {
+            sequence: 22
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+    )
+
+    region coding (
+        name: Accounting and Approval Contact
+        type: staticContent
+        layout {
+            sequence: 32
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    region form (
+        name: Report and Employee
+        type: form
+        source {
+            location: localDatabase
+            tableName: SFM_EXPENSE_REPORTS
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+        edit {
+            enabled: true
+        }
+    )
+
+    region sections (
+        name: Sections
+        type: regionDisplaySelector
+        layout {
+            sequence: 32
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: rds
+        }
+    )
+
+    region trip (
+        name: Trip Details
+        type: staticContent
+        layout {
+            sequence: 12
+            slot: body
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+            ]
+        }
+        advanced {
+            regionDisplaySelector: true
+        }
+    )
+
+    pageItem P2_ADVANCE_AMOUNT (
+        type: numberField
+        label {
+            label: Advance or Credit
+            alignment: left
+        }
+        settings {
+            minValue: -9999999999.99
+            maxValue: 9999999999.99
+        }
+        layout {
+            sequence: 190
+            region: @approval
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: FM9G999G999G990D00
+        }
+        source {
+            formRegion: @form
+            column: ADVANCE_AMOUNT
+            dataType: number
+        }
+        help {
+            helpText: Enter a positive advance or a negative credit, in the report currency. Zero is valid.
+        }
+    )
+
+    pageItem P2_BUSINESS_JUSTIFICATION (
+        type: textarea
+        label {
+            label: Business Justification
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @approval
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 6
+        }
+        source {
+            formRegion: @form
+            column: BUSINESS_JUSTIFICATION
+            dataType: clob
+        }
+        sessionState {
+            dataType: clob
+            storage: session
+        }
+        help {
+            helpText: Explain the business purpose. This CLOB-backed field supports text longer than 32 KB.
+        }
+    )
+
+    pageItem P2_CONTACT_PHONE (
+        type: textField
+        label {
+            label: Contact Phone
+            alignment: left
+        }
+        settings {
+            subtype: phone
+        }
+        layout {
+            sequence: 110
+            region: @form
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-mobile
+        }
+        validation {
+            maxLength: 40
+        }
+        source {
+            formRegion: @form
+            column: CONTACT_PHONE
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional contact phone for this fictional expense report.
+        }
+    )
+
+    pageItem P2_COST_CENTER (
+        type: textField
+        label {
+            label: Cost Center
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @coding
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            maxLength: 30
+        }
+        source {
+            formRegion: @form
+            column: COST_CENTER
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional cost center for this fictional expense report.
+        }
+    )
+
+    pageItem P2_CREATED_ON (
+        type: hidden
+        layout {
+            sequence: 100
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: CREATED_ON
+            dataType: timestamp
+            queryOnly: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_CURRENCY_CODE (
+        type: selectList
+        label {
+            label: Currency
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:USD;USD,EUR;EUR,GBP;GBP,CAD;CAD
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 70
+            region: @form
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: [
+                #DEFAULT#
+                margin-bottom-md
+            ]
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form
+            column: CURRENCY_CODE
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: USD
+        }
+        help {
+            helpText: Provide the currency for this expense report.
+        }
+    )
+
+    pageItem P2_DEPARTMENT (
+        type: textField
+        label {
+            label: Department
+            alignment: left
+        }
+        layout {
+            sequence: 110
+            region: @coding
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            maxLength: 100
+        }
+        source {
+            formRegion: @form
+            column: DEPARTMENT
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional department for this fictional expense report.
+        }
+    )
+
+    pageItem P2_DESTINATION (
+        type: textField
+        label {
+            label: Destination
+            alignment: left
+        }
+        layout {
+            sequence: 150
+            region: @trip
+            slot: regionBody
+            columnSpan: 12
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            icon: fa-map-marker-o
+        }
+        validation {
+            maxLength: 150
+        }
+        source {
+            formRegion: @form
+            column: DESTINATION
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional destination for this fictional expense report.
+        }
+    )
+
+    pageItem P2_EMPLOYEE_EMAIL (
+        type: textField
+        label {
+            label: Employee Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+        }
+        layout {
+            sequence: 90
+            region: @form
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            icon: fa-envelope-o
+        }
+        validation {
+            valueRequired: true
+            maxLength: 254
+        }
+        source {
+            formRegion: @form
+            column: EMPLOYEE_EMAIL
+            dataType: varchar2
+        }
+        help {
+            helpText: Provide the employee email for this expense report.
+        }
+    )
+
+    pageItem P2_EMPLOYEE_NAME (
+        type: textField
+        label {
+            label: Employee Name
+            alignment: left
+        }
+        layout {
+            sequence: 80
+            region: @form
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            icon: fa-user
+        }
+        validation {
+            valueRequired: true
+            maxLength: 100
+        }
+        source {
+            formRegion: @form
+            column: EMPLOYEE_NAME
+            dataType: varchar2
+        }
+        help {
+            helpText: Provide the employee name for this expense report.
+        }
+    )
+
+    pageItem P2_MANAGER_EMAIL (
+        type: textField
+        label {
+            label: Manager Email
+            alignment: left
+        }
+        settings {
+            subtype: email
+        }
+        layout {
+            sequence: 150
+            region: @coding
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            maxLength: 254
+        }
+        source {
+            formRegion: @form
+            column: MANAGER_EMAIL
+            dataType: varchar2
+        }
+        help {
+            helpText: Use a fictional manager email address for the approval contact.
+        }
+    )
+
+    pageItem P2_PAYMENT_METHOD (
+        type: selectList
+        label {
+            label: Payment Method
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Bank Transfer;BANK_TRANSFER,Payroll;PAYROLL,Corporate Card;CORPORATE_CARD
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 180
+            region: @approval
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @form
+            column: PAYMENT_METHOD
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional payment method for this fictional expense report.
+        }
+    )
+
+    pageItem P2_POLICY_ACCEPTED_YN (
+        type: selectList
+        label {
+            label: Policy Reviewed
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Yes;Y,No;N
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 200
+            region: @approval
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @form
+            column: POLICY_ACCEPTED_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: N
+        }
+        help {
+            helpText: Record whether the expense policy has been reviewed; this sample does not submit approvals.
+        }
+    )
+
+    pageItem P2_PROJECT_CODE (
+        type: textField
+        label {
+            label: Project Code
+            alignment: left
+        }
+        layout {
+            sequence: 120
+            region: @coding
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            maxLength: 40
+        }
+        source {
+            formRegion: @form
+            column: PROJECT_CODE
+            dataType: varchar2
+        }
+        help {
+            helpText: Optional project code for this fictional expense report.
+        }
+    )
+
+    pageItem P2_REPORT_DATE (
+        type: datePicker
+        label {
+            label: Report Date
+            alignment: left
+        }
+        layout {
+            sequence: 50
+            region: @form
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form
+            column: REPORT_DATE
+            dataType: date
+        }
+        help {
+            helpText: Provide the expense report date for this expense report.
+        }
+    )
+
+    pageItem P2_REPORT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: REPORT_ID
+            dataType: number
+            queryOnly: true
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P2_REPORT_TITLE (
+        type: textField
+        label {
+            label: Report Title
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @form
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+            maxLength: 200
+        }
+        source {
+            formRegion: @form
+            column: REPORT_TITLE
+            dataType: varchar2
+        }
+        help {
+            helpText: Provide the expense report title for this expense report.
+        }
+    )
+
+    pageItem P2_STATUS (
+        type: selectList
+        label {
+            label: Status
+            alignment: left
+        }
+        lov {
+            type: staticValues
+            staticValues: STATIC:Draft;DRAFT,Submitted;SUBMITTED,Approved;APPROVED,Paid;PAID,Returned;RETURNED
+            displayExtraValues: false
+            displayNullValue: false
+        }
+        layout {
+            sequence: 40
+            region: @form
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form
+            column: STATUS
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: DRAFT
+        }
+        help {
+            helpText: Provide the status for this expense report.
+        }
+    )
+
+    pageItem P2_SUBMITTED_ON (
+        type: datePicker
+        label {
+            label: Submitted On
+            alignment: left
+        }
+        layout {
+            sequence: 90
+            region: @approval
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD HH24:MI
+        }
+        source {
+            formRegion: @form
+            column: SUBMITTED_ON
+            dataType: timestamp
+        }
+        help {
+            helpText: Provide the submitted on for this expense report.
+        }
+    )
+
+    pageItem P2_TRAVEL_END (
+        type: datePicker
+        label {
+            label: Travel End
+            alignment: left
+        }
+        layout {
+            sequence: 180
+            region: @trip
+            slot: regionBody
+            startNewRow: false
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD
+        }
+        source {
+            formRegion: @form
+            column: TRAVEL_END
+            dataType: date
+        }
+        help {
+            helpText: Choose the last travel date. It cannot be before Travel Start.
+        }
+    )
+
+    pageItem P2_TRAVEL_START (
+        type: datePicker
+        label {
+            label: Travel Start
+            alignment: left
+        }
+        layout {
+            sequence: 160
+            region: @trip
+            slot: regionBody
+            columnSpan: 6
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            formatMask: YYYY-MM-DD
+        }
+        source {
+            formRegion: @form
+            column: TRAVEL_START
+            dataType: date
+        }
+        help {
+            helpText: Optional travel start for this fictional expense report.
+        }
+    )
+
+    button add-expense (
+        buttonName: ADD_EXPENSE
+        label: Add Expense
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 4
+                items: {
+                    P4_REPORT_ID: &P2_REPORT_ID.
+                }
+                clearCache: 4
+            }
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_REPORT_ID
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY-CHANGES
+        label: Save
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_REPORT_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 1
+            }
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 60
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P2_REPORT_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Delete this record and its dependent sample records?
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P2_REPORT_ID
+        }
+    )
+
+    validation travel-dates (
+        name: Travel dates in order
+        execution {
+            sequence: 10
+        }
+        validation {
+            plsqlExpression:
+                ```plsql
+                :P2_TRAVEL_START is null or :P2_TRAVEL_END is null
+                or to_date(:P2_TRAVEL_END,'YYYY-MM-DD') >= to_date(:P2_TRAVEL_START,'YYYY-MM-DD')
+                ```
+        }
+        error {
+            errorMessage: Travel End must be on or after Travel Start.
+            associatedItem: @P2_TRAVEL_END
+        }
+    )
+
+    process initialize (
+        name: Initialize Expense Report
+        type: formInitialization
+        formRegion: @form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 731000201
+        }
+    )
+
+    process save (
+        name: Save Expense Report
+        type: formAutoRowProcessing
+        formRegion: @form
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Expense Report saved.
+        }
+        advanced {
+            executionMappingIdentifier: 731000202
+        }
+    )
+
+    branch (
+        name: Return to expense reports
+        execution {
+            sequence: 50
+        }
+        behavior {
+            target: {
+                page: 1
+                clearCache: 2
+            }
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+    )
+
+)
+

@@ -1,0 +1,348 @@
+page 5 (
+    name: FP-02 - Form with Attachment
+    alias: RECEIPTS
+    title: FP-02 - Form with Attachment
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern when a record needs an image or PDF as well as editable details. It suits receipts, invoices, and supporting documents that users need to upload, review, and describe.</p>
+            <h3>About this pattern page</h3>
+            <p>The Interactive Report shows each receipt's report, expense, description, filename, type, size, and update time. Open a filename to view its stored document, use Edit to open the receipt drawer, or choose Upload Receipt to add one.</p>
+            <p>In the drawer, select an expense line, enter a description, and choose or drop a PNG, JPEG, or PDF of up to 10 MB. Existing receipts show an image or PDF preview. Save Changes can update the description or expense association without replacing the file; choose another file to replace its contents.</p>
+            <h3>Components used</h3>
+            <ul>
+            <li><strong>Interactive Report and drawer form:</strong> Combine document browsing with focused editing.</li>
+            <li><strong>Native File Upload and temporary files:</strong> Receive the selected attachment before the save process validates and stores its BLOB, filename, and MIME type.</li>
+            <li><strong>Preview regions and a download page:</strong> Present the saved file using a checksummed link.</li>
+            </ul>
+            <p>Use demonstration documents. Deleting a receipt removes that receipt and its stored file; the associated expense line remains.</p>
+            ```
+    }
+
+    region page-heading (
+        name: FP-02 - Form with Attachment
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+    )
+
+    region records (
+        name: Receipts
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select a.receipt_id,c.report_title,l.merchant,a.caption,a.filename,a.mime_type,round(dbms_lob.getlength(a.file_content)/1024,1) size_kb,a.file_updated_on from sfm_expense_receipts a join sfm_expense_report_lines l on l.report_line_id=a.report_line_id join sfm_expense_reports c on c.report_id=l.report_id
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: receipts-report
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 6
+                items: {
+                    P6_RECEIPT_ID: #RECEIPT_ID#
+                }
+                clearCache: 6
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No records found. Use the create button to add one.
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2415997723162107
+        }
+
+        column CAPTION (
+            type: plainText
+            heading {
+                heading: Receipt
+            }
+            layout {
+                sequence: 40
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+            comments {
+                comments: Receipt for the receipts report.
+            }
+        )
+
+        column FILENAME (
+            type: link
+            heading {
+                heading: File
+            }
+            layout {
+                sequence: 50
+            }
+            link {
+                target: {
+                    page: 9
+                    items: {
+                        P9_RECEIPT_ID: #RECEIPT_ID#
+                    }
+                    clearCache: 9
+                }
+                linkText: #FILENAME#
+                linkAttributes: target="_blank" rel="noopener"
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: E
+            }
+            comments {
+                comments: File for the receipts report.
+            }
+        )
+
+        column FILE_UPDATED_ON (
+            type: plainText
+            heading {
+                heading: Updated
+            }
+            layout {
+                sequence: 80
+            }
+            appearance {
+                formatMask: YYYY-MM-DD HH24:MI
+            }
+            source {
+                dataType: date
+            }
+            advanced {
+                endUserAlias: H
+            }
+            comments {
+                comments: Updated for the receipts report.
+            }
+        )
+
+        column MERCHANT (
+            type: plainText
+            heading {
+                heading: Expense
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+            comments {
+                comments: Expense for the receipts report.
+            }
+        )
+
+        column MIME_TYPE (
+            type: plainText
+            heading {
+                heading: Type
+            }
+            layout {
+                sequence: 60
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: F
+            }
+            comments {
+                comments: Type for the receipts report.
+            }
+        )
+
+        column RECEIPT_ID (
+            type: hidden
+            heading {
+                heading: Receipt ID
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+            comments {
+                comments: Receipt ID for the receipts report.
+            }
+        )
+
+        column REPORT_TITLE (
+            type: plainText
+            heading {
+                heading: Expense Report
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+            comments {
+                comments: Expense Report for the receipts report.
+            }
+        )
+
+        column SIZE_KB (
+            type: plainText
+            heading {
+                heading: Size (KB)
+            }
+            layout {
+                sequence: 70
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: G
+            }
+            comments {
+                comments: Size (KB) for the receipts report.
+            }
+        )
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn CAPTION (
+                sequence: 3
+            )
+
+            displayColumn FILENAME (
+                sequence: 4
+            )
+
+            displayColumn FILE_UPDATED_ON (
+                sequence: 7
+            )
+
+            displayColumn MERCHANT (
+                sequence: 2
+            )
+
+            displayColumn MIME_TYPE (
+                sequence: 5
+            )
+
+            displayColumn REPORT_TITLE (
+                sequence: 1
+            )
+
+            displayColumn SIZE_KB (
+                sequence: 6
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Upload Receipt
+        layout {
+            sequence: 10
+            region: @page-heading
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 6
+                clearCache: 6
+            }
+        }
+    )
+
+    dynamicAction refresh-records (
+        name: Refresh after editing
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @records
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

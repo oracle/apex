@@ -937,6 +937,58 @@
             }
         },
         {
+            "internalName": "SAMPLE_FORMS_PATTERNS",
+            "author": "Oracle",
+            "version": "26.2.0",
+            "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-forms-patterns.svg",
+            "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/forms-patterns",
+            "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/forms-patterns/sql/forms-patterns.sql",
+            "zip": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/forms-patterns/sql/forms-patterns.zip",
+            "license": "",
+            "i18n": {
+                "en": {
+                    "name": "Oracle APEX Forms Patterns",
+                    "description": "Forms Patterns is a reference catalog for developers and designers choosing how users enter and maintain records in Oracle APEX. Explore a simple modal form, a form with attachments, an advanced form with grouped fields, and an editable grid using a shared fictional expense dataset."
+                },
+                "de": {
+                    "name": "",
+                    "description": ""
+                },
+                "es": {
+                    "name": "",
+                    "description": ""
+                },
+                "fr": {
+                    "name": "",
+                    "description": ""
+                },
+                "it": {
+                    "name": "",
+                    "description": ""
+                },
+                "ja": {
+                    "name": "",
+                    "description": ""
+                },
+                "ko": {
+                    "name": "",
+                    "description": ""
+                },
+                "pt-br": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-cn": {
+                    "name": "",
+                    "description": ""
+                },
+                "zh-tw": {
+                    "name": "",
+                    "description": ""
+                }
+            }
+        },
+        {
             "internalName": "SAMPLE_INTERACTIVE_GRIDS",
             "author": "Oracle",
             "version": "26.2.0",

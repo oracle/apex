@@ -1,0 +1,241 @@
+page 7 (
+    name: FP-01 - Simple Form
+    alias: CATEGORIES
+    title: FP-01 - Simple Form
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use a simple modal form for a small record that users can create or edit without leaving a list. This pattern suits categories, lookup values, and other records with only a few fields.</p>
+            <h3>About this pattern page</h3>
+            <p>The Interactive Report lists categories, their descriptions, and their Active values. Search the list, choose a row's Edit icon, or select New Category to open the modal. Category Name is required and unique; Description is optional. The native Active switch stores Yes or No as Y or N.</p>
+            <h3>Components used</h3>
+            <ul>
+            <li><strong>Interactive Report:</strong> Finds records and passes the selected category identifier to the modal.</li>
+            <li><strong>Form region and native page items:</strong> Present a text field, textarea, and switch.</li>
+            <li><strong>Form Initialization and Automatic Row Processing:</strong> Load and save the selected record. A dialog-closed action refreshes the list.</li>
+            </ul>
+            <p>Create or Save Changes persists the record; Cancel discards unsaved changes. Delete asks for confirmation. A category referenced by expense lines cannot be deleted until those references are changed or removed.</p>
+            ```
+    }
+
+    region page-heading (
+        name: FP-01 - Simple Form
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+    )
+
+    region records (
+        name: Categories
+        type: interactiveReport
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery: select category_id,category_name,description,active_yn from sfm_expense_categories
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: categories-report
+        }
+        link {
+            linkColumn: customTarget
+            target: {
+                page: 8
+                items: {
+                    P8_CATEGORY_ID: #CATEGORY_ID#
+                }
+                clearCache: 8
+            }
+            linkIcon: <span role="img" aria-label="Edit" class="fa fa-edit" title="Edit"></span>
+        }
+        pagination {
+            type: rowRangesXToY
+        }
+        messages {
+            whenNoDataFound: No records found. Use the create button to add one.
+        }
+        download {
+            formats: [
+                csv
+                html
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2420288453162117
+        }
+
+        column ACTIVE_YN (
+            type: plainText
+            heading {
+                heading: Active
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: D
+            }
+            comments {
+                comments: Active for the categories report.
+            }
+        )
+
+        column CATEGORY_ID (
+            type: hidden
+            heading {
+                heading: Category ID
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dataType: number
+            }
+            advanced {
+                endUserAlias: A
+            }
+            comments {
+                comments: Category ID for the categories report.
+            }
+        )
+
+        column CATEGORY_NAME (
+            type: plainText
+            heading {
+                heading: Category
+            }
+            layout {
+                sequence: 20
+            }
+            accessibility {
+                valueIdentifiesRow: true
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: B
+            }
+            comments {
+                comments: Category for the categories report.
+            }
+        )
+
+        column DESCRIPTION (
+            type: plainText
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                dataType: varchar2
+            }
+            advanced {
+                endUserAlias: C
+            }
+            comments {
+                comments: Description for the categories report.
+            }
+        )
+
+        savedReport primary (
+            visibility: primaryDefault
+            view {
+                rowsPerPage: 15
+            }
+
+            displayColumn ACTIVE_YN (
+                sequence: 3
+            )
+
+            displayColumn CATEGORY_NAME (
+                sequence: 1
+            )
+
+            displayColumn DESCRIPTION (
+                sequence: 2
+            )
+
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: New Category
+        layout {
+            sequence: 10
+            region: @page-heading
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 8
+                clearCache: 8
+            }
+        }
+    )
+
+    dynamicAction refresh-records (
+        name: Refresh after editing
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosedialog
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @records
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+

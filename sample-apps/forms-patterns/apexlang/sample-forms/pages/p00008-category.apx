@@ -1,0 +1,350 @@
+page 8 (
+    name: Category
+    alias: CATEGORY
+    title: Category
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/modal-dialog
+        templateOptions: #DEFAULT#
+    }
+    dialog {
+        width: 760
+        chained: false
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this modal for focused editing of a small category record while preserving the surrounding report context.</p>
+            <h3>About this form</h3>
+            <p>Enter a unique Category Name, an optional Description, and an Active value using the switch. The form keeps the record's primary key hidden and checks the name for duplicates before saving.</p>
+            <h3>How the components work together</h3>
+            <p>The report link passes the category identifier. Form Initialization loads that row, and Automatic Row Processing handles Create, Save Changes, and Delete. Closing the saved dialog refreshes the category list. Cancel closes the modal without saving its field edits.</p>
+            <p>Delete requires confirmation. Categories used by expense lines remain protected by their database relationship. Changing Active records an active or inactive value; it does not remove the category or its existing expenses.</p>
+            ```
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region form (
+        name: Category
+        type: form
+        source {
+            location: localDatabase
+            tableName: SFM_EXPENSE_CATEGORIES
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+        }
+    )
+
+    pageItem P8_ACTIVE_YN (
+        type: switch
+        label {
+            label: Active
+            alignment: left
+        }
+        settings {
+            useDefaults: false
+            onValue: Y
+            onLabel: Yes
+            offValue: N
+            offLabel: No
+        }
+        layout {
+            sequence: 50
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        source {
+            formRegion: @form
+            column: ACTIVE_YN
+            dataType: varchar2
+        }
+        default {
+            type: static
+            staticValue: Y
+        }
+        help {
+            helpText: Turn on for an active category or off for an inactive category.
+        }
+    )
+
+    pageItem P8_CATEGORY_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: CATEGORY_ID
+            dataType: number
+            queryOnly: true
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P8_CATEGORY_NAME (
+        type: textField
+        label {
+            label: Category Name
+            alignment: left
+        }
+        layout {
+            sequence: 20
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+            maxLength: 80
+        }
+        source {
+            formRegion: @form
+            column: CATEGORY_NAME
+            dataType: varchar2
+        }
+    )
+
+    pageItem P8_DESCRIPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 40
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+            width: 80
+            height: 6
+        }
+        validation {
+            maxLength: 500
+        }
+        source {
+            formRegion: @form
+            column: DESCRIPTION
+            dataType: varchar2
+        }
+        help {
+            inlineHelpText: Briefly describe the purpose of this category.
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY-CHANGES
+        label: Save Changes
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P8_CATEGORY_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 50
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P8_CATEGORY_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Delete this record and its dependent sample records?
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P8_CATEGORY_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    validation category-name-unique (
+        name: Category name is unique
+        execution {
+            sequence: 10
+        }
+        validation {
+            type: noRowsReturned
+            sqlQuery:
+                ```sql
+                select 1 from sfm_expense_categories
+                 where category_name=:P8_CATEGORY_NAME
+                   and (:P8_CATEGORY_ID is null or category_id!=:P8_CATEGORY_ID)
+                ```
+        }
+        error {
+            errorMessage: A category with this name already exists. Choose another name.
+            associatedItem: @P8_CATEGORY_NAME
+        }
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 731000803
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+    )
+
+    process initialize (
+        name: Initialize Category
+        type: formInitialization
+        formRegion: @form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 731000801
+        }
+    )
+
+    process save (
+        name: Save Category
+        type: formAutoRowProcessing
+        formRegion: @form
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Category saved.
+        }
+        advanced {
+            executionMappingIdentifier: 731000802
+        }
+    )
+
+)
+

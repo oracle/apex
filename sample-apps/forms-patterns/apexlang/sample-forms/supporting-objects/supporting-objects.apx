@@ -1,0 +1,19 @@
+supportingObject (
+    prerequisites {
+        systemPrivileges: createTable
+    }
+    installationMessages {
+        welcome: Install the Forms Patterns tables and fictional sample data, including image and PDF receipts.
+        confirmation: Install supporting objects in a parsing schema that does not already contain the SFM expense tables.
+        installSuccess: Forms Patterns supporting objects and sample data installed.
+        installFailure: Supporting objects could not be installed. Review the installation log before running the application.
+    }
+    deinstall {
+        scriptFile: deinstall-script.sql
+    }
+    deinstallationMessages {
+        confirmation: Remove the four SFM expense tables and all of their data? This also removes their indexes and constraints.
+        postDeinstall: Forms Patterns supporting objects removed.
+    }
+)
+

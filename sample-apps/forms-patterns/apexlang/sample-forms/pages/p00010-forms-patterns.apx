@@ -1,0 +1,126 @@
+page 10 (
+    name: Forms Patterns
+    alias: FORMS-PATTERNS
+    title: Forms Patterns
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    navigation {
+        cursorFocus: firstItemOnPage
+    }
+    security {
+        formAutoComplete: true
+    }
+    help {
+        helpText:
+            ```html
+            <p><strong>Purpose:</strong> Forms Patterns is a reference catalog for developers and designers choosing how users enter and maintain records in Oracle APEX. Four examples use the same fictional expense dataset so you can compare the interaction and native components.</p>
+            <h3>When to use this catalog</h3>
+            <p>Use the catalog to choose between a short modal form, a form with attachments, a full-page form with grouped fields, and an editable grid for several records.</p>
+            <h3>Components used on the home page</h3>
+            <ul>
+            <li><strong>Cards:</strong> Introduce each pattern and open its example.</li>
+            <li><strong>Navigation Menu:</strong> Provides direct access to the four patterns.</li>
+            <li><strong>Shared Page Help:</strong> Reads the current page's Help text through the global page 0 popup.</li>
+            </ul>
+            <h3>How to explore the app</h3>
+            <ol>
+            <li><strong>FP-01 - Simple Form:</strong> Open a category in a modal. Try required validation, an optional description, and the Active switch.</li>
+            <li><strong>FP-02 - Form with Attachment:</strong> Upload an image or PDF receipt, preview it, and edit its details.</li>
+            <li><strong>FP-03 - Advanced Form:</strong> Filter reports, then explore grouped fields, dates, signed amounts, long text, and an Add Expense drawer.</li>
+            <li><strong>FP-04 - Editable Grid:</strong> Enter or update several expense lines and save the pending changes together.</li>
+            </ol>
+            <h3>Understanding the examples</h3>
+            <p>Reports have expense lines; lines reference categories and can have receipts. Changes made in one pattern appear in the others. The app is open without sign-in and saves changes to the shared sample data. Use fictional values and demonstration documents. Status and policy fields illustrate data entry; the sample does not implement expense approvals or payments.</p>
+            ```
+    }
+    comments {
+        comments: Native cards compare four form patterns using the shared fictional expense dataset.
+    }
+
+    region pattern-index (
+        name: Available Patterns
+        type: cards
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select 1 pattern_id, 'FP-01 - Simple Form' pattern_title, 'Core' pattern_badge,
+                       'A focused modal' pattern_subtitle,
+                       'Create and edit a category with a few fields, required validation, and an Active switch.' pattern_description,
+                       'fa fa-edit' pattern_icon, 7 target_page from dual
+                union all
+                select 2, 'FP-02 - Form with Attachment', 'Core', 'Upload and preview',
+                       'Add image or PDF receipts with a drop zone, preview the stored document, and edit its details.',
+                       'fa fa-paperclip', 5 from dual
+                union all
+                select 3, 'FP-03 - Advanced Form', 'Extension', 'Organize many fields',
+                       'Edit an expense report with grouped sections, dates, choices, signed amounts, and long text.',
+                       'fa fa-list-alt', 1 from dual
+                union all
+                select 4, 'FP-04 - Editable Grid', 'Extension', 'Edit several records',
+                       'Add, edit, and delete expense lines in a native grid with report and category lookups.',
+                       'fa fa-table-edit', 11 from dual
+                order by pattern_id
+                ```
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/cards-container
+            templateOptions: [
+                u-colors
+                t-CardsRegion--hideHeader js-addHiddenHeadingRoleDesc
+            ]
+        }
+        componentAppearance {
+            gridColumns: 4
+        }
+        card {
+            primaryKeyColumn1: PATTERN_ID
+        }
+        title {
+            column: PATTERN_TITLE
+            cssClasses: u-color-44-text
+        }
+        subtitle {
+            column: PATTERN_SUBTITLE
+        }
+        body {
+            column: PATTERN_DESCRIPTION
+            cssClasses: u-text-muted-color
+        }
+        iconAndBadge {
+            iconSource: iconClassColumn
+            iconColumn: PATTERN_ICON
+            badgeColumn: PATTERN_BADGE
+        }
+
+        action open (
+            label: Open example
+            layout {
+                position: secondary
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: f?p=&APP_ID.:&TARGET_PAGE.:&SESSION.::&DEBUG.:::
+            }
+            appearance {
+                displayType: textWithIcon
+                icon: fa-external-link
+                cssClasses: [
+                    t-Button--primary
+                    t-Button--simple
+                ]
+            }
+        )
+
+    )
+
+)
+

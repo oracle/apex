@@ -1,0 +1,48 @@
+page 9 (
+    name: Receipt File
+    alias: RECEIPT-FILE
+    title: Receipt File
+    appearance {
+        pageTemplate: @/standard
+    }
+
+    pageItem P9_RECEIPT_ID (
+        type: hidden
+        layout {
+            sequence: 1000
+            slot: body
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    process download (
+        name: Open Receipt
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_blob blob;
+                    l_mime varchar2(128);
+                    l_name varchar2(255);
+                begin
+                    select file_content,mime_type,filename into l_blob,l_mime,l_name
+                      from sfm_expense_receipts where receipt_id=:P9_RECEIPT_ID;
+                    apex_http.download(p_blob=>l_blob,p_content_type=>l_mime,
+                        p_filename=>l_name,p_is_inline=>true);
+                end;
+                ```
+        }
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 731000910
+        }
+    )
+
+)
+

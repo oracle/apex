@@ -1,0 +1,540 @@
+page 6 (
+    name: Receipt
+    alias: RECEIPT
+    title: Receipt
+    appearance {
+        pageMode: modalDialog
+        dialogTemplate: @/drawer
+        templateOptions: [
+            #DEFAULT#
+            js-dialog-class-t-Drawer--pullOutEnd
+        ]
+    }
+    dialog {
+        width: 760
+        chained: false
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this drawer to attach a document to an expense and maintain its details without navigating away from the receipt report.</p>
+            <h3>About this form</h3>
+            <p>Expense identifies the parent expense line. Description explains the purchase or document. The native drop zone accepts PNG, JPEG, and PDF files up to 10 MB; a file is required for a new receipt. The save process also checks the file type, signature, size, and filename length.</p>
+            <h3>How the components work together</h3>
+            <p>The upload first enters application temporary storage. The save process copies it to the receipt BLOB and records its filename and MIME type. Conditional preview regions display the saved image or PDF through the receipt-file page.</p>
+            <p>For an existing receipt, leave Receipt File empty to retain the current document while editing its details. Select another file to replace it. Cancel discards unsaved edits. Delete requires confirmation and removes only this receipt, keeping its parent expense.</p>
+            ```
+    }
+
+    region buttons (
+        name: Buttons
+        type: staticContent
+        layout {
+            sequence: 30
+            slot: dialogFooter
+        }
+        appearance {
+            template: @/buttons-container
+            templateOptions: #DEFAULT#
+        }
+    )
+
+    region form (
+        name: Receipt
+        type: form
+        source {
+            location: localDatabase
+            tableName: SFM_EXPENSE_RECEIPTS
+        }
+        layout {
+            sequence: 10
+            slot: contentBody
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        edit {
+            enabled: true
+        }
+    )
+
+    region image-preview (
+        name: Image Preview
+        type: staticContent
+        source {
+            htmlCode: <img src="&P6_PREVIEW_URL!ATTR." alt="Uploaded receipt" class="sfm-receipt-image">
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--padded
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                margin-top-md
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P6_RECEIPT_ID is not null and :P6_MIME_TYPE like 'image/%'
+        }
+    )
+
+    region preview (
+        name: PDF Preview
+        type: staticContent
+        source {
+            htmlCode: <iframe src="&P6_PREVIEW_URL!ATTR." title="Receipt preview" class="sfm-receipt-pdf"></iframe>
+        }
+        layout {
+            sequence: 20
+            slot: contentBody
+        }
+        appearance {
+            template: @/content-block
+            templateOptions: [
+                #DEFAULT#
+                t-ContentBlock--h3
+                t-ContentBlock--shadowBG
+                margin-top-md
+            ]
+        }
+        serverSideCondition {
+            type: expression
+            plsqlExpression: :P6_RECEIPT_ID is not null and :P6_MIME_TYPE = 'application/pdf'
+        }
+    )
+
+    pageItem P6_CAPTION (
+        type: textarea
+        label {
+            label: Description
+            alignment: left
+        }
+        layout {
+            sequence: 30
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+            height: 5
+        }
+        validation {
+            valueRequired: true
+            maxLength: 200
+        }
+        source {
+            formRegion: @form
+            column: CAPTION
+            dataType: varchar2
+        }
+        help {
+            inlineHelpText: Describe the purchase or expense shown on the receipt.
+        }
+    )
+
+    pageItem P6_FILENAME (
+        type: hidden
+        layout {
+            sequence: 60
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: FILENAME
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_FILE_CHARSET (
+        type: hidden
+        layout {
+            sequence: 70
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: FILE_CHARSET
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_FILE_CONTENT (
+        type: fileUpload
+        label {
+            label: Receipt File
+            alignment: left
+        }
+        display {
+            displayAs: blockDropzone
+            dropzoneTitle: Drop your receipt here
+            dropzoneDesc: PNG, JPEG or PDF - up to 10 MB
+        }
+        storage {
+            type: appTempFiles
+            fileTypes: image/png,image/jpeg,application/pdf
+            maxFileSize: 10240
+        }
+        layout {
+            sequence: 40
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/optional-floating
+            templateOptions: #DEFAULT#
+        }
+        help {
+            inlineHelpText: Maximum file size is 10 MB. Leave blank when editing to keep the existing file.
+        }
+    )
+
+    pageItem P6_FILE_UPDATED_ON (
+        type: hidden
+        layout {
+            sequence: 80
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: FILE_UPDATED_ON
+            dataType: timestamp
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_MIME_TYPE (
+        type: hidden
+        layout {
+            sequence: 50
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: MIME_TYPE
+            dataType: varchar2
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_PREVIEW_URL (
+        type: hidden
+        layout {
+            sequence: 1000
+            slot: contentBody
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_RECEIPT_ID (
+        type: hidden
+        layout {
+            sequence: 10
+            region: @form
+            slot: regionBody
+        }
+        source {
+            formRegion: @form
+            column: RECEIPT_ID
+            dataType: number
+            queryOnly: true
+            primaryKey: true
+        }
+        security {
+            sessionStateProtection: checksumRequiredSessionLevel
+        }
+    )
+
+    pageItem P6_REPORT_LINE_ID (
+        type: selectList
+        label {
+            label: Expense
+            alignment: left
+        }
+        lov {
+            type: sqlQuery
+            sqlQuery: select c.report_title || ' - ' || l.merchant || ' (' || to_char(l.amount,'FM9G999G999G990D00') || ')' d,l.report_line_id r from sfm_expense_report_lines l join sfm_expense_reports c on c.report_id=l.report_id order by l.report_line_id
+            displayExtraValues: false
+            nullDisplayValue: - Select -
+        }
+        layout {
+            sequence: 20
+            region: @form
+            slot: regionBody
+        }
+        appearance {
+            template: @/required-floating
+            templateOptions: #DEFAULT#
+        }
+        validation {
+            valueRequired: true
+        }
+        source {
+            formRegion: @form
+            column: REPORT_LINE_ID
+            dataType: number
+        }
+    )
+
+    button apply-changes (
+        buttonName: APPLY-CHANGES
+        label: Save Changes
+        layout {
+            sequence: 30
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: update
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P6_RECEIPT_ID
+        }
+    )
+
+    button cancel (
+        buttonName: CANCEL
+        label: Cancel
+        layout {
+            sequence: 10
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            action: definedByDynamicAction
+        }
+    )
+
+    button create (
+        buttonName: CREATE
+        label: Create
+        layout {
+            sequence: 40
+            region: @buttons
+            slot: next
+        }
+        appearance {
+            buttonTemplate: @/text
+            hot: true
+            templateOptions: #DEFAULT#
+        }
+        behavior {
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: insert
+        }
+        serverSideCondition {
+            type: itemIsNull
+            item: P6_RECEIPT_ID
+        }
+    )
+
+    button delete (
+        buttonName: DELETE
+        label: Delete
+        layout {
+            sequence: 20
+            region: @buttons
+            slot: delete
+        }
+        appearance {
+            buttonTemplate: @/text
+            templateOptions: [
+                #DEFAULT#
+                t-Button--danger
+            ]
+        }
+        behavior {
+            executeValidations: false
+            warnOnUnsavedChanges: doNotCheck
+            databaseAction: delete
+            requiresConfirmation: true
+        }
+        confirmation {
+            message: Delete this record and its dependent sample records?
+            style: danger
+        }
+        serverSideCondition {
+            type: itemIsNotNull
+            item: P6_RECEIPT_ID
+        }
+    )
+
+    dynamicAction cancel-dialog (
+        name: Cancel Dialog
+        execution {
+            sequence: 10
+        }
+        when {
+            event: click
+            selectionType: button
+            button: @cancel
+        }
+
+        action cancel (
+            action: cancelDialog
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+    )
+
+    process close-dialog (
+        name: Close Dialog
+        type: closeDialog
+        execution {
+            sequence: 50
+        }
+        advanced {
+            executionMappingIdentifier: 731000602
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+    )
+
+    process initialize (
+        name: Initialize Receipt
+        type: formInitialization
+        formRegion: @form
+        execution {
+            sequence: 10
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 731000601
+        }
+    )
+
+    process preview-url (
+        name: Set Receipt Preview
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                if apex_application.g_request is null then
+                    :P6_FILE_CONTENT := null;
+                end if;
+                if :P6_RECEIPT_ID is not null then
+                    :P6_PREVIEW_URL := apex_page.get_url(p_page=>9,p_clear_cache=>'9',
+                        p_items=>'P9_RECEIPT_ID',p_values=>:P6_RECEIPT_ID,p_plain_url=>true);
+                end if;
+                ```
+        }
+        execution {
+            sequence: 20
+            point: beforeHeader
+        }
+        advanced {
+            executionMappingIdentifier: 731000621
+        }
+    )
+
+    process save-receipt (
+        name: Save Receipt
+        type: executeCode
+        source {
+            plsqlCode:
+                ```plsql
+                declare
+                    l_blob blob;
+                    l_mime varchar2(128);
+                    l_name varchar2(255);
+                    l_sig varchar2(16);
+                begin
+                    if :REQUEST = 'DELETE' then
+                        delete from sfm_expense_receipts where receipt_id = :P6_RECEIPT_ID;
+                    else
+                        if :P6_FILE_CONTENT is not null then
+                            select blob_content, mime_type, filename into l_blob, l_mime, l_name
+                              from apex_application_temp_files where name = :P6_FILE_CONTENT
+                               and application_id = :APP_ID;
+                            if length(l_name) > 255 then
+                                raise_application_error(-20001,'Choose a receipt with a file name of 255 characters or fewer.');
+                            end if;
+                            l_sig := rawtohex(sys.dbms_lob.substr(l_blob,4,1));
+                            if sys.dbms_lob.getlength(l_blob) > 10485760 then
+                                raise_application_error(-20001,'The receipt must be 10 MB or smaller.');
+                            end if;
+                            if not (
+                                (l_mime='application/pdf' and l_sig='25504446') or
+                                (l_mime='image/png' and l_sig='89504E47') or
+                                (l_mime='image/jpeg' and substr(l_sig,1,6)='FFD8FF')) then
+                                raise_application_error(-20001,'Choose a PNG, JPEG or PDF receipt.');
+                            end if;
+                        end if;
+                        if :P6_RECEIPT_ID is null then
+                            if l_blob is null then
+                                raise_application_error(-20001,'Choose a receipt file before saving.');
+                            end if;
+                            insert into sfm_expense_receipts(report_line_id,caption,file_content,mime_type,filename)
+                            values (:P6_REPORT_LINE_ID,:P6_CAPTION,l_blob,l_mime,l_name)
+                            returning receipt_id into :P6_RECEIPT_ID;
+                        else
+                            update sfm_expense_receipts
+                               set report_line_id=:P6_REPORT_LINE_ID,caption=:P6_CAPTION
+                             where receipt_id=:P6_RECEIPT_ID;
+                            if l_blob is not null then
+                                update sfm_expense_receipts
+                                   set file_content=l_blob,mime_type=l_mime,filename=l_name,file_updated_on=systimestamp
+                                 where receipt_id=:P6_RECEIPT_ID;
+                            end if;
+                        end if;
+                    end if;
+                end;
+                ```
+        }
+        execution {
+            sequence: 20
+        }
+        successMessage {
+            successMessage: Receipt saved.
+        }
+        advanced {
+            executionMappingIdentifier: 731000620
+        }
+        serverSideCondition {
+            type: requestIsContainedInValue
+            value: CREATE,APPLY-CHANGES,DELETE
+        }
+    )
+
+)
+

@@ -1,0 +1,8 @@
+authentication no-auth (
+    name: No Authentication
+    type: noAuth
+    settings {
+        username: nobody
+    }
+)
+

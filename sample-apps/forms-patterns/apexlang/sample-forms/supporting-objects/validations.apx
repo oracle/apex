@@ -1,0 +1,18 @@
+validation no-existing-expense-tables (
+    execution {
+        sequence: 10
+    }
+    validation {
+        type: noRowsReturned
+        sqlQuery:
+            ```sql
+            select 1 from user_tables
+             where table_name in ('SFM_EXPENSE_CATEGORIES','SFM_EXPENSE_REPORTS',
+                                  'SFM_EXPENSE_REPORT_LINES','SFM_EXPENSE_RECEIPTS')
+            ```
+    }
+    error {
+        errorMessage: The parsing schema already contains Forms Patterns expense tables. Use a fresh schema or reuse the existing supporting objects.
+    }
+)
+

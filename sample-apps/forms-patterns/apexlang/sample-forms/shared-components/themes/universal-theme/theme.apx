@@ -1,0 +1,74 @@
+theme universal-theme (
+    name: Universal Theme
+    themeNumber: 42
+    baseTheme: ut-26.2
+    style {
+        currentThemeStyle: @iris-patterns
+    }
+    javaScript {
+        fileUrls: [
+            #APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#
+            #THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#
+        ]
+    }
+    css {
+        fileUrls: #THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#
+    }
+    componentDefaults {
+        page: @/standard
+        navigationBarList: @/navigation-bar
+        navigationMenuListPosition: side
+        navigationMenuListTop: @/top-navigation-menu
+        navigationMenuListSide: @/side-navigation-menu
+        loginPage: @/login
+        errorPage: @/login
+        printerFriendlyPage: @/standard
+        breadcrumb: @/breadcrumb
+        button: @/text
+        defaultLabel: @/optional-floating
+        optionalLabel: @/optional-floating
+        requiredLabel: @/required-floating
+        list: @/links-list
+        region: @/standard
+        classicReport: @/standard
+    }
+    regionDefaults {
+        breadcrumbs: @/title-bar
+        charts: @/standard
+        forms: @/standard
+        lists: @/standard
+        reports: @/standard
+        wizards: @/standard
+        interactiveReports: @/interactive-report
+    }
+    dialogDefaults {
+        dialogContentRegion: @/blank-with-attributes
+        dialogButtonRegion: @/buttons-container
+        dialogPage: @/modal-dialog
+    }
+    icons {
+        library: fontApex
+    }
+    advanced {
+        filePrefix: #APEX_FILES#themes/theme_42/26.2/
+        identifier: UNIVERSAL_THEME
+    }
+
+    style iris-patterns (
+        name: Iris (Patterns)
+        css {
+            fileUrls: #APEX_FILES#libraries/oracle-fonts/oraclesans-apex#MIN#.css?v=#APEX_VERSION#
+        }
+        themeRollerAttributes {
+            inputParameterFileUrls: #THEME_FILES#less/theme/Iris.less
+            outputCssFileUrl: #THEME_DB_FILES#4397854249859164597.css
+            jsonConfig: "{\"classes\":[],\"vars\":{\"@g_Accent-Pillar\":\"ocean\",\"@g_CustomAccent-BG\":\"#0a1b3a\",\"@g_Header_Pillar_Strip\":\"show\",\"@g_Header_Style\":\"pillar-dark\",\"@g_Nav_Style\":\"pillar-light\",\"@g_FontFamily\":\"oracle_sans\",\"@g_Link-Base\":\"#0a1b3a\",\"@g_Color-Palette-1\":\"#0a1b3a\",\"@g_Color-Palette-1-FG\":\"#ffffff\",\"@Nav-Exp\":\"280px\"},\"customCSS\":\"\",\"useCustomLess\":\"N\"}"
+        }
+        advanced {
+            endUserCanPick: true
+            accessibilityTested: true
+        }
+    )
+
+)
+

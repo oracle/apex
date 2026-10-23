@@ -1,0 +1,52 @@
+installScript forms-patterns-receipts (
+    execution {
+        sequence: 30
+    }
+    script {
+        contentFile: forms-patterns-receipts.sql
+    }
+)
+
+installScript forms-patterns-sample-data (
+    execution {
+        sequence: 20
+    }
+    script {
+        contentFile: forms-patterns-sample-data.sql
+    }
+)
+
+installScript forms-patterns-schema (
+    execution {
+        sequence: 10
+    }
+    script {
+        contentFile: forms-patterns-schema.sql
+    }
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: SFM_EXPENSE_CATEGORIES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: SFM_EXPENSE_REPORTS
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: SFM_EXPENSE_REPORT_LINES
+    )
+
+    databaseObject (
+        owner: #OWNER#
+        type: table
+        name: SFM_EXPENSE_RECEIPTS
+    )
+
+)
+

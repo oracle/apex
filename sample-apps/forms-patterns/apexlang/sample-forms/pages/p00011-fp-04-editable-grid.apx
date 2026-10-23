@@ -1,0 +1,354 @@
+page 11 (
+    name: FP-04 - Editable Grid
+    alias: FP-04-EDITABLE-GRID
+    title: FP-04 - Editable Grid
+    appearance {
+        pageTemplate: @/standard
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use an editable grid when users need to create or update several similar records in one place. It suits expense lines and other tabular data where repeated modal entry would interrupt the task.</p>
+            <h3>About this pattern page</h3>
+            <p>Choose Edit to work directly in the grid, then Add Row to enter a new expense. Select its report and category, and enter a date, merchant, description, signed amount, and Reimbursable value. Amounts use each report's currency; refunds are negative and zero is valid.</p>
+            <p>Save writes pending inserts, updates, and deletions together. Use Row Actions to revert an unsaved row or mark it for deletion, then Save to persist a deletion. Reset restores the default report settings.</p>
+            <h3>Components used</h3>
+            <ul>
+            <li><strong>Editable Interactive Grid:</strong> Provides native cell editing, row actions, search, and report customization.</li>
+            <li><strong>Select List columns:</strong> Display report and category names while storing their identifiers.</li>
+            <li><strong>Automatic Row Processing:</strong> Applies the pending changes to the expense-lines table.</li>
+            </ul>
+            <p>Deleting an expense line also removes its receipt attachments through the database relationship. Changes appear in the other patterns because they share the same sample data.</p>
+            ```
+    }
+
+    region expenses (
+        name: Expense Lines
+        type: interactiveGrid
+        source {
+            location: localDatabase
+            tableName: SFM_EXPENSE_REPORT_LINES
+            orderByClause: EXPENSE_DATE DESC, REPORT_LINE_ID DESC
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/interactive-report
+            templateOptions: #DEFAULT#
+        }
+        advanced {
+            htmlDomId: expense-grid
+        }
+        edit {
+            enabled: true
+            allowedOperations: [
+                add
+                update
+                delete
+            ]
+        }
+        pagination {
+            type: page
+        }
+        toolbar {
+            controls: [
+                searchCol
+                searchField
+                actionsMenu
+                resetButton
+                saveButton
+            ]
+        }
+        advanced {
+            savedReportMappingIdentifier: 2809393138491066
+        }
+
+        savedReport PRIMARY (
+            visibility: primary
+            view {
+                default: grid
+            }
+            singleRowView {
+                displayedColumns: true
+            }
+
+            displayColumn (
+                column: @APEX$ROW_ACTION
+                layout {
+                    sequence: 10
+                }
+            )
+
+            displayColumn (
+                column: @REPORT_LINE_ID
+                layout {
+                    sequence: 20
+                }
+            )
+
+            displayColumn (
+                column: @REPORT_ID
+                layout {
+                    sequence: 30
+                }
+            )
+
+            displayColumn (
+                column: @CATEGORY_ID
+                layout {
+                    sequence: 40
+                }
+            )
+
+            displayColumn (
+                column: @EXPENSE_DATE
+                layout {
+                    sequence: 50
+                }
+            )
+
+            displayColumn (
+                column: @MERCHANT
+                layout {
+                    sequence: 60
+                }
+            )
+
+            displayColumn (
+                column: @DESCRIPTION
+                layout {
+                    sequence: 70
+                }
+            )
+
+            displayColumn (
+                column: @AMOUNT
+                layout {
+                    sequence: 80
+                }
+            )
+
+            displayColumn (
+                column: @REIMBURSABLE_YN
+                layout {
+                    sequence: 90
+                }
+            )
+
+        )
+
+        column AMOUNT (
+            type: numberField
+            heading {
+                heading: Amount
+            }
+            layout {
+                sequence: 90
+            }
+            appearance {
+                formatMask: FM9G999G999G990D00
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: AMOUNT
+                dataType: number
+            }
+        )
+
+        column APEX$ROW_ACTION (
+            type: actionsMenu
+            layout {
+                sequence: 10
+            }
+        )
+
+        column APEX$ROW_SELECTOR (
+            type: rowSelector
+            layout {
+                sequence: 20
+            }
+        )
+
+        column CATEGORY_ID (
+            type: selectList
+            heading {
+                heading: Category
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select category_name d, category_id r from sfm_expense_categories order by category_name
+                displayExtraValues: false
+                nullDisplayValue: - Select -
+            }
+            layout {
+                sequence: 50
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: CATEGORY_ID
+                dataType: number
+            }
+        )
+
+        column DESCRIPTION (
+            type: textField
+            heading {
+                heading: Description
+            }
+            layout {
+                sequence: 80
+            }
+            validation {
+                maxLength: 500
+            }
+            source {
+                databaseColumn: DESCRIPTION
+                dataType: varchar2
+            }
+        )
+
+        column EXPENSE_DATE (
+            type: datePicker
+            heading {
+                heading: Expense Date
+            }
+            layout {
+                sequence: 60
+            }
+            appearance {
+                formatMask: YYYY-MM-DD
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: EXPENSE_DATE
+                dataType: date
+            }
+        )
+
+        column MERCHANT (
+            type: textField
+            heading {
+                heading: Merchant
+            }
+            layout {
+                sequence: 70
+            }
+            validation {
+                valueRequired: true
+                maxLength: 150
+            }
+            source {
+                databaseColumn: MERCHANT
+                dataType: varchar2
+            }
+        )
+
+        column REIMBURSABLE_YN (
+            type: selectList
+            heading {
+                heading: Reimbursable
+            }
+            lov {
+                type: staticValues
+                staticValues: STATIC:Yes;Y,No;N
+                displayNullValue: false
+            }
+            layout {
+                sequence: 100
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: REIMBURSABLE_YN
+                dataType: varchar2
+            }
+            default {
+                type: static
+                staticValue: Y
+            }
+        )
+
+        column REPORT_ID (
+            type: selectList
+            heading {
+                heading: Expense Report
+            }
+            lov {
+                type: sqlQuery
+                sqlQuery: select report_title || ' (' || currency_code || ')' d, report_id r from sfm_expense_reports order by report_title
+                displayExtraValues: false
+                nullDisplayValue: - Select -
+            }
+            layout {
+                sequence: 40
+            }
+            validation {
+                valueRequired: true
+            }
+            source {
+                databaseColumn: REPORT_ID
+                dataType: number
+            }
+        )
+
+        column REPORT_LINE_ID (
+            type: hidden
+            heading {
+                heading: Expense ID
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: REPORT_LINE_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+    )
+
+    region page-heading (
+        name: FP-04 - Editable Grid
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+    )
+
+    process save-expenses (
+        name: Save Expense Lines
+        type: interactiveGridAutoRowProcessing
+        editableRegion: @expenses
+        execution {
+            sequence: 10
+        }
+        successMessage {
+            successMessage: Expense lines saved.
+        }
+        advanced {
+            executionMappingIdentifier: 731001101
+        }
+    )
+
+)
+

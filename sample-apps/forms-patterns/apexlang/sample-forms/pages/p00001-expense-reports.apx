@@ -1,0 +1,376 @@
+page 1 (
+    name: FP-03 - Advanced Form
+    alias: EXPENSE-REPORTS
+    title: FP-03 - Advanced Form
+    appearance {
+        pageTemplate: @/left-side-column
+        templateOptions: #DEFAULT#
+    }
+    help {
+        helpText:
+            ```html
+            <h3>When to use</h3>
+            <p>Use this pattern to find a record before opening a larger form with related groups of fields. It suits data entry that combines identity, dates, choices, amounts, and a longer explanation.</p>
+            <h3>About this pattern page</h3>
+            <p>Search matches report titles and employee names. Status, Employee, and Currency facets narrow the results. Content Rows show the employee, title, status, creation date, number of expense lines, and their total in the report's currency. Reports are ordered by creation date descending, with the report identifier as the tie-breaker.</p>
+            <p>Choose the Edit Report icon to open the full-page form, or New Expense Report to create a report. Inside the form, use the section selector to focus on one group of fields or Show All to see the complete form.</p>
+            <h3>Components used</h3>
+            <ul>
+            <li><strong>Faceted Search and Content Row:</strong> Filter records and present summaries with a row action.</li>
+            <li><strong>Full-page Form and Region Display Selector:</strong> Organize nineteen editable fields into four sections.</li>
+            <li><strong>Add Expense drawer:</strong> Adds a line to a saved report while keeping the report form open.</li>
+            </ul>
+            <p>The report total sums expense lines, including negative refunds and zero amounts. The advance or credit field is recorded separately.</p>
+            ```
+    }
+
+    region filters (
+        name: Filter Reports
+        type: facetedSearch
+        source {
+            filteredRegion: @records
+        }
+        layout {
+            sequence: 10
+            slot: leftColumn
+        }
+        appearance {
+            template: @/blank-with-attributes
+            templateOptions: #DEFAULT#
+        }
+        settings {
+            compactNosThreshold: 10000
+            showCurrentFacets: true
+        }
+
+        facet P1_CURRENCY (
+            type: checkboxGroup
+            label {
+                label: Currency
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: CURRENCY_CODE
+            }
+        )
+
+        facet P1_EMPLOYEE (
+            type: checkboxGroup
+            label {
+                label: Employee
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPLOYEE_NAME
+            }
+        )
+
+        facet P1_SEARCH (
+            type: search
+            label {
+                label: Search
+            }
+            layout {
+                sequence: 10
+            }
+            source {
+                dbColumns: REPORT_TITLE,EMPLOYEE_NAME
+            }
+        )
+
+        facet P1_STATUS (
+            type: checkboxGroup
+            label {
+                label: Status
+            }
+            lov {
+                type: distinctValues
+            }
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: STATUS_LABEL
+            }
+        )
+
+    )
+
+    region page-heading (
+        name: FP-03 - Advanced Form
+        type: staticContent
+        layout {
+            sequence: 1
+            slot: breadcrumbBar
+        }
+        appearance {
+            template: @/title-bar
+            templateOptions: [
+                #DEFAULT#
+                t-BreadcrumbRegion--useRegionTitle
+            ]
+        }
+    )
+
+    region records (
+        name: Expense Reports
+        type: themeTemplateComponent/contentRow
+        source {
+            location: localDatabase
+            type: sqlQuery
+            sqlQuery:
+                ```sql
+                select c.report_id,c.report_title,c.employee_name,c.status,c.currency_code,c.created_on,
+                       initcap(c.status) status_label,
+                       case c.status when 'PAID' then 'success' when 'APPROVED' then 'success'
+                            when 'RETURNED' then 'danger' when 'SUBMITTED' then 'info' else 'warning' end status_state,
+                       'Created ' || to_char(c.created_on,'Mon DD, YYYY') || ' - ' ||
+                           (select count(*) from sfm_expense_report_lines l where l.report_id=c.report_id) ||
+                           case when (select count(*) from sfm_expense_report_lines l where l.report_id=c.report_id)=1 then ' expense' else ' expenses' end report_summary,
+                       c.currency_code || ' ' || to_char((select nvl(sum(l.amount),0)
+                           from sfm_expense_report_lines l where l.report_id=c.report_id),'FM999G999G999G990D00') amount_label,
+                       apex_page.get_url(p_page=>2,p_items=>'P2_REPORT_ID',p_values=>c.report_id,p_clear_cache=>'2') edit_url
+                from sfm_expense_reports c
+                ```
+        }
+        orderBy {
+            type: staticValue
+            orderByClause: CREATED_ON DESC, REPORT_ID DESC
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/standard
+            templateOptions: [
+                #DEFAULT#
+                t-Region--noPadding
+                t-Region--hideHeader js-addHiddenHeadingRoleDesc
+                t-Region--scrollBody
+            ]
+        }
+        advanced {
+            htmlDomId: expense-reports
+        }
+        componentAppearance {
+            display: report
+        }
+        settings {
+            overline: &EMPLOYEE_NAME.
+            title: &REPORT_TITLE.
+            description: &REPORT_SUMMARY.
+            miscellaneous: &AMOUNT_LABEL.
+            displayBadge: true
+        }
+        plugin-badge {
+            label: Status
+            value: STATUS_LABEL
+            state: STATUS_STATE
+        }
+
+        column AMOUNT_LABEL (
+            layout {
+                sequence: 100
+            }
+            source {
+                databaseColumn: AMOUNT_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column CREATED_ON (
+            layout {
+                sequence: 60
+            }
+            source {
+                databaseColumn: CREATED_ON
+                dataType: timestamp
+            }
+        )
+
+        column CURRENCY_CODE (
+            layout {
+                sequence: 50
+            }
+            source {
+                databaseColumn: CURRENCY_CODE
+                dataType: varchar2
+            }
+        )
+
+        column EDIT_URL (
+            layout {
+                sequence: 110
+            }
+            source {
+                databaseColumn: EDIT_URL
+                dataType: varchar2
+            }
+        )
+
+        column EMPLOYEE_NAME (
+            layout {
+                sequence: 30
+            }
+            source {
+                databaseColumn: EMPLOYEE_NAME
+                dataType: varchar2
+            }
+        )
+
+        column REPORT_ID (
+            layout {
+                sequence: 10
+            }
+            source {
+                databaseColumn: REPORT_ID
+                dataType: number
+                primaryKey: true
+            }
+        )
+
+        column REPORT_SUMMARY (
+            layout {
+                sequence: 90
+            }
+            source {
+                databaseColumn: REPORT_SUMMARY
+                dataType: varchar2
+            }
+        )
+
+        column REPORT_TITLE (
+            layout {
+                sequence: 20
+            }
+            source {
+                databaseColumn: REPORT_TITLE
+                dataType: varchar2
+            }
+        )
+
+        column STATUS (
+            layout {
+                sequence: 40
+            }
+            source {
+                databaseColumn: STATUS
+                dataType: varchar2
+            }
+        )
+
+        column STATUS_LABEL (
+            layout {
+                sequence: 70
+            }
+            source {
+                databaseColumn: STATUS_LABEL
+                dataType: varchar2
+            }
+        )
+
+        column STATUS_STATE (
+            layout {
+                sequence: 80
+            }
+            source {
+                databaseColumn: STATUS_STATE
+                dataType: varchar2
+            }
+        )
+
+        action edit (
+            position: primaryActions
+            template: button
+            label: Edit Report
+            layout {
+                sequence: 10
+            }
+            behavior {
+                type: redirectUrl
+                targetUrl: &EDIT_URL.
+            }
+            appearance {
+                displayType: icon
+                icon: fa-edit
+            }
+        )
+
+    )
+
+    button create (
+        buttonName: CREATE
+        label: New Expense Report
+        layout {
+            sequence: 10
+            region: @page-heading
+            slot: create
+        }
+        appearance {
+            buttonTemplate: @/text-with-icon
+            hot: true
+            templateOptions: [
+                #DEFAULT#
+                t-Button--iconLeft
+            ]
+            icon: fa-plus
+        }
+        behavior {
+            action: redirectThisApp
+            target: {
+                page: 2
+                clearCache: 2
+            }
+        }
+    )
+
+    dynamicAction refresh-records (
+        name: Refresh after editing
+        execution {
+            sequence: 10
+        }
+        when {
+            event: apexafterclosecanceldialog
+            selectionType: jQuerySelector
+            jquerySelector: body
+        }
+
+        action refresh (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @records
+            }
+            execution {
+                sequence: 10
+                fireOnInit: false
+            }
+        )
+
+        action refresh-facets (
+            action: refresh
+            affectedElements {
+                selectionType: region
+                region: @filters
+            }
+            execution {
+                sequence: 20
+                fireOnInit: false
+            }
+        )
+
+    )
+
+)
+
