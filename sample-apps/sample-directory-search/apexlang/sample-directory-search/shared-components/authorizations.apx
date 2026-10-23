@@ -1,0 +1,33 @@
+authorization oracle-text-is-available (
+    name: Oracle Text is available
+    type: plSqlFunctionBody
+    settings {
+        plsqlFunctionBody:
+            ```plsql
+            declare
+                l_idx_exists number;
+            begin
+                execute immediate q'#
+            select 1
+              from sys.user_indexes
+             where index_name      = 'FT_EBA_SRCH_TXT_EMPS_FTIDX_IDX'
+               and table_name      = 'EBA_SRCH_TXT_EMPLOYEES'
+               and domidx_status   = 'VALID'
+               and domidx_opstatus = 'VALID'
+               and rownum          = 1#'
+               into l_idx_exists;
+            
+                return true;
+            exception
+                when others then
+                    return false;
+            end;
+            
+            
+            ```
+    }
+    advanced {
+        evaluationType: perSession
+    }
+)
+

@@ -627,7 +627,7 @@
         {
             "internalName": "SAMPLE_DIRECTORY_SEARCH",
             "author": "Oracle",
-            "version": "26.2.0",
+            "version": "26.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-sample-directory-search.svg",
             "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/sample-directory-search",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/sample-directory-search/sql/sample-directory-search.sql",

@@ -44,7 +44,7 @@ prompt APPLICATION 7220 - Employee Directory Search
 --     Pages:                      8
 --       Items:                   31
 --       Processes:                6
---       Regions:                 19
+--       Regions:                 20
 --       Buttons:                  4
 --       Dynamic Actions:          3
 --     Shared Components:
@@ -56,6 +56,7 @@ prompt APPLICATION 7220 - Employee Directory Search
 --           Entries:              5
 --       Security:
 --         Authentication:         1
+--         Authorization:          1
 --       User Interface:
 --         Themes:                 1
 --         Templates:
@@ -100,7 +101,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Employee Directory Search'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.2.0'
+,p_flow_version=>'26.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -116,7 +117,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Employee Directory Search'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461312135609
-,p_version_scn=>'48459155'
+,p_version_scn=>'48670387'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -313,7 +314,7 @@ wwv_flow_imp_shared.create_list(
  p_id=>wwv_flow_imp.id(2198345684502573823)
 ,p_name=>'Navigation Menu'
 ,p_static_id=>'navigation-menu'
-,p_version_scn=>'SH256:kFQH1C_E0RDNQp2pyJkNh4mCNQ39X0LUaVn3oDQLBZk'
+,p_version_scn=>'SH256:A_L3ErOH6OuuH-gyb8y3PdA--acq6eAucJJnrGu1qWc'
 );
 wwv_flow_imp_shared.create_list_item(
  p_id=>wwv_flow_imp.id(2198146794081451774)
@@ -323,6 +324,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:201:&SESSION.::&DEBUG.::::'
 ,p_list_item_icon=>'fa-sign-in'
 ,p_list_text_01=>'Review summary on employee data and the Oracle Text index.'
+,p_security_scheme=>wwv_flow_imp.id(2502695747460736)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'201'
 );
@@ -334,6 +336,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:6:&SESSION.::&DEBUG.:RP,6,RR:::'
 ,p_list_item_icon=>'fa-table-search'
 ,p_list_text_01=>'<strong>Faceted Search</strong> utilizing Oracle Text for the search facet.'
+,p_security_scheme=>wwv_flow_imp.id(2502695747460736)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'6'
 );
@@ -345,6 +348,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:2:&SESSION.::&DEBUG.:RP,2,RR:::'
 ,p_list_item_icon=>'fa-search'
 ,p_list_text_01=>'Employee Search using Oracle Text. Uses APEX <strong>Search Configuration</strong> and a <strong>Search Region</strong>.'
+,p_security_scheme=>wwv_flow_imp.id(2502695747460736)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'2'
 );
@@ -356,6 +360,7 @@ wwv_flow_imp_shared.create_list_item(
 ,p_list_item_link_target=>'f?p=&APP_ID.:3:&SESSION.::&DEBUG.:RP,3,RR:::'
 ,p_list_item_icon=>'fa-media-list'
 ,p_list_text_01=>'Employee Search using <strong>Content Row</strong> region, based on a SQL Query using Oracle Text CONTAINS.'
+,p_security_scheme=>wwv_flow_imp.id(2502695747460736)
 ,p_list_item_current_type=>'COLON_DELIMITED_PAGE_LIST'
 ,p_list_item_current_for_pages=>'3'
 );
@@ -2173,6 +2178,40 @@ wwv_flow_imp_shared.create_app_static_file(
 );
 end;
 /
+prompt --application/shared_components/security/authorizations/oracle_text_is_available
+begin
+wwv_flow_imp_shared.create_security_scheme(
+ p_id=>wwv_flow_imp.id(2502695747460736)
+,p_name=>'Oracle Text is available'
+,p_static_id=>'oracle-text-is-available'
+,p_scheme_type=>'NATIVE_FUNCTION_BODY'
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'plsql_function_body', wwv_flow_string.join(wwv_flow_t_varchar2(
+    'declare',
+    '    l_idx_exists number;',
+    'begin',
+    '    execute immediate q''#',
+    'select 1',
+    '  from sys.user_indexes',
+    ' where index_name      = ''FT_EBA_SRCH_TXT_EMPS_FTIDX_IDX''',
+    '   and table_name      = ''EBA_SRCH_TXT_EMPLOYEES''',
+    '   and domidx_status   = ''VALID''',
+    '   and domidx_opstatus = ''VALID''',
+    '   and rownum          = 1#''',
+    '   into l_idx_exists;',
+    '',
+    '    return true;',
+    'exception',
+    '    when others then',
+    '        return false;',
+    'end;',
+    '',
+    '')))).to_clob
+,p_version_scn=>'SH256:sXMOC4p4MJvQQaZJXHWuBkAIovyLSemKXW0f_gI4acQ'
+,p_caching=>'BY_USER_BY_SESSION'
+);
+end;
+/
 prompt --application/shared_components/navigation/navigation_bar
 begin
 null;
@@ -3739,13 +3778,29 @@ wwv_flow_imp_page.create_page_plug(
 ,p_region_template_options=>'#DEFAULT#:t-Region--hideHeader js-addHiddenHeadingRoleDesc:t-Region--noUI:t-Region--scrollBody'
 ,p_component_template_options=>'#DEFAULT#:u-colors:t-Cards--featured force-fa-lg:t-Cards--displayIcons:t-Cards--cols:t-Cards--animColorFill'
 ,p_plug_template=>4075786578761660127
-,p_plug_display_sequence=>10
+,p_plug_display_sequence=>20
 ,p_plug_item_display_point=>'ABOVE'
 ,p_location=>null
 ,p_list_id=>wwv_flow_imp.id(2198345684502573823)
 ,p_plug_source_type=>'NATIVE_LIST'
 ,p_list_template_id=>2890197131116233323
+,p_plug_required_role=>wwv_flow_imp.id(2502695747460736)
 ,p_landmark_type=>'navigation'
+);
+wwv_flow_imp_page.create_page_plug(
+ p_id=>wwv_flow_imp.id(1780364482904510)
+,p_plug_name=>'Oracle Text not Available'
+,p_static_id=>'oracle-text-not-available'
+,p_region_template_options=>'#DEFAULT#:t-Alert--horizontal:t-Alert--defaultIcons:t-Alert--warning'
+,p_plug_template=>2044111091335791563
+,p_plug_display_sequence=>10
+,p_plug_item_display_point=>'ABOVE'
+,p_location=>null
+,p_plug_source=>'The Oracle Text index is not available in this application. Please deinstall Supporting Objects, and install them again. After that, log out and back into this application.'
+,p_plug_required_role=>'!'||wwv_flow_imp.id(2502695747460736)
+,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
+  'expand_shortcuts', 'N',
+  'output_as', 'HTML')).to_clob
 );
 end;
 /
@@ -6011,20 +6066,20 @@ wwv_flow_imp.g_varchar2_table(1) := 'begin'||wwv_flow.LF||
 '    eba_search_text_helper.drop_text_index( p_index_name => ''EBA_SRCH_TXT_EMPS_FTIDX'' );'||wwv_flow.LF||
 'end;'||wwv_flow.LF||
 '';
-wwv_flow_imp.g_varchar2_table(2) := '/'||wwv_flow.LF||
+wwv_flow_imp.g_varchar2_table(2) := '/    '||wwv_flow.LF||
 ''||wwv_flow.LF||
 'drop table eba_srch_txt_cost_centers cascade constraints'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'drop table eba_srch_txt_groups cascad';
-wwv_flow_imp.g_varchar2_table(3) := 'e constraints'||wwv_flow.LF||
+'drop table eba_srch_txt_groups ca';
+wwv_flow_imp.g_varchar2_table(3) := 'scade constraints'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'drop table eba_srch_txt_employees  cascade constraints'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'drop view eba_srch_txt_em';
-wwv_flow_imp.g_varchar2_table(4) := 'ployee_org_v'||wwv_flow.LF||
+'drop view eba_srch_tx';
+wwv_flow_imp.g_varchar2_table(4) := 't_employee_org_v'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
 'drop table eba_srch_txt_countries'||wwv_flow.LF||
@@ -6033,8 +6088,8 @@ wwv_flow_imp.g_varchar2_table(4) := 'ployee_org_v'||wwv_flow.LF||
 'drop package eba_search_text_data'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 ''||wwv_flow.LF||
-'drop packa';
-wwv_flow_imp.g_varchar2_table(5) := 'ge eba_search_text_helper'||wwv_flow.LF||
+'drop p';
+wwv_flow_imp.g_varchar2_table(5) := 'ackage eba_search_text_helper'||wwv_flow.LF||
 '/'||wwv_flow.LF||
 '';
 wwv_flow_imp_shared.create_install(

@@ -1,7 +1,7 @@
 begin
     eba_search_text_helper.drop_text_index( p_index_name => 'EBA_SRCH_TXT_EMPS_FTIDX' );
 end;
-/
+/    
 
 drop table eba_srch_txt_cost_centers cascade constraints
 /

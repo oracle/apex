@@ -21,6 +21,9 @@ list navigation-menu (
         userDefinedAttributes {
             1: Review summary on employee data and the Oracle Text index.
         }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
     )
 
     entry employee-faceted-search (
@@ -47,6 +50,9 @@ list navigation-menu (
         }
         userDefinedAttributes {
             1: <strong>Faceted Search</strong> utilizing Oracle Text for the search facet.
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
         }
     )
 
@@ -75,6 +81,9 @@ list navigation-menu (
         userDefinedAttributes {
             1: Employee Search using Oracle Text. Uses APEX <strong>Search Configuration</strong> and a <strong>Search Region</strong>.
         }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
     )
 
     entry employees-content-row (
@@ -101,6 +110,9 @@ list navigation-menu (
         }
         userDefinedAttributes {
             1: Employee Search using <strong>Content Row</strong> region, based on a SQL Query using Oracle Text CONTAINS.
+        }
+        security {
+            authorizationScheme: @oracle-text-is-available
         }
     )
 

@@ -36,7 +36,7 @@ page 1 (
             list: @navigation-menu
         }
         layout {
-            sequence: 10
+            sequence: 20
             slot: body
         }
         appearance {
@@ -51,6 +51,9 @@ page 1 (
         accessibility {
             landmarkType: navigation
         }
+        security {
+            authorizationScheme: @oracle-text-is-available
+        }
         componentAppearance {
             listTemplate: @/cards
             templateOptions: [
@@ -61,6 +64,30 @@ page 1 (
                 t-Cards--cols
                 t-Cards--animColorFill
             ]
+        }
+    )
+
+    region oracle-text-not-available (
+        name: Oracle Text not Available
+        type: staticContent
+        source {
+            htmlCode: The Oracle Text index is not available in this application. Please deinstall Supporting Objects, and install them again. After that, log out and back into this application.
+        }
+        layout {
+            sequence: 10
+            slot: body
+        }
+        appearance {
+            template: @/alert
+            templateOptions: [
+                #DEFAULT#
+                t-Alert--horizontal
+                t-Alert--defaultIcons
+                t-Alert--warning
+            ]
+        }
+        security {
+            authorizationScheme: !@oracle-text-is-available
         }
     )
 

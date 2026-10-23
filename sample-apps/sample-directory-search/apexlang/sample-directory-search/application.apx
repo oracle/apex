@@ -1,6 +1,6 @@
 app EMPLOYEE-DIRECTORY-SEARCH (
     name: Employee Directory Search
-    version: 26.2.0
+    version: 26.2.1
     logo {
         type: text
         text: Employee Directory Search
