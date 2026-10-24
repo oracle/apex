@@ -87,9 +87,6 @@ page 15 (
                 t-Region--scrollBody
             ]
         }
-        readOnly {
-            type: always
-        }
     )
 
     pageItem P15_AVATAR (

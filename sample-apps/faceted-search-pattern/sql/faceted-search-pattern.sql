@@ -101,7 +101,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX Faceted Search Patterns'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.2.0'
+,p_flow_version=>'26.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -112,7 +112,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX Faceted Search Patterns'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461333220140
-,p_version_scn=>'42129848'
+,p_version_scn=>'42449029'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -10611,7 +10611,6 @@ wwv_flow_imp_page.create_page_plug(
 ,p_include_rowid_column=>false
 ,p_is_editable=>false
 ,p_plug_source_type=>'NATIVE_FORM'
-,p_plug_read_only_when_type=>'ALWAYS'
 );
 wwv_flow_imp_page.create_page_button(
  p_id=>wwv_flow_imp.id(2523025436571620)

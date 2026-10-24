@@ -1,6 +1,6 @@
 app ORACLE-APEX-FACETED-SEARCH-PATTERNS (
     name: Oracle APEX Faceted Search Patterns
-    version: 26.2.0
+    version: 26.2.1
     logo {
         type: text
         text: Oracle APEX Faceted Search Patterns

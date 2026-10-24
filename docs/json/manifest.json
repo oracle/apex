@@ -835,7 +835,7 @@
         {
             "internalName": "SAMPLE_FACETED_SEARCH_PATTERNS",
             "author": "Oracle",
-            "version": "26.2.0",
+            "version": "26.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-faceted-search-pattern.svg",
             "url": "https://github.com/oracle/apex/tree/26.2/sample-apps/faceted-search-pattern",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.2/sample-apps/faceted-search-pattern/sql/faceted-search-pattern.sql",
