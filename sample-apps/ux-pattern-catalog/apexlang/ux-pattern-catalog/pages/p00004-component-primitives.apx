@@ -83,7 +83,7 @@ page 4 (
                 union all
                 
                 select
-                    'fa-tachometer' as icon_class,
+                    'fa-dial-gauge-chart' as icon_class,
                     'Metrics' as title,
                     'Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.' as description,
                     'metrics' as page_alias

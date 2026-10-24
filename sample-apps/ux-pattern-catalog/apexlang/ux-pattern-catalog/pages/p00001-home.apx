@@ -91,6 +91,27 @@ page 1 (
                     'Present compact, scannable records with supporting metadata, status, icons, badges, and contextual actions.' as description,
                     'content-rows' as page_alias
                 from sys.dual
+                union all
+                select
+                    'fa-cards' as icon_class,
+                    'Cards' as title,
+                    'Group related content and actions into flexible visual containers for browsing, comparison, and summary views.' as description,
+                    'cards' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-dial-gauge-chart' as icon_class,
+                    'Metrics' as title,
+                    'Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.' as description,
+                    'metrics' as page_alias
+                from sys.dual
+                union all
+                select
+                    'fa-bar-chart' as icon_class,
+                    'Charts' as title,
+                    'Visualize comparisons, distributions, composition, and change over time using charts suited to the data and task.' as description,
+                    'charts' as page_alias
+                from sys.dual
                 
                 ```
         }

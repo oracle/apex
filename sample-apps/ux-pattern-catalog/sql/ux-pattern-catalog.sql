@@ -18,7 +18,7 @@ set define off verify off feedback off
 begin
 wwv_flow_imp.import_begin (
  p_version_yyyy_mm_dd=>'2026.04.07'
-,p_release=>'26.2.0'
+,p_release=>'26.2.1'
 ,p_default_workspace_id=>20
 ,p_default_application_id=>7990
 ,p_default_id_offset=>0
@@ -60,8 +60,8 @@ prompt APPLICATION 7990 - Oracle APEX UX Pattern Catalog
 --       Reports:
 --       E-Mail:
 --     Supporting Objects:  Included
---   Version:         26.2.0
---   Instance ID:     745964864827421
+--   Version:         26.2.1
+--   Instance ID:     745992684577784
 --
 
 prompt --application/delete_application
@@ -94,7 +94,7 @@ wwv_imp_workspace.create_flow(
 ,p_logo_text=>'Oracle APEX UX Pattern Catalog'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.2.0'
+,p_flow_version=>'26.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -108,7 +108,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Oracle APEX UX Pattern Catalog'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461280214208
-,p_version_scn=>'312804007'
+,p_version_scn=>'327588970'
 ,p_print_server_type=>'NATIVE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -10708,17 +10708,17 @@ wwv_flow_imp_shared.create_theme_style(
 ,p_is_public=>true
 ,p_is_accessible=>true
 ,p_theme_roller_input_file_urls=>'#THEME_FILES#less/theme/Iris.less'
-,p_theme_roller_config=>'{"classes":[],"vars":{"@g_FontFamily":"system","@g_Nav_Style":"light","@g_Header_Style":"pillar","@g_Accent-Pillar":"custom","@g_CustomAccent-BG":"#4251bf","@g_Color-Palette-1":"#5463d6","@g_Color-Palette-1-FG":"#ffffff","@g_Link-Base":"#2f3a8d","@Ac'
-||'tions-Exp":"320px","@Side-Exp":"320px","@Nav-Exp":"280px"},"customCSS":":root {\n--u-color-1: #4251BF;\n--u-color-1-contrast: #FFF;\n\n--u-color-2: #3F8EFC;\n--u-color-2-contrast: #FFF;\n\n--u-color-3: #1FB6A6;\n--u-color-3-contrast: #FFF;\n\n--u-col'
-||'or-4: #4CBF7A;\n--u-color-4-contrast: #FFF;\n\n--u-color-5: #E5B73B;\n--u-color-5-contrast: #FFF;\n\n--u-color-6: #F28C52;\n--u-color-6-contrast: #FFF;\n\n--u-color-7: #E76F6A;\n--u-color-7-contrast: #FFF;\n\n--u-color-8: #A86BD8;\n--u-color-8-contra'
-||'st: #FFF;\n\n--u-color-9: #D65C97;\n--u-color-9-contrast: #FFF;\n\n--u-color-10: #6B7A90;\n--u-color-10-contrast: #FFF;\n\n--u-color-11: #5C6EE5;\n--u-color-11-contrast: #FFF;\n\n--u-color-12: #28C7D9;\n--u-color-12-contrast: #FFF;\n\n--u-color-13: #'
-||'72C95F;\n--u-color-13-contrast: #FFF;\n\n--u-color-14: #C5A23A;\n--u-color-14-contrast: #FFF;\n\n--u-color-15: #8E6AC8;\n--u-color-15-contrast: #FFF;\n\n--ut-body-title-background-color: #FFF;\n--ut-body-sidebar-background-color: #FBFBFE;\n--ut-body-'
-||'background-color: #FBFBFE;\n\n--ut-palette-danger: #B73122;\n--ut-palette-danger-contrast: #FFFFFF;\n--ut-palette-danger-shade: #FDECEA;\n--ut-palette-danger-text: #9F271B;\n\n--ut-palette-warning: #9A5B00;\n--ut-palette-warning-contrast: #FFFFFF;\n-'
-||'-ut-palette-warning-shade: #FFF4DB;\n--ut-palette-warning-text: #7A4700;\n\n--ut-palette-success: #1D7A52;\n--ut-palette-success-contrast: #FFFFFF;\n--ut-palette-success-shade: #E7F6EE;\n--ut-palette-success-text: #166341;\n\n--ut-palette-info: #2B6C'
-||'B0;\n--ut-palette-info-contrast: #FFFFFF;\n--ut-palette-info-shade: #EAF2FF;\n--ut-palette-info-text: #20548A;\n\n}   \n\n.t-ContentRow-item.is-selected {\n    --ut-cr-item-background-color: var(--a-palette-primary);\n    --ut-cr-item-text-color: var'
-||'(--a-palette-primary-contrast);\n    --ut-component-text-title-color: var(--ut-cr-item-text-color);\n    --ut-component-text-muted-color: var(--ut-cr-item-text-color);\n}\n\n/* Hide the processing spinner when it is first added to the page. */\n.u-Pr'
-||'ocessing {\n    opacity: 0;\n    animation: spinner-fade-in 0.5s ease 0.5s forwards;\n}\n\n/* Gradually transition the spinner from hidden to fully visible. */\n@keyframes spinner-fade-in {\n    from {\n        opacity: 0;\n    }\n\n    to {\n       '
-||' opacity: 1;\n    }\n}\n\n/* Align Side RDS */\n.t-Body-side .a-RDS-link {\n    --ut-tabs-item-padding-x: 1rem;\n}\n","useCustomLess":"N"}'
+,p_theme_roller_config=>'{"classes":[],"vars":{"@g_FontFamily":"system","@g_Nav_Style":"light","@g_Header_Style":"pillar-light","@g_Accent-Pillar":"custom","@g_CustomAccent-BG":"#4251bf","@g_Color-Palette-1":"#5463d6","@g_Color-Palette-1-FG":"#ffffff","@g_Link-Base":"#2f3a8d'
+||'","@Actions-Exp":"320px","@Side-Exp":"320px","@Nav-Exp":"280px"},"customCSS":":root {\n--u-color-1: #4251BF;\n--u-color-1-contrast: #FFF;\n\n--u-color-2: #3F8EFC;\n--u-color-2-contrast: #FFF;\n\n--u-color-3: #1FB6A6;\n--u-color-3-contrast: #FFF;\n\n-'
+||'-u-color-4: #4CBF7A;\n--u-color-4-contrast: #FFF;\n\n--u-color-5: #E5B73B;\n--u-color-5-contrast: #FFF;\n\n--u-color-6: #F28C52;\n--u-color-6-contrast: #FFF;\n\n--u-color-7: #E76F6A;\n--u-color-7-contrast: #FFF;\n\n--u-color-8: #A86BD8;\n--u-color-8-'
+||'contrast: #FFF;\n\n--u-color-9: #D65C97;\n--u-color-9-contrast: #FFF;\n\n--u-color-10: #6B7A90;\n--u-color-10-contrast: #FFF;\n\n--u-color-11: #5C6EE5;\n--u-color-11-contrast: #FFF;\n\n--u-color-12: #28C7D9;\n--u-color-12-contrast: #FFF;\n\n--u-color'
+||'-13: #72C95F;\n--u-color-13-contrast: #FFF;\n\n--u-color-14: #C5A23A;\n--u-color-14-contrast: #FFF;\n\n--u-color-15: #8E6AC8;\n--u-color-15-contrast: #FFF;\n\n--ut-body-title-background-color: #FFF;\n--ut-body-sidebar-background-color: #FBFBFE;\n--ut'
+||'-body-background-color: #FBFBFE;\n\n--ut-palette-danger: #B73122;\n--ut-palette-danger-contrast: #FFFFFF;\n--ut-palette-danger-shade: #FDECEA;\n--ut-palette-danger-text: #9F271B;\n\n--ut-palette-warning: #9A5B00;\n--ut-palette-warning-contrast: #FFFF'
+||'FF;\n--ut-palette-warning-shade: #FFF4DB;\n--ut-palette-warning-text: #7A4700;\n\n--ut-palette-success: #1D7A52;\n--ut-palette-success-contrast: #FFFFFF;\n--ut-palette-success-shade: #E7F6EE;\n--ut-palette-success-text: #166341;\n\n--ut-palette-info:'
+||' #2B6CB0;\n--ut-palette-info-contrast: #FFFFFF;\n--ut-palette-info-shade: #EAF2FF;\n--ut-palette-info-text: #20548A;\n\n}   \n\n.t-ContentRow-item.is-selected {\n    --ut-cr-item-background-color: var(--a-palette-primary);\n    --ut-cr-item-text-colo'
+||'r: var(--a-palette-primary-contrast);\n    --ut-component-text-title-color: var(--ut-cr-item-text-color);\n    --ut-component-text-muted-color: var(--ut-cr-item-text-color);\n}\n\n/* Hide the processing spinner when it is first added to the page. */\'
+||'n.u-Processing {\n    opacity: 0;\n    animation: spinner-fade-in 0.5s ease 0.5s forwards;\n}\n\n/* Gradually transition the spinner from hidden to fully visible. */\n@keyframes spinner-fade-in {\n    from {\n        opacity: 0;\n    }\n\n    to {\n '
+||'       opacity: 1;\n    }\n}\n\n/* Align Side RDS */\n.t-Body-side .a-RDS-link {\n    --ut-tabs-item-padding-x: 1rem;\n}\n","useCustomLess":"N"}'
 ,p_theme_roller_output_file_url=>'#THEME_DB_FILES#24895213365247667045.css'
 ,p_theme_roller_read_only=>false
 );
@@ -11836,6 +11836,27 @@ wwv_flow_imp_page.create_page_plug(
 '    ''Present compact, scannable records with supporting metadata, status, icons, badges, and contextual actions.'' as description,',
 '    ''content-rows'' as page_alias',
 'from sys.dual',
+'union all',
+'select',
+'    ''fa-cards'' as icon_class,',
+'    ''Cards'' as title,',
+'    ''Group related content and actions into flexible visual containers for browsing, comparison, and summary views.'' as description,',
+'    ''cards'' as page_alias',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-dial-gauge-chart'' as icon_class,',
+'    ''Metrics'' as title,',
+'    ''Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.'' as description,',
+'    ''metrics'' as page_alias',
+'from sys.dual',
+'union all',
+'select',
+'    ''fa-bar-chart'' as icon_class,',
+'    ''Charts'' as title,',
+'    ''Visualize comparisons, distributions, composition, and change over time using charts suited to the data and task.'' as description,',
+'    ''charts'' as page_alias',
+'from sys.dual',
 ''))
 ,p_template_component_type=>'REPORT'
 ,p_lazy_loading=>false
@@ -12558,7 +12579,7 @@ wwv_flow_imp_page.create_page_plug(
 'union all',
 '',
 'select',
-'    ''fa-tachometer'' as icon_class,',
+'    ''fa-dial-gauge-chart'' as icon_class,',
 '    ''Metrics'' as title,',
 '    ''Highlight key values, trends, targets, and supporting context using clear and appropriately emphasized metric displays.'' as description,',
 '    ''metrics'' as page_alias',
@@ -17351,7 +17372,6 @@ wwv_flow_imp_page.create_page_item_group(
 ,p_label=>'Feature Flags'
 ,p_static_id=>'feature-flags'
 ,p_display_sequence=>90
-,p_icon_css_classes=>'fa-flag-checkered'
 ,p_fc_filter_combination=>'OR'
 ,p_fc_sort_by_top_counts=>true
 ,p_fc_show_more_count=>7
@@ -17438,7 +17458,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'FACET_COLUMN'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov_sort_direction=>'ASC'
-,p_item_icon_css_classes=>'fa-shapes'
 ,p_fc_show_label=>true
 ,p_fc_collapsible=>false
 ,p_fc_compute_counts=>true
@@ -17463,11 +17482,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Priority'
 ,p_source=>'PRIORITY'
 ,p_source_type=>'FACET_COLUMN'
-,p_display_as=>'NATIVE_RADIOGROUP'
+,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov_sort_direction=>'ASC'
-,p_item_icon_css_classes=>'fa-exclamation-square-o'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'hide_radio_buttons', 'Y')).to_clob
 ,p_fc_show_label=>true
 ,p_fc_collapsible=>false
 ,p_fc_compute_counts=>true
@@ -17505,7 +17521,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'UPDATED_ON'
 ,p_source_type=>'FACET_COLUMN'
 ,p_display_as=>'NATIVE_RANGE'
-,p_item_icon_css_classes=>'fa-calendar-month'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'manual_entry', 'N',
   'select_multiple', 'N')).to_clob
@@ -17839,7 +17854,6 @@ wwv_flow_imp_page.create_page_item_group(
 ,p_label=>'Feature Flags'
 ,p_static_id=>'feature-flags'
 ,p_display_sequence=>90
-,p_icon_css_classes=>'fa-flag-checkered'
 ,p_fc_filter_combination=>'OR'
 ,p_fc_sort_by_top_counts=>true
 ,p_fc_show_more_count=>7
@@ -17926,7 +17940,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_source_type=>'FACET_COLUMN'
 ,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov_sort_direction=>'ASC'
-,p_item_icon_css_classes=>'fa-shapes'
 ,p_fc_show_label=>true
 ,p_fc_collapsible=>false
 ,p_fc_compute_counts=>true
@@ -17951,11 +17964,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_prompt=>'Priority'
 ,p_source=>'PRIORITY'
 ,p_source_type=>'FACET_COLUMN'
-,p_display_as=>'NATIVE_RADIOGROUP'
+,p_display_as=>'NATIVE_CHECKBOX'
 ,p_lov_sort_direction=>'ASC'
-,p_item_icon_css_classes=>'fa-exclamation-square-o'
-,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
-  'hide_radio_buttons', 'Y')).to_clob
 ,p_fc_show_label=>true
 ,p_fc_collapsible=>false
 ,p_fc_compute_counts=>true
@@ -17993,7 +18003,6 @@ wwv_flow_imp_page.create_page_item(
 ,p_source=>'UPDATED_ON'
 ,p_source_type=>'FACET_COLUMN'
 ,p_display_as=>'NATIVE_RANGE'
-,p_item_icon_css_classes=>'fa-calendar-month'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'manual_entry', 'N',
   'select_multiple', 'N')).to_clob

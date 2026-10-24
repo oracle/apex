@@ -125,9 +125,6 @@ page 210 (
             layout {
                 sequence: 50
             }
-            appearance {
-                icon: fa-shapes
-            }
             listEntries {
                 maxDisplayedEntries: 7
                 allowToExclude: false
@@ -138,21 +135,15 @@ page 210 (
         )
 
         facet P210_PRIORITY (
-            type: radioGroup
+            type: checkboxGroup
             label {
                 label: Priority
-            }
-            settings {
-                hideRadioButtons: true
             }
             lov {
                 type: distinctValues
             }
             layout {
                 sequence: 70
-            }
-            appearance {
-                icon: fa-exclamation-square-o
             }
             listEntries {
                 zeroCountEntries: disable
@@ -183,9 +174,6 @@ page 210 (
             layout {
                 sequence: 100
             }
-            appearance {
-                icon: fa-calendar-month
-            }
             listEntries {
                 allowToExclude: false
             }
@@ -199,9 +187,6 @@ page 210 (
             label: Feature Flags
             layout {
                 sequence: 90
-            }
-            appearance {
-                icon: fa-flag-checkered
             }
             listEntries {
                 maxDisplayedEntries: 7
