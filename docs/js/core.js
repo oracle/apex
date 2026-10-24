@@ -1,3 +1,4 @@
+
 ( function () {
     "use strict";
 
@@ -84,10 +85,25 @@
                     .join( "" );
             };
 
-            document.getElementById( "samples" ).innerHTML = getTemplate( prepareListData( data.sampleApps ) );
-            document.getElementById( "apps" ).innerHTML = getTemplate( prepareListData( data.starterApps ) );
-            document.getElementById( "utility-apps" ).innerHTML = getTemplate( prepareListData( data.utilityApps ) );
-            document.getElementById( "plug-ins" ).innerHTML = getTemplate( prepareListData( data.plugins ), "Download Plug-In" );
+            const samplesElement = document.getElementById( "samples" );
+            if ( samplesElement ) {
+                samplesElement.innerHTML = getTemplate( prepareListData( data.sampleApps ) );
+            }
+
+            const appsElement = document.getElementById( "apps" );
+            if ( appsElement ) {
+                appsElement.innerHTML = getTemplate( prepareListData( data.starterApps ) );
+            }
+
+            const utilityAppsElement = document.getElementById( "utility-apps" );
+            if ( utilityAppsElement ) {
+                utilityAppsElement.innerHTML = getTemplate( prepareListData( data.utilityApps ) );
+            }
+
+            const pluginsElement = document.getElementById( "plug-ins" );
+            if ( pluginsElement ) {
+                pluginsElement.innerHTML = getTemplate( prepareListData( data.plugins ), "Download Plug-In" );
+            }
 
             // utility apps are optional, so show / hide whole section
             if ( data.utilityApps && data.utilityApps.length > 0 ) {
