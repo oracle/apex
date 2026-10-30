@@ -4395,88 +4395,6 @@ page 5 (
         }
     )
 
-    process email-exceptions (
-        name: Email exceptions
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                declare
-                    l_summary      clob;
-                begin
-                
-                    l_summary := sp_contributor_summary.project_exceptions (
-                                     p_team_member_id  => :P5_ID,
-                                     p_links           => 'EMAIL'
-                                     );
-                
-                    apex_mail.send ( 
-                            p_to                 => :APP_USER,   
-                            p_from               => :APP_USER,  
-                            p_application_id     => :APP_ID,  
-                            p_template_static_id => 'EMAIL_ME',  
-                            p_placeholders       => '{' || '"APPLICATION_LINK": "' || sp_util.get_setting(p_static_id => 'APP_HOME_URL') ||'", '|| 
-                                                           '"APP_NAME": '   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||', '||
-                                                           '"SUBJECT": '    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ||' '||:NOMENCLATURE_PROJECT ||' Exceptions') ||', '||
-                                                           '"SUMMARY": '    || apex_json.stringify( l_summary ) ||
-                                                     '}' ); 
-                
-                end;
-                ```
-        }
-        execution {
-            sequence: 40
-        }
-        successMessage {
-            successMessage: Project Exceptions email sent.
-        }
-        advanced {
-            executionMappingIdentifier: 12115772462193393405
-        }
-    )
-
-    process email-summary (
-        name: Email summary
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                declare
-                    l_summary      clob;
-                begin
-                
-                    l_summary := sp_contributor_summary.generate (
-                                     p_team_member_id    => :P5_ID,
-                                     p_show_activities   => 'Y',
-                                     p_show_projects     => 'Y',
-                                     p_links             => 'EMAIL'
-                                     );
-                
-                    apex_mail.send ( 
-                            p_to                 => :APP_USER,   
-                            p_from               => :APP_USER,  
-                            p_application_id     => :APP_ID,  
-                            p_template_static_id => 'EMAIL_ME',  
-                            p_placeholders       => '{' || '"APPLICATION_LINK": "' || sp_util.get_setting(p_static_id => 'APP_HOME_URL') ||'", '|| 
-                                                           '"APP_NAME": '   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||', '||
-                                                           '"SUBJECT": '    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ||' Weekly Summary') ||', '||
-                                                           '"SUMMARY": '    || apex_json.stringify( l_summary ) ||
-                                                     '}' ); 
-                
-                end;
-                ```
-        }
-        execution {
-            sequence: 30
-        }
-        successMessage {
-            successMessage: Weekly Summary email sent.
-        }
-        advanced {
-            executionMappingIdentifier: 11195442678695696622
-        }
-    )
-
     process set-first-and-last-name-session-state (
         name: set first and last name session state
         type: executeCode
@@ -4525,50 +4443,6 @@ page 5 (
         }
     )
 
-    process subscribe-exceptions (
-        name: Subscribe exceptions
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                sp_util.notification_opt_in (
-                    p_team_member_id  => :APP_USER_ID,
-                    p_notification_id => sp_util.get_notification_id('PROJECT_EXCEPTIONS') );
-                ```
-        }
-        execution {
-            sequence: 90
-        }
-        successMessage {
-            successMessage: Subscribed to Project Exceptions.
-        }
-        advanced {
-            executionMappingIdentifier: 12115772580680393406
-        }
-    )
-
-    process subscribe-summary (
-        name: Subscribe summary
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                sp_util.notification_opt_in (
-                    p_team_member_id  => :APP_USER_ID,
-                    p_notification_id => sp_util.get_notification_id('WEEKLY_SUMMARY') );
-                ```
-        }
-        execution {
-            sequence: 60
-        }
-        successMessage {
-            successMessage: Subscribed to Weekly Summary.
-        }
-        advanced {
-            executionMappingIdentifier: 11501711195877050908
-        }
-    )
-
     process sync-roles (
         name: sync roles
         type: executeCode
@@ -4611,50 +4485,6 @@ page 5 (
         }
         serverSideCondition {
             whenButtonPressed: @unsubscribe-me-changes
-        }
-    )
-
-    process unsubscribe-exceptions (
-        name: Unsubscribe exceptions
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                sp_util.notification_opt_out (
-                    p_team_member_id  => :APP_USER_ID,
-                    p_notification_id => sp_util.get_notification_id('PROJECT_EXCEPTIONS') );
-                ```
-        }
-        execution {
-            sequence: 100
-        }
-        successMessage {
-            successMessage: Unsubscribed from Project Exceptions.
-        }
-        advanced {
-            executionMappingIdentifier: 12115774648471393427
-        }
-    )
-
-    process unsubscribe-summary (
-        name: Unsubscribe summary
-        type: executeCode
-        source {
-            plsqlCode:
-                ```plsql
-                sp_util.notification_opt_out (
-                    p_team_member_id  => :APP_USER_ID,
-                    p_notification_id => sp_util.get_notification_id('WEEKLY_SUMMARY') );
-                ```
-        }
-        execution {
-            sequence: 80
-        }
-        successMessage {
-            successMessage: Unsubscribed from Weekly Summary.
-        }
-        advanced {
-            executionMappingIdentifier: 12115774570186393426
         }
     )
 
