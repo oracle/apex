@@ -1,7 +1,5 @@
 The Strategic Planner is designed to monitor projects, releases, contributors, reviews, and activities, making it particularly useful for managing teams of developers working on larger projects. This tool complements platforms like Jira and Confluence, or similar project tracking tools. Its user interface features faceted search, row-menus, interactive reporting, and other contemporary UX designs. You can use the tool as-is to help manage the application development projects or customize it to meet your specific requirements.
 
-The first Administrative user will be created during the 
-
 Installation
 ------------------------------------
 ### APEXlang Import (Recommended)

@@ -151,6 +151,11 @@ page 90 (
             template: @/optional-floating
             templateOptions: #DEFAULT#
         }
+        source {
+            formRegion: @nomenclature-project
+            column: IS_ACTIVE_YN
+            dataType: varchar2
+        }
         default {
             type: static
             staticValue: Y
