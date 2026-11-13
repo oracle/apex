@@ -915,14 +915,14 @@ page 54 (
                     apex_application_admin.set_remote_server(
                         p_static_id              => 'EBA_GENAI_OCI',
                         p_base_url               => 'https://inference.generativeai.' || :P54_OCI_REGION || '.oci.oraclecloud.com', 
-                        p_ai_model_name          => 'cohere.command-r-08-2024',
-                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.command-r-08-2024","servingType":"ON_DEMAND"}}' 
+                        p_ai_model_name          => 'cohere.command-a-03-2025',
+                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.command-a-03-2025","servingType":"ON_DEMAND"}}' 
                     );
                     apex_application_admin.set_remote_server(
                         p_static_id              => 'EBA_VECTOR_OCI',
                         p_base_url               => 'https://inference.generativeai.' || :P54_OCI_REGION || '.oci.oraclecloud.com', 
-                        p_ai_model_name          => 'cohere.embed-english-v3.0',
-                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.embed-english-v3.0","servingType":"ON_DEMAND"}}'
+                        p_ai_model_name          => 'cohere.embed-v4.0',
+                        p_ai_attributes          => '{"compartmentId":"' || apex_escape.json(:P54_OCI_COMPARTMENT_ID) || '","servingMode":{"modelId":"cohere.embed-v4.0","servingType":"ON_DEMAND"}}'
                     );
                     
                     if :P54_SHOW_WEB_CREDENTIALS = 'Y' then

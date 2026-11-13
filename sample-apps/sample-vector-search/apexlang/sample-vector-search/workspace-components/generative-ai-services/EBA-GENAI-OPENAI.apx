@@ -8,7 +8,7 @@ genAIService EBA_GENAI_OPENAI (
         credentials: @EBA_CREDENTIALS_OPENAI
     }
     advanced {
-        modelName: gpt-4o
+        modelName: gpt-5.4-mini
         providerApi: responses
     }
 )

@@ -3,7 +3,7 @@ vectorProvider EBA_VECTOR_OCI (
     type: genAIService
     genAIService {
         provider: ociGenAI
-        modelName: cohere.embed-english-v3.0
+        modelName: cohere.embed-v4.0
     }
     ociGenAI {
         compartmentId: ocid1.compartment.oc1

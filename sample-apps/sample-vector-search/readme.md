@@ -1,4 +1,4 @@
-This application shows how to leverage Vector Search in Oracle Database 23ai. Learn how to generate vector embeddings and how to do vector search, using APEX Search Configurations. The application also highlights the differences to traditional Oracle Text search, and showcases how to combine both methods.
+This application shows how to leverage Vector Search in Oracle Database 26ai. Learn how to generate vector embeddings and how to do vector search, using APEX Search Configurations. The application also highlights the differences to traditional Oracle Text search, and showcases how to combine both methods.
 
 Installation
 ------------------------------------
