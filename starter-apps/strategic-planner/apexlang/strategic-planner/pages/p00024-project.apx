@@ -604,8 +604,10 @@ page 24 (
             sqlQuery:
                 ```sql
                 select group_name, id 
-                from sp_project_groups
-                order by 1
+                  from sp_project_groups
+                 where nvl(is_active_yn,'Y') = 'Y'
+                    or id = :P24_PROJECT_GROUP_ID
+                 order by 1
                 ```
         }
         layout {

@@ -201,3 +201,14 @@ body .ck.ck-input-text {
     background-color: transparent !important;
     color: var(--u-color) !important;
 }
+
+.a-Button.a-FS-excludeFacetOption {
+  --a-button-padding-x: var(--u-space-1, 0.25rem);
+  --a-button-padding-y: var(--u-space-1, 0.25rem);
+
+  line-height: 1;
+}
+
+.a-IRR-dialogBody .a-IRR-radioIconList-item label {
+    background-color: var(--a-iconlist-item-background-color, transparent);
+}

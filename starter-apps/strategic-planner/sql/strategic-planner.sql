@@ -45,8 +45,8 @@ prompt APPLICATION 9111 - Strategic Planner
 --     Pages:                    277
 --       Items:                1,379
 --       Computations:           182
---       Validations:             64
---       Processes:              381
+--       Validations:             65
+--       Processes:              375
 --       Regions:                965
 --       Buttons:                822
 --       Dynamic Actions:        419
@@ -120,7 +120,7 @@ wwv_imp_workspace.create_flow(
 ,p_public_user=>'APEX_PUBLIC_USER'
 ,p_proxy_server=>nvl(wwv_flow_application_install.get_proxy,'')
 ,p_no_proxy_domains=>nvl(wwv_flow_application_install.get_no_proxy_domains,'')
-,p_flow_version=>'26.2'
+,p_flow_version=>'26.2.1'
 ,p_flow_status=>'AVAILABLE_W_EDIT_LINK'
 ,p_browser_cache=>'N'
 ,p_browser_frame=>'D'
@@ -135,7 +135,7 @@ wwv_imp_workspace.create_flow(
 ,p_substitution_value_01=>'Strategic Planner'
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_app_file_prefix,'')
 ,p_files_version=>2461230210030
-,p_version_scn=>'312715692'
+,p_version_scn=>'332045090'
 ,p_print_server_type=>'INSTANCE'
 ,p_file_storage=>'DB'
 ,p_is_pwa=>'Y'
@@ -10946,14 +10946,14 @@ wwv_flow_imp_shared.create_theme(
 ,p_default_required_label=>1612549789555753698
 ,p_default_navbar_list_template=>2850970698196720012
 ,p_file_prefix=>nvl(wwv_flow_application_install.get_static_theme_file_prefix(42),'#APEX_FILES#themes/theme_42/26.2/')
-,p_files_version=>2461312205441
+,p_files_version=>2461322184052
 ,p_icon_library=>'FONTAPEX'
 ,p_javascript_file_urls=>wwv_flow_string.join(wwv_flow_t_varchar2(
 '#APEX_FILES#libraries/apex/#MIN_DIRECTORY#widget.stickyWidget#MIN#.js?v=#APEX_VERSION#',
 '#THEME_FILES#js/theme42#MIN#.js?v=#APEX_VERSION#'))
 ,p_css_file_urls=>'#THEME_FILES#css/Core#MIN#.css?v=#APEX_VERSION#'
 ,p_reference_id=>wwv_imp_util.get_subscription_id(4075791579648660165,2000,'universal-theme',8842.262)
-,p_version_scn=>'SH256:zm0EvKGpUytPI5T72hKYW7Nl7_PXMIadjNHFkt3Lvqo'
+,p_version_scn=>'SH256:tBNcScBJP_Py_D-rPf5dYvadLBgZw_WpWCJrzHIniAE'
 ,p_version_scn_master=>'SH256:S3Fh7S4ZMPpy-ID1j0RgxJIrTUyM6ZXOJB4KD7haOtc'
 );
 end;
@@ -10992,7 +10992,8 @@ wwv_flow_imp_shared.create_theme_style(
 ||'ils {\n  flex: 1 !important;\n  min-width: 0 !important;\n  font-family: system-ui, -apple-system, \"Segoe UI\", Roboto, sans-serif !important;\n}\n\n.mention__item__user-name,\n.mention__item__full-name {\n  display: inline !important;\n  white-spac'
 ||'e: nowrap !important;\n}\n\n.mention__item__user-name {\n  font-weight: 700 !important;\n  font-size: 15px !important;\n  color: #1f2937 !important;\n}\n\n.mention__item__full-name {\n  font-weight: 400 !important;\n  font-size: 15px !important;\n  c'
 ||'olor: #6b7280 !important;\n  margin-left: 2px !important;\n}\n\nbody .ck.ck-editor__main>.ck-editor__editable,\nbody .ck.ck-input-text {\n  font-size: 14px;\n}\n\n.is-markdownified pre {\n  border-radius: 2px;\n  margin-block: 10px;\n}\n\n.u-colors .'
-||'t-Avatar--noShape.u-color {\n    background-color: transparent !important;\n    color: var(--u-color) !important;\n}","useCustomLess":"N"}'
+||'t-Avatar--noShape.u-color {\n    background-color: transparent !important;\n    color: var(--u-color) !important;\n}\n\n.a-Button.a-FS-excludeFacetOption {\n  --a-button-padding-x: var(--u-space-1, 0.25rem);\n  --a-button-padding-y: var(--u-space-1, '
+||'0.25rem);\n\n  line-height: 1;\n}\n\n.a-IRR-dialogBody .a-IRR-radioIconList-item label {\n    background-color: var(--a-iconlist-item-background-color, transparent);\n}","useCustomLess":"N"}'
 ,p_theme_roller_output_file_url=>'#THEME_DB_FILES#41162705609405630023.css'
 ,p_theme_roller_read_only=>false
 );
@@ -11063,7 +11064,10 @@ wwv_flow_imp.g_varchar2_table(47) := '6F7274616E743B0D0A7D0D0A0D0A2E6D656E74696F
 wwv_flow_imp.g_varchar2_table(48) := '616E743B0D0A2020636F6C6F723A20233662373238302021696D706F7274616E743B0D0A20206D617267696E2D6C6566743A203270782021696D706F7274616E743B0D0A7D0D0A0D0A626F6479202E636B2E636B2D656469746F725F5F6D61696E3E2E63';
 wwv_flow_imp.g_varchar2_table(49) := '6B2D656469746F725F5F6564697461626C652C0D0A626F6479202E636B2E636B2D696E7075742D74657874207B0D0A2020666F6E742D73697A653A20313470783B0D0A7D0D0A0D0A2E69732D6D61726B646F776E696669656420707265207B0D0A202062';
 wwv_flow_imp.g_varchar2_table(50) := '6F726465722D7261646975733A203270783B0D0A20206D617267696E2D626C6F636B3A20313070783B0D0A7D0D0A0D0A2E752D636F6C6F7273202E742D4176617461722D2D6E6F53686170652E752D636F6C6F72207B0D0A202020206261636B67726F75';
-wwv_flow_imp.g_varchar2_table(51) := '6E642D636F6C6F723A207472616E73706172656E742021696D706F7274616E743B0D0A20202020636F6C6F723A20766172282D2D752D636F6C6F72292021696D706F7274616E743B0D0A7D';
+wwv_flow_imp.g_varchar2_table(51) := '6E642D636F6C6F723A207472616E73706172656E742021696D706F7274616E743B0D0A20202020636F6C6F723A20766172282D2D752D636F6C6F72292021696D706F7274616E743B0D0A7D0D0A0D0A2E612D427574746F6E2E612D46532D6578636C7564';
+wwv_flow_imp.g_varchar2_table(52) := '6546616365744F7074696F6E207B0D0A20202D2D612D627574746F6E2D70616464696E672D783A20766172282D2D752D73706163652D312C20302E323572656D293B0D0A20202D2D612D627574746F6E2D70616464696E672D793A20766172282D2D752D';
+wwv_flow_imp.g_varchar2_table(53) := '73706163652D312C20302E323572656D293B0D0A0D0A20206C696E652D6865696768743A20313B0D0A7D0D0A0D0A2E612D4952522D6469616C6F67426F6479202E612D4952522D726164696F49636F6E4C6973742D6974656D206C6162656C207B0D0A20';
+wwv_flow_imp.g_varchar2_table(54) := '2020206261636B67726F756E642D636F6C6F723A20766172282D2D612D69636F6E6C6973742D6974656D2D6261636B67726F756E642D636F6C6F722C207472616E73706172656E74293B0D0A7D';
 wwv_flow_imp_shared.create_theme_file(
  p_id=>wwv_flow_imp.id(28123082046316313049)
 ,p_theme_id=>42
@@ -25670,76 +25674,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>12348809903595816240
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(49013590745727303046)
-,p_process_sequence=>40
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Email exceptions'
-,p_static_id=>'email-exceptions'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'declare',
-'    l_summary      clob;',
-'begin',
-'',
-'    l_summary := sp_contributor_summary.project_exceptions (',
-'                     p_team_member_id  => :P5_ID,',
-'                     p_links           => ''EMAIL''',
-'                     );',
-'',
-'    apex_mail.send ( ',
-'            p_to                 => :APP_USER,   ',
-'            p_from               => :APP_USER,  ',
-'            p_application_id     => :APP_ID,  ',
-'            p_template_static_id => ''EMAIL_ME'',  ',
-'            p_placeholders       => ''{'' || ''"APPLICATION_LINK": "'' || sp_util.get_setting(p_static_id => ''APP_HOME_URL'') ||''", ''|| ',
-'                                           ''"APP_NAME": ''   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||'', ''||',
-'                                           ''"SUBJECT": ''    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ||'' ''||:NOMENCLATURE_PROJECT ||'' Exceptions'') ||'', ''||',
-'                                           ''"SUMMARY": ''    || apex_json.stringify( l_summary ) ||',
-'                                     ''}'' ); ',
-'',
-'end;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Project Exceptions email sent.'
-,p_internal_uid=>12115772462193393405
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(48093260962229606263)
-,p_process_sequence=>30
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Email summary'
-,p_static_id=>'email-summary'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'declare',
-'    l_summary      clob;',
-'begin',
-'',
-'    l_summary := sp_contributor_summary.generate (',
-'                     p_team_member_id    => :P5_ID,',
-'                     p_show_activities   => ''Y'',',
-'                     p_show_projects     => ''Y'',',
-'                     p_links             => ''EMAIL''',
-'                     );',
-'',
-'    apex_mail.send ( ',
-'            p_to                 => :APP_USER,   ',
-'            p_from               => :APP_USER,  ',
-'            p_application_id     => :APP_ID,  ',
-'            p_template_static_id => ''EMAIL_ME'',  ',
-'            p_placeholders       => ''{'' || ''"APPLICATION_LINK": "'' || sp_util.get_setting(p_static_id => ''APP_HOME_URL'') ||''", ''|| ',
-'                                           ''"APP_NAME": ''   || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ) ||'', ''||',
-'                                           ''"SUBJECT": ''    || apex_json.stringify( :NOMENCLATURE_STRATEGIC_PLANNER ||'' Weekly Summary'') ||'', ''||',
-'                                           ''"SUMMARY": ''    || apex_json.stringify( l_summary ) ||',
-'                                     ''}'' ); ',
-'',
-'end;'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Weekly Summary email sent.'
-,p_internal_uid=>11195442678695696622
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(43685741545580518885)
 ,p_process_sequence=>20
 ,p_process_point=>'BEFORE_HEADER'
@@ -25774,38 +25708,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_internal_uid=>12348810191913816242
 );
 wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(49013590864214303047)
-,p_process_sequence=>90
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Subscribe exceptions'
-,p_static_id=>'subscribe-exceptions'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'sp_util.notification_opt_in (',
-'    p_team_member_id  => :APP_USER_ID,',
-'    p_notification_id => sp_util.get_notification_id(''PROJECT_EXCEPTIONS'') );'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Subscribed to Project Exceptions.'
-,p_internal_uid=>12115772580680393406
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(48399529479410960549)
-,p_process_sequence=>60
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Subscribe summary'
-,p_static_id=>'subscribe-summary'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'sp_util.notification_opt_in (',
-'    p_team_member_id  => :APP_USER_ID,',
-'    p_notification_id => sp_util.get_notification_id(''WEEKLY_SUMMARY'') );'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Subscribed to Weekly Summary.'
-,p_internal_uid=>11501711195877050908
-);
-wwv_flow_imp_page.create_page_process(
  p_id=>wwv_flow_imp.id(47227387888460192358)
 ,p_process_sequence=>10
 ,p_process_point=>'BEFORE_HEADER'
@@ -25835,38 +25737,6 @@ wwv_flow_imp_page.create_page_process(
 ,p_process_when_button_id=>wwv_flow_imp.id(49808462473872146759)
 ,p_process_success_message=>'Unsubscribed from Project Changes.'
 ,p_internal_uid=>12348810267987816243
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(49013592932005303068)
-,p_process_sequence=>100
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Unsubscribe exceptions'
-,p_static_id=>'unsubscribe-exceptions'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'sp_util.notification_opt_out (',
-'    p_team_member_id  => :APP_USER_ID,',
-'    p_notification_id => sp_util.get_notification_id(''PROJECT_EXCEPTIONS'') );'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Unsubscribed from Project Exceptions.'
-,p_internal_uid=>12115774648471393427
-);
-wwv_flow_imp_page.create_page_process(
- p_id=>wwv_flow_imp.id(49013592853720303067)
-,p_process_sequence=>80
-,p_process_point=>'AFTER_SUBMIT'
-,p_process_type=>'NATIVE_PLSQL'
-,p_process_name=>'Unsubscribe summary'
-,p_static_id=>'unsubscribe-summary'
-,p_process_sql_clob=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'sp_util.notification_opt_out (',
-'    p_team_member_id  => :APP_USER_ID,',
-'    p_notification_id => sp_util.get_notification_id(''WEEKLY_SUMMARY'') );'))
-,p_process_clob_language=>'PLSQL'
-,p_error_display_location=>'INLINE_IN_NOTIFICATION'
-,p_process_success_message=>'Unsubscribed from Weekly Summary.'
-,p_internal_uid=>12115774570186393426
 );
 end;
 /
@@ -37978,8 +37848,10 @@ wwv_flow_imp_page.create_page_item(
 ,p_display_as=>'NATIVE_SELECT_ONE'
 ,p_lov=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select group_name, id ',
-'from sp_project_groups',
-'order by 1'))
+'  from sp_project_groups',
+' where nvl(is_active_yn,''Y'') = ''Y''',
+'    or id = :P24_PROJECT_GROUP_ID',
+' order by 1'))
 ,p_cSize=>30
 ,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
@@ -64500,7 +64372,7 @@ wwv_flow_imp_page.create_report_region(
 ,p_source_type=>'NATIVE_SQL_REPORT'
 ,p_query_type=>'SQL'
 ,p_source=>wwv_flow_string.join(wwv_flow_t_varchar2(
-'select t.event_type, ',
+'select t.event_type || case when t.general_event_yn = ''Y'' then '' *'' end event_type, ',
 '       e.event_date, e.event_name,',
 '       case when s.recur_freq is not null',
 '            then ''Repeats ''||decode(s.recur_freq, ''D'', ''Daily'', ''WD'', ''Weekdays'', ''W'', ''Weekly'', ',
@@ -64523,6 +64395,7 @@ wwv_flow_imp_page.create_report_region(
 '  order by event_date'))
 ,p_display_when_condition=>'P73_TEAM_MEMBER_ID'
 ,p_display_condition_type=>'ITEM_IS_NOT_NULL'
+,p_footer=>'* after Event Type indicates a general event which may (or may not) affect this &NOMENCLATURE_USER.'
 ,p_ajax_enabled=>'Y'
 ,p_lazy_loading=>false
 ,p_query_row_template=>2542081983073888486
@@ -71683,14 +71556,17 @@ wwv_flow_imp_page.create_page_item(
 wwv_flow_imp_page.create_page_item(
  p_id=>wwv_flow_imp.id(37801599616244628357)
 ,p_name=>'P90_IS_ACTIVE_YN'
+,p_source_data_type=>'VARCHAR2'
 ,p_item_sequence=>40
 ,p_item_plug_id=>wwv_flow_imp.id(38125924278072680351)
+,p_item_source_plug_id=>wwv_flow_imp.id(38125924278072680351)
 ,p_item_default=>'Y'
 ,p_prompt=>'Active'
-,p_source_type=>'ALWAYS_NULL'
+,p_source=>'IS_ACTIVE_YN'
 ,p_display_as=>'NATIVE_YES_NO'
 ,p_field_template=>1612549609962752680
 ,p_item_template_options=>'#DEFAULT#'
+,p_is_persistent=>'N'
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'use_defaults', 'Y')).to_clob
 );
@@ -80910,7 +80786,8 @@ wwv_flow_imp_page.create_page_item(
 ,p_attributes=>wwv_flow_t_plugin_attributes(wwv_flow_t_varchar2(
   'display_as', 'POPUP',
   'max_date', 'NONE',
-  'min_date', 'NONE',
+  'min_date', 'ITEM',
+  'min_item', 'P101_START_DATE',
   'multiple_months', 'N',
   'show_time', 'N',
   'use_defaults', 'Y')).to_clob
@@ -81217,6 +81094,18 @@ wwv_flow_imp_page.create_page_computation(
 ,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select first_name||'' ''||last_name||'' (''||email||'')'' x ',
 'from sp_team_members where id = :P101_USER_TEAM_MEMBER_ID'))
+);
+wwv_flow_imp_page.create_page_validation(
+ p_id=>wwv_flow_imp.id(2523310698571623)
+,p_validation_name=>'End date must not precede start date'
+,p_static_id=>'end-date-must-not-precede-start-date'
+,p_validation_sequence=>20
+,p_validation=>'to_date(:P101_END_DATE, ''FMDay DD-MON-YYYY'') >= to_date(:P101_START_DATE, ''FMDay DD-MON-YYYY'')'
+,p_validation2=>'PLSQL'
+,p_validation_type=>'EXPRESSION'
+,p_error_message=>'End Date must be on or after Start Date.'
+,p_associated_item=>wwv_flow_imp.id(51181303229949278728)
+,p_error_display_location=>'INLINE_WITH_FIELD_AND_NOTIFICATION'
 );
 wwv_flow_imp_page.create_page_validation(
  p_id=>wwv_flow_imp.id(2683444625763761433)
@@ -95353,8 +95242,9 @@ wwv_flow_imp_page.create_page_computation(
 ,p_computation_type=>'QUERY'
 ,p_computation=>wwv_flow_string.join(wwv_flow_t_varchar2(
 'select task_id',
-'  from apex_tasks',
-' where to_char(detail_pk) = :P125_PROJECT_APPROVAL_CHAIN_ID'))
+'  from apex_task_parameters',
+' where param_static_id = ''V_PROJECT_APPROVAL_CHAIN_ID''',
+'   and param_value = :P125_PROJECT_APPROVAL_CHAIN_ID'))
 ,p_compute_when=>'P125_PROJECT_APPROVAL_CHAIN_ID'
 ,p_compute_when_type=>'ITEM_IS_NOT_NULL'
 );

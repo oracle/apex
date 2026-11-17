@@ -757,8 +757,9 @@ page 125 (
             sqlQuery:
                 ```sql
                 select task_id
-                  from apex_tasks
-                 where to_char(detail_pk) = :P125_PROJECT_APPROVAL_CHAIN_ID
+                  from apex_task_parameters
+                 where param_static_id = 'V_PROJECT_APPROVAL_CHAIN_ID'
+                   and param_value = :P125_PROJECT_APPROVAL_CHAIN_ID
                 ```
         }
         serverSideCondition {

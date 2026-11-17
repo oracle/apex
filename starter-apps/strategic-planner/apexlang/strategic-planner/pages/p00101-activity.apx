@@ -177,6 +177,10 @@ page 101 (
             label: End Date
             alignment: left
         }
+        settings {
+            minDate: item
+            minItem: P101_START_DATE
+        }
         layout {
             sequence: 100
             region: @activity
@@ -850,6 +854,20 @@ page 101 (
             }
         )
 
+    )
+
+    validation end-date-must-not-precede-start-date (
+        name: End date must not precede start date
+        execution {
+            sequence: 20
+        }
+        validation {
+            plsqlExpression: to_date(:P101_END_DATE, 'FMDay DD-MON-YYYY') >= to_date(:P101_START_DATE, 'FMDay DD-MON-YYYY')
+        }
+        error {
+            errorMessage: End Date must be on or after Start Date.
+            associatedItem: @P101_END_DATE
+        }
     )
 
     validation if-private-must-be-owned-by-current-user (

@@ -1721,7 +1721,7 @@
         {
             "internalName": "APP_STRATEGIC_PLANNER",
             "author": "Oracle",
-            "version": "26.2.0",
+            "version": "26.2.1",
             "icon": "https://raw.githubusercontent.com/oracle/apex/26.2/docs/img/apps/app-strategic-planner.svg",
             "url": "https://github.com/oracle/apex/tree/26.2/starter-apps/strategic-planner",
             "source": "https://raw.githubusercontent.com/oracle/apex/26.2/starter-apps/strategic-planner/sql/strategic-planner.sql",

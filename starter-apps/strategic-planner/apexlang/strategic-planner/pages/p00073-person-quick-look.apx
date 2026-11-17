@@ -1701,7 +1701,7 @@ page 73 (
             type: sqlQuery
             sqlQuery:
                 ```sql
-                select t.event_type, 
+                select t.event_type || case when t.general_event_yn = 'Y' then ' *' end event_type, 
                        e.event_date, e.event_name,
                        case when s.recur_freq is not null
                             then 'Repeats '||decode(s.recur_freq, 'D', 'Daily', 'WD', 'Weekdays', 'W', 'Weekly', 
@@ -1735,6 +1735,9 @@ page 73 (
                 t-Region--noUI
                 t-Region--scrollBody
             ]
+        }
+        headerAndFooter {
+            footerText: * after Event Type indicates a general event which may (or may not) affect this &NOMENCLATURE_USER.
         }
         serverSideCondition {
             type: itemIsNotNull
